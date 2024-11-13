@@ -29,7 +29,7 @@ Ensure you have the following installed and set up:
 ### Installation
 1. Clone the repository:
    ```sh
-   git clone https://github.com/PalaBlood/Gruppe_7.git
+   git clone https://github.com/kudretilayda/Gruppe_6
       ```
 3. Install project dependencies:
       ```sh
