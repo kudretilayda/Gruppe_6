@@ -1,0 +1,58 @@
+.pricing-container {
+    text-align: center;
+    margin: 20px;
+  }
+  
+  .pricing-title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  .pricing-description {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+  }
+  
+  .pricing-cards {
+    display: flex;
+    justify-content: space-around; /* verteilt die Karten gleichmäßig */
+    gap: 20px; /* Abstand zwischen den Karten */
+  }
+  
+  .pricing-card {
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-radius: 8px;
+    width: 250px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column; /* sorgt dafür, dass die Elemente vertikal gestapelt sind */
+    justify-content: space-between; /* sorgt dafür, dass die Inhalte gleichmäßig verteilt werden */
+  }
+  
+  .plan-title {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .plan-description {
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+  
+  .buy-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+    margin-top: auto; /* sorgt dafür, dass der Button immer am unteren Rand der Karte ausgerichtet ist */
+  }
+  
+  .buy-button:hover {
+    background-color: #45a049;
+  }
+  
