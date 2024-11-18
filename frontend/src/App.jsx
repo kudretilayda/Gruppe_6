@@ -2,7 +2,6 @@ import React from 'react';
 import { Typography, AppBar, Button, Card, CardActions, CardContent, CardMedia, CssBaseline, Grid, Toolbar, Container } from '@mui/material';
 import CheckroomIcon from '@mui/icons-material/Checkroom';
 
-import Login from '/components/Login';
 
 const App = () => {
     return (
