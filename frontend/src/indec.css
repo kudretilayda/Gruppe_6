@@ -1,0 +1,43 @@
+/* Responsive Design */
+@media (max-width: 600px) {
+    .main-content {
+      padding: 8px;
+    }
+  }
+  
+  @media (min-width: 601px) {
+    .main-content {
+      padding: 16px;
+    }
+  }
+  
+  @media (min-width: 960px) {
+    .main-content {
+      padding: 24px;
+    }
+  }
+  
+  /* Layout */
+  .app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  .main-content {
+    flex: 1;
+    background-color: #f5f5f5;
+  }
+  
+  /* Komponenten-Styles */
+  .outfit-builder {
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .selected-item {
+    padding: 8px;
+    margin: 4px 0;
+    background-color: #e3f2fd;
+    border-radius: 4px;
+  }

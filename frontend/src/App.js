@@ -1,48 +1,74 @@
 import React from 'react';
-import { Typography, AppBar, Button, CssBaseline, Grid, Toolbar, Container } from '@mui/material';
-import CheckroomIcon from '@mui/icons-material/Checkroom';
-import { useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { ThemeProvider } from '@material-ui/core/styles';
+import { theme } from './theme';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 
-const App = () => {
-    const navigate = useNavigate(); // React Router Navigation Hook
+// Komponenten importieren
+import MainLayout from './components/layout/MainLayout';
+import SignIn from './components/pages/SignIn';
+import SignUp from './components/pages/SignUp';
+import Dashboard from './components/pages/Dashboard';
+import KleiderschrankPage from './components/pages/KleiderschrankPage';
+import OutfitPage from './components/pages/OutfitPage';
+import StylePage from './components/pages/StylePage';
 
-    return (
-        <>
-            <CssBaseline />
-            <AppBar position="relative">
-                <Toolbar>
-                    <CheckroomIcon />
-                    <Typography variant="h6">Kleiderschrank-Projekt</Typography>
-                </Toolbar>
-            </AppBar>
-            <main>
-                <Container maxWidth="sm">
-                    <Typography variant="h2" align="center" color="textPrimary" gutterBottom>
-                        Kleiderschrank-Projekt
-                    </Typography>
-                    <Typography variant="h5" align="center" color="textSecondary" paragraph>
-                        Das ist eine Probe Seite für das Projekt in SOPRA im WS 24/25
-                    </Typography>
-                    <Grid container spacing={2} justifyContent="center">
-                        <Grid item>
-                            <Button variant="contained" color="primary" onClick={() => navigate('/signin')}>
-                                Sign-In
-                            </Button>
-                        </Grid>
-                        <Grid item>
-                            <Button variant="outlined" color="primary" onClick={() => navigate('/signup')}>
-                                Sign-Up
-                            </Button>
-                        </Grid>
-                    </Grid>
-                </Container>
-            </main>
-        </>
-    );
+// Protected Route Component
+const ProtectedRoute = ({ children }) => {
+  const { user } = useAuth();
+  if (!user) {
+    return <Navigate to="/signin" replace />;
+  }
+  return children;
 };
 
+function App() {
+  return (
+    <ThemeProvider theme={theme}>
+      <AuthProvider>
+        <Router>
+          <Routes>
+            {/* Public Routes */}
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} />
+
+            {/* Protected Routes */}
+            <Route path="/" element={
+              <ProtectedRoute>
+                <MainLayout>
+                  <Dashboard />
+                </MainLayout>
+              </ProtectedRoute>
+            } />
+            
+            <Route path="/kleiderschrank" element={
+              <ProtectedRoute>
+                <MainLayout>
+                  <KleiderschrankPage />
+                </MainLayout>
+              </ProtectedRoute>
+            } />
+
+            <Route path="/outfits" element={
+              <ProtectedRoute>
+                <MainLayout>
+                  <OutfitPage />
+                </MainLayout>
+              </ProtectedRoute>
+            } />
+
+            <Route path="/styles" element={
+              <ProtectedRoute>
+                <MainLayout>
+                  <StylePage />
+                </MainLayout>
+              </ProtectedRoute>
+            } />
+          </Routes>
+        </Router>
+      </AuthProvider>
+    </ThemeProvider>
+  );
+}
+
 export default App;
-
-
-
-
