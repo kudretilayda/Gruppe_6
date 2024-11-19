@@ -1,10 +1,9 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import { Typography, AppBar, Button, CssBaseline, Grid, Toolbar, Container } from '@mui/material';
-import CheckroomIcon from '@mui/icons-material/Checkroom';
-import Register from '../src/components/pages/Register';
-import Login from '../src/components/pages/Login';
-import Header from './components/pages/Header';
+import { Typography, Button, CssBaseline, Grid, Container } from '@mui/material';
+import Register from './components/pages/Register';  // Korrigiere den Pfad
+import Login from './components/pages/Login';  // Korrigiere den Pfad
+import Header from './components/pages/Header';  // Korrigiere den Pfad
 
 const App = () => {
     return (
@@ -14,40 +13,36 @@ const App = () => {
             <Routes>
                 <Route path="/" element={
                     <main>
-                        <div>
-                            <Container maxWidth="sm">
-                                <Typography variant='h2' align='center' color='textPrimary' gutterBottom>
-                                    Kleiderschrank-Projekt
-                                </Typography>
-                                <Typography variant='h5' align='center' color='textSecondary' paragraph>
-                                    Das ist eine Probe Seite für das Projekt in SOPRA im WS 24/25
-                                </Typography>
-                                <div>
-                                    <Grid container spacing={2} justifyContent="center">
-                                        <Grid item>
-                                            <Button 
-                                                component={Link} 
-                                                to="/login" 
-                                                variant="contained" 
-                                                color='primary'
-                                            >
-                                                Sign-In
-                                            </Button>
-                                        </Grid>
-                                        <Grid item>
-                                            <Button 
-                                                component={Link} 
-                                                to="/register" 
-                                                variant="outlined" 
-                                                color='primary'
-                                            >
-                                                Sign-Up
-                                            </Button>
-                                        </Grid>
-                                    </Grid>
-                                </div>
-                            </Container>
-                        </div>
+                        <Container maxWidth="sm">
+                            <Typography variant="h2" align="center" color="textPrimary" gutterBottom>
+                                Kleiderschrank-Projekt
+                            </Typography>
+                            <Typography variant="h5" align="center" color="textSecondary" paragraph>
+                                Das ist eine Probe Seite für das Projekt in SOPRA im WS 24/25
+                            </Typography>
+                            <Grid container spacing={2} justifyContent="center">
+                                <Grid item>
+                                    <Button 
+                                        component={Link} 
+                                        to="/login" 
+                                        variant="contained" 
+                                        color="primary"
+                                    >
+                                        Sign-In
+                                    </Button>
+                                </Grid>
+                                <Grid item>
+                                    <Button 
+                                        component={Link} 
+                                        to="/register" 
+                                        variant="outlined" 
+                                        color="primary"
+                                    >
+                                        Sign-Up
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                        </Container>
                     </main>
                 } />
                 <Route path="/login" element={<Login />} />
