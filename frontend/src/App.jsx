@@ -3,21 +3,15 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import { Typography, AppBar, Button, CssBaseline, Grid, Toolbar, Container } from '@mui/material';
 import CheckroomIcon from '@mui/icons-material/Checkroom';
-import Register from './components/Register';
-import Login from './components/Login';
+import Register from '../src/components/Register';
+import Login from '../src/components/Login';
+import Header from './components/Header';
 
 const App = () => {
     return (
         <BrowserRouter>
             <CssBaseline />
-            <AppBar position="relative">
-                <Toolbar>
-                    <CheckroomIcon />
-                    <Typography variant="h6">
-                        Kleiderschrank-Projekt
-                    </Typography>
-                </Toolbar>
-            </AppBar>
+            <Header />
             <Routes>
                 <Route path="/" element={
                     <main>

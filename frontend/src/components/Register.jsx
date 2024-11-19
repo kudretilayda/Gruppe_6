@@ -5,6 +5,7 @@ import { TextField, Button, Container, Stack, Box } from '@mui/material';
 // Importiere die React Router Komponenten für die Navigation
 import { Form, Link } from 'react-router-dom';
 
+
 const RegisterForm = () => {
    // Erstelle State Variablen für die Formulardaten
    const [firstName, setFirstName] = useState(''); // Speichert den Vornamen
