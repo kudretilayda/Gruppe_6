@@ -16,10 +16,10 @@ import {
   Container,
 } from "@mui/material";
 import CheckroomIcon from "@mui/icons-material/Checkroom";
-import Register from "../src/components/Login_Register/Register";
-import Login from "../src/components/Login_Register/Login";
-import Header from "./components/Header";
-import OutfitBuilder from "./components/Outfit_Builder";
+import Register from "./components/Login_Register/Register";
+import Login from "./components/Login_Register/Login";
+import Header from "./Header";
+import OutfitBuilder from "./components/Oufit_Builder/OB";
 
 const App = () => {
   const navigate = useNavigate();
@@ -48,3 +48,7 @@ const App = () => {
 };
 
 export default App;
+
+
+
+
