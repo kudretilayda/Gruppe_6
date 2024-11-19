@@ -1,75 +1,94 @@
+// Importiere die benötigten React Komponenten und Hooks
 import React, {useState} from "react";
-import { TextField, FormControl, Button } from "@mui/material";
+// Importiere die Material-UI Komponenten für das Design
+import { TextField, FormControl, Button, Container, Box } from "@mui/material";
+// Importiere die Link-Komponente für Navigation
 import { Link } from "react-router-dom";
 
-const Login = () => { // Hier werden 4 Variablen erstellt (email, password, emailError, passwordError)
+const Login = () => {
+   // State Variablen für Email und Passwort
+   const [email, setEmail] = useState(""); // Speichert die eingegebene Email
+   const [password, setPassword] = useState(""); // Speichert das eingegebene Passwort
+   // State Variablen für Fehleranzeige
+   const [emailError, setEmailError] = useState(false); // Zeigt Fehler bei Email-Eingabe
+   const [passwordError, setPasswordError] = useState(false); // Zeigt Fehler bei Passwort-Eingabe
 
-    const [email, setEmail] = useState(""); // email speichert die Email
-    const [password, setPassword] = useState(""); // password speichert das PW
-    const [emailError, setEmailError] = useState(false); // emailError überprüft ob die Email richtig eingegeben wurde
-    const [passwordError, setPasswordError] = useState(false); // passwordError überprüft ob das PW richtig eingegeben wurde
+   // Funktion wird beim Absenden des Formulars ausgeführt
+   const handleSubmit = (Event) => {
+       Event.preventDefault(); // Verhindert Standard-Formularverhalten
 
-    const handleSubmit = (Event) => {
-        Event.preventDefault();
+       // Setzt Fehleranzeigen zurück
+       setEmailError(false);
+       setPasswordError(false);
 
-        setEmailError(false);
-        setPasswordError(false);
+       // Prüft ob Email-Feld leer ist
+       if (email === '') {
+           setEmailError(true);
+       }
 
-        if (email === '') {
-            setEmailError(true);
-        }
+       // Prüft ob Passwort-Feld leer ist
+       if (password === '') {
+           setPasswordError(true);
+       }
 
-        if (password === '') {
-            setPasswordError(true);
-        }
+       // Wenn beide Felder ausgefüllt sind
+       if (email && password) {
+           console.log("Email:", email, "Password:", password)
+           // Hier kann später die Authentifizierung eingebaut werden
+       }
+   }
 
-        if (email && password) {
-            console.log("Email:", email, "Password:", password)
-            // Authentifizierung kann hier eingebaut werden
-        }
-    }
+   return (
+       // Container für zentrierte Darstellung
+       <Container maxWidth="sm">
+           {/* Box für Abstände oben und an den Seiten */}
+           <Box sx={{ mt: 8, mx: 4 }}>
+               {/* Formular mit automatischer Vervollständigung aus */}
+               <form autoComplete="off" onSubmit={handleSubmit}>
+                   <h2>Login Form</h2>
 
-    return (
-        <React.Fragment>
-            <form autoComplete="off" onSubmit={handleSubmit}>
-                <h2>Login Form</h2>
+                   {/* Email Eingabefeld */}
+                   <TextField
+                       label="Email"
+                       onChange={(e) => setEmail(e.target.value)} // Aktualisiert Email bei Änderung
+                       required
+                       variant="outlined"
+                       color="secondary"
+                       type="email"
+                       sx={{ mb: 3 }}
+                       fullWidth
+                       value={email}
+                       error={emailError} // Zeigt Fehler an wenn emailError true ist
+                   />
 
-                <TextField
-                    label = 'Email'
-                    onChange = {(e) => setEmail(e.target.value)}
-                    required
-                    variant = "outlined"
-                    color = "secondary"
-                    type = "email"
-                    sx = {{ mb: 3 }}
-                    fullWidth
-                    value = {email}
-                    error = {emailError}
-                />
+                   {/* Passwort Eingabefeld */}
+                   <TextField
+                       label="Password"
+                       onChange={(e) => setPassword(e.target.value)} // Aktualisiert Passwort bei Änderung
+                       required
+                       variant="outlined"
+                       color="secondary"
+                       type="password"
+                       value={password}
+                       error={passwordError} // Zeigt Fehler an wenn passwordError true ist
+                       fullWidth
+                       sx={{ mb: 3}}
+                   />
 
-                <TextField
-                    label = 'Password'
-                    onChange = {(e) => setPassword(e.target.value)}
-                    required
-                    variant = "outlined"
-                    color = "secondary"
-                    type = "password"
-                    value = {password}
-                    error = {passwordError}
-                    fullWidth
-                    sx = {{ mb: 3}}
-                />
-
-                <Button variant="outlined" color="secondary" type="submit">
-                    Login
-                </Button>
-                
-            </form>
-
-            <small>Need an account? <Link to="/register"> Register here </Link>  </small>
-
-        </React.Fragment>
-    );
+                   {/* Login Button */}
+                   <Button variant="outlined" color="secondary" type="submit">
+                       Login
+                   </Button>
+                   
+                   {/* Link zur Registrierung mit Abstand nach oben */}
+                   <Box sx={{ mt: 2 }}>
+                       <small>Need an account? <Link to="/register"> Register here </Link></small>
+                   </Box>
+               </form>
+           </Box>
+       </Container>
+   );
 };
 
+// Exportiert die Login Komponente für die Verwendung in anderen Dateien
 export default Login;
