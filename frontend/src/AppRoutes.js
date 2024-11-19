@@ -1,22 +1,18 @@
 import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
-import SignIn from './components/pages/SignIn';   // Pfad zu SignIn anpassen
-import SignUp from './components/pages/SignUp';   // Pfad zu SignUp anpassen
-import Dashboard from './components/pages/Dashboard'; // Pfad zu Dashboard anpassen
+import { Routes, Route } from 'react-router-dom';
+import Login from './components/pages/Login';  // Statt SignIn
+import Register from './components/pages/Register';  // Statt SignUp
+import Header from './components/pages/Header';  // Optional, falls du den Header nutzen möchtest
 
-const AppRoutes = () => {
-    return (
-        <Routes>
-            <Route path="/" element={<Navigate to="/signin" />} />
-            <Route path="/signin" element={<SignIn />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="*" element={<h1>404: Seite nicht gefunden</h1>} />
-        </Routes>
-    );
-};
+const AppRoutes = () => (
+  <Routes>
+    {/* Login und Register statt SignIn und SignUp */}
+    <Route path="/login" element={<Login />} />
+    <Route path="/register" element={<Register />} />
+
+    {/* Optional Header, wenn du diesen in deiner Route haben möchtest */}
+    <Route path="/" element={<Header />} />  {/* Die Startseite oder Header-Seite */}
+  </Routes>
+);
 
 export default AppRoutes;
-
-
-

@@ -1,15 +1,14 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import ReactDOM from 'react-dom';
+import AppRoutes from './AppRoutes';  // Richtiger Pfad
 import { BrowserRouter as Router } from 'react-router-dom';
-import App from './App';
-import AppRoutes from './AppRoutes';
+import './index.css';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-    <React.StrictMode>
-        <Router>
-            <App />
-            <AppRoutes />
-        </Router>
-    </React.StrictMode>
+ReactDOM.render(
+  <React.StrictMode>
+    <Router>
+      <AppRoutes />
+    </Router>
+  </React.StrictMode>,
+  document.getElementById('root')
 );

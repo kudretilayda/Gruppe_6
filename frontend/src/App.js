@@ -1,74 +1,60 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { ThemeProvider } from '@material-ui/core/styles';
-import { theme } from './theme';
-import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { Typography, AppBar, Button, CssBaseline, Grid, Toolbar, Container } from '@mui/material';
+import CheckroomIcon from '@mui/icons-material/Checkroom';
+import Register from '../src/components/pages/Register';
+import Login from '../src/components/pages/Login';
+import Header from './components/pages/Header';
 
-// Komponenten importieren
-import MainLayout from './components/layout/MainLayout';
-import SignIn from './components/pages/SignIn';
-import SignUp from './components/pages/SignUp';
-import Dashboard from './components/pages/Dashboard';
-import KleiderschrankPage from './components/pages/KleiderschrankPage';
-import OutfitPage from './components/pages/OutfitPage';
-import StylePage from './components/pages/StylePage';
-
-// Protected Route Component
-const ProtectedRoute = ({ children }) => {
-  const { user } = useAuth();
-  if (!user) {
-    return <Navigate to="/signin" replace />;
-  }
-  return children;
-};
-
-function App() {
-  return (
-    <ThemeProvider theme={theme}>
-      <AuthProvider>
-        <Router>
-          <Routes>
-            {/* Public Routes */}
-            <Route path="/signin" element={<SignIn />} />
-            <Route path="/signup" element={<SignUp />} />
-
-            {/* Protected Routes */}
-            <Route path="/" element={
-              <ProtectedRoute>
-                <MainLayout>
-                  <Dashboard />
-                </MainLayout>
-              </ProtectedRoute>
-            } />
-            
-            <Route path="/kleiderschrank" element={
-              <ProtectedRoute>
-                <MainLayout>
-                  <KleiderschrankPage />
-                </MainLayout>
-              </ProtectedRoute>
-            } />
-
-            <Route path="/outfits" element={
-              <ProtectedRoute>
-                <MainLayout>
-                  <OutfitPage />
-                </MainLayout>
-              </ProtectedRoute>
-            } />
-
-            <Route path="/styles" element={
-              <ProtectedRoute>
-                <MainLayout>
-                  <StylePage />
-                </MainLayout>
-              </ProtectedRoute>
-            } />
-          </Routes>
-        </Router>
-      </AuthProvider>
-    </ThemeProvider>
-  );
+const App = () => {
+    return (
+        <BrowserRouter>
+            <CssBaseline />
+            <Header />
+            <Routes>
+                <Route path="/" element={
+                    <main>
+                        <div>
+                            <Container maxWidth="sm">
+                                <Typography variant='h2' align='center' color='textPrimary' gutterBottom>
+                                    Kleiderschrank-Projekt
+                                </Typography>
+                                <Typography variant='h5' align='center' color='textSecondary' paragraph>
+                                    Das ist eine Probe Seite für das Projekt in SOPRA im WS 24/25
+                                </Typography>
+                                <div>
+                                    <Grid container spacing={2} justifyContent="center">
+                                        <Grid item>
+                                            <Button 
+                                                component={Link} 
+                                                to="/login" 
+                                                variant="contained" 
+                                                color='primary'
+                                            >
+                                                Sign-In
+                                            </Button>
+                                        </Grid>
+                                        <Grid item>
+                                            <Button 
+                                                component={Link} 
+                                                to="/register" 
+                                                variant="outlined" 
+                                                color='primary'
+                                            >
+                                                Sign-Up
+                                            </Button>
+                                        </Grid>
+                                    </Grid>
+                                </div>
+                            </Container>
+                        </div>
+                    </main>
+                } />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+            </Routes>
+        </BrowserRouter>
+    );
 }
 
 export default App;
