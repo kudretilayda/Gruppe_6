@@ -34,7 +34,7 @@ class Style:
         self.__kleidungstypen = kleidungstypen
 
     def __str__(self):
-        """Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz."""
+        
         return (
             f"Style ID: {self.__style_id}, Features: {self.__features}, "
             f"Constraints: {self.__constraints}, Kleidungstypen: {self.__kleidungstypen}"
@@ -42,7 +42,7 @@ class Style:
 
     @staticmethod
     def from_dict(dictionary=dict()):
-        """Umwandeln eines Python dict() in ein Style()."""
+        
         obj = Style()
         obj.set_style_id(dictionary.get("style_id", 0))
         obj.set_features(dictionary.get("features", ""))
