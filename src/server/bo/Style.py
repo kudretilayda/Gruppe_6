@@ -1,5 +1,9 @@
-class Style:
-    def __init__(self):
+from server.bo import BusinessObject as bo
+
+class Style (bo.BusinessObject):
+
+def __init__(self):
+        super().__init__()
         self.__style_id = 0
         self.__features = ""
         self.__constraints = []
@@ -35,10 +39,13 @@ class Style:
 
     def __str__(self):
         
-        return (
-            f"Style ID: {self.__style_id}, Features: {self.__features}, "
-            f"Constraints: {self.__constraints}, Kleidungstypen: {self.__kleidungstypen}"
+        return "Style: {}, {}, {}, {}".format(
+            self.__style_id(), 
+            self.__features(),
+            self.__constraints(),
+            self.__kleidungstypen()
         )
+
 
     @staticmethod
     def from_dict(dictionary=dict()):
