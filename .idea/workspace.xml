@@ -5,14 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0b36f84f-6ad4-4404-a25a-055e1c7ce6fe" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/Gruppe_6.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/bo/Kleidungstyp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/30f7b263-fd96-4fe2-bd28-27bb1ab15a08.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/cbf5a730-324d-4ddf-b69c-2161d8cd8cef.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/cbf5a730-324d-4ddf-b69c-2161d8cd8cef.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/bo/Kleiderschrank.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bo/BusinessObject.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/bo/BusinessObject.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bo/Kleidungstyp.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/bo/Kleidungstyp.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,7 +73,7 @@
       <updated>1732025472787</updated>
       <workItem from="1732025474444" duration="511000" />
       <workItem from="1732030058628" duration="2913000" />
-      <workItem from="1732191473777" duration="2726000" />
+      <workItem from="1732191473777" duration="3957000" />
     </task>
     <servers />
   </component>

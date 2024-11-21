@@ -1,15 +1,12 @@
-class Kleidungstyp:
+import BusinessObject
+
+
+class Kleidungstyp(BusinessObject):
     def __init__(self):
         super().__init__()
         self._id = int  # ID des Styles
         self._name = ""  # Der Name des Kleidungstyps
         self._verwendung = ""  # Die Anlässe wofür der Kleidungstyp ist
-
-    def get_id(self):
-        return self._id  # Auslesen der ID
-
-    def set_id(self):
-        self._id = id(self._id)  # Fragwürdig, macht es Sinn eine ID zu vergeben?
 
     def get_name(self):
         return self._name  # Auslesen des Namens
