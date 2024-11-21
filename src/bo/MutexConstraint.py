@@ -1,4 +1,4 @@
-from server.bo import Constraint
+import Constraint
 
 class MutexConstraint(Constraint): 
     """Realisierung einer MutexConstraint.

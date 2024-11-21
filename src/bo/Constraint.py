@@ -1,4 +1,4 @@
-from src.bo import Constraint
+import Constraint
 
 
 class Kleidungsstueck(Constraint):
