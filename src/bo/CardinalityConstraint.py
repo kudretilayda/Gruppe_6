@@ -1,7 +1,7 @@
-import BusinessObject
+import Constraint
 
 
-class CardinalityConstraint(BusinessObject):
+class CardinalityConstraint(Constraint):
     """Realisierung einer CardinalityConstraint.
 
     Eine CardinalityConstraint besitzt zwei Attribute (obj1_attribute, obj2_attribute),

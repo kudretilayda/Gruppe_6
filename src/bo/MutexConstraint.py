@@ -1,5 +1,6 @@
 import Constraint
 
+
 class MutexConstraint(Constraint): 
     """Realisierung einer MutexConstraint.
 
