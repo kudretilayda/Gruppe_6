@@ -1,7 +1,7 @@
-from src.bo.Constraint import Constraint
+from src.server.bo.Constraint import Constraint
 
 
-class ImplicationConstraint(Constraint):
+class ImplicationConstraint(Constraint):    # braucht abstract method
     """Realisierung einer ImplicationConstraint.
 
     Eine ImplicationConstraint besitzt eine Bedingung (condition_attribute, condition_value) 

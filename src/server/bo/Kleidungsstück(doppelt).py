@@ -1,3 +1,7 @@
+# Das ist das Module von Verena, Kleidungsstück wurde 2x gemacht.
+# Daher muss die Entscheidung getroffen werden, welches gelöscht wird.
+
+'''
 from src.bo.Constraint import Constraint
 
 
@@ -55,3 +59,4 @@ class Kleidungsstueck(Constraint):
         obj.set_name(dictionary.get("name", ""))
         obj.set_beschreibung(dictionary.get("beschreibung", ""))
         return obj
+'''

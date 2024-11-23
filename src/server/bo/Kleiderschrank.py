@@ -1,5 +1,4 @@
 from src.bo.BusinessObject import BusinessObject
-# Business object muss 2x erwähnt werden, da es sonst als Module erkannt wird und nicht als Klasse
 
 
 class Kleiderschrank(BusinessObject):

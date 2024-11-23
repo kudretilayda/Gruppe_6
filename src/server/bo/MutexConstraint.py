@@ -1,4 +1,4 @@
-from src.bo.Constraint import Constraint
+from src.server.bo.Constraint import Constraint
 
 
 class MutexConstraint(Constraint): 

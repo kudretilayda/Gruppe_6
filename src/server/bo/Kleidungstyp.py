@@ -1,4 +1,4 @@
-from src.bo.BusinessObject import BusinessObject
+from src.server.bo.BusinessObject import BusinessObject
 
 
 class Kleidungstyp(BusinessObject):

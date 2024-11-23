@@ -1,7 +1,7 @@
-from src.bo.Constraint import Constraint
+from src.server.bo.Constraint import Constraint
 
 
-class CardinalityConstraint(Constraint):
+class CardinalityConstraint(Constraint):    # braucht abstract method
     """Realisierung einer CardinalityConstraint.
 
     Eine CardinalityConstraint besitzt zwei Attribute (obj1_attribute, obj2_attribute),
@@ -84,7 +84,7 @@ class CardinalityConstraint(Constraint):
         und die beiden Objekte mit deren Attributen und Werten.
         """
         return (
-            f"CardinalityConstraint: {self.get_id()}, "
+            f"CardinalityConstraint: {self.get_id()}, "     # Es gibt diese Methode nicht
             f"Min: {self._min_count}, Max: {self._max_count}, "
             f"Obj1: ({self._obj1_attribute}, {self._obj1_value}), "
             f"Obj2: ({self._obj2_attribute}, {self._obj2_value})"
@@ -103,5 +103,5 @@ class CardinalityConstraint(Constraint):
             _obj2_attribute=dictionary.get("obj2_attribute", ""),
             _obj2_value=dictionary.get("obj2_value", "")
         )
-        obj.set_id(dictionary["id"])  # Eigentlicher Teil von BusinessObject!
+        obj.set_id(dictionary["id"])  # Eigentlicher Teil von BusinessObject! Diese Methode existiert nicht
         return obj
