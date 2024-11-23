@@ -1,7 +1,7 @@
 from src.server.bo.Constraint import Constraint
 
 
-class MutexConstraint(Constraint): 
+class MutexConstraint(Constraint):
     """Realisierung einer MutexConstraint.
 
     Eine MutexConstraint besitzt zwei Attribute (obj1_attribute, obj2_attribute),
@@ -64,15 +64,18 @@ class MutexConstraint(Constraint):
         Diese besteht aus der ID der Superklasse ergänzt durch die beiden Objekte
         und deren Werte.
         """
-        return "MutexConstraint: {}, Obj1: ({}, {}), Obj2: ({}, {})".format(
-            self.get_id(), self._obj1_attribute, self._obj1_value, self._obj2_attribute, self._obj2_value
+        return "MutexConstraint: Obj1: ({}, {}), Obj2: ({}, {})".format(
+            self._obj1_attribute, self._obj1_value, self._obj2_attribute, self._obj2_value
         )
+    # {}, self.get_id(),
 
     @staticmethod
-    def from_dict(dictionary=dict()):
+    def from_dict(dictionary=None):
         """Umwandeln eines Python dict() in eine MutexConstraint."""
+        if dictionary is None:
+            dictionary = dict()
         obj = MutexConstraint()
-        obj.set_id(dictionary["id"])  # Eigentlich Teil von BusinessObject!
+#        obj.set_id(dictionary["id"])  # Eigentlich Teil von BusinessObject!
         obj.set_obj1_attribute(dictionary["obj1_attribute"])
         obj.set_obj1_value(dictionary["obj1_value"])
         obj.set_obj2_attribute(dictionary["obj2_attribute"])

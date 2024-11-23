@@ -1,24 +1,19 @@
-from src.bo.BusinessObject import BusinessObject
+from src.server.bo.BusinessObject import BusinessObject
+import User
 
 
 class Kleiderschrank(BusinessObject):
     def __init__(self):
         super().__init__()
-        # Eigentümer ID
-        self._inhalt = list
-        self._outfits = list
 
-    # def get_eigentümer
-    # def set_eigentümer
-
-    def get_inhalt(self):           # Liste der Kleidungsstücke ausgeben
+    def get_inhalt(self):
         return self._inhalt
 
-    def set_inhalt(self, value):    # Kleidungsstücke der Liste hinzufügen
+    def set_inhalt(self, value):
         self._inhalt = value
 
-    def get_outfits(self):          # Liste der Outfits ausgeben
+    def get_outfits(self):
         return self._outfits
 
-    def set_outfits(self, value):   # Eventuell nicht nötig, weil es bei Outfits hinzugefügt werden kann
+    def set_outfits(self, value):
         self._outfits = value

@@ -57,8 +57,10 @@ class Kleidungsstueck(BusinessObject):
         )
 
     @staticmethod
-    def from_dict(dictionary=dict()):   # Warnungsmeldung
+    def from_dict(dictionary=None):   # Warnungsmeldung
         """Umwandeln eines Python dict() in ein Kleidungsstück()."""
+        if dictionary is None:
+            dictionary = {}
         obj = Kleidungsstueck()
         obj.set_kleidungsstueck_id(dictionary.get("kleidungsstueck_id", 0))
         obj.set_kleidungstyp(dictionary.get("kleidungstyp", None))
