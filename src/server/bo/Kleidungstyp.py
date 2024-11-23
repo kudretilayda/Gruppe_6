@@ -30,14 +30,3 @@ class Kleidungstyp(BusinessObject):
         return "Kleidungsstück: {}, Name: {}, Beschreibung: {}".format(
             self.get_id(), self._name, self._verwendung
         )
-
-    '''
-    @staticmethod
-    def from_dict(dictionary=dict):
-        """Umwandeln eines Python dict() in ein Kleidungsstück."""
-        obj = Kleidungstyp()
-        obj.set_id(dictionary['id'])    # Eigentlicher Teil von BusinessObject!
-        obj.set_name(dictionary.get("name", ""))
-        obj.set_verwendung(dictionary.get("verwendung", ""))
-        return obj
-'''

@@ -48,7 +48,6 @@ class User (BusinessObject):
     def set_email(self, value):
         self.__email = value
 
-
     def __str__(self):
 
         return "User: {}, {}, {}, {}".format(
@@ -59,8 +58,10 @@ class User (BusinessObject):
         )
 
     @staticmethod
-    def from_dict(dictionary=dict()):
+    def from_dict(dictionary=None):
         
+        if dictionary is None:
+            dictionary = dict()
         obj = User()
         obj.set_user_id(dictionary.get("user_id", ""))
         obj.set_nachname(dictionary.get("nachname", ""))

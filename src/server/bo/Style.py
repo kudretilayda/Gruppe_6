@@ -44,8 +44,10 @@ class Style (BusinessObject):
         )
 
     @staticmethod
-    def from_dict(dictionary=dict()):
+    def from_dict(dictionary=None):
         
+        if dictionary is None:
+            dictionary = dict()
         obj = Style()
         obj.set_style_id(dictionary.get("style_id", 0))
         obj.set_features(dictionary.get("features", ""))

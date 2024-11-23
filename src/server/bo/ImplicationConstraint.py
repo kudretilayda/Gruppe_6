@@ -66,16 +66,17 @@ class ImplicationConstraint(Constraint):    # braucht abstract method
         (Attribut und Wert) und die Implikation (Attribut und Wert).
         """
         return (
-            f"ImplicationConstraint: {self.get_id()}, "
+            f"ImplicationConstraint: "  # {self.get_id()},
             f"Bedingung: ({self._condition_attribute}, {self._condition_value}), "
             f"Implikation: ({self._implication_attribute}, {self._implication_value})"
         )
 
     @staticmethod
-    def from_dict(dictionary=dict()):
-        """Umwandeln eines Python dict() in eine ImplicationConstraint."""
+    def from_dict(dictionary=None):
+        if dictionary is None:
+            dictionary = dict()
         obj = ImplicationConstraint()
-        obj.set_id(dictionary["id"])  # Eigentlich Teil von BusinessObject!
+#        obj.set_id(dictionary["id"])  # Eigentlich Teil von BusinessObject!
         obj.set_condition_attribute(dictionary.get("condition_attribute", ""))
         obj.set_condition_value(dictionary.get("condition_value", ""))
         obj.set_implication_attribute(dictionary.get("implication_attribute", ""))

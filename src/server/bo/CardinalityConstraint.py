@@ -1,7 +1,7 @@
 from src.server.bo.Constraint import Constraint
 
 
-class CardinalityConstraint(Constraint):    # braucht abstract method
+class CardinalityConstraint(Constraint):
     """Realisierung einer CardinalityConstraint.
 
     Eine CardinalityConstraint besitzt zwei Attribute (obj1_attribute, obj2_attribute),
@@ -84,18 +84,16 @@ class CardinalityConstraint(Constraint):    # braucht abstract method
         und die beiden Objekte mit deren Attributen und Werten.
         """
         return (
-            f"CardinalityConstraint: {self.get_id()}, "     # Es gibt diese Methode nicht
-            f"Min: {self._min_count}, Max: {self._max_count}, "
+            f"CardinalityConstraint: (Min: {self._min_count}, Max: {self._max_count},  "
             f"Obj1: ({self._obj1_attribute}, {self._obj1_value}), "
-            f"Obj2: ({self._obj2_attribute}, {self._obj2_value})"
+            f"Obj2: ({self._obj2_attribute}, {self._obj2_value}))"
         )
 
-    @staticmethod
-    def from_dict(dictionary=None):
-        """Umwandeln eines Python dict() in eine CardinalityConstraint."""
+    @classmethod
+    def from_dict(cls, dictionary=None):
         if dictionary is None:
-            dictionary = dict()
-        obj = CardinalityConstraint(
+            dictionary = {}
+        return cls(
             _min_count=dictionary.get("min_count", 0),
             _max_count=dictionary.get("max_count", 0),
             _obj1_attribute=dictionary.get("obj1_attribute", ""),
@@ -103,5 +101,3 @@ class CardinalityConstraint(Constraint):    # braucht abstract method
             _obj2_attribute=dictionary.get("obj2_attribute", ""),
             _obj2_value=dictionary.get("obj2_value", "")
         )
-        obj.set_id(dictionary["id"])  # Eigentlicher Teil von BusinessObject! Diese Methode existiert nicht
-        return obj
