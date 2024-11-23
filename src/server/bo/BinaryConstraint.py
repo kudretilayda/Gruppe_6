@@ -1,8 +1,8 @@
-import Constraint
+from src.bo.Constraint import Constraint
 
 
 class BinaryConstraint(Constraint):
-    def __init__(self, obj1, obj2, bedingung):
+    def __init__(self, obj1, obj2, bedingung):  # Bedingung TypeError
         self.obj1 = obj1            # Bezugsobjekt 1
         self.obj2 = obj2            # Bezugsobjekt 2
         self.bedingung = bedingung  # Bedingung, welches obj1 und obj2 prüft

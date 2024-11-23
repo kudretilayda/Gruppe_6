@@ -1,11 +1,12 @@
-import BusinessObject
+from src.bo.BusinessObject import BusinessObject
 
 
-class Kleidungsstück (BusinessObject):
+class Kleidungsstueck(BusinessObject):
 
     def __init__(self):
+        super().__init__()
         self.__kleidungsstueck_id = 0
-        self.__kleidungstyp = None  # Typ: Kleidungsstyp (kann eine andere Klasse sein)
+        self.__kleidungstyp = None  # Typ: Kleidungstyp (kann eine andere Klasse sein)
         self.__kleidungsstueck_name = ""
         self.__kleidungsstueck_size = 0
         self.__kleidungsstueck_color = ""
@@ -56,9 +57,9 @@ class Kleidungsstück (BusinessObject):
         )
 
     @staticmethod
-    def from_dict(dictionary=dict()):
+    def from_dict(dictionary=dict()):   # Warnungsmeldung
         """Umwandeln eines Python dict() in ein Kleidungsstück()."""
-        obj = Kleidungsstück()
+        obj = Kleidungsstueck()
         obj.set_kleidungsstueck_id(dictionary.get("kleidungsstueck_id", 0))
         obj.set_kleidungstyp(dictionary.get("kleidungstyp", None))
         obj.set_kleidungsstueck_name(dictionary.get("kleidungsstueck_name", ""))

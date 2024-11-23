@@ -1,7 +1,7 @@
-import Constraint
+from src.bo.Constraint import Constraint
 
 
-class ImplicationConstraint(Constraint): 
+class ImplicationConstraint(Constraint):
     """Realisierung einer ImplicationConstraint.
 
     Eine ImplicationConstraint besitzt eine Bedingung (condition_attribute, condition_value) 

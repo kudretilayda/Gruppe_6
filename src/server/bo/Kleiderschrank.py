@@ -1,4 +1,5 @@
-import BusinessObject
+from src.bo.BusinessObject import BusinessObject
+# Business object muss 2x erwähnt werden, da es sonst als Module erkannt wird und nicht als Klasse
 
 
 class Kleiderschrank(BusinessObject):
@@ -22,4 +23,3 @@ class Kleiderschrank(BusinessObject):
 
     def set_outfits(self, value):   # Eventuell nicht nötig, weil es bei Outfits hinzugefügt werden kann
         self._outfits = value
-

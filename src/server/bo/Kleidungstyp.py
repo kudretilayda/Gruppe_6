@@ -1,4 +1,4 @@
-import BusinessObject
+from src.bo.BusinessObject import BusinessObject
 
 
 class Kleidungstyp(BusinessObject):
