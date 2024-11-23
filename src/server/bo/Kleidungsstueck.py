@@ -1,6 +1,7 @@
-from server.bo import BusinessObject as bo
+import BusinessObject
 
-class Kleidungsstück (bo.BusinessObject):
+
+class Kleidungsstück (BusinessObject):
 
     def __init__(self):
         self.__kleidungsstueck_id = 0

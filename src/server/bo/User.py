@@ -1,8 +1,9 @@
-from server.bo import BusinessObject as bo
+import BusinessObject
 
-class User (bo.BusinessObject):
 
-def __init__(self):
+class User (BusinessObject):
+
+    def __init__(self):
         super().__init__()
         self.__user_id = ""
         self.__nachname = ""
@@ -11,49 +12,49 @@ def __init__(self):
         self.__google_id = ""
         self.__email = ""  
 
-        def get_user_id(self):
-            return self.__user_id
+    def get_user_id(self):
+        return self.__user_id
 
-        def set_user_id(self, value):
-            self.__user_id = value
+    def set_user_id(self, value):
+        self.__user_id = value
 
-        def get_nachname(self):
-            return self.__nachname
+    def get_nachname(self):
+        return self.__nachname
 
-        def set_nachname(self, value):
-            self.__nachname = value
+    def set_nachname(self, value):
+        self.__nachname = value
 
-        def get_vorname(self):
-            return self.__vorname
+    def get_vorname(self):
+        return self.__vorname
 
-        def set_vorname(self, value):
-            self.__vorname = value
+    def set_vorname(self, value):
+        self.__vorname = value
 
-        def get_nickname(self):
-            return self.__nickname
+    def get_nickname(self):
+        return self.__nickname
 
-        def set_nickname(self, value):
-            self.__nickname = value
+    def set_nickname(self, value):
+        self.__nickname = value
 
-        def get_google_id(self):
-            return self.__google_id
+    def get_google_id(self):
+        return self.__google_id
 
-        def set_google_id(self, value):
-            self.__google_id = value
+    def set_google_id(self, value):
+        self.__google_id = value
 
-        def get_email(self):
-            return self.__email
+    def get_email(self):
+        return self.__email
 
-        def set_email(self, value):
-            self.__email = value
+    def set_email(self, value):
+        self.__email = value
 
 
-        def __str__(self):
-        
+    def __str__(self):
+
         return "User: {}, {}, {}, {}".format(
-            self.get_user_id(), 
-            self.get_nachname(), 
-            self.get_email(), 
+            self.get_user_id(),
+            self.get_nachname(),
+            self.get_email(),
             self.get_vorname()
         )
 

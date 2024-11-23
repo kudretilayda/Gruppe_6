@@ -1,13 +1,13 @@
-from server.bo import BusinessObject as bo
+import BusinessObject
 
-class Outfit (bo.BusinessObject):
+
+class Outfit (BusinessObject):
 
     def __init__(self):
         self.__outfit_id = 0
         self.__kleidungsstuecke = []  
         self.__style = None           
 
-    
     def get_outfit_id(self):
         return self.__outfit_id
 
