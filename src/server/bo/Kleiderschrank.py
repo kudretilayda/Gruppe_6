@@ -5,6 +5,15 @@ import User
 class Kleiderschrank(BusinessObject):
     def __init__(self):
         super().__init__()
+        self._eigentuemer = id
+        self._inhalt = []
+        self._outfits = []
+
+    def get_eigentuemer(self):
+        return self._eigentuemer
+
+    def set_eigentuemer(self, user):
+        self._eigentuemer = user
 
     def get_inhalt(self):
         return self._inhalt
