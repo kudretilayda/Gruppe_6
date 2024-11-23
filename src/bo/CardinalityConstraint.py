@@ -1,13 +1,15 @@
-from server.bo import BusinessObject as bo
+import Constraint
 
-class CardinalityConstraint(bo.BusinessObject): 
+
+class CardinalityConstraint(Constraint):
     """Realisierung einer CardinalityConstraint.
 
     Eine CardinalityConstraint besitzt zwei Attribute (obj1_attribute, obj2_attribute),
     zwei Werte (obj1_value, obj2_value), eine Mindestanzahl (_min_count) und eine Höchstanzahl (_max_count),
     sowie eine Auswertungsfunktion, die die Bedingung bewertet.
     """
-    def __init__(self, _min_count=0, _max_count=0, _obj1_attribute="", _obj1_value="", _obj2_attribute="", _obj2_value=""):
+    def __init__(self, _min_count=0, _max_count=0, _obj1_attribute="",
+                 _obj1_value="", _obj2_attribute="", _obj2_value=""):
         super().__init__()
         self._min_count = _min_count      # Minimale Kardinalität
         self._max_count = _max_count      # Maximale Kardinalität
@@ -89,8 +91,10 @@ class CardinalityConstraint(bo.BusinessObject):
         )
 
     @staticmethod
-    def from_dict(dictionary=dict()):
+    def from_dict(dictionary=None):
         """Umwandeln eines Python dict() in eine CardinalityConstraint."""
+        if dictionary is None:
+            dictionary = dict()
         obj = CardinalityConstraint(
             _min_count=dictionary.get("min_count", 0),
             _max_count=dictionary.get("max_count", 0),
@@ -99,5 +103,5 @@ class CardinalityConstraint(bo.BusinessObject):
             _obj2_attribute=dictionary.get("obj2_attribute", ""),
             _obj2_value=dictionary.get("obj2_value", "")
         )
-        obj.set_id(dictionary["id"])  # Eigentlich Teil von BusinessObject!
+        obj.set_id(dictionary["id"])  # Eigentlicher Teil von BusinessObject!
         return obj

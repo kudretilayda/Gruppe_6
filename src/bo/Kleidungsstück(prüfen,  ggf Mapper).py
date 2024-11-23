@@ -1,4 +1,4 @@
-from server.bo import Constraint 
+import Constraint
 
 
 class Kleidungsstueck(Constraint):
@@ -6,9 +6,10 @@ class Kleidungsstueck(Constraint):
 
     Ein Kleidungsstück besitzt einen Namen und eine Beschreibung.
     """
+
     def __init__(self):
         super().__init__()
-        self._name = ""          # Der Name des Kleidungsstücks.
+        self._name = ""  # Der Name des Kleidungsstücks.
         self._beschreibung = ""  # Die Beschreibung des Kleidungsstücks.
 
     def get_name(self):
@@ -33,7 +34,6 @@ class Kleidungsstueck(Constraint):
         Diese Methode muss in den Unterklassen implementiert werden.
         """
         raise NotImplementedError("Die Methode 'auswertung' muss in der Unterklasse implementiert werden.")
-  
 
     def __str__(self):
         """Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz.
@@ -46,10 +46,12 @@ class Kleidungsstueck(Constraint):
         )
 
     @staticmethod
-    def from_dict(dictionary=dict()):
+    def from_dict(dictionary=None):
         """Umwandeln eines Python dict() in ein Kleidungsstück."""
+        if dictionary is None:
+            dictionary = dict()
         obj = Kleidungsstueck()
-        obj.set_id(dictionary["id"])  # Eigentlich Teil von BusinessObject!
+        obj.set_id(dictionary["id"])  # Eigentlicher Teil von BusinessObject!
         obj.set_name(dictionary.get("name", ""))
         obj.set_beschreibung(dictionary.get("beschreibung", ""))
         return obj
