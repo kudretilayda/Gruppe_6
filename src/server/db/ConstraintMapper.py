@@ -1,0 +1,68 @@
+import mysql.connector as connector
+
+class ConstraintMapper:
+    def __init__(self, connection):
+        self.connection = connection
+
+    def find_by_id(self, constraint_id):
+        cursor = self.connection.cursor()
+        query = "SELECT * FROM constraints WHERE id = %s"
+        cursor.execute(query, (constraint_id,))
+        result = cursor.fetchone()
+        if result:
+            constraint_type = result[1]
+            if constraint_type == 'implication':
+                return ImplicationConstraint(result[0], result[2], result[3])
+            elif constraint_type == 'mutex':
+                return MutexConstraint(result[0], result[2], result[3])
+            elif constraint_type == 'cardinality':
+                return CardinalityConstraint(result[0], result[2], result[3], result[4])
+        return None
+
+    def find_all(self):
+        cursor = self.connection.cursor()
+        query = "SELECT * FROM constraints"
+        cursor.execute(query)
+        results = cursor.fetchall()
+        constraints = []
+        for result in results:
+            constraint_type = result[1]
+            if constraint_type == 'implication':
+                constraints.append(ImplicationConstraint(result[0], result[2], result[3]))
+            elif constraint_type == 'mutex':
+                constraints.append(MutexConstraint(result[0], result[2], result[3]))
+            elif constraint_type == 'cardinality':
+                constraints.append(CardinalityConstraint(result[0], result[2], result[3], result[4]))
+        return constraints
+
+    def save(self, constraint):
+        cursor = self.connection.cursor()
+        if isinstance(constraint, ImplicationConstraint):
+            query = "INSERT INTO constraints (type, object1, object2) VALUES (%s, %s, %s)"
+            cursor.execute(query, ('implication', constraint.object1, constraint.object2))
+        elif isinstance(constraint, MutexConstraint):
+            query = "INSERT INTO constraints (type, object1, object2) VALUES (%s, %s, %s)"
+            cursor.execute(query, ('mutex', constraint.object1, constraint.object2))
+        elif isinstance(constraint, CardinalityConstraint):
+            query = "INSERT INTO constraints (type, object, min_count, max_count) VALUES (%s, %s, %s, %s)"
+            cursor.execute(query, ('cardinality', constraint.object, constraint.min_count, constraint.max_count))
+        self.connection.commit()
+
+class ImplicationConstraint:
+    def __init__(self, constraint_id, object1, object2):
+        self.id = constraint_id
+        self.object1 = object1
+        self.object2 = object2
+
+class MutexConstraint:
+    def __init__(self, constraint_id, object1, object2):
+        self.id = constraint_id
+        self.object1 = object1
+        self.object2 = object2
+
+class CardinalityConstraint:
+    def __init__(self, constraint_id, object, min_count, max_count):
+        self.id = constraint_id
+        self.object = object
+        self.min_count = min_count
+        self.max_count = max_count
