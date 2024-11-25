@@ -12,7 +12,13 @@ from .bo.Style import Style
 from .bo.UnaryConstraint import UnaryConstraint
 from .bo.User import User
 
-
+from .db.ConstraintMapper import 
+from .db.KleiderschrankMapper import 
+from .db.KleidungsstueckMapper import Kleidungsstueck
+from .db.KleidungstypMapper import Kleidungstyp
+from .db.Mapper import Mapper
+from .db.StyleMapper import StyleMapper
+from .db.UserMapper import 
 
 
 
