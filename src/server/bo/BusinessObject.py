@@ -17,3 +17,11 @@ class BusinessObject(ABC):
     def set_id(self,value):
         """Setzen der ID."""
         self._id = value
+
+
+from datetime import datetime
+
+class BusinessObject:
+    def __init__(self):
+        self.id = None
+        self.created_at = datetime.now()

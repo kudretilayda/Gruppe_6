@@ -1,55 +1,89 @@
-from server.bo import Constraint 
+# src/models/bo/business_object.py
+from datetime import datetime
 
+class BusinessObject:
+    def __init__(self):
+        self.id = None
+        self.created_at = datetime.now()
 
-class Kleidungsstueck(Constraint):
-    """Realisierung einer exemplarischen Kleidungsstückklasse.
+# src/models/bo/style.py
+from server.bo import BusinessObject
 
-    Ein Kleidungsstück besitzt einen Namen und eine Beschreibung.
-    """
+class Style(BusinessObject):
     def __init__(self):
         super().__init__()
-        self._name = ""          # Der Name des Kleidungsstücks.
-        self._beschreibung = ""  # Die Beschreibung des Kleidungsstücks.
-
-    def get_name(self):
-        """Auslesen des Namens."""
-        return self._name
-
-    def set_name(self, value):
-        """Setzen des Namens."""
-        self._name = value
-
-    def get_beschreibung(self):
-        """Auslesen der Beschreibung."""
-        return self._beschreibung
-
-    def set_beschreibung(self, value):
-        """Setzen der Beschreibung."""
-        self._beschreibung = value
-
-    def auswertung(self, obj) -> bool:
-        """Evaluierung der Constraint.
-
-        Diese Methode muss in den Unterklassen implementiert werden.
-        """
-        raise NotImplementedError("Die Methode 'auswertung' muss in der Unterklasse implementiert werden.")
-  
-
-    def __str__(self):
-        """Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz.
+        self.name = None
+        self.features = None
+        self.constraints = []
         
-        Diese besteht aus der ID der Superklasse ergänzt durch den Namen und die Beschreibung 
-        des jeweiligen Kleidungsstücks.
-        """
-        return "Kleidungsstück: {}, Name: {}, Beschreibung: {}".format(
-            self.get_id(), self._name, self._beschreibung
-        )
+    def add_constraint(self, constraint):
+        self.constraints.append(constraint)
+        
+    def remove_constraint(self, constraint):
+        self.constraints.remove(constraint)
 
-    @staticmethod
-    def from_dict(dictionary=dict()):
-        """Umwandeln eines Python dict() in ein Kleidungsstück."""
-        obj = Kleidungsstueck()
-        obj.set_id(dictionary["id"])  # Eigentlich Teil von BusinessObject!
-        obj.set_name(dictionary.get("name", ""))
-        obj.set_beschreibung(dictionary.get("beschreibung", ""))
-        return obj
+# src/models/bo/outfit.py
+class Outfit(BusinessObject):
+    def __init__(self):
+        super().__init__()
+        self.style_id = None
+        self.items = []  # List of Kleidungsstueck objects
+        
+    def add_item(self, item):
+        self.items.append(item)
+        
+    def remove_item(self, item):
+        self.items.remove(item)
+        
+    def get_types(self):
+        return [item.typ for item in self.items]
+
+# src/models/bo/constraint.py
+from abc import ABC, abstractmethod
+
+class Constraint(BusinessObject, ABC):
+    @abstractmethod
+    def is_satisfied(self, items):
+        pass
+        
+    @abstractmethod
+    def get_violation_message(self, items):
+        pass
+
+class BinaryConstraint(Constraint):
+    def __init__(self):
+        super().__init__()
+        self.bezugsobjekt1 = None
+        self.bezugsobjekt2 = None
+        
+class UnaryConstraint(Constraint):
+    def __init__(self):
+        super().__init__()
+        self.bezugsobjekt = None
+
+class Mutex(BinaryConstraint):
+    """Represents mutual exclusion between two items"""
+    
+    def is_satisfied(self, items):
+        # Check if not both items are present
+        item1_present = any(item.typ_id == self.bezugsobjekt1 for item in items)
+        item2_present = any(item.typ_id == self.bezugsobjekt2 for item in items)
+        return not (item1_present and item2_present)
+        
+    def get_violation_message(self, items):
+        return f"Items of types {self.bezugsobjekt1} and {self.bezugsobjekt2} cannot be worn together"
+
+class Kardinalitaet(UnaryConstraint):
+    def __init__(self):
+        super().__init__()
+        self.min_count = 0
+        self.max_count = None
+        
+    def is_satisfied(self, items):
+        count = sum(1 for item in items if item.typ_id == self.bezugsobjekt)
+        if self.max_count is None:
+            return count >= self.min_count
+        return self.min_count <= count <= self.max_count
+        
+    def get_violation_message(self, items):
+        return f"Number of items of type {self.bezugsobjekt} must be between {self.min_count} and {self.max_count}"
