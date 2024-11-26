@@ -1,11 +1,10 @@
 from src.server.bo.BusinessObject import BusinessObject
-import User
 
 
 class Kleiderschrank(BusinessObject):
     def __init__(self):
         super().__init__()
-        self._eigentuemer = id
+        self._eigentuemer = 0
         self._inhalt = []
         self._outfits = []
 

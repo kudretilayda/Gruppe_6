@@ -1,7 +1,7 @@
 from src.server.bo.Constraint import Constraint
 
 
-class ImplicationConstraint(Constraint):    # braucht abstract method
+class ImplicationConstraint(Constraint):
     """Realisierung einer ImplicationConstraint.
 
     Eine ImplicationConstraint besitzt eine Bedingung (condition_attribute, condition_value) 
@@ -9,44 +9,36 @@ class ImplicationConstraint(Constraint):    # braucht abstract method
     """
     def __init__(self):
         super().__init__()    
-        self._condition_attribute = ""  # Das Attribut der Bedingung
-        self._condition_value = ""      # Der Wert der Bedingung
-        self._implication_attribute = ""  # Das Attribut der Implikation
-        self._implication_value = ""      # Der Wert der Implikation                       
+        self._condition_attribute = ""
+        self._condition_value = ""
+        self._implication_attribute = ""
+        self._implication_value = ""
 
     def get_condition_attribute(self):
-        """Auslesen des Attributs der Bedingung."""
         return self._condition_attribute
 
     def set_condition_attribute(self, value):
-        """Setzen des Attributs der Bedingung."""
         self._condition_attribute = value
 
     def get_condition_value(self):
-        """Auslesen des Wertes der Bedingung."""
         return self._condition_value
 
     def set_condition_value(self, value):
-        """Setzen des Wertes der Bedingung."""
         self._condition_value = value
 
     def get_implication_attribute(self):
-        """Auslesen des Attributs der Implikation."""
         return self._implication_attribute
 
     def set_implication_attribute(self, value):
-        """Setzen des Attributs der Implikation."""
-        self._implication_attribute = value 
+        self._implication_attribute = value
     
     def get_implication_value(self):
-        """Auslesen des Wertes der Implikation."""
-        return self._implication_value    
+        return self._implication_value
 
     def set_implication_value(self, value):
-        """Setzen des Wertes der Implikation."""
         self._implication_value = value
 
-    def auswertung(self):
+    def auswerten(self, obj):
         """Evaluieren der ImplicationConstraint.
 
         Überprüft, ob die Bedingung erfüllt ist und falls ja, ob die Implikation ebenfalls erfüllt ist.

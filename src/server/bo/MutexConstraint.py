@@ -10,44 +10,37 @@ class MutexConstraint(Constraint):
     """
     def __init__(self):
         super().__init__()
-        self._obj1_attribute = ""  # Das Attribut des ersten Objekts
-        self._obj1_value = ""      # Der Wert des Attributs des ersten Objekts
-        self._obj2_attribute = ""  # Das Attribut des zweiten Objekts
-        self._obj2_value = ""      # Der Wert des Attributs des zweiten Objekts
+        self._obj1_attribute = ""
+        self._obj1_value = ""
+        self._obj2_attribute = ""
+        self._obj2_value = ""
 
     def get_obj1_attribute(self):
-        """Auslesen des Attributs des ersten Objekts."""
         return self._obj1_attribute
 
     def set_obj1_attribute(self, value):
-        """Setzen des Attributs des ersten Objekts."""
+
         self._obj1_attribute = value
 
     def get_obj1_value(self):
-        """Auslesen des Wertes des ersten Objekts."""
         return self._obj1_value
 
     def set_obj1_value(self, value):
-        """Setzen des Wertes des ersten Objekts."""
         self._obj1_value = value
 
     def get_obj2_attribute(self):
-        """Auslesen des Attributs des zweiten Objekts."""
         return self._obj2_attribute
 
     def set_obj2_attribute(self, value):
-        """Setzen des Attributs des zweiten Objekts."""
         self._obj2_attribute = value
 
     def get_obj2_value(self):
-        """Auslesen des Wertes des zweiten Objekts."""
         return self._obj2_value
 
     def set_obj2_value(self, value):
-        """Setzen des Wertes des zweiten Objekts."""
         self._obj2_value = value
 
-    def auswertung(self):
+    def auswerten(self, obj):
         """Evaluierung der MutexConstraint.
 
         Überprüft, ob die angegebenen Attribute und Werte nicht gleichzeitig erfüllt sind.
@@ -71,7 +64,7 @@ class MutexConstraint(Constraint):
 
     @staticmethod
     def from_dict(dictionary=None):
-        """Umwandeln eines Python dict() in eine MutexConstraint."""
+
         if dictionary is None:
             dictionary = dict()
         obj = MutexConstraint()
