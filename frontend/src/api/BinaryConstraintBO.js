@@ -1,9 +1,9 @@
-import BusinessObject from "./BusinessObject";
+import ConstraintBO from "./ConstraintBO";
 
 /**
  * Repräsentiert ein Objekt mit Bedingungen zwischen zwei Bezugsobjekten.
  */
-export default class BinaryConstraintBO extends BusinessObject {
+export default class BinaryConstraintBO extends ConstraintBO {
   /**
    * Konstruiert ein BinaryConstraintBO-Objekt.
    *
@@ -11,8 +11,9 @@ export default class BinaryConstraintBO extends BusinessObject {
    * @param {any} obj2 - Bezugsobjekt 2.
    * @param {String} bedingung - Die Bedingung zwischen den beiden Objekten.
    */
-  constructor(obj1 = null, obj2 = null, bedingung = "") {
-    super();
+  constructor(obj1 = null, obj2 = null, bedingung = "", name = "",
+    beschreibung = "",) {
+    super(name, beschreibung);
     this.obj1 = obj1;
     this.obj2 = obj2;
     this.bedingung = bedingung;

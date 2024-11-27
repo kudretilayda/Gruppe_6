@@ -1,17 +1,17 @@
-import BusinessObject from "./BusinessObject";
+import ConstraintBO from "./ConstraintBO";
 
 /**
  * Repräsentiert eine einstellige Einschränkung (Unary Constraint).
  */
-export default class UnaryConstraintBO extends BusinessObject {
+export default class UnaryConstraintBO extends ConstraintBO {
   /**
    * Konstruiert ein UnaryConstraintBO-Objekt.
    *
    * @param {any} bezugsobjekt - Das Bezugsobjekt, auf das sich die Einschränkung bezieht.
    * @param {String} bedingung - Die Bedingung der Einschränkung.
    */
-  constructor(bezugsobjekt = null, bedingung = "") {
-    super();
+  constructor(bezugsobjekt = null, bedingung = "", name = "", beschreibung = "",) {
+    super(name, beschreibung);
     this.bezugsobjekt = bezugsobjekt;
     this.bedingung = bedingung;
   }
