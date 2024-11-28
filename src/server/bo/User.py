@@ -1,76 +1,38 @@
-from server.bo import BusinessObject as bo
+from .BusinessObject import BusinessObject
 
-class User(bo.BusinessObject):
+class User(BusinessObject):
+    """Klasse für Person-Objekte.
+    
+    Eine Person verfügt über eine Google ID, Vor- und Nachnamen sowie optional einen Nickname.
+    """
+
     def __init__(self):
         super().__init__()
-        self.__user_id = ""
-        self.__nachname = ""
-        self.__vorname = ""
-        self.__nickname = ""
-        self.__google_id = ""
-        self.__email = ""
+        self._google_id = ""
+        self._firstname = ""
+        self._lastname = ""
+        self._nickname = None
 
-    # Properties für Attribute
-    @property
-    def user_id(self):
-        return self.__user_id
+    def get_google_id(self):
+        return self._google_id
 
-    @user_id.setter
-    def user_id(self, value):
-        self.__user_id = value
+    def set_google_id(self, value):
+        self._google_id = value
 
-    @property
-    def nachname(self):
-        return self.__nachname
+    def get_firstname(self):
+        return self._firstname
 
-    @nachname.setter
-    def nachname(self, value):
-        self.__nachname = value
+    def set_firstname(self, value):
+        self._firstname = value
 
-    @property
-    def vorname(self):
-        return self.__vorname
+    def get_lastname(self):
+        return self._lastname
 
-    @vorname.setter
-    def vorname(self, value):
-        self.__vorname = value
+    def set_lastname(self, value):
+        self._lastname = value
 
-    @property
-    def nickname(self):
-        return self.__nickname
+    def get_nickname(self):
+        return self._nickname
 
-    @nickname.setter
-    def nickname(self, value):
-        self.__nickname = value
-
-    @property
-    def google_id(self):
-        return self.__google_id
-
-    @google_id.setter
-    def google_id(self, value):
-        self.__google_id = value
-
-    @property
-    def email(self):
-        return self.__email
-
-    @email.setter
-    def email(self, value):
-        self.__email = value
-
-    # String-Repräsentation
-    def __str__(self):
-        return f"User: {self.user_id}, {self.nachname}, {self.email}, {self.vorname}"
-
-    # Statische Methode zum Erstellen eines User-Objekts aus einem Dictionary
-    @staticmethod
-    def from_dict(dictionary=dict()):
-        obj = User()
-        obj.user_id = dictionary.get("user_id", "")
-        obj.nachname = dictionary.get("nachname", "")
-        obj.vorname = dictionary.get("vorname", "")
-        obj.nickname = dictionary.get("nickname", "")
-        obj.google_id = dictionary.get("google_id", "")
-        obj.email = dictionary.get("email", "")
-        return obj
+    def set_nickname(self, value):
+        self._nickname = value

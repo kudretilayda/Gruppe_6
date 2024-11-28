@@ -1,82 +1,93 @@
-# src/db/mapper/person_mapper.py
-from .Mapper import Mapper
-from server.db import Person
+# src/server/db/mapper/PersonMapper.py
+
+from server.db.Mapper import Mapper
+from server.bo.User import Person
 
 class PersonMapper(Mapper):
-    """Mapper class for Person objects"""
+    """Mapper-Klasse, die Person-Objekte auf eine relationale
+    Datenbank abbildet."""
     
-    def find_by_id(self, id):
-        result = None
-        cursor = self._get_connection().cursor()
-        command = "SELECT id, google_id, vorname, nachname, nickname, created_at FROM person WHERE id=%s"
-        cursor.execute(command, (id,))
-        tuples = cursor.fetchall()
+    def __init__(self):
+        super().__init__()
 
-        try:
-            (id, google_id, vorname, nachname, nickname, created_at) = tuples[0]
-            result = Person()
-            result.id = id
-            result.google_id = google_id
-            result.vorname = vorname
-            result.nachname = nachname
-            result.nickname = nickname
-            result.created_at = created_at
-        except IndexError:
-            result = None
-
-        self._get_connection().commit()
-        cursor.close()
+    def find_all(self):
+        """Auslesen aller Personen."""
+        result = []
+        with self._cursor() as cursor:
+            cursor.execute("SELECT * FROM person")
+            tuples = cursor.fetchall()
+            for (id, google_id, firstname, lastname, nickname, create_time) in tuples:
+                person = Person()
+                person.set_id(id)
+                person.set_google_id(google_id)
+                person.set_firstname(firstname)
+                person.set_lastname(lastname)
+                person.set_nickname(nickname)
+                person.set_create_time(create_time)
+                result.append(person)
         return result
+
+    def find_by_key(self, key):
+        """Suchen einer Person mit vorgegebener ID"""
+        with self._cursor() as cursor:
+            command = "SELECT * FROM person WHERE id=%s"
+            cursor.execute(command, (key,))
+            tuples = cursor.fetchall()
+            try:
+                (id, google_id, firstname, lastname, nickname, create_time) = tuples[0]
+                person = Person()
+                person.set_id(id)
+                person.set_google_id(google_id)
+                person.set_firstname(firstname)
+                person.set_lastname(lastname)
+                person.set_nickname(nickname)
+                person.set_create_time(create_time)
+                return person
+            except IndexError:
+                return None
 
     def find_by_google_id(self, google_id):
-        result = None
-        cursor = self._get_connection().cursor()
-        command = "SELECT id, google_id, vorname, nachname, nickname, created_at FROM person WHERE google_id=%s"
-        cursor.execute(command, (google_id,))
-        tuples = cursor.fetchall()
-
-        try:
-            (id, google_id, vorname, nachname, nickname, created_at) = tuples[0]
-            result = Person()
-            result.id = id
-            result.google_id = google_id
-            result.vorname = vorname
-            result.nachname = nachname
-            result.nickname = nickname
-            result.created_at = created_at
-        except IndexError:
-            result = None
-
-        self._get_connection().commit()
-        cursor.close()
-        return result
+        """Suchen einer Person mit vorgegebener Google ID"""
+        with self._cursor() as cursor:
+            command = "SELECT * FROM person WHERE google_id=%s"
+            cursor.execute(command, (google_id,))
+            tuples = cursor.fetchall()
+            try:
+                (id, google_id, firstname, lastname, nickname, create_time) = tuples[0]
+                person = Person()
+                person.set_id(id)
+                person.set_google_id(google_id)
+                person.set_firstname(firstname)
+                person.set_lastname(lastname)
+                person.set_nickname(nickname)
+                person.set_create_time(create_time)
+                return person
+            except IndexError:
+                return None
 
     def insert(self, person):
-        cursor = self._get_connection().cursor()
-        command = "INSERT INTO person (google_id, vorname, nachname, nickname) VALUES (%s, %s, %s, %s)"
-        data = (person.google_id, person.vorname, person.nachname, person.nickname)
-        cursor.execute(command, data)
-        
-        person.id = cursor.lastrowid
-        self._get_connection().commit()
-        cursor.close()
-        return person
+        """Einfügen einer Person in die Datenbank."""
+        with self._cursor() as cursor:
+            command = "INSERT INTO person (id, google_id, firstname, lastname, nickname) VALUES (%s, %s, %s, %s, %s)"
+            data = (person.get_id(), person.get_google_id(), person.get_firstname(),
+                   person.get_lastname(), person.get_nickname())
+            cursor.execute(command, data)
+            self._cnx.commit()
+            return person
 
     def update(self, person):
-        cursor = self._get_connection().cursor()
-        command = "UPDATE person SET google_id=%s, vorname=%s, nachname=%s, nickname=%s WHERE id=%s"
-        data = (person.google_id, person.vorname, person.nachname, person.nickname, person.id)
-        cursor.execute(command, data)
-        
-        self._get_connection().commit()
-        cursor.close()
-        return person
+        """Aktualisieren einer Person in der Datenbank."""
+        with self._cursor() as cursor:
+            command = "UPDATE person SET google_id=%s, firstname=%s, lastname=%s, nickname=%s WHERE id=%s"
+            data = (person.get_google_id(), person.get_firstname(),
+                   person.get_lastname(), person.get_nickname(), person.get_id())
+            cursor.execute(command, data)
+            self._cnx.commit()
+            return person
 
     def delete(self, person):
-        cursor = self._get_connection().cursor()
-        command = "DELETE FROM person WHERE id=%s"
-        cursor.execute(command, (person.id,))
-        
-        self._get_connection().commit()
-        cursor.close()
-        return True
+        """Löschen einer Person aus der Datenbank."""
+        with self._cursor() as cursor:
+            command = "DELETE FROM person WHERE id=%s"
+            cursor.execute(command, (person.get_id(),))
+            self._cnx.commit()

@@ -1,27 +1,30 @@
-from abc import ABC, abstractmethod
-
+from abc import ABC
+from datetime import datetime
+import uuid
 
 class BusinessObject(ABC):
-    """Gemeinsame Basisklasse aller in diesem Projekt für die Umsetzung des Fachkonzepts relevanten Klassen.
+    """Basisklasse für alle Business Objects
 
-    Zentrales Merkmal ist, dass jedes BusinessObject eine Nummer besitzt, die man in
-    einer relationalen Datenbank auch als Primärschlüssel bezeichnen würde.
+    Jedes Business Object verfügt über einen eindeutigen Identifier sowie ein 
+    Erstellungsdatum.
     """
+
     def __init__(self):
-        self._id = 0   # Die eindeutige Identifikationsnummer einer Instanz dieser Klasse.
+        self._id = str(uuid.uuid4())  # Generiert eine UUID als ID
+        self._create_time = datetime.now()
 
     def get_id(self):
         """Auslesen der ID."""
         return self._id
 
-    def set_id(self,value):
+    def set_id(self, value):
         """Setzen der ID."""
         self._id = value
 
+    def get_create_time(self):
+        """Auslesen des Erstellungsdatums."""
+        return self._create_time
 
-from datetime import datetime
-
-class BusinessObject:
-    def __init__(self):
-        self.id = None
-        self.created_at = datetime.now()
+    def set_create_time(self, date):
+        """Setzen des Erstellungsdatums."""
+        self._create_time = date
