@@ -52,26 +52,20 @@ binary_constraint = api.inherit('BinaryConstraint', constraint, {
 cardinality_constraint = api.inherit('CardinalityConstraint', constraint, {
     'min_count': fields.Integer(attribute='_min_count', description='Minimale Kardinalität'),
     'max_count': fields.Integer(attribute='_max_count', description='Maximale Kardinalität'),
-    'obj1_attribute': fields.String(attribute='_obj1_attribute', description='Attribut des ersten Objekts'),
-    'obj1_value': fields.String(attribute='_obj1_value', description='Wert des Attributs des ersten Objekts'),
-    'obj2_attribute': fields.String(attribute='_obj2_attribute', description='Attribut des zweiten Objekts'),
-    'obj2_value': fields.String(attribute='_obj2_value', description='Wert des Attributs des zweiten Objekts')
+    'obj1': fields.String(attribute='_obj1', description='Erstes Objekt'),
+    'obj2': fields.String(attribute='_obj2', description='Zweites Objekt')
 })
 
 # ImplicationConstraint Modell
 implication_constraint = api.inherit('ImplicationConstraint', constraint, {
-    'condition_attribute': fields.String(attribute='_condition_attribute', description='Bedingungsattribut'),
-    'condition_value': fields.String(attribute='_condition_value', description='Bedingungswert'),
-    'implication_attribute': fields.String(attribute='_implication_attribute', description='Implikationsattribut'),
-    'implication_value': fields.String(attribute='_implication_value', description='Implikationswert')
+    'condition': fields.String(attribute='_condition', description='Bedingung'),
+    'implication': fields.String(attribute='_implication', description='Implikation')
 })
 
 # MutexConstraint Modell
 mutex_constraint = api.inherit('MutexConstraint', constraint, {
-    'obj1_attribute': fields.String(attribute='_obj1_attribute', description='Attribut des ersten Objekts'),
-    'obj1_value': fields.String(attribute='_obj1_value', description='Wert des Attributs des ersten Objekts'),
-    'obj2_attribute': fields.String(attribute='_obj2_attribute', description='Attribut des zweiten Objekts'),
-    'obj2_value': fields.String(attribute='_obj2_value', description='Wert des Attributs des zweiten Objekts')
+    'obj1': fields.String(attribute='_obj1', description='Erstes Objekt'),
+    'obj2': fields.String(attribute='_obj2', description='Zweites Objekt')
 })
 
 @kleiderschrank.route('/user')
