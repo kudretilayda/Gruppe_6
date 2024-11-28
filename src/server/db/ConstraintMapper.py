@@ -1,6 +1,5 @@
 import mysql.connector as connector
 
-
 class ConstraintMapper:
     def __init__(self, connection):
         self.connection = connection

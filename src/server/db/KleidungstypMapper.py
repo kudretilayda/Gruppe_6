@@ -1,6 +1,5 @@
-from src.server.bo.Kleidungstyp import Kleidungstyp
-from src.server.db.Mapper import Mapper
-
+from server.bo.Kleidungstyp import Kleidungstyp
+from server.db.Mapper import Mapper
 
 class ClothingTypeMapper(Mapper):
     """Mapper-Klasse, die ClothingType-Objekte auf eine relationale
@@ -14,7 +13,8 @@ class ClothingTypeMapper(Mapper):
 
     def find_all(self):
         """Auslesen aller Kleidungstypen.
-        : return eine Sammlung mit ClothingType-Objekten.
+
+        :return Eine Sammlung mit ClothingType-Objekten.
         """
         result = []
         cursor = self._cnx.cursor()
@@ -86,9 +86,8 @@ class ClothingTypeMapper(Mapper):
     def insert(self, clothing_type):
         """Einfügen eines ClothingType-Objekts in die Datenbank.
 
-        : param clothing_type das zu speichernde Objekt
-
-        : return das bereits übergebene Objekt, jedoch mit ggf. korrigierter ID.
+        :param clothing_type das zu speichernde Objekt
+        :return das bereits übergebene Objekt, jedoch mit ggf. korrigierter ID.
         """
         cursor = self._cnx.cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM clothing_types")

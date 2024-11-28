@@ -1,7 +1,3 @@
-from server.Admin import Administration
-#from SecurityDecorator import secured
-from server.bo.User import User
-
 from flask import Flask
 from flask_restx import Api, Resource, fields
 from flask_cors import CORS
@@ -41,39 +37,6 @@ unary_constraint = api.inherit('UnaryConstraint', constraint, {
     'bedingung': fields.String(attribute='_bedingung', description='Bedingung des UnaryConstraints')
 })
 
-# BinaryConstraint Modell
-binary_constraint = api.inherit('BinaryConstraint', constraint, {
-    'obj1': fields.String(attribute='_obj1', description='Bezugsobjekt 1'),
-    'obj2': fields.String(attribute='_obj2', description='Bezugsobjekt 2'),
-    'bedingung': fields.String(attribute='_bedingung', description='Bedingung des BinaryConstraints')
-})
-
-# CardinalityConstraint Modell
-cardinality_constraint = api.inherit('CardinalityConstraint', constraint, {
-    'min_count': fields.Integer(attribute='_min_count', description='Minimale Kardinalität'),
-    'max_count': fields.Integer(attribute='_max_count', description='Maximale Kardinalität'),
-    'obj1_attribute': fields.String(attribute='_obj1_attribute', description='Attribut des ersten Objekts'),
-    'obj1_value': fields.String(attribute='_obj1_value', description='Wert des Attributs des ersten Objekts'),
-    'obj2_attribute': fields.String(attribute='_obj2_attribute', description='Attribut des zweiten Objekts'),
-    'obj2_value': fields.String(attribute='_obj2_value', description='Wert des Attributs des zweiten Objekts')
-})
-
-# ImplicationConstraint Modell
-implication_constraint = api.inherit('ImplicationConstraint', constraint, {
-    'condition_attribute': fields.String(attribute='_condition_attribute', description='Bedingungsattribut'),
-    'condition_value': fields.String(attribute='_condition_value', description='Bedingungswert'),
-    'implication_attribute': fields.String(attribute='_implication_attribute', description='Implikationsattribut'),
-    'implication_value': fields.String(attribute='_implication_value', description='Implikationswert')
-})
-
-# MutexConstraint Modell
-mutex_constraint = api.inherit('MutexConstraint', constraint, {
-    'obj1_attribute': fields.String(attribute='_obj1_attribute', description='Attribut des ersten Objekts'),
-    'obj1_value': fields.String(attribute='_obj1_value', description='Wert des Attributs des ersten Objekts'),
-    'obj2_attribute': fields.String(attribute='_obj2_attribute', description='Attribut des zweiten Objekts'),
-    'obj2_value': fields.String(attribute='_obj2_value', description='Wert des Attributs des zweiten Objekts')
-})
-
 @kleiderschrank.route('/user')
 class UserListOperations(Resource):
     @kleiderschrank.marshal_list_with(user)
@@ -87,41 +50,6 @@ class ConstraintListOperations(Resource):
     def get(self):
         """Alle Constraints auslesen"""
         return []  # Zunächst leere Liste zurückgeben
-    
-@kleiderschrank.route('/unary-constraint')
-class UnaryConstraintListOperations(Resource):
-    @kleiderschrank.marshal_list_with(unary_constraint)
-    def get(self):
-        """Alle UnaryConstraints auslesen"""
-        return []
-
-@kleiderschrank.route('/binary-constraint')
-class BinaryConstraintListOperations(Resource):
-    @kleiderschrank.marshal_list_with(binary_constraint)
-    def get(self):
-        """Alle BinaryConstraints auslesen"""
-        return []
-
-@kleiderschrank.route('/cardinality-constraint')
-class CardinalityConstraintListOperations(Resource):
-    @kleiderschrank.marshal_list_with(cardinality_constraint)
-    def get(self):
-        """Alle CardinalityConstraints auslesen"""
-        return []
-
-@kleiderschrank.route('/implication-constraint')
-class ImplicationConstraintListOperations(Resource):
-    @kleiderschrank.marshal_list_with(implication_constraint)
-    def get(self):
-        """Alle ImplicationConstraints auslesen"""
-        return []
-
-@kleiderschrank.route('/mutex-constraint')
-class MutexConstraintListOperations(Resource):
-    @kleiderschrank.marshal_list_with(mutex_constraint)
-    def get(self):
-        """Alle MutexConstraints auslesen"""
-        return []
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,66 +1,52 @@
 from src.server.bo.Constraint import Constraint
 
 
-class ImplicationConstraint(Constraint):
+class ImplicationConstraint(Constraint):    
     """Realisierung einer ImplicationConstraint.
 
-    Eine ImplicationConstraint besitzt eine Bedingung (condition_attribute, condition_value) 
-    und eine Implikation (implication_attribute, implication_value).
+    Eine ImplicationConstraint besitzt eine Bedingung (condition) und eine Implikation (implication),
+    die jeweils durch zwei Objekte (obj1, obj2) dargestellt werden.
     """
-    def __init__(self):
+    def __init__(self, condition=None, implication=None):
         super().__init__()    
-        self._condition_attribute = ""
-        self._condition_value = ""
-        self._implication_attribute = ""
-        self._implication_value = ""
+        self._condition = condition  # Bedingung
+        self._implication = implication  # Implikation
 
-    def get_condition_attribute(self):
-        return self._condition_attribute
+    def get_condition(self):
+        """Auslesen der Bedingung (condition)."""
+        return self._condition
 
-    def set_condition_attribute(self, value):
-        self._condition_attribute = value
+    def set_condition(self, value):
+        """Setzen der Bedingung (condition)."""
+        self._condition = value
 
-    def get_condition_value(self):
-        return self._condition_value
+    def get_implication(self):
+        """Auslesen der Implikation (implication)."""
+        return self._implication
 
-    def set_condition_value(self, value):
-        self._condition_value = value
+    def set_implication(self, value):
+        """Setzen der Implikation (implication)."""
+        self._implication = value
 
-    def get_implication_attribute(self):
-        return self._implication_attribute
-
-    def set_implication_attribute(self, value):
-        self._implication_attribute = value
-    
-    def get_implication_value(self):
-        return self._implication_value
-
-    def set_implication_value(self, value):
-        self._implication_value = value
-
-    def auswerten(self, obj):
+    def auswertung(self):
         """Evaluieren der ImplicationConstraint.
 
         Überprüft, ob die Bedingung erfüllt ist und falls ja, ob die Implikation ebenfalls erfüllt ist.
         Gibt True zurück, wenn die Implikation eingehalten wird, andernfalls False.
         """
-        if self._condition_attribute and self._condition_value:
+        if self._condition is not None:
             # Beispielhafte Evaluierungslogik:
-            # Wenn die Bedingung gilt, muss die Implikation ebenfalls gelten.
-            if self._condition_value:  # Beispiel: Wenn die Bedingung wahr ist
-                return self._implication_value  # Die Implikation muss wahr sein
+            # Wenn die Bedingung erfüllt ist, muss die Implikation ebenfalls erfüllt sein.
+            if self._condition:  # Beispiel: Wenn die Bedingung wahr ist
+                return self._implication  # Die Implikation muss wahr sein
         return True
 
     def __str__(self):
-        """Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz.
-        
-        Diese besteht aus der ID der Superklasse ergänzt durch die Bedingung 
-        (Attribut und Wert) und die Implikation (Attribut und Wert).
-        """
+        """Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz."""
         return (
-            f"ImplicationConstraint: "  # {self.get_id()},
-            f"Bedingung: ({self._condition_attribute}, {self._condition_value}), "
-            f"Implikation: ({self._implication_attribute}, {self._implication_value})"
+            f"ImplicationConstraint: "
+            f"Bedingung: {self._condition}, "
+            f"Implikation: {self._implication}"
         )
 
     @staticmethod
@@ -68,9 +54,7 @@ class ImplicationConstraint(Constraint):
         if dictionary is None:
             dictionary = dict()
         obj = ImplicationConstraint()
-#        obj.set_id(dictionary["id"])  # Eigentlich Teil von BusinessObject!
-        obj.set_condition_attribute(dictionary.get("condition_attribute", ""))
-        obj.set_condition_value(dictionary.get("condition_value", ""))
-        obj.set_implication_attribute(dictionary.get("implication_attribute", ""))
-        obj.set_implication_value(dictionary.get("implication_value", ""))
+        obj.set_condition(dictionary.get("condition", None))  # Bedingung
+        obj.set_implication(dictionary.get("implication", None))  # Implikation
         return obj
+

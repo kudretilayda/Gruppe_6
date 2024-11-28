@@ -18,7 +18,7 @@ class Mapper(AbstractContextManager, ABC):
         else:
             self._cnx = connector.connect(user='demo', password='demo',
                                           host='localhost',
-                                          database='<your>')            # Unsere Daten
+                                          database='<your>')    # Unsere Daten
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -33,13 +33,13 @@ class Mapper(AbstractContextManager, ABC):
         pass
 
     @abstractmethod
-    def insert(self, obj):          # Fügt Objekt in die DB ein
+    def insert(self, obj):       # Fügt Objekt in die DB ein
         pass
 
     @abstractmethod
-    def update(self, obj):          # Objekt wird auf einen bereits in der DB enthaltenen Datensatz abgebildet
+    def update(self, obj):       # Objekt wird auf einen bereits in der DB enthaltenen Datensatz abgebildet
         pass
 
     @abstractmethod
-    def delete(self, obj):          # Objekt in der DB wird gelöscht
+    def delete(self, obj):       # Objekt in der DB löschen
         pass

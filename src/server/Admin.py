@@ -1,24 +1,25 @@
-from src.server.bo.BinaryConstraint import BinaryConstraint
-from src.server.bo.BusinessObject import BusinessObject
-from src.server.bo.CardinalityConstraint import CardinalityConstraint
-from src.server.bo.Constraint import Constraint
-from src.server.bo.ImplicationConstraint import ImplicationConstraint
-from src.server.bo.Kleiderschrank import Kleiderschrank
-from src.server.bo.Kleidungsstueck import Kleidungsstueck
-from src.server.bo.Kleidungstyp import Kleidungstyp
-from src.server.bo.MutexConstraint import MutexConstraint
-from src.server.bo.Outfit import Outfit
-from src.server.bo.Style import Style
-from src.server.bo.UnaryConstraint import UnaryConstraint
-from src.server.bo.User import User
+from .bo.BinaryConstraint import BinaryConstraint
+from .bo.BusinessObject import BusinessObject
+from .bo.CardinalityConstraint import CardinalityConstraint
+from .bo.Constraint import Constraint
+from .bo.ImplicationConstraint import ImplicationConstraint
+from .bo.Kleiderschrank import Kleiderschrank
+from .bo.Kleidungsstueck import Kleidungsstueck
+from .bo.Kleidungstyp import Kleidungstyp
+from .bo.MutexConstraint import MutexConstraint
+from .bo.Outfit import Outfit
+from .bo.Style import Style
+from .bo.UnaryConstraint import UnaryConstraint
+from .bo.User import User
 
-from src.server.db.ConstraintMapper import ConstraintMapper
-# from src.server.db.KleiderschrankMapper import KleiderschrankMapper
-from src.server.db.KleidungsstueckMapper import Kleidungsstueck
-from src.server.db.KleidungstypMapper import Kleidungstyp
-from src.server.db.Mapper import Mapper
-from src.server.db.StyleMapper import StyleMapper
-# from src.server.db.UserMapper import UserMappper
+from .db.ConstraintMapper import 
+from .db.KleiderschrankMapper import 
+from .db.KleidungsstueckMapper import Kleidungsstueck
+from .db.KleidungstypMapper import Kleidungstyp
+from .db.Mapper import Mapper
+from .db.StyleMapper import StyleMapper
+from .db.UserMapper import 
+
 
 
 class Administration(object):
