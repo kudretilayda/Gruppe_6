@@ -5,7 +5,7 @@ class User (BusinessObject):
 
     def __init__(self):
         super().__init__()
-        self.__user_id = ""
+        self.__user_id = 0
         self.__nachname = ""
         self.__vorname = ""
         self.__nickname = ""
