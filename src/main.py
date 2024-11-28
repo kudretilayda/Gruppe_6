@@ -37,6 +37,33 @@ unary_constraint = api.inherit('UnaryConstraint', constraint, {
     'bedingung': fields.String(attribute='_bedingung', description='Bedingung des UnaryConstraints')
 })
 
+# BinaryConstraint Modell
+binary_constraint = api.inherit('BinaryConstraint', constraint, {
+    'obj1': fields.String(attribute='_obj1', description='Bezugsobjekt 1'),
+    'obj2': fields.String(attribute='_obj2', description='Bezugsobjekt 2'),
+    'bedingung': fields.String(attribute='_bedingung', description='Bedingung des BinaryConstraints')
+})
+
+# CardinalityConstraint Modell
+cardinality_constraint = api.inherit('CardinalityConstraint', constraint, {
+    'min_count': fields.Integer(attribute='_min_count', description='Minimale Kardinalität'),
+    'max_count': fields.Integer(attribute='_max_count', description='Maximale Kardinalität'),
+    'obj1': fields.String(attribute='_obj1', description='Erstes Objekt'),
+    'obj2': fields.String(attribute='_obj2', description='Zweites Objekt')
+})
+
+# ImplicationConstraint Modell
+implication_constraint = api.inherit('ImplicationConstraint', constraint, {
+    'condition': fields.String(attribute='_condition', description='Bedingung'),
+    'implication': fields.String(attribute='_implication', description='Implikation')
+})
+
+# MutexConstraint Modell
+mutex_constraint = api.inherit('MutexConstraint', constraint, {
+    'obj1': fields.String(attribute='_obj1', description='Erstes Objekt'),
+    'obj2': fields.String(attribute='_obj2', description='Zweites Objekt')
+})
+
 @kleiderschrank.route('/user')
 class UserListOperations(Resource):
     @kleiderschrank.marshal_list_with(user)
