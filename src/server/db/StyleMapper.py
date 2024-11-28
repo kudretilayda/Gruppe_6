@@ -1,5 +1,6 @@
-from server.bo.Style import Style
-from server.db.Mapper import Mapper
+from src.server.bo.Style import Style
+from src.server.db.Mapper import Mapper
+
 
 class StyleMapper(Mapper):
     """Mapper-Klasse, die Style-Objekte auf eine relationale
@@ -14,7 +15,7 @@ class StyleMapper(Mapper):
     def find_all(self):
         """Auslesen aller Styles.
 
-        :return Eine Sammlung mit Style-Objekten.
+        : return eine Sammlung mit Style-Objekten.
         """
         result = []
         cursor = self._cnx.cursor()
@@ -30,7 +31,6 @@ class StyleMapper(Mapper):
 
         self._cnx.commit()
         cursor.close()
-
         return result
 
     def find_by_name(self, name):

@@ -1,5 +1,6 @@
-from server.bo.Kleidungsstueck import Kleidungsstueck
-from server.db.Mapper import Mapper
+from src.server.bo.Kleidungsstueck import Kleidungsstueck
+from src.server.db.Mapper import Mapper
+
 
 class ClothingItemMapper(Mapper):
     """Mapper-Klasse, die ClothingItem-Objekte auf eine relationale
@@ -96,7 +97,7 @@ class ClothingItemMapper(Mapper):
     def find_by_key(self, key):
         """Suchen eines Kleidungsstücks mit vorgegebener ID.
 
-        :param key Primärschlüsselattribut
+        :param key Primärschlüssel Attribut
         :return ClothingItem-Objekt, das dem übergebenen Schlüssel entspricht
         """
         result = None
