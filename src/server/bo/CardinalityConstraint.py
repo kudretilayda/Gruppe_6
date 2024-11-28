@@ -62,4 +62,3 @@ class CardinalityConstraint(Constraint):
             _obj1=dictionary.get("obj1", None),
             _obj2=dictionary.get("obj2", None)
         )
-

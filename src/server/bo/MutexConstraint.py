@@ -64,4 +64,3 @@ class MutexConstraint(Constraint):
         obj2 = dictionary.get("obj2", None)  # Annahme, dass obj2 ein Objekt mit den Methoden get_attribute() und get_value() ist
         
         return MutexConstraint(obj1=obj1, obj2=obj2)
-
