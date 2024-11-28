@@ -18,7 +18,7 @@ export default class StyleBO extends BusinessObject {
     this.features = aFeatures;
     this.constraints = aConstraints;
     this.kleidungstypen = aKleidungstypen;
-  }
+  } 
 
   // Getter und Setter für styleId
   getStyleId() {
