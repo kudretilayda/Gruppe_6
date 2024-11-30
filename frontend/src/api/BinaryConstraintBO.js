@@ -7,34 +7,39 @@ export default class BinaryConstraintBO extends ConstraintBO {
   /**
    * Konstruiert ein BinaryConstraintBO-Objekt.
    *
-   * @param {any} obj1 - Bezugsobjekt 1.
-   * @param {any} obj2 - Bezugsobjekt 2.
+   * @param {any} object1 - Bezugsobjekt 1.
+   * @param {any} object2 - Bezugsobjekt 2.
    * @param {String} bedingung - Die Bedingung zwischen den beiden Objekten.
    */
-  constructor(obj1 = null, obj2 = null, bedingung = "", name = "",
-    beschreibung = "",) {
+  constructor(
+    object1 = null,
+    object2 = null,
+    bedingung = "",
+    name = "",
+    beschreibung = ""
+  ) {
     super(name, beschreibung);
-    this.obj1 = obj1;
-    this.obj2 = obj2;
+    this.object1 = object1;
+    this.object2 = object2;
     this.bedingung = bedingung;
   }
 
-  // Getter und Setter für obj1
-  getObj1() {
-    return this.obj1;
+  // Getter und Setter für object1
+  getObject1() {
+    return this.object1;
   }
 
-  setObj1(value) {
-    this.obj1 = value;
+  setObject1(value) {
+    this.object1 = value;
   }
 
-  // Getter und Setter für obj2
-  getObj2() {
-    return this.obj2;
+  // Getter und Setter für object2
+  getObject2() {
+    return this.object2;
   }
 
-  setObj2(value) {
-    this.obj2 = value;
+  setObject2(value) {
+    this.object2 = value;
   }
 
   // Getter und Setter für bedingung
@@ -48,7 +53,9 @@ export default class BinaryConstraintBO extends ConstraintBO {
 
   // String-Darstellung des Objekts
   toString() {
-    return `BinaryConstraint: ${JSON.stringify(this.getObj1())}, ${JSON.stringify(this.getObj2())}, ${this.getBedingung()}`;
+    return `BinaryConstraint: ${JSON.stringify(
+      this.getObject1()
+    )}, ${JSON.stringify(this.getObject2())}, ${this.getBedingung()}`;
   }
 
   /**
@@ -58,11 +65,10 @@ export default class BinaryConstraintBO extends ConstraintBO {
    */
   static fromJSON(dictionary = {}) {
     const binaryconstraint = new BinaryConstraintBO();
-    binaryconstraint.setObj1(dictionary.obj1 || null);
-    binaryconstraint.setObj2(dictionary.obj2 || null);
+    binaryconstraint.setObject1(dictionary.object1 || null);
+    binaryconstraint.setObject2(dictionary.object2 || null);
     binaryconstraint.setBedingung(dictionary.bedingung || "");
     return binaryconstraint;
   }
 }
 
-  

@@ -17,6 +17,10 @@ class ConstraintMapper:
                 return MutexConstraint(result[0], result[2], result[3])
             elif constraint_type == 'cardinality':
                 return CardinalityConstraint(result[0], result[2], result[3], result[4])
+            elif constraint_type == 'unary':
+                return UnaryConstraint(result[0], result[2], result[3])
+            elif constraint_type == 'binary':
+                return BinaryConstraint(result[0], result[2], result[3], result[4])
         return None
 
     def find_all(self):
@@ -33,6 +37,10 @@ class ConstraintMapper:
                 constraints.append(MutexConstraint(result[0], result[2], result[3]))
             elif constraint_type == 'cardinality':
                 constraints.append(CardinalityConstraint(result[0], result[2], result[3], result[4]))
+            elif constraint_type == 'unary':
+                constraints.append(UnaryConstraint(result[0], result[2], result[3]))
+            elif constraint_type == 'binary':
+                constraints.append(BinaryConstraint(result[0], result[2], result[3], result[4]))
         return constraints
 
     def save(self, constraint):
@@ -46,6 +54,12 @@ class ConstraintMapper:
         elif isinstance(constraint, CardinalityConstraint):
             query = "INSERT INTO constraints (type, object, min_count, max_count) VALUES (%s, %s, %s, %s)"
             cursor.execute(query, ('cardinality', constraint.object, constraint.min_count, constraint.max_count))
+        elif isinstance(constraint, UnaryConstraint):
+            query = 'INSERT INTO constraints (type, object, condition) VALUES (%s, %s, %s)'
+            cursor.execute(query, ('unary', constraint.object, constraint.condition))
+        elif isinstance(constraint, BinaryConstraint):
+            query = "INSERT INTO constraints (type, object1, object2, condition) VALUES (%s, %s, %s, %s)"
+            cursor.execute(query, ('binary', constraint.object1, constraint.object2, constraint.condition))
         self.connection.commit()
 
 class ImplicationConstraint:
@@ -66,3 +80,16 @@ class CardinalityConstraint:
         self.object = object
         self.min_count = min_count
         self.max_count = max_count
+
+class UnaryConstraint:
+    def __init__(self, constraint_id, object, condition):
+        self.id = constraint_id
+        self.object = object
+        self.condition = condition
+
+class BinaryConstraint:
+    def __init__(self, constraint_id, object1, object2, condition):
+        self.id = constraint_id
+        self.object1 = object1
+        self.obeject2 = object2
+        self.condition = condition
