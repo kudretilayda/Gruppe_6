@@ -55,6 +55,12 @@ class ConstraintMapper:
         elif isinstance(constraint, CardinalityConstraint):
             query = "INSERT INTO constraints (type, object, min_count, max_count) VALUES (%s, %s, %s, %s)"
             cursor.execute(query, ('cardinality', constraint.object, constraint.min_count, constraint.max_count))
+        elif isinstance(constraint, UnaryConstraint):
+            query = 'INSERT INTO constraints (type, object, condition) VALUES (%s, %s, %s)'
+            cursor.execute(query, ('unary', constraint.object, constraint.condition))
+        elif isinstance(constraint, BinaryConstraint):
+            query = "INSERT INTO constraints (type, object1, object2, condition) VALUES (%s, %s, %s, %s)"
+            cursor.execute(query, ('binary', constraint.object1, constraint.object2, constraint.condition))
         self.connection.commit()
 
 class ImplicationConstraint:
