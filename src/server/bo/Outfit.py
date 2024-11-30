@@ -1,47 +1,45 @@
-from server.bo import BusinessObject as bo
+from server.bo.BusinessObject import BusinessObject
 
-
-class Outfit(bo.BusinessObject):
+class Outfit(BusinessObject):
+    """Realisierung eines Outfits"""
+    
     def __init__(self):
         super().__init__()
-        self.__outfit_id = 0
-        self.__kleidungsstuecke = []  # Liste von Kleidungsstücken
-        self.__style = None           # Style-Objekt oder None
+        self._style_id = 0
+        self._name = ""
+        self._items = []  # Liste von ClothingItem IDs
 
-    # Properties
-    @property
-    def outfit_id(self):
-        return self.__outfit_id
+    def get_style_id(self):
+        return self._style_id
 
-    @outfit_id.setter
-    def outfit_id(self, outfit_id: int):
-        self.__outfit_id = outfit_id
+    def set_style_id(self, value):
+        self._style_id = value
 
-    @property
-    def kleidungsstuecke(self):
-        return self.__kleidungsstuecke
+    def get_name(self):
+        return self._name
 
-    @kleidungsstuecke.setter
-    def kleidungsstuecke(self, kleidungsstuecke: list):
-        self.__kleidungsstuecke = kleidungsstuecke
+    def set_name(self, value):
+        self._name = value
 
-    @property
-    def style(self):
-        return self.__style
+    def get_items(self):
+        return self._items
 
-    @style.setter
-    def style(self, style):
-        self.__style = style
+    def set_items(self, items):
+        self._items = items
 
-    # String-Repräsentation
-    def __str__(self):
-        return f"Outfit: {self.__outfit_id}, {self.__kleidungsstuecke}, {self.__style}"
+    def add_item(self, item_id):
+        if item_id not in self._items:
+            self._items.append(item_id)
 
-    # Statische Methode zum Erstellen eines Objekts aus einem Dictionary
+    def remove_item(self, item_id):
+        if item_id in self._items:
+            self._items.remove(item_id)
+
     @staticmethod
-    def from_dict(dictionary=dict(), style_instance=None):
+    def from_dict(dictionary=dict()):
         obj = Outfit()
-        obj.outfit_id = dictionary.get("outfit_id", 0)
-        obj.kleidungsstuecke = dictionary.get("kleidungsstuecke", [])
-        obj.style = style_instance
+        obj.set_id(dictionary.get("id"))
+        obj.set_style_id(dictionary.get("style_id"))
+        obj.set_name(dictionary.get("name"))
+        obj.set_items(dictionary.get("items", []))
         return obj

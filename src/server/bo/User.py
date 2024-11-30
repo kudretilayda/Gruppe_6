@@ -36,3 +36,14 @@ class User(BusinessObject):
 
     def set_nickname(self, value):
         self._nickname = value
+
+    @staticmethod
+    def from_dict(dictionary=dict()):
+        """Umwandeln eines Python dict() in ein Person()-Objekt."""
+        obj = User()
+        obj.set_id(dictionary.get("id"))
+        obj.set_google_id(dictionary.get("google_id"))
+        obj.set_first_name(dictionary.get("first_name"))
+        obj.set_last_name(dictionary.get("last_name"))
+        obj.set_nickname(dictionary.get("nickname"))
+        return obj

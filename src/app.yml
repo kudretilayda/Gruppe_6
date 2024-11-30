@@ -1,0 +1,27 @@
+# app.yaml (für Google Cloud)
+runtime: python39
+entrypoint: gunicorn -b :$PORT main:app
+
+env_variables:
+  FLASK_ENV: "production"
+  DB_USER: ${DB_USER}
+  DB_PASSWORD: ${DB_PASSWORD}
+  DB_HOST: ${DB_HOST}
+  DB_NAME: ${DB_NAME}
+  FIREBASE_CONFIG: ${FIREBASE_CONFIG}
+
+handlers:
+- url: /.*
+  script: auto
+
+# .gcloudignore
+.gcloudignore
+.git
+.gitignore
+__pycache__/
+*.pyc
+env/
+venv/
+.env
+*.log
+tests/

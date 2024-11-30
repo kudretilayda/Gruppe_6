@@ -1,242 +1,177 @@
-#Unvollständig - nochmak überarbeiten#
+# src/server/db/mapper/ConstraintMapper.py
 
-# src/db/mapper/constraint_mapper.py
-from typing import List, Optional, Type
-from .Mapper import Mapper
+from server.db.Mapper import Mapper
+from server.bo.Constraint import Constraint
 
 class ConstraintMapper(Mapper):
-    """Mapper class for handling all types of constraints"""
+    """Mapper-Klasse für Constraint-Objekte.
     
+    Da alle Constraint-Typen in der Constraint-Klasse durch das constraint_type 
+    Attribut abgebildet werden, verwaltet dieser Mapper alle Constraint-Arten."""
+
     def __init__(self):
         super().__init__()
-        # Mapping of constraint types to their respective classes
-        self._constraint_types = {
-            'mutex': Mutex,
-            'kardinalitaet': Kardinalitaet,
-            'implikation': Implikation
-        }
 
-    def find_by_id(self, id: int) -> Optional[Constraint]:
-        """Finds a constraint by its ID"""
-        cursor = self._get_connection().cursor()
+    def get_table_name(self):
+        return "constraint_rule"
+
+    def tuple_to_object(self, tuple):
+        """Erstellt ein Constraint-Objekt aus einem DB-Tuple"""
+        if not tuple:
+            return None
+            
+        constraint = Constraint()
+        constraint.set_id(tuple["id"])
+        constraint.set_style_id(tuple["style_id"])
+        constraint.set_constraint_type(tuple["constraint_type"])
+        constraint.set_create_time(tuple["created_at"])
         
-        try:
-            # First get the base constraint info
-            command = """
-                SELECT id, type, created_at 
-                FROM constraint 
-                WHERE id=%s
-            """
-            cursor.execute(command, (id,))
-            constraint_data = cursor.fetchone()
-            
-            if not constraint_data:
-                return None
-                
-            constraint_id, constraint_type, created_at = constraint_data
-            
-            # Get specific constraint details based on type
-            if constraint_type in ['mutex', 'implikation']:
+        # Zusätzliche Parameter je nach Constraint-Typ laden
+        params = self._load_constraint_parameters(tuple["id"], tuple["constraint_type"])
+        for key, value in params.items():
+            constraint.add_parameter(key, value)
+        
+        return constraint
+
+    def _load_constraint_parameters(self, constraint_id, constraint_type):
+        """Lädt die spezifischen Parameter eines Constraints basierend auf seinem Typ"""
+        params = {}
+        with self._cursor() as cursor:
+            if constraint_type == "binary":
                 command = """
-                    SELECT bezugsobjekt1, bezugsobjekt2
-                    FROM binary_constraint
+                    SELECT reference_object1_id, reference_object2_id, relation_type 
+                    FROM constraint_parameters 
                     WHERE constraint_id=%s
                 """
-                cursor.execute(command, (id,))
-                binary_data = cursor.fetchone()
-                
-                constraint = self._constraint_types[constraint_type]()
-                constraint.id = constraint_id
-                constraint.created_at = created_at
-                constraint.bezugsobjekt1 = binary_data[0]
-                constraint.bezugsobjekt2 = binary_data[1]
-                
-            elif constraint_type == 'kardinalitaet':
-                command = """
-                    SELECT bezugsobjekt, min_count, max_count
-                    FROM unary_constraint
-                    WHERE constraint_id=%s
-                """
-                cursor.execute(command, (id,))
-                unary_data = cursor.fetchone()
-                
-                constraint = Kardinalitaet()
-                constraint.id = constraint_id
-                constraint.created_at = created_at
-                constraint.bezugsobjekt = unary_data[0]
-                constraint.min_count = unary_data[1]
-                constraint.max_count = unary_data[2]
-                
-            return constraint
-            
-        finally:
-            cursor.close()
-
-    def find_by_style(self, style_id: int) -> List[Constraint]:
-        """Finds all constraints associated with a style"""
-        cursor = self._get_connection().cursor()
-        constraints = []
-        
-        try:
-            # Get all constraints for the style
-            command = """
-                SELECT c.id, c.type, c.created_at
-                FROM constraint c
-                JOIN style_constraint sc ON c.id = sc.constraint_id
-                WHERE sc.style_id = %s
-            """
-            cursor.execute(command, (style_id,))
-            constraint_data = cursor.fetchall()
-            
-            for (id, type, created_at) in constraint_data:
-                constraint = self.find_by_id(id)
-                if constraint:
-                    constraints.append(constraint)
+                cursor.execute(command, (constraint_id,))
+                result = cursor.fetchone()
+                if result:
+                    params["reference_object1_id"] = result["reference_object1_id"]
+                    params["reference_object2_id"] = result["reference_object2_id"]
+                    params["relation_type"] = result["relation_type"]
                     
-            return constraints
-            
-        finally:
-            cursor.close()
-
-    def insert(self, constraint: Constraint) -> Constraint:
-        """Inserts a new constraint"""
-        cursor = self._get_connection().cursor()
-        
-        try:
-            # Insert base constraint info
-            command = """
-                INSERT INTO constraint (type) 
-                VALUES (%s)
-            """
-            cursor_type = type(constraint).__name__.lower()
-            cursor.execute(command, (cursor_type,))
-            constraint.id = cursor.lastrowid
-            
-            # Insert specific constraint details
-            if isinstance(constraint, BinaryConstraint):
+            elif constraint_type == "unary":
                 command = """
-                    INSERT INTO binary_constraint 
-                    (constraint_id, bezugsobjekt1, bezugsobjekt2)
-                    VALUES (%s, %s, %s)
-                """
-                data = (constraint.id, constraint.bezugsobjekt1, constraint.bezugsobjekt2)
-                cursor.execute(command, data)
-                
-            elif isinstance(constraint, Kardinalitaet):
-                command = """
-                    INSERT INTO unary_constraint 
-                    (constraint_id, bezugsobjekt, min_count, max_count)
-                    VALUES (%s, %s, %s, %s)
-                """
-                data = (constraint.id, constraint.bezugsobjekt, 
-                       constraint.min_count, constraint.max_count)
-                cursor.execute(command, data)
-            
-            self._get_connection().commit()
-            return constraint
-            
-        except Exception:
-            self._get_connection().rollback()
-            raise
-        finally:
-            cursor.close()
-
-    def update(self, constraint: Constraint) -> Constraint:
-        """Updates an existing constraint"""
-        cursor = self._get_connection().cursor()
-        
-        try:
-            if isinstance(constraint, BinaryConstraint):
-                command = """
-                    UPDATE binary_constraint 
-                    SET bezugsobjekt1=%s, bezugsobjekt2=%s
+                    SELECT reference_object_id, condition 
+                    FROM constraint_parameters 
                     WHERE constraint_id=%s
                 """
-                data = (constraint.bezugsobjekt1, constraint.bezugsobjekt2, constraint.id)
-                cursor.execute(command, data)
-                
-            elif isinstance(constraint, Kardinalitaet):
+                cursor.execute(command, (constraint_id,))
+                result = cursor.fetchone()
+                if result:
+                    params["reference_object_id"] = result["reference_object_id"]
+                    params["condition"] = result["condition"]
+                    
+            elif constraint_type == "mutex":
                 command = """
-                    UPDATE unary_constraint 
-                    SET bezugsobjekt=%s, min_count=%s, max_count=%s
+                    SELECT exclusive_items 
+                    FROM constraint_parameters 
                     WHERE constraint_id=%s
                 """
-                data = (constraint.bezugsobjekt, constraint.min_count, 
-                       constraint.max_count, constraint.id)
-                cursor.execute(command, data)
+                cursor.execute(command, (constraint_id,))
+                result = cursor.fetchone()
+                if result:
+                    params["exclusive_items"] = result["exclusive_items"].split(",")
+                    
+            elif constraint_type == "kardinalitaet":
+                command = """
+                    SELECT item_type_id, min_count, max_count 
+                    FROM constraint_parameters 
+                    WHERE constraint_id=%s
+                """
+                cursor.execute(command, (constraint_id,))
+                result = cursor.fetchone()
+                if result:
+                    params["item_type_id"] = result["item_type_id"]
+                    params["min_count"] = result["min_count"]
+                    params["max_count"] = result["max_count"]
+                    
+            elif constraint_type == "implikation":
+                command = """
+                    SELECT if_item_id, then_item_id, else_item_id 
+                    FROM constraint_parameters 
+                    WHERE constraint_id=%s
+                """
+                cursor.execute(command, (constraint_id,))
+                result = cursor.fetchone()
+                if result:
+                    params["if_item_id"] = result["if_item_id"]
+                    params["then_item_id"] = result["then_item_id"]
+                    params["else_item_id"] = result["else_item_id"]
+                    
+        return params
+
+    def insert(self, constraint):
+        """Fügt einen neuen Constraint in die Datenbank ein"""
+        with self._cursor() as cursor:
+            # Basis-Constraint einfügen
+            command = "INSERT INTO constraint_rule (id, style_id, constraint_type) VALUES (%s, %s, %s)"
+            cursor.execute(command, (
+                constraint.get_id(),
+                constraint.get_style_id(),
+                constraint.get_constraint_type()
+            ))
             
-            self._get_connection().commit()
+            # Parameter einfügen
+            self._insert_constraint_parameters(cursor, constraint)
+            
+            self._cnx.commit()
             return constraint
-            
-        except Exception:
-            self._get_connection().rollback()
-            raise
-        finally:
-            cursor.close()
 
-    def delete(self, constraint: Constraint) -> bool:
-        """Deletes a constraint"""
-        cursor = self._get_connection().cursor()
+    def _insert_constraint_parameters(self, cursor, constraint):
+        """Fügt die typspezifischen Parameter eines Constraints ein"""
+        params = constraint.get_parameters()
         
-        try:
-            # Delete specific constraint details first
-            if isinstance(constraint, BinaryConstraint):
-                command = "DELETE FROM binary_constraint WHERE constraint_id=%s"
-                cursor.execute(command, (constraint.id,))
-                
-            elif isinstance(constraint, Kardinalitaet):
-                command = "DELETE FROM unary_constraint WHERE constraint_id=%s"
-                cursor.execute(command, (constraint.id,))
-            
-            # Delete base constraint
-            command = "DELETE FROM constraint WHERE id=%s"
-            cursor.execute(command, (constraint.id,))
-            
-            self._get_connection().commit()
-            return True
-            
-        except Exception:
-            self._get_connection().rollback()
-            raise
-        finally:
-            cursor.close()
-
-    def assign_to_style(self, style_id: int, constraint: Constraint) -> bool:
-        """Assigns a constraint to a style"""
-        cursor = self._get_connection().cursor()
-        
-        try:
+        if constraint.get_constraint_type() == "binary":
             command = """
-                INSERT INTO style_constraint (style_id, constraint_id)
-                VALUES (%s, %s)
+                INSERT INTO constraint_parameters 
+                (constraint_id, reference_object1_id, reference_object2_id, relation_type) 
+                VALUES (%s, %s, %s, %s)
             """
-            cursor.execute(command, (style_id, constraint.id))
-            self._get_connection().commit()
-            return True
+            cursor.execute(command, (
+                constraint.get_id(),
+                params.get("reference_object1_id"),
+                params.get("reference_object2_id"),
+                params.get("relation_type")
+            ))
             
-        except Exception:
-            self._get_connection().rollback()
-            raise
-        finally:
-            cursor.close()
-
-    def remove_from_style(self, style_id: int, constraint: Constraint) -> bool:
-        """Removes a constraint from a style"""
-        cursor = self._get_connection().cursor()
-        
-        try:
+        elif constraint.get_constraint_type() == "unary":
             command = """
-                DELETE FROM style_constraint 
-                WHERE style_id=%s AND constraint_id=%s
+                INSERT INTO constraint_parameters 
+                (constraint_id, reference_object_id, condition) 
+                VALUES (%s, %s, %s)
             """
-            cursor.execute(command, (style_id, constraint.id))
-            self._get_connection().commit()
-            return True
+            cursor.execute(command, (
+                constraint.get_id(),
+                params.get("reference_object_id"),
+                params.get("condition")
+            ))
             
-        except Exception:
-            self._get_connection().rollback()
-            raise
-        finally:
-            cursor.close()
+        # Analog für andere Constraint-Typen...
 
-    
+    def update(self, constraint):
+        """Aktualisiert einen bestehenden Constraint"""
+        with self._cursor() as cursor:
+            # Basis-Constraint aktualisieren
+            command = "UPDATE constraint_rule SET style_id=%s, constraint_type=%s WHERE id=%s"
+            cursor.execute(command, (
+                constraint.get_style_id(),
+                constraint.get_constraint_type(),
+                constraint.get_id()
+            ))
+            
+            # Parameter aktualisieren
+            command = "DELETE FROM constraint_parameters WHERE constraint_id=%s"
+            cursor.execute(command, (constraint.get_id(),))
+            self._insert_constraint_parameters(cursor, constraint)
+            
+            self._cnx.commit()
+            return constraint
+
+    def find_by_style(self, style_id):
+        """Findet alle Constraints eines Styles"""
+        with self._cursor() as cursor:
+            command = "SELECT * FROM constraint_rule WHERE style_id=%s"
+            cursor.execute(command, (style_id,))
+            tuples = cursor.fetchall()
+            return [self.tuple_to_object(tuple) for tuple in tuples]

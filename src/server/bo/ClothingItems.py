@@ -1,73 +1,45 @@
-# src/server/db/mapper/ClothingItemMapper.py
+from server.bo.BusinessObject import BusinessObject
 
-from server.db.Mapper import Mapper
-from server.bo.ClothingItem import ClothingItem
-
-class ClothingItemMapper(Mapper):
-    """Mapper-Klasse, die ClothingItem-Objekte auf eine relationale
-    Datenbank abbildet."""
+class ClothingItem(BusinessObject):
+    """Realisierung eines Kleidungsstücks"""
     
     def __init__(self):
         super().__init__()
+        self._wardrobe_id = 0
+        self._type_id = 0
+        self._name = ""
+        self._description = ""
 
-    def find_by_wardrobe_id(self, wardrobe_id):
-        """Suchen aller Kleidungsstücke eines Kleiderschranks."""
-        result = []
-        with self._cursor() as cursor:
-            command = "SELECT * FROM clothing_item WHERE wardrobe_id=%s"
-            cursor.execute(command, (wardrobe_id,))
-            tuples = cursor.fetchall()
-            for (id, wardrobe_id, type_id, name, create_time) in tuples:
-                clothing_item = ClothingItem()
-                clothing_item.set_id(id)
-                clothing_item.set_wardrobe_id(wardrobe_id)
-                clothing_item.set_type_id(type_id)
-                clothing_item.set_name(name)
-                clothing_item.set_create_time(create_time)
-                result.append(clothing_item)
-        return result
+    def get_wardrobe_id(self):
+        return self._wardrobe_id
 
-    def find_by_key(self, key):
-        """Suchen eines Kleidungsstücks mit vorgegebener ID."""
-        with self._cursor() as cursor:
-            command = "SELECT * FROM clothing_item WHERE id=%s"
-            cursor.execute(command, (key,))
-            tuples = cursor.fetchall()
-            try:
-                (id, wardrobe_id, type_id, name, create_time) = tuples[0]
-                clothing_item = ClothingItem()
-                clothing_item.set_id(id)
-                clothing_item.set_wardrobe_id(wardrobe_id)
-                clothing_item.set_type_id(type_id)
-                clothing_item.set_name(name)
-                clothing_item.set_create_time(create_time)
-                return clothing_item
-            except IndexError:
-                return None
+    def set_wardrobe_id(self, value):
+        self._wardrobe_id = value
 
-    def insert(self, clothing_item):
-        """Einfügen eines Kleidungsstücks in die Datenbank."""
-        with self._cursor() as cursor:
-            command = "INSERT INTO clothing_item (id, wardrobe_id, type_id, name) VALUES (%s, %s, %s, %s)"
-            data = (clothing_item.get_id(), clothing_item.get_wardrobe_id(),
-                   clothing_item.get_type_id(), clothing_item.get_name())
-            cursor.execute(command, data)
-            self._cnx.commit()
-            return clothing_item
+    def get_type_id(self):
+        return self._type_id
 
-    def update(self, clothing_item):
-        """Aktualisieren eines Kleidungsstücks in der Datenbank."""
-        with self._cursor() as cursor:
-            command = "UPDATE clothing_item SET wardrobe_id=%s, type_id=%s, name=%s WHERE id=%s"
-            data = (clothing_item.get_wardrobe_id(), clothing_item.get_type_id(),
-                   clothing_item.get_name(), clothing_item.get_id())
-            cursor.execute(command, data)
-            self._cnx.commit()
-            return clothing_item
+    def set_type_id(self, value):
+        self._type_id = value
 
-    def delete(self, clothing_item):
-        """Löschen eines Kleidungsstücks aus der Datenbank."""
-        with self._cursor() as cursor:
-            command = "DELETE FROM clothing_item WHERE id=%s"
-            cursor.execute(command, (clothing_item.get_id(),))
-            self._cnx.commit()
+    def get_name(self):
+        return self._name
+
+    def set_name(self, value):
+        self._name = value
+
+    def get_description(self):
+        return self._description
+
+    def set_description(self, value):
+        self._description = value
+
+    @staticmethod
+    def from_dict(dictionary=dict()):
+        obj = ClothingItem()
+        obj.set_id(dictionary.get("id"))
+        obj.set_wardrobe_id(dictionary.get("wardrobe_id"))
+        obj.set_type_id(dictionary.get("type_id"))
+        obj.set_name(dictionary.get("name"))
+        obj.set_description(dictionary.get("description"))
+        return obj

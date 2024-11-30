@@ -1,64 +1,91 @@
-# src/db/mapper/style_mapper.py
-from .Mapper import Mapper
-from server.db import Style
+from server.db.Mapper import Mapper
+from server.bo.Style import Style
 
 class StyleMapper(Mapper):
-    """Mapper class for Style objects"""
-    
-    def find_by_id(self, id):
-        result = None
-        cursor = self._get_connection().cursor()
-        command = "SELECT id, name, features, created_at FROM style WHERE id=%s"
-        cursor.execute(command, (id,))
+    """Mapper-Klasse für Style-Objekte"""
+
+    def __init__(self):
+        super().__init__()
+
+    def find_all(self):
+        """Alle Styles auslesen"""
+        result = []
+        cursor = self._connection.cursor()
+        cursor.execute("SELECT * FROM style")
         tuples = cursor.fetchall()
 
-        try:
-            (id, name, features, created_at) = tuples[0]
-            result = Style()
-            result.id = id
-            result.name = name
-            result.features = features
-            result.created_at = created_at
-            
-            # Load associated constraints
-            result.constraints = self._load_constraints(id)
-        except IndexError:
-            result = None
+        for (id, name, description, features, created_at) in tuples:
+            style = Style()
+            style.set_id(id)
+            style.set_name(name)
+            style.set_description(description)
+            style.set_features(features)
+            result.append(style)
 
-        self._get_connection().commit()
+        self._connection.commit()
         cursor.close()
         return result
 
-    def _load_constraints(self, style_id):
-        cursor = self._get_connection().cursor()
-        command = """
-            SELECT c.id, c.type, c.bezugsobjekt1, c.bezugsobjekt2 
-            FROM constraint c
-            JOIN style_constraint sc ON c.id = sc.constraint_id
-            WHERE sc.style_id = %s
-        """
-        cursor.execute(command, (style_id,))
-        constraints = []
-        
-        for (id, type, obj1, obj2) in cursor.fetchall():
-            constraint = self._create_constraint(type, id, obj1, obj2)
-            constraints.append(constraint)
-            
+    def find_by_id(self, id):
+        """Einen Style anhand seiner ID auslesen"""
+        result = None
+        cursor = self._connection.cursor()
+        command = "SELECT * FROM style WHERE id={}".format(id)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        try:
+            (id, name, description, features, created_at) = tuples[0]
+            style = Style()
+            style.set_id(id)
+            style.set_name(name)
+            style.set_description(description)
+            style.set_features(features)
+            result = style
+        except IndexError:
+            result = None
+
+        self._connection.commit()
         cursor.close()
-        return constraints
+        return result
 
     def insert(self, style):
-        cursor = self._get_connection().cursor()
-        command = "INSERT INTO style (name, features) VALUES (%s, %s)"
-        data = (style.name, style.features)
+        """Einen neuen Style anlegen"""
+        cursor = self._connection.cursor()
+        cursor.execute("SELECT MAX(id) AS maxid FROM style")
+        tuples = cursor.fetchall()
+
+        for (maxid) in tuples:
+            if maxid[0] is not None:
+                style.set_id(maxid[0] + 1)
+            else:
+                style.set_id(1)
+
+        command = "INSERT INTO style (id, name, description, features) VALUES (%s, %s, %s, %s)"
+        data = (style.get_id(), style.get_name(), style.get_description(), style.get_features())
         cursor.execute(command, data)
-        
-        style.id = cursor.lastrowid
-        
-        # Insert constraints
-        if style.constraints:
-            self._insert_constraints(style.id, style.constraints)
-            
-        self._get_connection().commit()
+
+        self._connection.commit()
         cursor.close()
         return style
+
+    def update(self, style):
+        """Einen Style aktualisieren"""
+        cursor = self._connection.cursor()
+
+        command = "UPDATE style SET name=%s, description=%s, features=%s WHERE id=%s"
+        data = (style.get_name(), style.get_description(), style.get_features(), style.get_id())
+        cursor.execute(command, data)
+
+        self._connection.commit()
+        cursor.close()
+
+    def delete(self, style):
+        """Einen Style löschen"""
+        cursor = self._connection.cursor()
+
+        command = "DELETE FROM style WHERE id={}".format(style.get_id())
+        cursor.execute(command)
+
+        self._connection.commit()
+        cursor.close()

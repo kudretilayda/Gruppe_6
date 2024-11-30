@@ -1,191 +1,370 @@
-# src/server/Administration.py
+from typing import List, Dict, Tuple, Optional
+from server.db.UserMapper import PersonMapper
+from server.db.WardrobeMapper import WardrobeMapper
+from server.db.ClothingItemsMapper import ClothingItemMapper
+from server.db.StyleMapper import StyleMapper
+from server.db.ConstraintMapper import ConstraintMapper
+from server.db.OutfitMapper import OutfitMapper
 
-from .bo.User import Person
-from .bo.Wardrobe import Wardrobe
-from .bo.ClothingType import Kleidungstyp
-from .bo.ClothingItems import ClothingItem
-from .bo.Style import Style
-from .bo.Outfit import Outfit
-from .bo.Constraint import Constraint
+from server.bo.User import Person
+from server.bo.Wardrobe import Wardrobe
+from server.bo.ClothingItems import ClothingItem
+from server.bo.Style import Style
+from server.bo.Outfit import Outfit
+from server.bo.Constraint import Constraint
 
-from .db.UserMapper import PersonMapper
-from .db.WardrobeMapper import WardrobeMapper
-from .db.ClothingTypeMapper import ClothingTypeMapper
-from .db.ClothingItemsMapper import ClothingItemMapper
-from .db.StyleMapper import StyleMapper
-from .db.OutfitMapper import OutfitMapper
-from .db.ConstraintMapper import ConstraintMapper
+from server.ConstraintHelper import ConstraintHelper
 
-class WardrobeAdministration:
-    """Diese Klasse aggregiert die Applikationslogik für den digitalen Kleiderschrank.
+
+class AdminException(Exception):
+    """Basis-Exception für Administration-Fehler"""
+    pass
+
+class ValidationError(AdminException):
+    """Exception für Validierungsfehler"""
+    pass
+
+class ConstraintError(AdminException):
+    """Exception für Constraint-Fehler"""
+    pass
+
+
+class Administration:
+    """Geschäftslogik der Anwendung"""
     
-    Sie ist die zentrale Klasse für die Verwaltung aller Geschäftsobjekte und deren Beziehungen.
-    Hier werden sämtliche Methoden zur Erstellung, Änderung, Löschung und Abfrage der 
-    verschiedenen Objekte bereitgestellt."""
-
     def __init__(self):
-        pass
+        """Initialisierung aller benötigten Mapper und Helper"""
+        self._person_mapper = PersonMapper()
+        self._wardrobe_mapper = WardrobeMapper()
+        self._clothing_item_mapper = ClothingItemMapper()
+        self._style_mapper = StyleMapper()
+        self._constraint_mapper = ConstraintMapper()
+        self._outfit_mapper = OutfitMapper()
+        self._constraint_helper = ConstraintHelper()
+        self._cache_init()
 
-    """Person-spezifische Methoden"""
-    def create_person(self, google_id, firstname, lastname, nickname=None):
-        """Eine Person anlegen"""
-        person = Person()
-        person.set_google_id(google_id)
-        person.set_firstname(firstname)
-        person.set_lastname(lastname)
-        person.set_nickname(nickname)
+    def _cache_init(self):
+        """Initialisiert Cache für häufig verwendete Daten"""
+        self._type_cache = {}
+        self._constraint_cache = {}
 
-        with PersonMapper() as mapper:
-            person = mapper.insert(person)
-            # Automatisch einen Kleiderschrank für die Person anlegen
-            self.create_wardrobe_for_person(person.get_id())
-            return person
+    """Person-bezogene Methoden"""
+    def create_person(self, google_id: str, first_name: str, last_name: str, 
+                     nickname: str) -> Optional[Person]:
+        """Eine neue Person anlegen"""
+        try:
+            person = Person()
+            person.set_google_id(google_id)
+            person.set_first_name(first_name)
+            person.set_last_name(last_name)
+            person.set_nickname(nickname)
+            return self._person_mapper.insert(person)
+        except Exception as e:
+            print(f"Fehler beim Anlegen der Person: {e}")
+            return None
 
-    def get_person_by_id(self, id):
-        """Die Person mit der gegebenen ID auslesen."""
-        with PersonMapper() as mapper:
-            return mapper.find_by_key(id)
+    def get_all_persons(self) -> List[Person]:
+        """Alle Personen auslesen"""
+        return self._person_mapper.find_all()
 
-    def get_person_by_google_id(self, google_id):
-        """Die Person mit der gegebenen Google ID auslesen."""
-        with PersonMapper() as mapper:
-            return mapper.find_by_google_id(google_id)
+    def get_person_by_id(self, id: int) -> Optional[Person]:
+        """Eine Person anhand ihrer ID auslesen"""
+        return self._person_mapper.find_by_id(id)
 
-    def update_person(self, person):
-        """Die gegebene Person updaten."""
-        with PersonMapper() as mapper:
-            return mapper.update(person)
+    def get_person_by_google_id(self, google_id: str) -> Optional[Person]:
+        """Eine Person anhand ihrer Google ID auslesen"""
+        return self._person_mapper.find_by_google_id(google_id)
 
-    def delete_person(self, person):
-        """Die gegebene Person aus dem System löschen."""
-        with PersonMapper() as mapper:
-            # Zuerst den zugehörigen Kleiderschrank löschen
-            wardrobe = self.get_wardrobe_by_person(person.get_id())
-            if wardrobe is not None:
-                self.delete_wardrobe(wardrobe)
-            mapper.delete(person)
+    def update_person(self, person: Person) -> bool:
+        """Eine Person aktualisieren"""
+        try:
+            self._person_mapper.update(person)
+            return True
+        except Exception as e:
+            print(f"Fehler beim Update der Person: {e}")
+            return False
 
-    """Kleiderschrank-spezifische Methoden"""
-    def create_wardrobe_for_person(self, person_id):
-        """Einen Kleiderschrank für eine Person anlegen."""
-        with WardrobeMapper() as mapper:
+    def delete_person(self, person: Person) -> bool:
+        """Eine Person löschen"""
+        try:
+            self._person_mapper.delete(person)
+            return True
+        except Exception as e:
+            print(f"Fehler beim Löschen der Person: {e}")
+            return False
+
+    """Wardrobe-bezogene Methoden"""
+    def create_wardrobe(self, owner_id: int) -> Optional[Wardrobe]:
+        """Einen neuen Kleiderschrank anlegen"""
+        try:
             wardrobe = Wardrobe()
-            wardrobe.set_person_id(person_id)
-            return mapper.insert(wardrobe)
+            wardrobe.set_owner_id(owner_id)
+            return self._wardrobe_mapper.insert(wardrobe)
+        except Exception as e:
+            print(f"Fehler beim Anlegen des Kleiderschranks: {e}")
+            return None
 
-    def get_wardrobe_by_person(self, person_id):
-        """Den Kleiderschrank einer Person auslesen."""
-        with WardrobeMapper() as mapper:
-            return mapper.find_by_person_id(person_id)
+    def get_wardrobe_by_owner(self, owner_id: int) -> Optional[Wardrobe]:
+        """Einen Kleiderschrank anhand der Owner ID auslesen"""
+        return self._wardrobe_mapper.find_by_owner_id(owner_id)
 
-    def delete_wardrobe(self, wardrobe):
-        """Einen Kleiderschrank löschen."""
-        with WardrobeMapper() as mapper:
-            # Zuerst alle Kleidungsstücke löschen
-            items = self.get_items_of_wardrobe(wardrobe.get_id())
-            if items is not None:
-                for item in items:
-                    self.delete_clothing_item(item)
-            mapper.delete(wardrobe)
-
-    """Kleidungsstück-spezifische Methoden"""
-    def create_clothing_item(self, wardrobe_id, type_id, name):
-        """Ein Kleidungsstück anlegen."""
-        with ClothingItemMapper() as mapper:
+    """ClothingItem-bezogene Methoden"""
+    def create_clothing_item(self, wardrobe_id: int, type_id: int, 
+                           name: str, description: str) -> Optional[ClothingItem]:
+        """Ein neues Kleidungsstück anlegen"""
+        try:
             item = ClothingItem()
             item.set_wardrobe_id(wardrobe_id)
             item.set_type_id(type_id)
             item.set_name(name)
-            return mapper.insert(item)
+            item.set_description(description)
+            return self._clothing_item_mapper.insert(item)
+        except Exception as e:
+            print(f"Fehler beim Anlegen des Kleidungsstücks: {e}")
+            return None
 
-    def get_items_of_wardrobe(self, wardrobe_id):
-        """Alle Kleidungsstücke eines Kleiderschranks auslesen."""
-        with ClothingItemMapper() as mapper:
-            return mapper.find_by_wardrobe_id(wardrobe_id)
+    def get_items_by_wardrobe(self, wardrobe_id: int) -> List[ClothingItem]:
+        """Alle Kleidungsstücke eines Kleiderschranks auslesen"""
+        return self._clothing_item_mapper.find_by_wardrobe(wardrobe_id)
 
-    def delete_clothing_item(self, item):
-        """Ein Kleidungsstück löschen."""
-        with ClothingItemMapper() as mapper:
-            # Auch alle Outfit-Zuordnungen löschen
-            outfits = self.get_outfits_by_item(item.get_id())
-            if outfits is not None:
-                for outfit in outfits:
-                    self.remove_item_from_outfit(outfit.get_id(), item.get_id())
-            mapper.delete(item)
+    def update_clothing_item(self, item: ClothingItem) -> bool:
+        """Ein Kleidungsstück aktualisieren"""
+        try:
+            self._clothing_item_mapper.update(item)
+            return True
+        except Exception as e:
+            print(f"Fehler beim Update des Kleidungsstücks: {e}")
+            return False
 
-    """Style-spezifische Methoden"""
-    def create_style(self, name, features):
-        """Einen Style anlegen."""
-        with StyleMapper() as mapper:
+    def delete_clothing_item(self, item_id: int) -> bool:
+        """Ein Kleidungsstück löschen"""
+        try:
+            item = self._clothing_item_mapper.find_by_id(item_id)
+            if item:
+                self._clothing_item_mapper.delete(item)
+                return True
+            return False
+        except Exception as e:
+            print(f"Fehler beim Löschen des Kleidungsstücks: {e}")
+            return False
+
+    """Style-bezogene Methoden"""
+    def create_style(self, name: str, description: str, features: str) -> Optional[Style]:
+        """Einen neuen Style anlegen"""
+        try:
             style = Style()
             style.set_name(name)
+            style.set_description(description)
             style.set_features(features)
-            return mapper.insert(style)
+            return self._style_mapper.insert(style)
+        except Exception as e:
+            print(f"Fehler beim Anlegen des Styles: {e}")
+            return None
 
-    def get_style_by_id(self, id):
-        """Einen Style mit der gegebenen ID auslesen."""
-        with StyleMapper() as mapper:
-            return mapper.find_by_key(id)
+    def create_style_with_constraints(self, name: str, description: str, 
+                                    features: str, constraints_data: List[Dict]) -> Optional[Style]:
+        """Erstellt einen neuen Style mit zugehörigen Constraints"""
+        try:
+            # Erst den Style erstellen
+            style = self.create_style(name, description, features)
+            if not style:
+                return None
+            
+            # Dann die Constraints hinzufügen
+            for constraint_data in constraints_data:
+                self.create_style_constraint(
+                    style.get_id(),
+                    constraint_data['type'],
+                    constraint_data['data']
+                )
+                
+            return style
+        except Exception as e:
+            print(f"Fehler beim Anlegen des Styles mit Constraints: {e}")
+            return None
 
-    def get_possible_styles_for_wardrobe(self, wardrobe_id):
-        """Alle möglichen Styles für einen Kleiderschrank ermitteln."""
-        # Hier kommt die Logik zur Ermittlung möglicher Styles
-        # basierend auf den vorhandenen Kleidungsstücken
-        items = self.get_items_of_wardrobe(wardrobe_id)
-        with StyleMapper() as mapper:
-            all_styles = mapper.find_all()
-            possible_styles = []
-            for style in all_styles:
-                if self.check_style_possible(style, items):
-                    possible_styles.append(style)
-            return possible_styles
+    def get_all_styles(self) -> List[Style]:
+        """Alle Styles auslesen"""
+        return self._style_mapper.find_all()
 
-    def check_style_possible(self, style, available_items):
-        """Prüfen ob ein Style mit den verfügbaren Kleidungsstücken möglich ist."""
-        constraints = self.get_constraints_of_style(style.get_id())
-        return all(self.check_constraint(constraint, available_items) 
-                  for constraint in constraints)
+    def get_style_by_id(self, style_id: int) -> Optional[Style]:
+        """Einen Style anhand seiner ID auslesen"""
+        return self._style_mapper.find_by_id(style_id)
 
-    """Outfit-spezifische Methoden"""
-    def create_outfit(self, style_id, items):
-        """Ein Outfit anlegen."""
-        with OutfitMapper() as mapper:
-            outfit = Outfit()
-            outfit.set_style_id(style_id)
-            outfit = mapper.insert(outfit)
-            # Items dem Outfit zuordnen
-            for item in items:
-                self.add_item_to_outfit(outfit.get_id(), item.get_id())
-            return outfit
+    def update_style(self, style: Style) -> bool:
+        """Einen Style aktualisieren"""
+        try:
+            self._style_mapper.update(style)
+            return True
+        except Exception as e:
+            print(f"Fehler beim Update des Styles: {e}")
+            return False
 
-    def get_outfits_by_item(self, item_id):
-        """Alle Outfits abrufen, die ein bestimmtes Kleidungsstück enthalten."""
-        with OutfitMapper() as mapper:
-            return mapper.find_by_item_id(item_id)
+    def delete_style(self, style: Style) -> bool:
+        """Einen Style löschen"""
+        try:
+            self._style_mapper.delete(style)
+            return True
+        except Exception as e:
+            print(f"Fehler beim Löschen des Styles: {e}")
+            return False
 
-    """Constraint-spezifische Methoden"""
-    def create_constraint(self, style_id, constraint_type):
-        """Ein Constraint anlegen."""
-        with ConstraintMapper() as mapper:
+    """Constraint-bezogene Methoden"""
+    def create_style_constraint(self, style_id: int, constraint_type: str, 
+                              constraint_data: dict) -> Optional[Constraint]:
+        """Erstellt einen neuen Style-Constraint"""
+        try:
             constraint = Constraint()
             constraint.set_style_id(style_id)
-            constraint.set_constraint_type(constraint_type)
-            return mapper.insert(constraint)
+            constraint.set_type(constraint_type)
 
-    def get_constraints_of_style(self, style_id):
-        """Alle Constraints eines Styles abrufen."""
-        with ConstraintMapper() as mapper:
-            return mapper.find_by_style_id(style_id)
+            value = self._create_constraint_value(constraint_type, constraint_data)
+            constraint.set_value(value)
+            return self._constraint_mapper.insert(constraint)
+        except Exception as e:
+            print(f"Fehler beim Erstellen des Constraints: {e}")
+            return None
 
-    def check_constraint(self, constraint, items):
-        """Ein einzelnes Constraint überprüfen."""
-        # Hier kommt die spezifische Logik für die verschiedenen Constraint-Typen
-        if constraint.get_constraint_type() == "binary":
-            return self._check_binary_constraint(constraint, items)
-        elif constraint.get_constraint_type() == "unary":
-            return self._check_unary_constraint(constraint, items)
-        elif constraint.get_constraint_type() == "mutex":
-            return self._check_mutex_constraint(constraint, items)
-        elif constraint.get_constraint_type() == "kardinalitaet":
-            return self._check_cardinality_constraint(constraint, items)
-        return True
+    def _create_constraint_value(self, constraint_type: str, data: dict) -> str:
+        """Hilfsmethode zur Constraint-Wert-Erstellung"""
+        constraint_creators = {
+            "BINARY": self._constraint_helper.create_binary_constraint,
+            "CARDINALITY": self._constraint_helper.create_cardinality_constraint,
+            "COLOR": self._constraint_helper.create_color_constraint
+        }
+        
+        if constraint_type not in constraint_creators:
+            raise ValueError(f"Unbekannter Constraint-Typ: {constraint_type}")
+            
+        creator = constraint_creators[constraint_type]
+        return creator(**data)
+
+    def get_style_constraints(self, style_id: int) -> List[Constraint]:
+        """Gibt alle Constraints eines Styles zurück"""
+        return self._constraint_mapper.find_by_style(style_id)
+
+    """Outfit-bezogene Methoden"""
+    def create_outfit(self, style_id: int, name: str, clothing_items: List[int]) -> Optional[Outfit]:
+        """Ein neues Outfit erstellen mit Validierung"""
+        try:
+            # Validiere zuerst
+            validation = self.validate_outfit(clothing_items, style_id)
+            if not validation["is_valid"]:
+                raise ValidationError(validation["messages"])
+
+            outfit = outfit()
+            outfit.set_style_id(style_id)
+            outfit.set_name(name)
+            outfit.set_items(clothing_items)
+            return self._outfit_mapper.insert(outfit)
+        except ValidationError as e:
+            print(f"Validierungsfehler: {e}")
+            return None
+        except Exception as e:
+            print(f"Unerwarteter Fehler: {e}")
+            return None
+
+    def validate_outfit(self, outfit_items: List[int], style_id: int) -> Dict:
+        """Validiert ein Outfit gegen Style-Constraints"""
+        try:
+            detailed_items = self._get_detailed_items(outfit_items)
+            constraints = self._get_constraint_dicts(style_id)
+            
+            return self._constraint_helper.validate_outfit(detailed_items, constraints)
+        except Exception as e:
+            return {
+                "is_valid": False,
+                "messages": [f"Fehler bei der Validierung: {str(e)}"]
+            }
+
+    def _get_detailed_items(self, item_ids: List[int]) -> List[Dict]:
+        """Lädt detaillierte Informationen zu Kleidungsstücken"""
+        detailed_items = []
+        for item_id in item_ids:
+            item = self._clothing_item_mapper.find_by_id(item_id)
+            if item:
+                detailed_items.append({
+                    'id': item.get_id(),
+                    'type_id': item.get_type_id(),
+                    'color': item.get_color() if hasattr(item, 'get_color') else None
+                })
+        return detailed_items
+
+    def _get_constraint_dicts(self, style_id: int) -> List[Dict]:
+        """Lädt Constraints als Dictionary-Format"""
+        constraints = self.get_style_constraints(style_id)
+        return [{
+            'constraint_type': c.get_type(),
+            'value': c.get_value()
+        } for c in constraints]
+
+    def generate_outfit_suggestion(self, wardrobe_id: int, style_id: int, 
+                                 weather: str = None, occasion: str = None) -> Optional[List[int]]:
+        """Generiert einen Outfit-Vorschlag basierend auf verschiedenen Kriterien"""
+        try:
+            available_items = self.get_items_by_wardrobe(wardrobe_id)
+            style = self.get_style_by_id(style_id)
+            if not available_items or not style:
+                return None
+
+            required_types = self._get_required_types(style)
+            suggestion = []
+            
+            for required_type in required_types:
+                suitable_items = [item for item in available_items 
+                                if item.get_type_id() == required_type]
+                
+                if not suitable_items:
+                    continue
+                    
+                selected_item = self._select_best_item(suitable_items, weather, occasion)
+                if selected_item:
+                    suggestion.append(selected_item.get_id())
+
+            # Validierung des generierten Outfits
+            validation = self.validate_outfit(suggestion, style_id)
+            if validation["is_valid"]:
+                return suggestion
+            return None
+            
+        except Exception as e:
+            print(f"Fehler bei der Outfit-Generierung: {e}")
+            return None
+
+    def _get_required_types(self, style: Style) -> List[int]:
+        """Ermittelt die erforderlichen Kleidungstypen für einen Style"""
+        basic_types = [1, 2, 3]  # Basis-Typen
+        
+        if "formal" in style.get_features().lower():
+            basic_types.extend([4, 5])  # Formelle Zusatztypen
+            
+        if "casual" in style.get_features().lower():
+            basic_types.extend([6])  # Casual Zusatztypen
+            
+        return basic_types
+
+    def _select_best_item(self, items: List[ClothingItem], 
+                         weather: str = None, occasion: str = None) -> Optional[ClothingItem]:
+        """Wählt das am besten geeignete Kleidungsstück aus"""
+        if not items:
+            return None
+            
+        scored_items = []
+        for item in items:
+            score = 0
+            
+            if weather:
+                score += self._calculate_weather_score(item, weather)
+            
+            if occasion:
+                score += self._calculate_occasion_score(item, occasion)
+            
+            scored_items.append((score, item))
+        
+        return max(scored_items, key=lambda x: x[0])[1] if scored_items else items[0]
+
+    def _calculate_weather_score(self, item: ClothingItem, weather: str) -> int:
+        """Berechnet den Wetter-Score für ein Kleidungsstück"""
+        score = 0
+        description = item.get_description().lower()
+        
