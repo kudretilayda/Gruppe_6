@@ -51,8 +51,8 @@ unary_constraint = api.inherit('UnaryConstraint', constraint, {
 
 # BinaryConstraint Modell
 binary_constraint = api.inherit('BinaryConstraint', constraint, {
-    'obj1': fields.String(attribute='_obj1', description='Bezugsobjekt 1'),
-    'obj2': fields.String(attribute='_obj2', description='Bezugsobjekt 2'),
+    'object1': fields.String(attribute='_object1', description='Bezugsobjekt 1'),
+    'object2': fields.String(attribute='_object2', description='Bezugsobjekt 2'),
     'bedingung': fields.String(attribute='_bedingung', description='Bedingung des BinaryConstraints')
 })
 
@@ -60,8 +60,8 @@ binary_constraint = api.inherit('BinaryConstraint', constraint, {
 cardinality_constraint = api.inherit('CardinalityConstraint', constraint, {
     'min_count': fields.Integer(attribute='_min_count', description='Minimale Kardinalität'),
     'max_count': fields.Integer(attribute='_max_count', description='Maximale Kardinalität'),
-    'obj1': fields.String(attribute='_obj1', description='Erstes Objekt'),
-    'obj2': fields.String(attribute='_obj2', description='Zweites Objekt')
+    'object1': fields.String(attribute='_object1', description='Erstes Objekt'),
+    'object2': fields.String(attribute='_object2', description='Zweites Objekt')
 })
 
 # ImplicationConstraint Modell
@@ -72,8 +72,8 @@ implication_constraint = api.inherit('ImplicationConstraint', constraint, {
 
 # MutexConstraint Modell
 mutex_constraint = api.inherit('MutexConstraint', constraint, {
-    'obj1': fields.String(attribute='_obj1', description='Erstes Objekt'),
-    'obj2': fields.String(attribute='_obj2', description='Zweites Objekt')
+    'object1': fields.String(attribute='_object1', description='Erstes Objekt'),
+    'object2': fields.String(attribute='_object2', description='Zweites Objekt')
 })
 
 @kleiderschrank.route('/user')

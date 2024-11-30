@@ -7,38 +7,38 @@ export default class MutexConstraintBO extends ConstraintBO {
   /**
    * Konstruiert ein MutexConstraintBO-Objekt.
    *
-   * @param {Object} obj1 - Das erste Objekt.
-   * @param {Object} obj2 - Das zweite Objekt.
+   * @param {Object} object1 - Das erste Objekt.
+   * @param {Object} object2 - Das zweite Objekt.
    * @param {String} name - Der Name der Einschränkung.
    * @param {String} beschreibung - Die Beschreibung der Einschränkung.
    */
-  constructor(obj1 = null, obj2 = null, name = "", beschreibung = "") {
+  constructor(object1 = null, object2 = null, name = "", beschreibung = "") {
     super(name, beschreibung);
-    this.obj1 = obj1;
-    this.obj2 = obj2;
+    this.object1 = object1;
+    this.object2 = object2;
   }
 
-  // Getter und Setter für obj1
-  getObj1() {
-    return this.obj1;
+  // Getter und Setter für object1
+  getObject1() {
+    return this.object1;
   }
 
-  setObj1(value) {
-    this.obj1 = value;
+  setObject1(value) {
+    this.object1 = value;
   }
 
-  // Getter und Setter für obj2
-  getObj2() {
-    return this.obj2;
+  // Getter und Setter für object2
+  getObject2() {
+    return this.object2;
   }
 
-  setObj2(value) {
-    this.obj2 = value;
+  setObject2(value) {
+    this.object2 = value;
   }
 
   // String-Darstellung des Objekts
   toString() {
-    return `MutexConstraint: obj1=${JSON.stringify(this.getObj1())}, obj2=${JSON.stringify(this.getObj2())}`;
+    return `MutexConstraint: object1=${JSON.stringify(this.getObject1())}, object2=${JSON.stringify(this.getObject2())}`;
   }
 
   /**
@@ -48,9 +48,10 @@ export default class MutexConstraintBO extends ConstraintBO {
    */
   static fromJSON(dictionary = {}) {
     const mutexConstraint = new MutexConstraintBO();
-    mutexConstraint.setObj1(dictionary.obj1 || null);
-    mutexConstraint.setObj2(dictionary.obj2 || null);
+    mutexConstraint.setObject1(dictionary.object1 || null);
+    mutexConstraint.setObject2(dictionary.object2 || null);
     return mutexConstraint;
   }
 }
+
 
