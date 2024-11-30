@@ -11,8 +11,13 @@ export default class BinaryConstraintBO extends ConstraintBO {
    * @param {any} obj2 - Bezugsobjekt 2.
    * @param {String} bedingung - Die Bedingung zwischen den beiden Objekten.
    */
-  constructor(obj1 = null, obj2 = null, bedingung = "", name = "",
-    beschreibung = "",) {
+  constructor(
+    obj1 = null,
+    obj2 = null,
+    bedingung = "",
+    name = "",
+    beschreibung = ""
+  ) {
     super(name, beschreibung);
     this.obj1 = obj1;
     this.obj2 = obj2;
@@ -48,7 +53,9 @@ export default class BinaryConstraintBO extends ConstraintBO {
 
   // String-Darstellung des Objekts
   toString() {
-    return `BinaryConstraint: ${JSON.stringify(this.getObj1())}, ${JSON.stringify(this.getObj2())}, ${this.getBedingung()}`;
+    return `BinaryConstraint: ${JSON.stringify(
+      this.getObj1()
+    )}, ${JSON.stringify(this.getObj2())}, ${this.getBedingung()}`;
   }
 
   /**
@@ -64,5 +71,3 @@ export default class BinaryConstraintBO extends ConstraintBO {
     return binaryconstraint;
   }
 }
-
-  

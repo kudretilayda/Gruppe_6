@@ -1,64 +1,44 @@
 import ConstraintBO from "./ConstraintBO";
 
 /**
- * Repräsentiert eine wechselseitige Einschränkung (Mutex Constraint) zwischen Attributen und Werten zweier Objekte.
+ * Repräsentiert eine wechselseitige Einschränkung (Mutex Constraint) zwischen zwei Objekten.
  */
 export default class MutexConstraintBO extends ConstraintBO {
   /**
    * Konstruiert ein MutexConstraintBO-Objekt.
    *
-   * @param {String} obj1Attribute - Das Attribut des ersten Objekts.
-   * @param {String} obj1Value - Der Wert des Attributs des ersten Objekts.
-   * @param {String} obj2Attribute - Das Attribut des zweiten Objekts.
-   * @param {String} obj2Value - Der Wert des Attributs des zweiten Objekts.
+   * @param {Object} obj1 - Das erste Objekt.
+   * @param {Object} obj2 - Das zweite Objekt.
+   * @param {String} name - Der Name der Einschränkung.
+   * @param {String} beschreibung - Die Beschreibung der Einschränkung.
    */
-  constructor(obj1Attribute = "", obj1Value = "", obj2Attribute = "", obj2Value = "", name = "", beschreibung = "",) {
+  constructor(obj1 = null, obj2 = null, name = "", beschreibung = "") {
     super(name, beschreibung);
-    this.obj1Attribute = obj1Attribute;
-    this.obj1Value = obj1Value;
-    this.obj2Attribute = obj2Attribute;
-    this.obj2Value = obj2Value;
+    this.obj1 = obj1;
+    this.obj2 = obj2;
   }
 
-  // Getter und Setter für obj1Attribute
-  getObj1Attribute() {
-    return this.obj1Attribute;
+  // Getter und Setter für obj1
+  getObj1() {
+    return this.obj1;
   }
 
-  setObj1Attribute(value) {
-    this.obj1Attribute = value;
+  setObj1(value) {
+    this.obj1 = value;
   }
 
-  // Getter und Setter für obj1Value
-  getObj1Value() {
-    return this.obj1Value;
+  // Getter und Setter für obj2
+  getObj2() {
+    return this.obj2;
   }
 
-  setObj1Value(value) {
-    this.obj1Value = value;
-  }
-
-  // Getter und Setter für obj2Attribute
-  getObj2Attribute() {
-    return this.obj2Attribute;
-  }
-
-  setObj2Attribute(value) {
-    this.obj2Attribute = value;
-  }
-
-  // Getter und Setter für obj2Value
-  getObj2Value() {
-    return this.obj2Value;
-  }
-
-  setObj2Value(value) {
-    this.obj2Value = value;
+  setObj2(value) {
+    this.obj2 = value;
   }
 
   // String-Darstellung des Objekts
   toString() {
-    return `MutexConstraint: ${this.getObj1Attribute()}=${this.getObj1Value()}, ${this.getObj2Attribute()}=${this.getObj2Value()}`;
+    return `MutexConstraint: obj1=${JSON.stringify(this.getObj1())}, obj2=${JSON.stringify(this.getObj2())}`;
   }
 
   /**
@@ -68,10 +48,9 @@ export default class MutexConstraintBO extends ConstraintBO {
    */
   static fromJSON(dictionary = {}) {
     const mutexConstraint = new MutexConstraintBO();
-    mutexConstraint.setObj1Attribute(dictionary.obj1Attribute || "");
-    mutexConstraint.setObj1Value(dictionary.obj1Value || "");
-    mutexConstraint.setObj2Attribute(dictionary.obj2Attribute || "");
-    mutexConstraint.setObj2Value(dictionary.obj2Value || "");
+    mutexConstraint.setObj1(dictionary.obj1 || null);
+    mutexConstraint.setObj2(dictionary.obj2 || null);
     return mutexConstraint;
   }
 }
+
