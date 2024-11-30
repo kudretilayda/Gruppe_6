@@ -87,7 +87,7 @@ class PersonListOperations(Resource):
     @wardrobe_ns.expect(person)
     def post(self):
         """Neue Person anlegen"""
-        adm = Admin()
+        adm = KleiderschrankAdministration()
         proposal = Person.from_dict(api.payload)
 
         if proposal is not None:

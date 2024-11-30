@@ -10,4 +10,3 @@ class Config:
     MYSQL_DATABASE = os.getenv('MYSQL_DATABASE', 'digital_wardrobe')
     SECRET_KEY = os.getenv('SECRET_KEY', 'your-secret-key')
 
-
