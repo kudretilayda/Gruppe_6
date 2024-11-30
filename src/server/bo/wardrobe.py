@@ -1,8 +1,7 @@
-from src.server.bo.BusinessObject import BusinessObject
-import User
+from business_object import BusinessObject
 
 
-class Kleiderschrank(BusinessObject):
+class Wardrobe(BusinessObject):
     def __init__(self):
         super().__init__()
         self._eigentuemer = id

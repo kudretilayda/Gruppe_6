@@ -1,4 +1,4 @@
-from src.server.bo.BusinessObject import BusinessObject
+from business_object import BusinessObject
 
 
 class User (BusinessObject):

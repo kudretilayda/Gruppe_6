@@ -1,37 +1,37 @@
-from bo.style import Style
+from bo.clothing_item import ClothingItem
 from db_connector import DBConnector
 
-class StyleMapper:
+class ClothingItemMapper:
     @staticmethod
-    def find_by_id(style_id):
+    def find_by_id(item_id):
         conn = DBConnector.get_connection()
         cursor = conn.cursor(dictionary=True)
         try:
-            cursor.execute("SELECT * FROM style WHERE id = %s", (style_id,))
+            cursor.execute("SELECT * FROM clothing_item WHERE id = %s", (item_id,))
             data = cursor.fetchone()
             if data:
-                style = Style()
-                style.set_id(data['id'])
-                style.set_features(data['features'])
-                return style
+                item = ClothingItem()
+                item.set_id(data['id'])
+                item.set_type(data['type_id'])
+                return item
             return None
         finally:
             cursor.close()
             conn.close()
 
     @staticmethod
-    def insert(style):
+    def insert(item):
         conn = DBConnector.get_connection()
         cursor = conn.cursor()
         try:
             cursor.execute("""
-                INSERT INTO style (features) 
+                INSERT INTO clothing_item (type_id) 
                 VALUES (%s)
-            """, (style.get_features(),))
-            style_id = cursor.lastrowid
+            """, (item.get_type(),))
+            item_id = cursor.lastrowid
             conn.commit()
-            style.set_id(style_id)
-            return style_id
+            item.set_id(item_id)
+            return item_id
         finally:
             cursor.close()
             conn.close()
