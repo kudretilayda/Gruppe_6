@@ -38,6 +38,10 @@ class ConstraintMapper:
                 constraints.append(MutexConstraint(result[0], result[2], result[3]))
             elif constraint_type == 'cardinality':
                 constraints.append(CardinalityConstraint(result[0], result[2], result[3], result[4]))
+            elif constraint_type == 'unary':
+                constraints.append(UnaryConstraint(result[0], result[2], result[3]))
+            elif constraint_type == 'binary':
+                constraints.append(BinaryConstraint(result[0], result[2], result[3], result[4]))
         return constraints
 
     def save(self, constraint):
