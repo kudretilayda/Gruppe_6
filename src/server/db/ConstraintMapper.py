@@ -81,3 +81,16 @@ class CardinalityConstraint:
         self.object = object
         self.min_count = min_count
         self.max_count = max_count
+
+class UnaryConstraint:
+    def __init__(self, constraint_id, object, condition):
+        self.id = constraint_id
+        self.object = object
+        self.condition = condition
+
+class BinaryConstraint:
+    def __init__(self, constraint_id, object1, object2, condition):
+        self.id = constraint_id
+        self.object1 = object1
+        self.obeject2 = object2
+        self.condition = condition
