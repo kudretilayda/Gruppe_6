@@ -27,12 +27,8 @@ class MutexConstraint(Constraint):
         """Setzen des zweiten Objekts."""
         self._obj2 = value
 
-    def auswertung(self):
-        """Evaluierung der MutexConstraint.
+    def auswerten(self, obj):
 
-        Überprüft, ob die angegebenen Objekte und deren Werte nicht gleichzeitig erfüllt sind.
-        Gibt True zurück, wenn die Constraint eingehalten wird, andernfalls False.
-        """
         if self._obj1 is not None and self._obj2 is not None:
             # Beispielhafte Logik: Wenn die Attribute und Werte der beiden Objekte erfüllt sind,
             # dürfen sie nicht denselben Wert haben (Mutex-Prinzip).

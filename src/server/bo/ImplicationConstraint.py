@@ -28,7 +28,7 @@ class ImplicationConstraint(Constraint):
         """Setzen der Implikation (implication)."""
         self._implication = value
 
-    def auswertung(self):
+    def auswerten(self, obj):
         """Evaluieren der ImplicationConstraint.
 
         Überprüft, ob die Bedingung erfüllt ist und falls ja, ob die Implikation ebenfalls erfüllt ist.
