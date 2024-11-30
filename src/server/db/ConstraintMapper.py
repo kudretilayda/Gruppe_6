@@ -18,6 +18,10 @@ class ConstraintMapper:
                 return MutexConstraint(result[0], result[2], result[3])
             elif constraint_type == 'cardinality':
                 return CardinalityConstraint(result[0], result[2], result[3], result[4])
+            elif constraint_type == 'unary':
+                return UnaryConstraint(result[0], result[2], result[3])
+            elif constraint_type == 'binary':
+                return BinaryConstraint(result[0], result[2], result[3], result[4])
         return None
 
     def find_all(self):
