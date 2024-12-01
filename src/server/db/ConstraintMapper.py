@@ -1,11 +1,11 @@
 import mysql.connector as connector
+from src.server.bo.Constraint import Constraint
+from src.server.bo.BinaryConstraint import BinaryConstraint
+from src.server.bo.CardinalityConstraint import CardinalityConstraint
+from src.server.bo.UnaryConstraint import UnaryConstraint
+from src.server.bo.ImplicationConstraint import ImplicationConstraint
+from src.server.bo.MutexConstraint import MutexConstraint
 
-from server.bo.Constraint import Constraint
-from server.bo.BinaryConstraint import BinaryConstraint
-from server.bo.CardinalityConstraint import CardinalityConstraint
-from server.bo.UnaryConstraint import UnaryConstraint
-from server.bo.ImplicationConstraint import ImplicationConstraint
-from server.bo.MutexConstraint import MutexConstraint
 
 class ConstraintMapper:
     def __init__(self, connection):

@@ -3,11 +3,6 @@ from src.server.db.Mapper import Mapper
 
 
 class ClothingTypeMapper(Mapper):
-    """Mapper-Klasse, die ClothingType-Objekte auf eine relationale
-    Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verfügung
-    gestellt, mit deren Hilfe z.B. Objekte gesucht, erzeugt, modifiziert und
-    gelöscht werden können.
-    """
 
     def __init__(self):
         super().__init__()
