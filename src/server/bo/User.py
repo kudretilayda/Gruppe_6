@@ -5,12 +5,12 @@ class User (BusinessObject):
 
     def __init__(self):
         super().__init__()
-        self.__user_id = ""
+        self.__user_id = 0
         self.__nachname = ""
         self.__vorname = ""
         self.__nickname = ""
         self.__google_id = ""
-        self.__email = ""  
+        self.__email = ""
 
     def get_user_id(self):
         return self.__user_id
@@ -49,7 +49,6 @@ class User (BusinessObject):
         self.__email = value
 
     def __str__(self):
-
         return "User: {}, {}, {}, {}".format(
             self.get_user_id(),
             self.get_nachname(),
