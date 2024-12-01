@@ -1,5 +1,11 @@
 import mysql.connector as connector
 
+from server.bo.Constraint import Constraint
+from server.bo.BinaryConstraint import BinaryConstraint
+from server.bo.CardinalityConstraint import CardinalityConstraint
+from server.bo.UnaryConstraint import UnaryConstraint
+from server.bo.ImplicationConstraint import ImplicationConstraint
+from server.bo.MutexConstraint import MutexConstraint
 
 class ConstraintMapper:
     def __init__(self, connection):
@@ -63,6 +69,8 @@ class ConstraintMapper:
             cursor.execute(query, ('binary', constraint.object1, constraint.object2, constraint.condition))
         self.connection.commit()
 
+
+"""
 class ImplicationConstraint:
     def __init__(self, constraint_id, object1, object2):
         self.id = constraint_id
@@ -94,3 +102,4 @@ class BinaryConstraint:
         self.object1 = object1
         self.obeject2 = object2
         self.condition = condition
+"""
