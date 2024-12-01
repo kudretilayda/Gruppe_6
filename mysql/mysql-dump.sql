@@ -47,6 +47,34 @@ LOCK TABLES `binary_constraint` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `cardinality_constraint`
+--
+
+DROP TABLE IF EXISTS `cardinality_constraint`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `cardinality_constraint` (
+  `constraint_id` varchar(36) NOT NULL,
+  `min_value` int NOT NULL,
+  `max_value` int NOT NULL,
+  `reference_object_id` varchar(36) NOT NULL,
+  PRIMARY KEY (`constraint_id`),
+  KEY `idx_cardinality_reference_object` (`reference_object_id`),
+  CONSTRAINT `cardinality_constraint_ibfk_1` FOREIGN KEY (`constraint_id`) REFERENCES `constraint_rule` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `cardinality_constraint_ibfk_2` FOREIGN KEY (`reference_object_id`) REFERENCES `clothing_type` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `cardinality_constraint`
+--
+
+LOCK TABLES `cardinality_constraint` WRITE;
+/*!40000 ALTER TABLE `cardinality_constraint` DISABLE KEYS */;
+/*!40000 ALTER TABLE `cardinality_constraint` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `clothing_item`
 --
 
@@ -115,7 +143,7 @@ DROP TABLE IF EXISTS `constraint_rule`;
 CREATE TABLE `constraint_rule` (
   `id` varchar(36) NOT NULL,
   `style_id` varchar(36) NOT NULL,
-  `constraint_type` enum('binary','unary','implikation','mutex','kardinalitaet') NOT NULL,
+  `constraint_type` enum('binary','unary','implikation','mutex','cardinality') NOT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_constraint_style` (`style_id`),
   CONSTRAINT `constraint_rule_ibfk_1` FOREIGN KEY (`style_id`) REFERENCES `style` (`id`) ON DELETE CASCADE
@@ -129,6 +157,64 @@ CREATE TABLE `constraint_rule` (
 LOCK TABLES `constraint_rule` WRITE;
 /*!40000 ALTER TABLE `constraint_rule` DISABLE KEYS */;
 /*!40000 ALTER TABLE `constraint_rule` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `implication_constraint`
+--
+
+DROP TABLE IF EXISTS `implication_constraint`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `implication_constraint` (
+  `constraint_id` varchar(36) NOT NULL,
+  `antecedent_object_id` varchar(36) NOT NULL,
+  `consequent_object_id` varchar(36) NOT NULL,
+  PRIMARY KEY (`constraint_id`),
+  KEY `idx_implication_antecedent` (`antecedent_object_id`),
+  KEY `idx_implication_consequent` (`consequent_object_id`),
+  CONSTRAINT `implication_constraint_ibfk_1` FOREIGN KEY (`constraint_id`) REFERENCES `constraint_rule` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `implication_constraint_ibfk_2` FOREIGN KEY (`antecedent_object_id`) REFERENCES `clothing_type` (`id`),
+  CONSTRAINT `implication_constraint_ibfk_3` FOREIGN KEY (`consequent_object_id`) REFERENCES `clothing_type` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `implication_constraint`
+--
+
+LOCK TABLES `implication_constraint` WRITE;
+/*!40000 ALTER TABLE `implication_constraint` DISABLE KEYS */;
+/*!40000 ALTER TABLE `implication_constraint` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `mutex_constraint`
+--
+
+DROP TABLE IF EXISTS `mutex_constraint`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `mutex_constraint` (
+  `constraint_id` varchar(36) NOT NULL,
+  `conflicting_object1_id` varchar(36) NOT NULL,
+  `conflicting_object2_id` varchar(36) NOT NULL,
+  PRIMARY KEY (`constraint_id`),
+  KEY `idx_mutex_conflicting_object1` (`conflicting_object1_id`),
+  KEY `idx_mutex_conflicting_object2` (`conflicting_object2_id`),
+  CONSTRAINT `mutex_constraint_ibfk_1` FOREIGN KEY (`constraint_id`) REFERENCES `constraint_rule` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `mutex_constraint_ibfk_2` FOREIGN KEY (`conflicting_object1_id`) REFERENCES `clothing_type` (`id`),
+  CONSTRAINT `mutex_constraint_ibfk_3` FOREIGN KEY (`conflicting_object2_id`) REFERENCES `clothing_type` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `mutex_constraint`
+--
+
+LOCK TABLES `mutex_constraint` WRITE;
+/*!40000 ALTER TABLE `mutex_constraint` DISABLE KEYS */;
+/*!40000 ALTER TABLE `mutex_constraint` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -158,7 +244,7 @@ CREATE TABLE `outfit` (
 
 LOCK TABLES `outfit` WRITE;
 /*!40000 ALTER TABLE `outfit` DISABLE KEYS */;
-INSERT INTO `outfit` VALUES ('1','Casual Outfit','1','1','2024-11-30 09:49:55'),('2','Sport Outfit','2','2','2024-11-30 09:49:55');
+INSERT INTO `outfit` VALUES ('1','Casual Outfit','1','1','2024-12-01 20:15:08'),('2','Sport Outfit','2','2','2024-12-01 20:15:08');
 /*!40000 ALTER TABLE `outfit` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -215,7 +301,7 @@ CREATE TABLE `person` (
 
 LOCK TABLES `person` WRITE;
 /*!40000 ALTER TABLE `person` DISABLE KEYS */;
-INSERT INTO `person` VALUES ('1','google_12345','Max','Mustermann','Maxi','2024-11-30 09:49:54'),('2','google_67890','Erika','Musterfrau','Eri','2024-11-30 09:49:54');
+INSERT INTO `person` VALUES ('1','google_12345','Max','Mustermann','Maxi','2024-12-01 20:15:08'),('2','google_67890','Erika','Musterfrau','Eri','2024-12-01 20:15:08');
 /*!40000 ALTER TABLE `person` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -298,7 +384,7 @@ CREATE TABLE `wardrobe` (
 
 LOCK TABLES `wardrobe` WRITE;
 /*!40000 ALTER TABLE `wardrobe` DISABLE KEYS */;
-INSERT INTO `wardrobe` VALUES ('1','1','Max\'s Wardrobe','2024-11-30 09:49:54'),('2','2','Erika\'s Wardrobe','2024-11-30 09:49:54');
+INSERT INTO `wardrobe` VALUES ('1','1','Max\'s Wardrobe','2024-12-01 20:15:08'),('2','2','Erika\'s Wardrobe','2024-12-01 20:15:08');
 /*!40000 ALTER TABLE `wardrobe` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -311,4 +397,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-30 10:50:56
+-- Dump completed on 2024-12-01 21:15:48
