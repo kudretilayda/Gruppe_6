@@ -2,90 +2,109 @@ from server.db.Mapper import Mapper
 from server.bo.Style import Style
 
 class StyleMapper(Mapper):
-    """Mapper-Klasse für Style-Objekte"""
+    """Mapper-Klasse für Style-Objekte."""
 
     def __init__(self):
         super().__init__()
 
     def find_all(self):
-        """Alle Styles auslesen"""
+        """Auslesen aller Style-Objekte."""
         result = []
-        cursor = self._connection.cursor()
+        cursor = self._get_connection().cursor()
         cursor.execute("SELECT * FROM style")
         tuples = cursor.fetchall()
 
-        for (id, name, description, features, created_at) in tuples:
+        for (id, style_name, style_description, created_by) in tuples:
             style = Style()
             style.set_id(id)
-            style.set_name(name)
-            style.set_description(description)
-            style.set_features(features)
+            style.set_name(style_name)
+            style.set_description(style_description)
+            style.set_created_by(created_by)
             result.append(style)
 
-        self._connection.commit()
+        self._get_connection().commit()
         cursor.close()
         return result
 
-    def find_by_id(self, id):
-        """Einen Style anhand seiner ID auslesen"""
+    def find_by_id(self, key):
+        """Suchen eines Style-Objekts nach ID."""
         result = None
-        cursor = self._connection.cursor()
-        command = "SELECT * FROM style WHERE id={}".format(id)
+        cursor = self._get_connection().cursor()
+        command = "SELECT * FROM style WHERE id='{}'".format(key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        try:
-            (id, name, description, features, created_at) = tuples[0]
+        if tuples is not None and len(tuples) > 0:
+            (id, style_name, style_description, created_by) = tuples[0]
+            result = Style()
+            result.set_id(id)
+            result.set_name(style_name)
+            result.set_description(style_description)
+            result.set_created_by(created_by)
+
+        self._get_connection().commit()
+        cursor.close()
+        return result
+
+    def find_by_creator(self, person_id):
+        """Suchen von Style-Objekten nach Ersteller."""
+        result = []
+        cursor = self._get_connection().cursor()
+        command = "SELECT * FROM style WHERE created_by='{}'".format(person_id)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        for (id, style_name, style_description, created_by) in tuples:
             style = Style()
             style.set_id(id)
-            style.set_name(name)
-            style.set_description(description)
-            style.set_features(features)
-            result = style
-        except IndexError:
-            result = None
+            style.set_name(style_name)
+            style.set_description(style_description)
+            style.set_created_by(created_by)
+            result.append(style)
 
-        self._connection.commit()
+        self._get_connection().commit()
         cursor.close()
         return result
 
     def insert(self, style):
-        """Einen neuen Style anlegen"""
-        cursor = self._connection.cursor()
+        """Einfügen eines Style-Objekts in die Datenbank."""
+        cursor = self._get_connection().cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM style")
         tuples = cursor.fetchall()
 
         for (maxid) in tuples:
-            if maxid[0] is not None:
-                style.set_id(maxid[0] + 1)
-            else:
+            if maxid[0] is None:
                 style.set_id(1)
+            else:
+                style.set_id(maxid[0] + 1)
 
-        command = "INSERT INTO style (id, name, description, features) VALUES (%s, %s, %s, %s)"
-        data = (style.get_id(), style.get_name(), style.get_description(), style.get_features())
-        cursor.execute(command, data)
+        command = "INSERT INTO style (id, style_name, style_description, created_by) VALUES ('{}','{}','{}','{}')" \
+            .format(style.get_id(), style.get_name(), style.get_description(), style.get_created_by())
+        cursor.execute(command)
 
-        self._connection.commit()
+        self._get_connection().commit()
         cursor.close()
         return style
 
     def update(self, style):
-        """Einen Style aktualisieren"""
-        cursor = self._connection.cursor()
+        """Aktualisieren eines Style-Objekts in der Datenbank."""
+        cursor = self._get_connection().cursor()
+        command = "UPDATE style SET style_name='{}', style_description='{}' WHERE id='{}'"\
+            .format(style.get_name(), style.get_description(), style.get_id())
+        cursor.execute(command)
 
-        command = "UPDATE style SET name=%s, description=%s, features=%s WHERE id=%s"
-        data = (style.get_name(), style.get_description(), style.get_features(), style.get_id())
-        cursor.execute(command, data)
-
-        self._connection.commit()
+        self._get_connection().commit()
         cursor.close()
 
     def delete(self, style):
-        """Einen Style löschen"""
-        cursor = self._connection.cursor()
-
-        command = "DELETE FROM style WHERE id={}".format(style.get_id())
+        """Löschen eines Style-Objekts aus der Datenbank."""
+        cursor = self._get_connection().cursor()
+        # Zuerst alle zugehörigen Constraints löschen
+        command = "DELETE FROM constraint_rule WHERE style_id='{}'".format(style.get_id())
+        cursor.execute(command)
+        # Dann den Style selbst löschen
+        command = "DELETE FROM style WHERE id='{}'".format(style.get_id())
         cursor.execute(command)
 
-        self._connection.commit()
+        self._get_connection().commit()
         cursor.close()

@@ -2,7 +2,7 @@
 
 from flask import request
 from flask_restx import Namespace, Resource, fields
-from Admin import WardrobeAdministration
+from src.admin.Admin import WardrobeAdministration
 from SecurityDecorator import SecurityDecorator
 
 api = Namespace('style', description='Style related operations')

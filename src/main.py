@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_cors import CORS
 from flask_restx import Api, Resource, fields
-from server.Admin import KleiderschrankAdministration
+from src.admin.Admin import KleiderschrankAdministration
 from server.bo.Style import Style
 from server.bo.Outfit import Outfit
 from server.bo.User import Person

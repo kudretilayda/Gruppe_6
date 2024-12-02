@@ -1,92 +1,119 @@
 from server.db.Mapper import Mapper
 from server.bo.ClothingItems import ClothingItem
 
+
 class ClothingItemMapper(Mapper):
-    """Mapper-Klasse für ClothingItem-Objekte"""
+    """Mapper-Klasse für ClothingItem-Objekte."""
 
     def __init__(self):
         super().__init__()
 
     def find_all(self):
-        """Alle Kleidungsstücke auslesen"""
+        """Auslesen aller ClothingItem-Objekte."""
         result = []
-        cursor = self._connection.cursor()
+        cursor = self._get_connection().cursor()
         cursor.execute("SELECT * FROM clothing_item")
         tuples = cursor.fetchall()
 
-        for (id, wardrobe_id, type_id, name, description, created_at) in tuples:
-            item = ClothingItem()
-            item.set_id(id)
-            item.set_wardrobe_id(wardrobe_id)
-            item.set_type_id(type_id)
-            item.set_name(name)
-            item.set_description(description)
-            result.append(item)
+        for (id, wardrobe_id, type_id, product_name, color, brand, season) in tuples:
+            clothing_item = ClothingItem()
+            clothing_item.set_id(id)
+            clothing_item.set_wardrobe_id(wardrobe_id)
+            clothing_item.set_type_id(type_id)
+            clothing_item.set_product_name(product_name)
+            clothing_item.set_color(color)
+            clothing_item.set_brand(brand)
+            clothing_item.set_season(season)
+            result.append(clothing_item)
 
-        self._connection.commit()
+        self._get_connection().commit()
+        cursor.close()
+        return result
+
+    def find_by_id(self, key):
+        """Suchen eines ClothingItem-Objekts nach ID."""
+        result = None
+        cursor = self._get_connection().cursor()
+        command = "SELECT * FROM clothing_item WHERE id='{}'".format(key)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        if tuples is not None and len(tuples) > 0:
+            (id, wardrobe_id, type_id, product_name, color, brand, season) = tuples[0]
+            result = ClothingItem()
+            result.set_id(id)
+            result.set_wardrobe_id(wardrobe_id)
+            result.set_type_id(type_id)
+            result.set_product_name(product_name)
+            result.set_color(color)
+            result.set_brand(brand)
+            result.set_season(season)
+
+        self._get_connection().commit()
         cursor.close()
         return result
 
     def find_by_wardrobe(self, wardrobe_id):
-        """Alle Kleidungsstücke eines Kleiderschranks auslesen"""
+        """Suchen von ClothingItem-Objekten nach Wardrobe ID."""
         result = []
-        cursor = self._connection.cursor()
-        command = "SELECT * FROM clothing_item WHERE wardrobe_id={}".format(wardrobe_id)
+        cursor = self._get_connection().cursor()
+        command = "SELECT * FROM clothing_item WHERE wardrobe_id='{}'".format(wardrobe_id)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, wardrobe_id, type_id, name, description, created_at) in tuples:
-            item = ClothingItem()
-            item.set_id(id)
-            item.set_wardrobe_id(wardrobe_id)
-            item.set_type_id(type_id)
-            item.set_name(name)
-            item.set_description(description)
-            result.append(item)
+        for (id, wardrobe_id, type_id, product_name, color, brand, season) in tuples:
+            clothing_item = ClothingItem()
+            clothing_item.set_id(id)
+            clothing_item.set_wardrobe_id(wardrobe_id)
+            clothing_item.set_type_id(type_id)
+            clothing_item.set_product_name(product_name)
+            clothing_item.set_color(color)
+            clothing_item.set_brand(brand)
+            clothing_item.set_season(season)
+            result.append(clothing_item)
 
-        self._connection.commit()
+        self._get_connection().commit()
         cursor.close()
         return result
 
-    def insert(self, item):
-        """Ein neues Kleidungsstück anlegen"""
-        cursor = self._connection.cursor()
+    def insert(self, clothing_item):
+        """Einfügen eines ClothingItem-Objekts in die Datenbank."""
+        cursor = self._get_connection().cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM clothing_item")
         tuples = cursor.fetchall()
 
         for (maxid) in tuples:
-            if maxid[0] is not None:
-                item.set_id(maxid[0] + 1)
+            if maxid[0] is None:
+                clothing_item.set_id(1)
             else:
-                item.set_id(1)
+                clothing_item.set_id(maxid[0] + 1)
 
-        command = "INSERT INTO clothing_item (id, wardrobe_id, type_id, name, description) VALUES (%s, %s, %s, %s, %s)"
-        data = (item.get_id(), item.get_wardrobe_id(), item.get_type_id(), 
-                item.get_name(), item.get_description())
-        cursor.execute(command, data)
-
-        self._connection.commit()
-        cursor.close()
-        return item
-
-    def update(self, item):
-        """Ein Kleidungsstück aktualisieren"""
-        cursor = self._connection.cursor()
-
-        command = "UPDATE clothing_item SET wardrobe_id=%s, type_id=%s, name=%s, description=%s WHERE id=%s"
-        data = (item.get_wardrobe_id(), item.get_type_id(), item.get_name(), 
-                item.get_description(), item.get_id())
-        cursor.execute(command, data)
-
-        self._connection.commit()
-        cursor.close()
-
-    def delete(self, item):
-        """Ein Kleidungsstück löschen"""
-        cursor = self._connection.cursor()
-
-        command = "DELETE FROM clothing_item WHERE id={}".format(item.get_id())
+        command = "INSERT INTO clothing_item (id, wardrobe_id, type_id, product_name, color, brand, season) VALUES ('{}','{}','{}','{}','{}','{}','{}')" \
+            .format(clothing_item.get_id(), clothing_item.get_wardrobe_id(), clothing_item.get_type_id(),
+                    clothing_item.get_product_name(), clothing_item.get_color(), 
+                    clothing_item.get_brand(), clothing_item.get_season())
         cursor.execute(command)
 
-        self._connection.commit()
+        self._get_connection().commit()
+        cursor.close()
+        return clothing_item
+
+    def update(self, clothing_item):
+        """Aktualisieren eines ClothingItem-Objekts in der Datenbank."""
+        cursor = self._get_connection().cursor()
+        command = "UPDATE clothing_item SET product_name='{}', color='{}', brand='{}', season='{}' WHERE id='{}'"\
+            .format(clothing_item.get_product_name(), clothing_item.get_color(), 
+                    clothing_item.get_brand(), clothing_item.get_season(), clothing_item.get_id())
+        cursor.execute(command)
+
+        self._get_connection().commit()
+        cursor.close()
+
+    def delete(self, clothing_item):
+        """Löschen eines ClothingItem-Objekts aus der Datenbank."""
+        cursor = self._get_connection().cursor()
+        command = "DELETE FROM clothing_item WHERE id='{}'".format(clothing_item.get_id())
+        cursor.execute(command)
+
+        self._get_connection().commit()
         cursor.close()

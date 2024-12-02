@@ -13,8 +13,6 @@ from server.bo.Style import Style
 from server.bo.Outfit import Outfit
 from server.bo.Constraint import Constraint
 
-from server.ConstraintHelper import ConstraintHelper
-
 
 class AdminException(Exception):
     """Basis-Exception für Administration-Fehler"""
@@ -40,7 +38,6 @@ class Administration:
         self._style_mapper = StyleMapper()
         self._constraint_mapper = ConstraintMapper()
         self._outfit_mapper = OutfitMapper()
-        self._constraint_helper = ConstraintHelper()
         self._cache_init()
 
     def _cache_init(self):

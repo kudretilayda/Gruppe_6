@@ -1,109 +1,108 @@
+# src/server/db/mapper/wardrobe_mapper.py
+
 from server.db.Mapper import Mapper
 from server.bo.Wardrobe import Wardrobe
 
 class WardrobeMapper(Mapper):
-    """Mapper-Klasse für Wardrobe-Objekte"""
+    """Mapper-Klasse für Wardrobe-Objekte."""
 
     def __init__(self):
         super().__init__()
 
     def find_all(self):
-        """Alle Wardrobe-Objekte auslesen"""
+        """Auslesen aller Wardrobe-Objekte."""
         result = []
-        cursor = self._connection.cursor()
+        cursor = self._get_connection().cursor()
         cursor.execute("SELECT * FROM wardrobe")
         tuples = cursor.fetchall()
 
-        for (id, owner_id, created_at) in tuples:
+        for (id, person_id, owner_name, created_at) in tuples:
             wardrobe = Wardrobe()
             wardrobe.set_id(id)
-            wardrobe.set_owner_id(owner_id)
+            wardrobe.set_person_id(person_id)
+            wardrobe.set_owner_name(owner_name)
+            wardrobe.set_creation_date(created_at)
             result.append(wardrobe)
 
-        self._connection.commit()
-        cursor.close()
-
-        return result
-
-    def find_by_id(self, id):
-        """Einen Wardrobe anhand seiner ID auslesen"""
-        result = None
-        cursor = self._connection.cursor()
-        command = "SELECT * FROM wardrobe WHERE id={}".format(id)
-        cursor.execute(command)
-        tuples = cursor.fetchall()
-
-        try:
-            (id, owner_id, created_at) = tuples[0]
-            wardrobe = Wardrobe()
-            wardrobe.set_id(id)
-            wardrobe.set_owner_id(owner_id)
-            result = wardrobe
-        except IndexError:
-            result = None
-
-        self._connection.commit()
+        self._get_connection().commit()
         cursor.close()
         return result
 
-    def find_by_owner_id(self, owner_id):
-        """Einen Wardrobe anhand der Owner ID auslesen"""
+    def find_by_id(self, key):
+        """Suchen eines Wardrobe-Objekts nach ID."""
         result = None
-        cursor = self._connection.cursor()
-        command = "SELECT * FROM wardrobe WHERE owner_id={}".format(owner_id)
+        cursor = self._get_connection().cursor()
+        command = "SELECT * FROM wardrobe WHERE id='{}'".format(key)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        try:
-            (id, owner_id, created_at) = tuples[0]
-            wardrobe = Wardrobe()
-            wardrobe.set_id(id)
-            wardrobe.set_owner_id(owner_id)
-            result = wardrobe
-        except IndexError:
-            result = None
+        if tuples is not None and len(tuples) > 0:
+            (id, person_id, owner_name, created_at) = tuples[0]
+            result = Wardrobe()
+            result.set_id(id)
+            result.set_person_id(person_id)
+            result.set_owner_name(owner_name)
+            result.set_creation_date(created_at)
 
-        self._connection.commit()
+        self._get_connection().commit()
+        cursor.close()
+        return result
+
+    def find_by_person_id(self, person_id):
+        """Suchen eines Wardrobe-Objekts nach Person ID."""
+        result = None
+        cursor = self._get_connection().cursor()
+        command = "SELECT * FROM wardrobe WHERE person_id='{}'".format(person_id)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        if tuples is not None and len(tuples) > 0:
+            (id, person_id, owner_name, created_at) = tuples[0]
+            result = Wardrobe()
+            result.set_id(id)
+            result.set_person_id(person_id)
+            result.set_owner_name(owner_name)
+            result.set_creation_date(created_at)
+
+        self._get_connection().commit()
         cursor.close()
         return result
 
     def insert(self, wardrobe):
-        """Einen neuen Wardrobe anlegen"""
-        cursor = self._connection.cursor()
+        """Einfügen eines Wardrobe-Objekts in die Datenbank."""
+        cursor = self._get_connection().cursor()
         cursor.execute("SELECT MAX(id) AS maxid FROM wardrobe")
         tuples = cursor.fetchall()
 
         for (maxid) in tuples:
-            if maxid[0] is not None:
-                wardrobe.set_id(maxid[0] + 1)
-            else:
+            if maxid[0] is None:
                 wardrobe.set_id(1)
+            else:
+                wardrobe.set_id(maxid[0] + 1)
 
-        command = "INSERT INTO wardrobe (id, owner_id) VALUES (%s, %s)"
-        data = (wardrobe.get_id(), wardrobe.get_owner_id())
-        cursor.execute(command, data)
+        command = "INSERT INTO wardrobe (id, person_id, owner_name) VALUES ('{}','{}','{}')" \
+            .format(wardrobe.get_id(), wardrobe.get_person_id(), wardrobe.get_owner_name())
+        cursor.execute(command)
 
-        self._connection.commit()
+        self._get_connection().commit()
         cursor.close()
         return wardrobe
 
     def update(self, wardrobe):
-        """Einen Wardrobe aktualisieren"""
-        cursor = self._connection.cursor()
+        """Aktualisieren eines Wardrobe-Objekts in der Datenbank."""
+        cursor = self._get_connection().cursor()
+        command = "UPDATE wardrobe SET owner_name='{}' WHERE id='{}'"\
+            .format(wardrobe.get_owner_name(), wardrobe.get_id())
+        cursor.execute(command)
 
-        command = "UPDATE wardrobe SET owner_id=%s WHERE id=%s"
-        data = (wardrobe.get_owner_id(), wardrobe.get_id())
-        cursor.execute(command, data)
-
-        self._connection.commit()
+        self._get_connection().commit()
         cursor.close()
 
     def delete(self, wardrobe):
-        """Einen Wardrobe löschen"""
-        cursor = self._connection.cursor()
-
-        command = "DELETE FROM wardrobe WHERE id={}".format(wardrobe.get_id())
+        """Löschen eines Wardrobe-Objekts aus der Datenbank."""
+        cursor = self._get_connection().cursor()
+        command = "DELETE FROM wardrobe WHERE id='{}'".format(wardrobe.get_id())
         cursor.execute(command)
 
-        self._connection.commit()
+        self._get_connection().commit()
         cursor.close()

@@ -1,17 +1,10 @@
-from abc import ABC
-from datetime import datetime
-import uuid
+# src/server/bo/BusinessObject.py
 
-class BusinessObject(ABC):
-    """Basisklasse für alle Business Objects
-
-    Jedes Business Object verfügt über einen eindeutigen Identifier sowie ein 
-    Erstellungsdatum.
-    """
-
+class BusinessObject:
+    """Basisklasse für alle BusinessObjects"""
     def __init__(self):
-        self._id = str(uuid.uuid4())  # Generiert eine UUID als ID
-        self._create_time = datetime.now()
+        self._id = None
+        self._creation_date = None
 
     def get_id(self):
         """Auslesen der ID."""
@@ -21,10 +14,17 @@ class BusinessObject(ABC):
         """Setzen der ID."""
         self._id = value
 
-    def get_create_time(self):
+    def get_creation_date(self):
         """Auslesen des Erstellungsdatums."""
-        return self._create_time
+        return self._creation_date
 
-    def set_create_time(self, date):
+    def set_creation_date(self, value):
         """Setzen des Erstellungsdatums."""
-        self._create_time = date
+        self._creation_date = value
+
+    def to_dict(self):
+        """Umwandeln des BusinessObject in ein Python dict()."""
+        return {
+            'id': self.get_id(),
+            'creation_date': self.get_creation_date()
+        }

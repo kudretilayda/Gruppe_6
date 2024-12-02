@@ -1,37 +1,28 @@
 from server.bo.BusinessObject import BusinessObject
 
 class Wardrobe(BusinessObject):
-    """Realisierung eines Kleiderschranks"""
-    
+    """Klasse für Wardrobe-Objekte."""
     def __init__(self):
         super().__init__()
-        self._owner_id = 0
-        self._items = []  # Liste von ClothingItem IDs
+        self._person_id = None
+        self._owner_name = None
 
-    def get_owner_id(self):
-        return self._owner_id
+    def get_person_id(self):
+        return self._person_id
 
-    def set_owner_id(self, value):
-        self._owner_id = value
+    def set_person_id(self, value):
+        self._person_id = value
 
-    def get_items(self):
-        return self._items
+    def get_owner_name(self):
+        return self._owner_name
 
-    def set_items(self, items):
-        self._items = items
+    def set_owner_name(self, value):
+        self._owner_name = value
 
-    def add_item(self, item_id):
-        if item_id not in self._items:
-            self._items.append(item_id)
-
-    def remove_item(self, item_id):
-        if item_id in self._items:
-            self._items.remove(item_id)
-
-    @staticmethod
-    def from_dict(dictionary=dict()):
-        obj = Wardrobe()
-        obj.set_id(dictionary.get("id"))
-        obj.set_owner_id(dictionary.get("owner_id"))
-        obj.set_items(dictionary.get("items", []))
-        return obj
+    def to_dict(self):
+        result = super().to_dict()
+        result.update({
+            'person_id': self.get_person_id(),
+            'owner_name': self.get_owner_name()
+        })
+        return result

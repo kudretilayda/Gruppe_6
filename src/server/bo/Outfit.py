@@ -1,13 +1,20 @@
 from server.bo.BusinessObject import BusinessObject
 
+
 class Outfit(BusinessObject):
-    """Realisierung eines Outfits"""
-    
+    """Klasse für Outfit-Objekte."""
     def __init__(self):
         super().__init__()
-        self._style_id = 0
-        self._name = ""
-        self._items = []  # Liste von ClothingItem IDs
+        self._name = None
+        self._style_id = None
+        self._created_by = None
+        self._items = []  # Liste von Kleidungsstück-IDs
+
+    def get_name(self):
+        return self._name
+
+    def set_name(self, value):
+        self._name = value
 
     def get_style_id(self):
         return self._style_id
@@ -15,11 +22,11 @@ class Outfit(BusinessObject):
     def set_style_id(self, value):
         self._style_id = value
 
-    def get_name(self):
-        return self._name
+    def get_created_by(self):
+        return self._created_by
 
-    def set_name(self, value):
-        self._name = value
+    def set_created_by(self, value):
+        self._created_by = value
 
     def get_items(self):
         return self._items
@@ -35,11 +42,12 @@ class Outfit(BusinessObject):
         if item_id in self._items:
             self._items.remove(item_id)
 
-    @staticmethod
-    def from_dict(dictionary=dict()):
-        obj = Outfit()
-        obj.set_id(dictionary.get("id"))
-        obj.set_style_id(dictionary.get("style_id"))
-        obj.set_name(dictionary.get("name"))
-        obj.set_items(dictionary.get("items", []))
-        return obj
+    def to_dict(self):
+        result = super().to_dict()
+        result.update({
+            'name': self.get_name(),
+            'style_id': self.get_style_id(),
+            'created_by': self.get_created_by(),
+            'items': self.get_items()
+        })
+        return result
