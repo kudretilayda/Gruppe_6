@@ -1,4 +1,5 @@
 # src/server/bo/binary_constraint.py
+from server.bo.Constraint import Constraint
 
 class BinaryConstraint(Constraint):
     """Klasse für binäre Constraints (Beziehungen zwischen zwei Kleidungsstücken)."""

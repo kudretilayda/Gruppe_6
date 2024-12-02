@@ -1,5 +1,6 @@
 from server.bo.BusinessObject import BusinessObject
 
+
 class Constraint(BusinessObject):
     """Realisierung einer Style-Regel"""
     

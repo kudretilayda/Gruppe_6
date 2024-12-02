@@ -1,3 +1,7 @@
+from server.bo.Constraint import Constraint
+from server.bo.UnaryConstraint import UnaryConstraint  # Für CardinalityConstraint
+
+
 class CardinalityConstraint(UnaryConstraint):
     """Klasse für Kardinalitäts-Constraints (Mengenbeschränkungen)."""
 
