@@ -1,15 +1,16 @@
-from server.bo import BusinessObject as bo
+from src.server.bo.BusinessObject import BusinessObject
 
-class Kleidungsstück (bo.BusinessObject):
+
+class Kleidungsstueck(BusinessObject):
 
     def __init__(self):
+        super().__init__()
         self.__kleidungsstueck_id = 0
-        self.__kleidungstyp = None  # Typ: Kleidungsstyp (kann eine andere Klasse sein)
+        self.__kleidungstyp = None
         self.__kleidungsstueck_name = ""
         self.__kleidungsstueck_size = 0
         self.__kleidungsstueck_color = ""
 
-    # Getter und Setter für kleidungsstueck_id
     def get_kleidungsstueck_id(self):
         return self.__kleidungsstueck_id
 
@@ -30,7 +31,6 @@ class Kleidungsstück (bo.BusinessObject):
     def set_kleidungsstueck_name(self, kleidungsstueck_name: str):
         self.__kleidungsstueck_name = kleidungsstueck_name
 
-    # Getter und Setter für kleidungsstueck_size
     def get_kleidungsstueck_size(self):
         return self.__kleidungsstueck_size
 
@@ -45,7 +45,6 @@ class Kleidungsstück (bo.BusinessObject):
         self.__kleidungsstueck_color = kleidungsstueck_color
 
     def __str__(self):
-        """Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz."""
         return "Kleidungsstück ID: {}, Typ: {}, Name: {}, Größe: {}, Farbe: {}".format(
             self.get_kleidungsstueck_id(),
             self.get_kleidungstyp(),
@@ -55,9 +54,11 @@ class Kleidungsstück (bo.BusinessObject):
         )
 
     @staticmethod
-    def from_dict(dictionary=dict()):
-        """Umwandeln eines Python dict() in ein Kleidungsstück()."""
-        obj = Kleidungsstück()
+    def from_dict(dictionary=None):
+
+        if dictionary is None:
+            dictionary = {}
+        obj = Kleidungsstueck()
         obj.set_kleidungsstueck_id(dictionary.get("kleidungsstueck_id", 0))
         obj.set_kleidungstyp(dictionary.get("kleidungstyp", None))
         obj.set_kleidungsstueck_name(dictionary.get("kleidungsstueck_name", ""))

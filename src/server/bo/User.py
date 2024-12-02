@@ -1,10 +1,11 @@
-from server.bo import BusinessObject as bo
+from src.server.bo.BusinessObject import BusinessObject
 
-class User(bo.BusinessObject):
+
+class User (BusinessObject):
 
     def __init__(self):
         super().__init__()
-        self.__user_id = ""
+        self.__user_id = 0
         self.__nachname = ""
         self.__vorname = ""
         self.__nickname = ""
@@ -56,7 +57,10 @@ class User(bo.BusinessObject):
         )
 
     @staticmethod
-    def from_dict(dictionary=dict()):
+    def from_dict(dictionary=None):
+        
+        if dictionary is None:
+            dictionary = dict()
         obj = User()
         obj.set_user_id(dictionary.get("user_id", ""))
         obj.set_nachname(dictionary.get("nachname", ""))

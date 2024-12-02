@@ -1,6 +1,7 @@
-from server.bo import BusinessObject as bo
+from src.server.bo.BusinessObject import BusinessObject
 
-class Style(bo.BusinessObject):
+
+class Style (BusinessObject):
 
     def __init__(self):
         super().__init__()
@@ -8,7 +9,7 @@ class Style(bo.BusinessObject):
         self.__features = ""
         self.__constraints = []
         self.__kleidungstypen = []
-
+    
     def get_style_id(self):
         return self.__style_id
 
@@ -43,7 +44,10 @@ class Style(bo.BusinessObject):
         )
 
     @staticmethod
-    def from_dict(dictionary=dict()):
+    def from_dict(dictionary=None):
+        
+        if dictionary is None:
+            dictionary = dict()
         obj = Style()
         obj.set_style_id(dictionary.get("style_id", 0))
         obj.set_features(dictionary.get("features", ""))
