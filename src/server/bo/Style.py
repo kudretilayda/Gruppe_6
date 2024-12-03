@@ -54,3 +54,6 @@ class Style (BusinessObject):
         obj.set_constraints(dictionary.get("constraints", []))
         obj.set_kleidungstypen(dictionary.get("kleidungstypen", []))
         return obj
+
+    def set_name(self, name):
+        pass
