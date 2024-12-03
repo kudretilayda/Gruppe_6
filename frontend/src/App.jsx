@@ -3,8 +3,8 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import { Typography, AppBar, Button, CssBaseline, Grid, Toolbar, Container } from '@mui/material';
 import CheckroomIcon from '@mui/icons-material/Checkroom';
-import Register from '../src/components/Register';
-import Login from '../src/components/Login';
+import Register from '../src/components/Login_Register/Register';
+import Login from '../src/components/Login_Register/Login';
 import Header from './components/Header';
 
 const App = () => {
