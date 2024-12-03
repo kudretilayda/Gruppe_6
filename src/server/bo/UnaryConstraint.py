@@ -1,29 +1,33 @@
-# src/server/bo/unary_constraint.py
-from server.bo.Constraint import Constraint
+from server.bo.ConstraintRule import ConstraintRule
+from datetime import datetime
 
-from server.bo.Constraint import Constraint
 
-class UnaryConstraint(Constraint):
-    """Klasse für unäre Constraints (Bedingungen für einzelne Kleidungsstücke)."""
-
+class UnaryConstraint(ConstraintRule):
     def __init__(self):
         super().__init__()
-        self._reference_object_id = None  # ID des Kleidungstyps
-        self.set_constraint_type('unary')
+        self._reference_object_id: str = ""
 
-    def get_reference_object_id(self):
-        """Auslesen der ID des Referenzobjekts."""
+    def get_reference_object_id(self) -> str:
         return self._reference_object_id
 
-    def set_reference_object_id(self, value):
-        """Setzen der ID des Referenzobjekts."""
+    def set_reference_object_id(self, value: str):
         self._reference_object_id = value
 
-    def to_dict(self):
-        """Umwandeln des UnaryConstraint-Objekts in ein Python dict()."""
+    def to_dict(self) -> dict:
         result = super().to_dict()
         result.update({
-            'reference_object_id': self.get_reference_object_id()
+            'reference_object_id': self._reference_object_id
         })
         return result
 
+    @staticmethod
+    def from_dict(data: dict) -> 'UnaryConstraint':
+        obj = UnaryConstraint()
+        obj.set_id(data.get('id'))
+        obj.set_style_id(data.get('style_id'))
+        obj.set_reference_object_id(data.get('reference_object_id'))
+        if data.get('constraint_type'):
+            obj.set_constraint_type(ConstraintRule(data['constraint_type']))
+        if 'created_at' in data:
+            obj.set_created_at(datetime.fromisoformat(data['created_at']))
+        return obj

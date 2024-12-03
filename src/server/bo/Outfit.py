@@ -1,4 +1,5 @@
 from server.bo.BusinessObject import BusinessObject
+from datetime import datetime
 
 
 class Outfit(BusinessObject):
@@ -51,3 +52,15 @@ class Outfit(BusinessObject):
             'items': self.get_items()
         })
         return result
+     
+    @staticmethod
+    def from_dict(data: dict) -> 'Outfit':
+        obj = Outfit()
+        obj.set_id(data.get('id'))
+        obj.set_outfit_name(data.get('outfit_name'))
+        obj.set_style_id(data.get('style_id'))
+        obj.set_created_by(data.get('created_by'))
+        obj.set_items(data.get('items', []))
+        if 'created_at' in data:
+            obj.set_created_at(datetime.fromisoformat(data['created_at']))
+        return obj

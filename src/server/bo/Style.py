@@ -1,53 +1,48 @@
 from server.bo.BusinessObject import BusinessObject
+from datetime import datetime
 
 
 class Style(BusinessObject):
-    """Klasse für Style-Objekte."""
     def __init__(self):
         super().__init__()
-        self._name = None
-        self._description = None
-        self._created_by = None
-        self._constraints = []  # Liste von Constraint-IDs
+        self._style_name: str = ""
+        self._style_description = None
+        self._created_by: str = ""
 
-    def get_name(self):
-        return self._name
+    def get_style_name(self) -> str:
+        return self._style_name
 
-    def set_name(self, value):
-        self._name = value
+    def set_style_name(self, value: str):
+        self._style_name = value
 
-    def get_description(self):
-        return self._description
+    def get_style_description(self):
+        return self._style_description
 
-    def set_description(self, value):
-        self._description = value
+    def set_style_description(self, value):
+        self._style_description = value
 
     def get_created_by(self):
         return self._created_by
 
-    def set_created_by(self, value):
+    def set_created_by(self, value: str):
         self._created_by = value
 
-    def get_constraints(self):
-        return self._constraints
-
-    def set_constraints(self, constraints):
-        self._constraints = constraints
-
-    def add_constraint(self, constraint_id):
-        if constraint_id not in self._constraints:
-            self._constraints.append(constraint_id)
-
-    def remove_constraint(self, constraint_id):
-        if constraint_id in self._constraints:
-            self._constraints.remove(constraint_id)
-
-    def to_dict(self):
+    def to_dict(self) -> dict:
         result = super().to_dict()
         result.update({
-            'name': self.get_name(),
-            'description': self.get_description(),
-            'created_by': self.get_created_by(),
-            'constraints': self.get_constraints()
+            'style_name': self._style_name,
+            'style_description': self._style_description,
+            'created_by': self._created_by
         })
         return result
+
+    @staticmethod
+    def from_dict(data: dict) -> 'Style':
+        obj = Style()
+        obj.set_id(data.get('id'))
+        obj.set_style_name(data.get('style_name'))
+        obj.set_style_description(data.get('style_description'))
+        obj.set_created_by(data.get('created_by'))
+        if 'created_at' in data:
+            obj.set_created_at(datetime.fromisoformat(data['created_at']))
+        return obj

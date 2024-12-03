@@ -3,7 +3,7 @@
 from flask import request
 from flask_restx import Namespace, Resource, fields
 from config.security_config import SecurityConfig
-from admin.Admin import Administration
+from admin.Administration import Administration
 
 style_namespace = Namespace('styles', description='Style operations')
 

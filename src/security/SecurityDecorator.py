@@ -36,7 +36,7 @@ class SecurityHandler:
 
 from functools import wraps
 from flask import request
-from .SecurityHandler import SecurityHandler
+from .SecurityDecorator import SecurityHandler
 
 class SecurityDecorator:
     """Decorator für die Token-Validierung"""

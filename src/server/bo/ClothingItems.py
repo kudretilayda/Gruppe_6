@@ -1,5 +1,11 @@
 from server.bo.BusinessObject import BusinessObject
+from enum import Enum
 
+class Season(Enum):
+    WINTER = "Winter"
+    SOMMER = "Sommer"
+    FRUEHLING = "Frühling"
+    HERBST = "Herbst"
 
 class ClothingItem(BusinessObject):
     """Klasse für ClothingItem-Objekte."""
