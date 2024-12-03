@@ -106,3 +106,14 @@ class WardrobeMapper(Mapper):
 
         self._get_connection().commit()
         cursor.close()
+
+
+    """Zu Testzwecken können wir diese Datei bei Bedarf auch ausführen, 
+um die grundsätzliche Funktion zu überprüfen.
+
+Anmerkung: Nicht professionell aber hilfreich..."""
+if (__name__ == "__main__"):
+    with OutfitMapper() as mapper:
+        result = mapper.find_all()
+        for p in result:
+            print(p)
