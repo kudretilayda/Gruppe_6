@@ -1,17 +1,12 @@
-# src/server/db/mapper/wardrobe_mapper.py
-
 from server.db.Mapper import Mapper
 from server.bo.Wardrobe import Wardrobe
-from server.db.OutfitMapper import OutfitMapper
+import uuid
 
 class WardrobeMapper(Mapper):
-    """Mapper-Klasse für Wardrobe-Objekte."""
-
     def __init__(self):
         super().__init__()
 
     def find_all(self):
-        """Auslesen aller Wardrobe-Objekte."""
         result = []
         cursor = self._get_connection().cursor()
         cursor.execute("SELECT * FROM wardrobe")
@@ -22,99 +17,95 @@ class WardrobeMapper(Mapper):
             wardrobe.set_id(id)
             wardrobe.set_person_id(person_id)
             wardrobe.set_owner_name(owner_name)
-            wardrobe.set_creation_date(created_at)
+            wardrobe.set_created_at(created_at)
             result.append(wardrobe)
 
         self._get_connection().commit()
         cursor.close()
         return result
 
-    def find_by_id(self, key):
-        """Suchen eines Wardrobe-Objekts nach ID."""
-        result = None
+    def find_by_id(self, wardrobe_id):
         cursor = self._get_connection().cursor()
-        command = "SELECT * FROM wardrobe WHERE id='{}'".format(key)
-        cursor.execute(command)
+        command = "SELECT * FROM wardrobe WHERE id=%s"
+        cursor.execute(command, (wardrobe_id,))
         tuples = cursor.fetchall()
 
-        if tuples is not None and len(tuples) > 0:
+        try:
             (id, person_id, owner_name, created_at) = tuples[0]
-            result = Wardrobe()
-            result.set_id(id)
-            result.set_person_id(person_id)
-            result.set_owner_name(owner_name)
-            result.set_creation_date(created_at)
+            wardrobe = Wardrobe()
+            wardrobe.set_id(id)
+            wardrobe.set_person_id(person_id)
+            wardrobe.set_owner_name(owner_name)
+            wardrobe.set_created_at(created_at)
+            result = wardrobe
+        except IndexError:
+            result = None
 
         self._get_connection().commit()
         cursor.close()
         return result
 
-    def find_by_user_id(self, person_id):
-        """Suchen eines Wardrobe-Objekts nach Person ID."""
+    def find_by_person_id(self, person_id):
         result = None
         cursor = self._get_connection().cursor()
-        command = "SELECT * FROM wardrobe WHERE person_id='{}'".format(person_id)
-        cursor.execute(command)
+        command = "SELECT * FROM wardrobe WHERE person_id=%s"
+        cursor.execute(command, (person_id,))
         tuples = cursor.fetchall()
 
-        if tuples is not None and len(tuples) > 0:
+        try:
             (id, person_id, owner_name, created_at) = tuples[0]
-            result = Wardrobe()
-            result.set_id(id)
-            result.set_person_id(person_id)
-            result.set_owner_name(owner_name)
-            result.set_creation_date(created_at)
+            wardrobe = Wardrobe()
+            wardrobe.set_id(id)
+            wardrobe.set_person_id(person_id)
+            wardrobe.set_owner_name(owner_name)
+            wardrobe.set_created_at(created_at)
+            result = wardrobe
+        except IndexError:
+            result = None
 
         self._get_connection().commit()
         cursor.close()
         return result
+
+    def get_clothes_by_wardrobe_id(self, wardrobe_id):
+        """Alle Kleidungsstücke eines Kleiderschranks ausgeben"""
+        from server.db.ClothingItemsMapper import ClothingItemMapper
+        mapper = ClothingItemMapper()
+        return mapper.find_by_wardrobe(wardrobe_id)
 
     def insert(self, wardrobe):
-        """Einfügen eines Wardrobe-Objekts in die Datenbank."""
         cursor = self._get_connection().cursor()
-        cursor.execute("SELECT MAX(id) AS maxid FROM wardrobe")
-        tuples = cursor.fetchall()
 
-        for (maxid) in tuples:
-            if maxid[0] is None:
-                wardrobe.set_id(1)
-            else:
-                wardrobe.set_id(maxid[0] + 1)
+        if not wardrobe.get_id():
+            wardrobe.set_id(str(uuid.uuid4()))
 
-        command = "INSERT INTO wardrobe (id, person_id, owner_name) VALUES ('{}','{}','{}')" \
-            .format(wardrobe.get_id(), wardrobe.get_person_id(), wardrobe.get_owner_name())
-        cursor.execute(command)
+        command = "INSERT INTO wardrobe (id, person_id, owner_name) VALUES (%s,%s,%s)"
+        data = (wardrobe.get_id(), wardrobe.get_person_id(), wardrobe.get_owner_name())
 
+        cursor.execute(command, data)
         self._get_connection().commit()
         cursor.close()
         return wardrobe
 
     def update(self, wardrobe):
-        """Aktualisieren eines Wardrobe-Objekts in der Datenbank."""
         cursor = self._get_connection().cursor()
-        command = "UPDATE wardrobe SET owner_name='{}' WHERE id='{}'"\
-            .format(wardrobe.get_owner_name(), wardrobe.get_id())
-        cursor.execute(command)
 
+        command = "UPDATE wardrobe SET person_id=%s, owner_name=%s WHERE id=%s"
+        data = (wardrobe.get_person_id(), wardrobe.get_owner_name(), wardrobe.get_id())
+
+        cursor.execute(command, data)
         self._get_connection().commit()
         cursor.close()
 
     def delete(self, wardrobe):
-        """Löschen eines Wardrobe-Objekts aus der Datenbank."""
         cursor = self._get_connection().cursor()
-        command = "DELETE FROM wardrobe WHERE id='{}'".format(wardrobe.get_id())
-        cursor.execute(command)
-
+        command = "DELETE FROM wardrobe WHERE id=%s"
+        cursor.execute(command, (wardrobe.get_id(),))
         self._get_connection().commit()
         cursor.close()
 
-
-    """Zu Testzwecken können wir diese Datei bei Bedarf auch ausführen, 
-um die grundsätzliche Funktion zu überprüfen.
-
-Anmerkung: Nicht professionell aber hilfreich..."""
-if (__name__ == "__main__"):
-    with OutfitMapper() as mapper:
+if __name__ == "__main__":
+    with WardrobeMapper() as mapper:
         result = mapper.find_all()
-        for p in result:
-            print(p)
+        for w in result:
+            print(w)
