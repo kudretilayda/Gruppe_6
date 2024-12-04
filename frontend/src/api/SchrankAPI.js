@@ -1,9 +1,9 @@
 import UserBO from './UserBO';
 import StyleBO from './StyleBO';
 import OutfitBO from './OutfitBO';
-import KleidungstypBO from './KleidungstypBO';
-import KleidungsstueckBO from './KleidungsstueckBO';
-import KleiderschrankBO from './KleiderschrankBO';
+import ClothingTypeBO from './ClothingTypeBO';
+import ClothingItemBO from './ClothingItemBO';
+import WardrobeBO from './WardrobeBO';
 import BinaryConstraintBO from './BinaryConstraintBO';
 import UnaryConstraintBO from './UnaryConstraintBO';
 import ImplicationConstraintBO from './ImplicationConstraintBO';
@@ -11,7 +11,7 @@ import MutexConstraintBO from './MutexConstraintBO';
 import CardinalityConstraintBO from './CardinalityConstraintBO';
 import ConstraintBO from './ConstraintBO';
 
-export default class SchrankAPI {
+export default class WardrobeAPI {
   static #api = null;
   #serverBaseURL = '/api';
 
@@ -20,11 +20,11 @@ export default class SchrankAPI {
   #updateUserURL = (id) => `${this.#serverBaseURL}/users/${id}`;
   #addUserURL = () => `${this.#serverBaseURL}/users`;
 
-  // Kleiderschrank endpoints
-  #getKleiderschrankURL = (userId) => `${this.#serverBaseURL}/users/${userId}/kleiderschrank`;
-  #addKleidungsstueckURL = (userId) => `${this.#serverBaseURL}/users/${userId}/kleiderschrank/kleidungsstuecke`;
-  #deleteKleidungsstueckURL = (userId, kleidungsstueckId) => 
-    `${this.#serverBaseURL}/users/${userId}/kleiderschrank/kleidungsstuecke/${kleidungsstueckId}`;
+  // Wardrobe endpoints
+  #getWardrobeURL = (userId) => `${this.#serverBaseURL}/users/${userId}/wardrobe`;
+  #addClothingItemURL = (userId) => `${this.#serverBaseURL}/users/${userId}/wardrobe/clothingitems`;
+  #deleteClothingItemURL = (userId, clothingItemId) => 
+    `${this.#serverBaseURL}/users/${userId}/wardrobe/clothingitems/${clothingItemId}`;
 
   // Outfit endpoints
   #getOutfitsURL = (userId) => `${this.#serverBaseURL}/users/${userId}/outfits`;
@@ -37,9 +37,9 @@ export default class SchrankAPI {
   #updateStyleURL = (styleId) => `${this.#serverBaseURL}/styles/${styleId}`;
   #deleteStyleURL = (styleId) => `${this.#serverBaseURL}/styles/${styleId}`;
 
-  // Kleidungstyp endpoints
-  #getKleidungstypenURL = () => `${this.#serverBaseURL}/kleidungstypen`;
-  #addKleidungstypURL = () => `${this.#serverBaseURL}/kleidungstypen`;
+  // ClothingType endpoints
+  #getClothingTypesURL = () => `${this.#serverBaseURL}/clothingtypes`;
+  #addClothingTypeURL = () => `${this.#serverBaseURL}/clothingtypes`;
 
   // Constraint endpoints
   #getConstraintsURL = (styleId) => `${this.#serverBaseURL}/styles/${styleId}/constraints`;
@@ -49,7 +49,7 @@ export default class SchrankAPI {
 
   static getAPI() {
     if (this.#api == null) {
-      this.#api = new SchrankAPI();
+      this.#api = new WardrobeAPI();
     }
     return this.#api;
   }
@@ -99,35 +99,35 @@ export default class SchrankAPI {
     })
   }
 
-  // Kleiderschrank management
-  getKleiderschrank(userId) {
-    return this.#fetchAdvanced(this.#getKleiderschrankURL(userId))
+  // Wardrobe management
+  getWardrobe(userId) {
+    return this.#fetchAdvanced(this.#getWardrobeURL(userId))
       .then(responseJSON => {
-        let kleiderschrankBO = KleiderschrankBO.fromJSON(responseJSON);
-        return new Promise(resolve => resolve(kleiderschrankBO));
+        let wardrobeBO = WardrobeBO.fromJSON(responseJSON);
+        return new Promise(resolve => resolve(wardrobeBO));
       })
   }
 
-  addKleidungsstueck(userId, kleidungsstueckBO) {
-    return this.#fetchAdvanced(this.#addKleidungsstueckURL(userId), {
+  addClothingItem(userId, clothingItemBO) {
+    return this.#fetchAdvanced(this.#addClothingItemURL(userId), {
       method: 'POST',
       headers: {
         'Accept': 'application/json, text/plain',
         'Content-type': 'application/json',
       },
-      body: JSON.stringify(kleidungsstueckBO)
+      body: JSON.stringify(clothingItemBO)
     }).then(responseJSON => {
-      let responseKleidungsstueckBO = KleidungsstueckBO.fromJSON(responseJSON)[0];
-      return new Promise(resolve => resolve(responseKleidungsstueckBO));
+      let responseClothingItemBO = ClothingItemBO.fromJSON(responseJSON)[0];
+      return new Promise(resolve => resolve(responseClothingItemBO));
     })
   }
 
-  deleteKleidungsstueck(userId, kleidungsstueckId) {
-    return this.#fetchAdvanced(this.#deleteKleidungsstueckURL(userId, kleidungsstueckId), {
+  deleteClothingItem(userId, clothingItemId) {
+    return this.#fetchAdvanced(this.#deleteClothingItemURL(userId, clothingItemId), {
       method: 'DELETE'
     }).then(responseJSON => {
-      let responseKleidungsstueckBO = KleidungsstueckBO.fromJSON(responseJSON)[0];
-      return new Promise(resolve => resolve(responseKleidungsstueckBO));
+      let responseClothingItemBO = ClothingItemBO.fromJSON(responseJSON)[0];
+      return new Promise(resolve => resolve(responseClothingItemBO));
     })
   }
 
@@ -209,26 +209,26 @@ export default class SchrankAPI {
     })
   }
 
-  // Kleidungstyp management
-  getKleidungstypen() {
-    return this.#fetchAdvanced(this.#getKleidungstypenURL())
+  // ClothingType management
+  getClothingTypes() {
+    return this.#fetchAdvanced(this.#getClothingTypesURL())
       .then(responseJSON => {
-        let kleidungstypBOs = KleidungstypBO.fromJSON(responseJSON);
-        return new Promise(resolve => resolve(kleidungstypBOs));
+        let clothingTypeBOs = ClothingTypeBO.fromJSON(responseJSON);
+        return new Promise(resolve => resolve(clothingTypeBOs));
       })
   }
 
-  addKleidungstyp(kleidungstypBO) {
-    return this.#fetchAdvanced(this.#addKleidungstypURL(), {
+  addClothingType(clothingTypeBO) {
+    return this.#fetchAdvanced(this.#addClothingTypeURL(), {
       method: 'POST',
       headers: {
         'Accept': 'application/json, text/plain',
         'Content-type': 'application/json',
       },
-      body: JSON.stringify(kleidungstypBO)
+      body: JSON.stringify(clothingTypeBO)
     }).then(responseJSON => {
-      let responseKleidungstypBO = KleidungstypBO.fromJSON(responseJSON)[0];
-      return new Promise(resolve => resolve(responseKleidungstypBO));
+      let responseClothingTypeBO = ClothingTypeBO.fromJSON(responseJSON)[0];
+      return new Promise(resolve => resolve(responseClothingTypeBO));
     })
   }
 
