@@ -1,37 +1,35 @@
-# src/server/db/mapper/mapper.py
+from abc import ABC, abstractmethod
+import os
+from server.db.database import MySQLConnector
+from typing import List, Optional
+import mysql.connector as connector
 
-import mysql.connector
-from mysql.connector import Error
-from config.config import get_db_connection
-
-class Mapper:
-    """Basis-Mapper-Klasse, von der alle anderen Mapper erben."""
-
+class Mapper(ABC):
     def __init__(self):
         self._cnx = None
 
-    def _get_connection(self):
-        """Datenbankverbindung herstellen"""
-        if self._cnx is None:
-            self._cnx = get_db_connection()
-        return self._cnx
 
-    def find_all(self):
-        """Abstrakte Methode, die von Kindklassen implementiert werden muss"""
-        raise NotImplementedError("Please implement this method")
+        """Wenn wir uns in der Cloud befinden, wird diese Verbindung genutzt"""
+        if os.getenv('GAE_ENV', '').startswith('standard'):
+            self._cnx = connector.connect(user='demo', password='demo',
+                                          unix_socket='/cloudsql/smartfridge-app-428309:europe-west3:smartfridge',
+                                          database='Sopra')
 
-    def find_by_id(self, key):
-        """Abstrakte Methode, die von Kindklassen implementiert werden muss"""
-        raise NotImplementedError("Please implement this method")
+        else:
+            """Sollten wir uns Lokal aufhalten, wird diese Verbindung genutzt"""
+            self._cnx = connector.connect(user='root', password='9902',
+                              host='localhost',
+                              database='sopra')
 
-    def insert(self, object):
-        """Abstrakte Methode, die von Kindklassen implementiert werden muss"""
-        raise NotImplementedError("Please implement this method")
 
-    def update(self, object):
-        """Abstrakte Methode, die von Kindklassen implementiert werden muss"""
-        raise NotImplementedError("Please implement this method")
+        return self
 
-    def delete(self, object):
-        """Abstrakte Methode, die von Kindklassen implementiert werden muss"""
-        raise NotImplementedError("Please implement this method")
+
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        """Verbindung mit der Datenbank trennen"""
+        if exc_type or exc_val or exc_tb:
+            self._cnx.rollback()
+        else:
+            self._cnx.commit()
+        self._cnx.close()

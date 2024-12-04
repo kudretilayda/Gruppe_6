@@ -1,5 +1,7 @@
 from server.db.Mapper import Mapper
 from server.bo.Style import Style
+from server.db.OutfitMapper import OutfitMapper
+
 
 class StyleMapper(Mapper):
     """Mapper-Klasse für Style-Objekte."""

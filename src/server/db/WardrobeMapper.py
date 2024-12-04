@@ -2,6 +2,7 @@
 
 from server.db.Mapper import Mapper
 from server.bo.Wardrobe import Wardrobe
+from server.db.OutfitMapper import OutfitMapper
 
 class WardrobeMapper(Mapper):
     """Mapper-Klasse für Wardrobe-Objekte."""
@@ -48,7 +49,7 @@ class WardrobeMapper(Mapper):
         cursor.close()
         return result
 
-    def find_by_person_id(self, person_id):
+    def find_by_user_id(self, person_id):
         """Suchen eines Wardrobe-Objekts nach Person ID."""
         result = None
         cursor = self._get_connection().cursor()

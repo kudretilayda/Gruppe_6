@@ -1,125 +1,75 @@
-# src/server/db/mapper/UserMapper.py
-
+from server.bo.User import User  # Import der User-Klasse
 from server.db.Mapper import Mapper
-from server.bo.User import Person
 
 class UserMapper(Mapper):
-    """Mapper-Klasse für Person-Objekte."""
-
-    def __init__(self):
-        super().__init__()
-
-    def find_all(self):
-        """Auslesen aller Person-Objekte."""
-        result = []
+    def find_by_id(self, user_id: str) -> User:
         cursor = self._get_connection().cursor()
-        cursor.execute("SELECT * FROM person")
-        tuples = cursor.fetchall()
-
-        for (id, google_id, firstname, lastname, nickname, created_at) in tuples:
-            person = Person()
-            person.set_id(id)
-            person.set_google_id(google_id)
-            person.set_firstname(firstname)
-            person.set_lastname(lastname)
-            person.set_nickname(nickname)
-            person.set_creation_date(created_at)
-            result.append(person)
-
-        self._get_connection().commit()
-        cursor.close()
-        return result
-
-    def find_by_id(self, key):
-        """Suchen eines Person-Objekts nach ID."""
-        result = None
-        cursor = self._get_connection().cursor()
-        command = "SELECT * FROM person WHERE id='{}'".format(key)
-        cursor.execute(command)
-        tuples = cursor.fetchall()
-
-        if tuples is not None and len(tuples) > 0:
-            (id, google_id, firstname, lastname, nickname, created_at) = tuples[0]
-            result = Person()
-            result.set_id(id)
-            result.set_google_id(google_id)
-            result.set_firstname(firstname)
-            result.set_lastname(lastname)
-            result.set_nickname(nickname)
-            result.set_creation_date(created_at)
-
-        self._get_connection().commit()
-        cursor.close()
-        return result
-
-    def find_by_google_id(self, google_id):
-        """Suchen eines Person-Objekts nach Google ID."""
-        result = None
-        cursor = self._get_connection().cursor()
-        command = "SELECT * FROM person WHERE google_id='{}'".format(google_id)
-        cursor.execute(command)
-        tuples = cursor.fetchall()
-
-        if tuples is not None and len(tuples) > 0:
-            (id, google_id, firstname, lastname, nickname, created_at) = tuples[0]
-            result = Person()
-            result.set_id(id)
-            result.set_google_id(google_id)
-            result.set_firstname(firstname)
-            result.set_lastname(lastname)
-            result.set_nickname(nickname)
-            result.set_creation_date(created_at)
-
-        self._get_connection().commit()
-        cursor.close()
-        return result
-
-    def insert(self, person):
-        """Einfügen eines Person-Objekts in die Datenbank."""
-        cursor = self._get_connection().cursor()
-        cursor.execute("SELECT MAX(id) AS maxid FROM person")
+        cursor.execute("SELECT * FROM user WHERE id=%s", (user_id,))
         tuples = cursor.fetchall()
         
-        for (maxid) in tuples:
-            if maxid[0] is None:
-                person.set_id(1)
-            else:
-                person.set_id(maxid[0] + 1)
+        try:
+            if tuples:
+                (id, google_id, first_name, last_name, nick_name, email, created_at) = tuples[0]
+                user = User()
+                user.set_id(id)
+                user.set_google_id(google_id)
+                user.set_first_name(first_name)
+                user.set_last_name(last_name)
+                user.set_nick_name(nick_name)
+                user.set_email(email)
+                user.set_created_at(created_at)
+                return user
+            return None
+        finally:
+            cursor.close()
 
-        command = "INSERT INTO person (id, google_id, firstname, lastname, nickname) VALUES ('{}','{}','{}','{}','{}')" \
-            .format(person.get_id(), person.get_google_id(), person.get_firstname(), 
-                    person.get_lastname(), person.get_nickname())
-        cursor.execute(command)
-
-        self._get_connection().commit()
-        cursor.close()
-        return person
-
-    def update(self, person):
-        """Aktualisieren eines Person-Objekts in der Datenbank."""
+    def find_by_google_id(self, google_id: str) -> User:
         cursor = self._get_connection().cursor()
-        command = "UPDATE person SET firstname='{}', lastname='{}', nickname='{}' WHERE id='{}'"\
-            .format(person.get_firstname(), person.get_lastname(), person.get_nickname(), person.get_id())
-        cursor.execute(command)
-
-        self._get_connection().commit()
-        cursor.close()
-
-    def delete(self, person):
-        """Löschen eines Person-Objekts aus der Datenbank."""
-        cursor = self._get_connection().cursor()
-        command = "DELETE FROM person WHERE id='{}'".format(person.get_id())
-        cursor.execute(command)
-
-        self._get_connection().commit()
-        cursor.close()
+        cursor.execute("SELECT * FROM user WHERE google_id=%s", (google_id,))
+        tuples = cursor.fetchall()
         
-    """Zu Testzwecken können wir diese Datei bei Bedarf auch ausführen, 
-um die grundsätzliche Funktion zu überprüfen.
+        try:
+            if tuples:
+                (id, google_id, first_name, last_name, nick_name, email, created_at) = tuples[0]
+                user = User()
+                user.set_id(id)
+                user.set_google_id(google_id)
+                user.set_first_name(first_name)
+                user.set_last_name(last_name)
+                user.set_nick_name(nick_name)
+                user.set_email(email)
+                user.set_created_at(created_at)
+                return user
+            return None
+        finally:
+            cursor.close()
 
-Anmerkung: Nicht professionell aber hilfreich..."""
-if (__name__ == "__main__"):
-    with OutfitMapper() as mapper:
-        result = mapper.find_all()
-        for p in result:
-            print(p)
+    def insert(self, user: User):
+        cursor = self._get_connection().cursor()
+        cursor.execute("""
+            INSERT INTO user (id, google_id, first_name, last_name, nick_name, email)
+            VALUES (%s, %s, %s, %s, %s, %s)
+        """, (user.get_id(), user.get_google_id(), user.get_first_name(),
+              user.get_last_name(), user.get_nick_name(), user.get_email()))
+        self._get_connection().commit()
+        cursor.close()
+        return user
+
+    def update(self, user: User) -> User:
+        cursor = self._get_connection().cursor()
+        cursor.execute("""
+            UPDATE user 
+            SET google_id=%s, first_name=%s, last_name=%s, nick_name=%s, email=%s
+            WHERE id=%s
+        """, (user.get_google_id(), user.get_first_name(), user.get_last_name(),
+              user.get_nick_name(), user.get_email(), user.get_id()))
+        self._get_connection().commit()
+        cursor.close()
+        return user
+
+    def delete(self, user_id: str):
+        cursor = self._get_connection().cursor()
+        cursor.execute("DELETE FROM user WHERE id=%s", (user_id,))
+        self._get_connection().commit()
+        cursor.close()
+        return True
