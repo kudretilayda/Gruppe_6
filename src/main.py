@@ -86,20 +86,20 @@ mutex_constraint = api.inherit('MutexConstraint', constraint, {
 Basisklassen und Modelle
 """
 
-@matchmaker.route('/user')
-@matchmaker.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
+@kleiderschrank.route('/user')
+@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
 class UserListOperations(Resource):
     """Auslesen aller User-Objekte."""
     
-    @matchmaker.marshal_list_with(user)
+    @kleiderschrank.marshal_list_with(user)
     @secured
     def get(self):
         adm = Administration()
         users = adm.get_all_users()
         return users
 
-    @matchmaker.marshal_with(user, code=200)
-    @matchmaker.expect(user)
+    @kleiderschrank.marshal_with(user, code=200)
+    @kleiderschrank.expect(user)
     @secured
     def post(self):
         """Anlegen eines neuen User-Objekts."""
@@ -123,10 +123,10 @@ class UserListOperations(Resource):
         else:
             return '', 500
 
-@matchmaker.route('/user/<id>')
-@matchmaker.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
+@kleiderschrank.route('/user/<id>')
+@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
 class UserOperations(Resource):
-    @matchmaker.marshal_with(user)
+    @kleiderschrank.marshal_with(user)
     @secured
     def get(self, id):
         """Auslesen eines bestimmten User-Objekts anhand der ID."""
@@ -134,8 +134,8 @@ class UserOperations(Resource):
         single_user = adm.get_user_by_id(id)
         return single_user
 
-    @matchmaker.marshal_with(user)
-    @matchmaker.expect(user, validate=True)
+    @kleiderschrank.marshal_with(user)
+    @kleiderschrank.expect(user, validate=True)
     @secured
     def put(self, id):
         """Update eines bestimmten User-Objekts anhand der ID."""
@@ -157,10 +157,10 @@ class UserOperations(Resource):
         adm.delete_user(user_to_delete)
         return '', 200
 
-@matchmaker.route('/user-by-google-id/<string:google_id>')
-@matchmaker.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
+@kleiderschrank.route('/user-by-google-id/<string:google_id>')
+@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
 class UserGoogleOperations(Resource):
-    @matchmaker.marshal_with(user)
+    @kleiderschrank.marshal_with(user)
     @secured
     def get(self, google_id):
         """Auslesen eines bestimmten User-Objekts anhand der Google-ID."""
