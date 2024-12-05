@@ -1,4 +1,4 @@
-from src.server.bo.Kleidungsstueck import Kleidungsstueck
+from server.bo.ClothingItem import Kleidungsstueck
 from src.server.db.Mapper import Mapper
 
 

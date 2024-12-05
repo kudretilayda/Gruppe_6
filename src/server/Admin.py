@@ -3,9 +3,9 @@ from src.server.bo.BusinessObject import BusinessObject
 from src.server.bo.CardinalityConstraint import CardinalityConstraint
 from src.server.bo.Constraint import Constraint
 from src.server.bo.ImplicationConstraint import ImplicationConstraint
-from src.server.bo.Kleiderschrank import Kleiderschrank
-from src.server.bo.Kleidungsstueck import Kleidungsstueck
-from src.server.bo.Kleidungstyp import Kleidungstyp
+from src.server.bo.Wardrobe import Kleiderschrank
+from server.bo.ClothingItem import Kleidungsstueck
+from server.bo.ClothingType import Kleidungstyp
 from src.server.bo.MutexConstraint import MutexConstraint
 from src.server.bo.Outfit import Outfit
 from src.server.bo.Style import Style
