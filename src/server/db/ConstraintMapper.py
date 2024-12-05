@@ -1,45 +1,83 @@
-# src/server/bo/constraint_rule.py
+from server.db.Mapper import Mapper
+from server.bo.ConstraintRule import Constraint, BinaryConstraint, UnaryConstraint
+import uuid
 
-from server.bo import BusinessObject
-
-class Constraint(BusinessObject):
-    """Basisklasse für alle Constraint-Regeln."""
-
+class ConstraintMapper(Mapper):
     def __init__(self):
         super().__init__()
-        self._style_id = None
-        self._constraint_type = None  # Enum: 'binary', 'unary', 'implikation', 'mutex', 'kardinalitaet'
 
-    def get_style_id(self):
-        """Auslesen der Style ID."""
-        return self._style_id
+    def find_by_style(self, style_id):
+        cursor = self._cnx.cursor()
+        command = """
+            SELECT cr.*, bc.reference_object1_id, bc.reference_object2_id,
+                   uc.reference_object_id
+            FROM constraint_rule cr
+            LEFT JOIN binary_constraint bc ON cr.id = bc.id
+            LEFT JOIN unary_constraint uc ON cr.id = uc.id
+            WHERE cr.style_id=%s"""
+        cursor.execute(command, (style_id,))
+        tuples = cursor.fetchall()
+        result = []
 
-    def set_style_id(self, value):
-        """Setzen der Style ID."""
-        self._style_id = value
+        for tuple in tuples:
+            if tuple[4]:  # Binary constraint
+                constraint = BinaryConstraint()
+                constraint.set_reference_object1_id(tuple[4])
+                constraint.set_reference_object2_id(tuple[5])
+            elif tuple[6]:  # Unary constraint
+                constraint = UnaryConstraint()
+                constraint.set_reference_object_id(tuple[6])
+            else:
+                constraint = Constraint()
 
-    def get_constraint_type(self):
-        """Auslesen des Constraint-Typs."""
-        return self._constraint_type
+            constraint.set_id(tuple[0])
+            constraint.set_style_id(tuple[1])
+            constraint.set_constraint_type(tuple[2])
+            result.append(constraint)
 
-    def set_constraint_type(self, value):
-        """Setzen des Constraint-Typs."""
-        self._constraint_type = value
-
-    def to_dict(self):
-        """Umwandeln des Constraint-Objekts in ein Python dict()."""
-        result = super().to_dict()
-        result.update({
-            'style_id': self.get_style_id(),
-            'constraint_type': self.get_constraint_type()
-        })
+        self._cnx.commit()
+        cursor.close()
         return result
 
-    @staticmethod
-    def from_dict(dictionary=dict()):
-        """Umwandeln eines Python dict() in ein Constraint-Objekt."""
-        obj = Constraint()
-        obj.set_id(dictionary.get('id'))
-        obj.set_style_id(dictionary.get('style_id'))
-        obj.set_constraint_type(dictionary.get('constraint_type'))
-        return obj
+    def insert(self, constraint):
+        cursor = self._cnx.cursor()
+        try:
+            if not constraint.get_id():
+                constraint.set_id(str(uuid.uuid4()))
+
+            command = "INSERT INTO constraint_rule (id, style_id, constraint_type) VALUES (%s,%s,%s)"
+            data = (constraint.get_id(), constraint.get_style_id(), constraint.get_constraint_type())
+            cursor.execute(command, data)
+
+            if isinstance(constraint, BinaryConstraint):
+                command = """INSERT INTO binary_constraint 
+                           (id, reference_object1_id, reference_object2_id)
+                           VALUES (%s,%s,%s)"""
+                data = (constraint.get_id(), constraint.get_reference_object1_id(),
+                       constraint.get_reference_object2_id())
+                cursor.execute(command, data)
+            elif isinstance(constraint, UnaryConstraint):
+                command = "INSERT INTO unary_constraint (id, reference_object_id) VALUES (%s,%s)"
+                data = (constraint.get_id(), constraint.get_reference_object_id())
+                cursor.execute(command, data)
+
+            self._cnx.commit()
+            return constraint
+        except:
+            self._cnx.rollback()
+            raise
+        finally:
+            cursor.close()
+
+    def delete(self, constraint):
+        cursor = self._cnx.cursor()
+        try:
+            # Constraints will be cascade deleted from binary/unary tables
+            command = "DELETE FROM constraint_rule WHERE id=%s"
+            cursor.execute(command, (constraint.get_id(),))
+            self._cnx.commit()
+        except:
+            self._cnx.rollback()
+            raise
+        finally:
+            cursor.close()
