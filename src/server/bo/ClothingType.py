@@ -1,7 +1,7 @@
 from src.server.bo.BusinessObject import BusinessObject
 
 
-class Kleidungstyp(BusinessObject):
+class ClothingType(BusinessObject):
     def __init__(self):
         super().__init__()
         self._id = int
@@ -35,7 +35,7 @@ class Kleidungstyp(BusinessObject):
     def from_dict(dictionary=None):
         if dictionary is None:
             dictionary = {}
-        obj = Kleidungstyp()
+        obj = ClothingType()
         obj.set_id(dictionary.get("kleidungstyp_id", 0))
         obj.set_name(dictionary.get("kleidungstyp_name", ""))
         obj.set_verwendung(dictionary.get("kleidungstyp_verwendung", 0))
