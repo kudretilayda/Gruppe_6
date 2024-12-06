@@ -1,5 +1,12 @@
 from server.db.Mapper import Mapper
-from server.bo.ConstraintRule import Constraint, BinaryConstraint, UnaryConstraint
+from server.bo.ConstraintRule import (
+    Constraint,
+    BinaryConstraint, 
+    UnaryConstraint,
+    ImplikationConstraint,
+    MutexConstraint,
+    KardinalitaetConstraint
+)
 import uuid
 
 class ConstraintMapper(Mapper):

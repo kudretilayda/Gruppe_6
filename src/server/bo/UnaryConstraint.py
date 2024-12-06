@@ -5,13 +5,14 @@ from datetime import datetime
 class UnaryConstraint(ConstraintRule):
     def __init__(self):
         super().__init__()
-        self._reference_object_id: str = ""
+        self._reference_object_id: datetime[str] = None
+        self._constraint_type = "unary"
 
-    def get_reference_object_id(self) -> str:
+    def get_reference_object_id(self) -> datetime[str]:
         return self._reference_object_id
 
-    def set_reference_object_id(self, value: str):
-        self._reference_object_id = value
+    def set_reference_object_id(self, id: str):
+        self._reference_object_id = id
 
     def to_dict(self) -> dict:
         result = super().to_dict()
@@ -26,8 +27,6 @@ class UnaryConstraint(ConstraintRule):
         obj.set_id(data.get('id'))
         obj.set_style_id(data.get('style_id'))
         obj.set_reference_object_id(data.get('reference_object_id'))
-        if data.get('constraint_type'):
-            obj.set_constraint_type(ConstraintRule(data['constraint_type']))
         if 'created_at' in data:
             obj.set_created_at(datetime.fromisoformat(data['created_at']))
         return obj

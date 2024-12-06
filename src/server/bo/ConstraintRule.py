@@ -1,47 +1,38 @@
 from server.bo.BusinessObject import BusinessObject
 from datetime import datetime
-from enum import Enum
 
-class ConstraintType(Enum):
-    BINARY = "binary"
-    UNARY = "unary"
-    IMPLIKATION = "implikation"
-    MUTEX = "mutex"
-    KARDINALITAET = "kardinalitaet"
-
-class ConstraintRule(BusinessObject):
+class Constraint(BusinessObject):
     def __init__(self):
         super().__init__()
-        self._style_id: str = ""
-        self._constraint_type: ConstraintType = None
+        self._style_id: datetime[str] = None
+        self._constraint_type: str = ""
 
-    def get_style_id(self) -> str:
+    def get_style_id(self) -> datetime[str]:
         return self._style_id
 
-    def set_style_id(self, value: str):
-        self._style_id = value
+    def set_style_id(self, style_id: str):
+        self._style_id = style_id
 
-    def get_constraint_type(self):
+    def get_constraint_type(self) -> str:
         return self._constraint_type
 
-    def set_constraint_type(self, value: ConstraintType):
-        self._constraint_type = value
+    def set_constraint_type(self, constraint_type: str):
+        self._constraint_type = constraint_type
 
     def to_dict(self) -> dict:
         result = super().to_dict()
         result.update({
             'style_id': self._style_id,
-            'constraint_type': self._constraint_type.value if self._constraint_type else None
+            'constraint_type': self._constraint_type
         })
         return result
 
     @staticmethod
-    def from_dict(data: dict) -> 'ConstraintRule':
-        obj = ConstraintRule()
+    def from_dict(data: dict) -> 'Constraint':
+        obj = Constraint()
         obj.set_id(data.get('id'))
         obj.set_style_id(data.get('style_id'))
-        if data.get('constraint_type'):
-            obj.set_constraint_type(ConstraintType(data['constraint_type']))
+        obj.set_constraint_type(data.get('constraint_type'))
         if 'created_at' in data:
             obj.set_created_at(datetime.fromisoformat(data['created_at']))
         return obj
