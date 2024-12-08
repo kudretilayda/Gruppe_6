@@ -9,12 +9,17 @@ class Kleidungsstueck:
         self.kleidungstyp = None
 
 
-class Style:
-    def __init__(self, constraint_list):
-        constraint_list = constraint_list
-
-
 '''
+class Style:
+    def __init__(self, kleidungstyp):
+        constraint_list = []
+        
+    def auswerten(self, kleidungstyp):
+        if not Kleidungstyp()
+        if not self.Klei(self.kleidungstyp):
+            raise ValueError(f"Constraint verletzt für Bezugsobjekt: {self.obj}.")
+
+
 class Outfit:
 def __init__(self)
 '''

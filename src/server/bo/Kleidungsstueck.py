@@ -8,8 +8,9 @@ class Kleidungsstueck(BusinessObject):
         self.__kleidungsstueck_id = 0
         self.__kleidungstyp = None
         self.__kleidungsstueck_name = ""
+        self.__kleidungsstueck_usage = ""
         self.__kleidungsstueck_size = 0
-        self.__kleidungsstueck_color = ""
+        self.__kleidungsstueck_color = ""   # vllt Features wie size und color in constraints reinmachen
 
     def get_kleidungsstueck_id(self):
         return self.__kleidungsstueck_id

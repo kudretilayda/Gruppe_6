@@ -1,9 +1,9 @@
 from src.server.db.Mapper import Mapper
-from src.server.bo.BinaryConstraint import BinaryConstraint
-from src.server.bo.CardinalityConstraint import CardinalityConstraint
-from src.server.bo.UnaryConstraint import UnaryConstraint
-from src.server.bo.ImplicationConstraint import ImplicationConstraint
-from src.server.bo.MutexConstraint import MutexConstraint
+from src.server.Constraints.BinaryConstraint import BinaryConstraint
+from src.server.Constraints.CardinalityConstraint import CardinalityConstraint
+from src.server.Constraints.UnaryConstraint import UnaryConstraint
+from src.server.Constraints.ImplicationConstraint import ImplicationConstraint
+from src.server.Constraints.MutexConstraint import MutexConstraint
 
 
 class ConstraintMapper(Mapper):

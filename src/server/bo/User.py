@@ -69,6 +69,3 @@ class User (BusinessObject):
         obj.set_google_id(dictionary.get("google_id", ""))
         obj.set_email(dictionary.get("email", ""))
         return obj
-
-    def set_creation_date(self, created_at):
-        pass

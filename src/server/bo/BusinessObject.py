@@ -2,8 +2,6 @@ from abc import ABC
 
 
 class BusinessObject(ABC):
-    """Gemeinsame Basisklasse aller BusinessObjects in diesem Projekt.
-    Zentrales Merkmal ist, dass jedes BusinessObject einen Primärschlüssel besitzt."""
 
     def __init__(self):
         self._id = 0

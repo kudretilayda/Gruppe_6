@@ -1,4 +1,4 @@
-from src.server.bo.Constraint import Constraint
+from src.server.Constraints.Constraint import Constraint
 
 
 class BinaryConstraint(Constraint):
