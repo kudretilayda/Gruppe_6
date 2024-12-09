@@ -1,24 +1,24 @@
 import BusinessObject from "./BusinessObject";
 
 /**
- * Repräsentiert ein Outfit-Objekt
+ * Represents an Outfit object.
  */
 export default class OutfitBO extends BusinessObject {
   /**
-   * Konstruiert ein OutfitBO-Objekt.
+   * Constructs an OutfitBO object.
    *
-   * @param {Number} aOutfitId - ID des Outfits.
-   * @param {Array} aKleidungsstuecke - Kleidungsstücke des Outfits.
-   * @param {Object} aStyle - Style des Outfits.
+   * @param {Number} aOutfitId - ID of the outfit.
+   * @param {Array} aClothingItems - Clothing items of the outfit.
+   * @param {Object} aStyle - Style of the outfit.
    */
-  constructor(aOutfitId = 0, aKleidungsstuecke = [], aStyle = null) {
+  constructor(aOutfitId = 0, aClothingItems = [], aStyle = null) {
     super();
     this.outfitId = aOutfitId;
-    this.kleidungsstuecke = aKleidungsstuecke;
+    this.clothingItems = aClothingItems;
     this.style = aStyle;
   }
 
-  // Getter und Setter für outfitId
+  // Getter and setter for outfitId
   getOutfitId() {
     return this.outfitId;
   }
@@ -27,16 +27,16 @@ export default class OutfitBO extends BusinessObject {
     this.outfitId = value;
   }
 
-  // Getter und Setter für kleidungsstuecke
-  getKleidungsstuecke() {
-    return this.kleidungsstuecke;
+  // Getter and setter for clothingItems
+  getClothingItems() {
+    return this.clothingItems;
   }
 
-  setKleidungsstuecke(value) {
-    this.kleidungsstuecke = value;
+  setClothingItems(value) {
+    this.clothingItems = value;
   }
 
-  // Getter und Setter für style
+  // Getter and setter for style
   getStyle() {
     return this.style;
   }
@@ -45,21 +45,21 @@ export default class OutfitBO extends BusinessObject {
     this.style = value;
   }
 
-  // String-Darstellung des Objekts
+  // String representation of the object
   toString() {
-    return `Outfit: ${this.getOutfitId()}, ${JSON.stringify(this.getKleidungsstuecke())}, ${this.getStyle()}`;
+    return `Outfit: ${this.getOutfitId()}, ${JSON.stringify(this.getClothingItems())}, ${this.getStyle()}`;
   }
 
   /**
-   * Wandelt eine JSON-Struktur in ein OutfitBO-Objekt um.
-   * @param {Object} dictionary - Die JSON-Daten, die das OutfitBO beschreiben.
-   * @param {Object|null} styleInstance - Eine optionale Style-Instanz, die mit dem Outfit verbunden ist.
-   * @returns {OutfitBO} - Ein neues OutfitBO-Objekt.
+   * Converts a JSON structure into an OutfitBO object.
+   * @param {Object} dictionary - The JSON data describing the OutfitBO.
+   * @param {Object|null} styleInstance - An optional style instance associated with the outfit.
+   * @returns {OutfitBO} - A new OutfitBO object.
    */
   static fromJSON(dictionary = {}, styleInstance = null) {
     const outfit = new OutfitBO();
     outfit.setOutfitId(dictionary.outfitId || 0);
-    outfit.setKleidungsstuecke(dictionary.kleidungsstuecke || []);
+    outfit.setClothingItems(dictionary.clothingItems || []);
     outfit.setStyle(styleInstance);
     return outfit;
   }

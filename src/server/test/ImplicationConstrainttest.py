@@ -1,7 +1,7 @@
 import unittest
 from datetime import datetime
-from ConstraintRule import ConstraintRule
-from src.server.test.ImplicationConstraint import ConstraintRule
+from ConstraintRuletest import ConstraintRule
+from server.test.ImplicationConstrainttest import ConstraintRule
 
 class TestImplication(unittest.TestCase):
     

@@ -1,30 +1,30 @@
 import BusinessObject from "./BusinessObject";
 
 /**
- * Repräsentiert ein Benutzerobjekt
+ * Represents a User object
  */
 export default class UserBO extends BusinessObject {
    /**
-   * Konstruiert ein UserBO-Objekt.
+   * Constructs a UserBO object.
    *
-   * @param {String} aUserId - Benutzer ID.
-   * @param {String} aNachname - Nachname des Benutzers.
-   * @param {String} aVorname - Vorname des Benutzers.
-   * @param {String} aNickname - Nickname des Benutzers.
-   * @param {String} aGoogleId - Google ID des Benutzers.
-   * @param {String} aEmail - E-Mail-Adresse des Benutzers.
+   * @param {String} aUserId - User ID.
+   * @param {String} aLastName - Last name of the user.
+   * @param {String} aFirstName - First name of the user.
+   * @param {String} aNickname - Nickname of the user.
+   * @param {String} aGoogleId - Google ID of the user.
+   * @param {String} anEmail - Email address of the user.
    */
-  constructor(aUserId = "", aNachname = "", aVorname = "", aNickname = "", aGoogleId = "", aEmail = "") {
+  constructor(aUserId = "", aLastName = "", aFirstName = "", aNickname = "", aGoogleId = "", anEmail = "") {
     super();
     this.userId = aUserId;
-    this.nachname = aNachname;
-    this.vorname = aVorname;
+    this.lastName = aLastName;
+    this.firstName = aFirstName;
     this.nickname = aNickname;
     this.googleId = aGoogleId;
-    this.email = aEmail;
+    this.email = anEmail;
   }
 
-  // Getter und Setter für userId
+  // Getter and Setter for userId
   getUserId() {
     return this.userId;
   }
@@ -33,25 +33,25 @@ export default class UserBO extends BusinessObject {
     this.userId = value;
   }
 
-  // Getter und Setter für nachname
-  getNachname() {
-    return this.nachname;
+  // Getter and Setter for lastName
+  getLastName() {
+    return this.lastName;
   }
 
-  setNachname(value) {
-    this.nachname = value;
+  setLastName(value) {
+    this.lastName = value;
   }
 
-  // Getter und Setter für vorname
-  getVorname() {
-    return this.vorname;
+  // Getter and Setter for firstName
+  getFirstName() {
+    return this.firstName;
   }
 
-  setVorname(value) {
-    this.vorname = value;
+  setFirstName(value) {
+    this.firstName = value;
   }
 
-  // Getter und Setter für nickname
+  // Getter and Setter for nickname
   getNickname() {
     return this.nickname;
   }
@@ -60,7 +60,7 @@ export default class UserBO extends BusinessObject {
     this.nickname = value;
   }
 
-  // Getter und Setter für googleId
+  // Getter and Setter for googleId
   getGoogleId() {
     return this.googleId;
   }
@@ -69,7 +69,7 @@ export default class UserBO extends BusinessObject {
     this.googleId = value;
   }
 
-  // Getter und Setter für email
+  // Getter and Setter for email
   getEmail() {
     return this.email;
   }
@@ -78,21 +78,21 @@ export default class UserBO extends BusinessObject {
     this.email = value;
   }
 
-  // String-Darstellung des Objekts
+  // String representation of the object
   toString() {
-    return `User: ${this.getUserId()}, ${this.getNachname()}, ${this.getEmail()}, ${this.getVorname()}`;
+    return `User: ${this.getUserId()}, ${this.getLastName()}, ${this.getEmail()}, ${this.getFirstName()}`;
   }
 
   /**
-   * Wandelt eine JSON-Struktur in ein UserBO-Objekt um.
-   * @param {Object} dictionary - Die JSON-Daten, die das UserBO beschreiben.
-   * @returns {UserBO} - Ein neues UserBO-Objekt.
+   * Converts a JSON structure into a UserBO object.
+   * @param {Object} dictionary - The JSON data describing the UserBO.
+   * @returns {UserBO} - A new UserBO object.
    */
   static fromJSON(dictionary = {}) {
     const user = new UserBO();
     user.setUserId(dictionary.userId || "");
-    user.setNachname(dictionary.nachname || "");
-    user.setVorname(dictionary.vorname || "");
+    user.setLastName(dictionary.lastName || "");
+    user.setFirstName(dictionary.firstName || "");
     user.setNickname(dictionary.nickname || "");
     user.setGoogleId(dictionary.googleId || "");
     user.setEmail(dictionary.email || "");
