@@ -9,12 +9,14 @@ from server.bo.Style import Style
 from server.bo.Outfit import Outfit
 from server.bo.ClothingItem import ClothingItem
 from server.bo.ClothingType import ClothingType
-from server.constraints.Constraint import Constraint
-from server.constraints.BinaryConstraint import BinaryConstraint
-from server.constraints.UnaryConstraint import UnaryConstraint
-from server.constraints.CardinalityConstraint import CardinalityConstraint
-from server.constraints.ImplicationConstraint import ImplicationConstraint
-from server.constraints.MutexConstraint import MutexConstraint
+from server.constraints.Constraint import Constraint, BinaryConstraint, UnaryConstraint, CardinalityConstraint, MutexConstraint, ImplicationConstraint
+
+#from server.constraints.Constraint import Constraint
+#from server.constraints.BinaryConstraint import BinaryConstraint
+#from server.constraints.UnaryConstraint import UnaryConstraint
+#from server.constraints.CardinalityConstraint import CardinalityConstraint
+#from server.constraints.ImplicationConstraint import ImplicationConstraint
+#from server.constraints.MutexConstraint import MutexConstraint
 import traceback
 from SecurityDecorator import secured
 
@@ -320,6 +322,36 @@ class ClothingItemOperations(Resource):
         return '', 200
 
 
+#API Endpoints für Styles
+
+@wardrobe_ns.route('/styles')
+@wardrobe_ns.response(500, 'Server-Error.')
+class StyleListOperations(Resource):
+    @wardrobe_ns.marshal_list_with(style)
+    @secured
+    def get(self):
+        """Auslesen aller Styles"""
+        adm = Admin()
+        styles = adm.get_all_styles()
+        return styles
+
+    @wardrobe_ns.marshal_with(style, code=200)
+    @wardrobe_ns.expect(style)
+    @secured
+    def post(self):
+        """Anlegen eines neuen Styles"""
+        adm = Admin()
+        proposal = Style.from_dict(api.payload)
+        
+        if proposal is not None:
+            s = adm.create_style(proposal.get_features(),
+                                 proposal.get_constraints()
+            )
+            return s, 200
+        else:
+            return '', 500
+
+
 #API Endpoints für Outfits
 
 @wardrobe_ns.route('/outfits')
@@ -354,38 +386,6 @@ class OutfitListOperations(Resource):
         return '', 200
 
 
-#API Endpoints für Styles
-
-@wardrobe_ns.route('/styles')
-@wardrobe_ns.response(500, 'Server-Error.')
-class StyleListOperations(Resource):
-    @wardrobe_ns.marshal_list_with(style)
-    @secured
-    def get(self):
-        """Auslesen aller Styles"""
-        adm = Admin()
-        styles = adm.get_all_styles()
-        return styles
-
-    @wardrobe_ns.marshal_with(style, code=200)
-    @wardrobe_ns.expect(style)
-    @secured
-    def post(self):
-        """Anlegen eines neuen Styles"""
-        adm = Admin()
-        proposal = Style.from_dict(api.payload)
-        
-        if proposal is not None:
-            s = adm.create_style(proposal.get_features(),
-                                 proposal.get_constraints()
-            )
-            return s, 200
-        else:
-            return '', 500
-
-
-
-
 #API Endpoint für Kleidungsstücke einer Person
 @wardrobe_ns.route('/persons/<int:id>/clothing-items')
 @wardrobe_ns.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
@@ -407,7 +407,7 @@ class PersonClothingOperations(Resource):
 
 #API Endpoint für Style-basierte Outfit-Vorschläge
 
-@wardrobe_ns.route('/persons/<int:id>/outfit-proposals/<int:style_id>')
+@wardrobe_ns.route('/user/<int:id>/outfit-proposals/<int:style_id>')
 @wardrobe_ns.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 @wardrobe_ns.param('id', 'Die ID der Person')
 @wardrobe_ns.param('style_id', 'Die ID des Styles')
@@ -417,11 +417,85 @@ class OutfitProposalOperations(Resource):
     def get(self, id, style_id):
         """Generiert Outfit-Vorschläge basierend auf Style und verfügbarer Kleidung"""
         adm = Admin()
-        person = adm.get_person_by_id(id)
+        person = adm.get_user_by_id(id)
         style = adm.get_style_by_id(style_id)
         
         if person is not None and style is not None:
             proposal = adm.generate_outfit_proposal(user, style)
             return proposal
         else:
-            return "Person or Style not found", 500
+            return "User or Style not found", 500
+
+
+@wardrobe_ns.route('/styles')
+class StyleListOperations(Resource):
+    @wardrobe_ns.marshal_list_with(style) 
+    @secured
+    def get(self):
+        adm = Admin()
+        styles = adm.get_all_styles()
+        return styles
+
+    @wardrobe_ns.marshal_with(style, code=200)
+    @wardrobe_ns.expect(style)
+    @secured
+    def post(self):
+        adm = Admin()
+        proposal = Style.from_dict(api.payload)
+        if proposal is not None:
+            s = adm.create_style(proposal)
+            return s, 200
+        else:
+            return '', 500
+
+@wardrobe_ns.route('/styles/<int:style_id>')
+@wardrobe_ns.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.') 
+@wardrobe_ns.param('style_id', 'Die ID des Stils')
+class StyleOperations(Resource):
+    @wardrobe_ns.marshal_with(style)
+    @secured
+    def get(self, style_id):
+        adm = Admin()
+        s = adm.get_style_by_id(style_id)
+        return s
+
+    @wardrobe_ns.marshal_with(style)
+    @wardrobe_ns.expect(style, validate=True)
+    @secured
+    def put(self, style_id):
+        adm = Admin()
+        s = Style.from_dict(api.payload)
+
+        if s is not None:
+            s.set_id(style_id)
+            adm.save_style(s)
+            return s, 200
+        else:
+            return '', 500
+
+    @secured
+    def delete(self, style_id):
+        adm = Admin()
+        s = adm.get_style_by_id(style_id)
+        adm.delete_style(s)
+        return '', 200
+
+
+
+
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+
+
+
+
+
+
+
+
+
+
+
