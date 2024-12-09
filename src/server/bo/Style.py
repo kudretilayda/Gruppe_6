@@ -1,48 +1,59 @@
-from server.bo.BusinessObject import BusinessObject
-from datetime import datetime
+from src.server.bo.BusinessObject import BusinessObject
 
 
-class Style(BusinessObject):
+class Style (BusinessObject):
+
     def __init__(self):
         super().__init__()
-        self._style_name: str = ""
-        self._style_description = None
-        self._created_by: str = ""
+        self.__style_id = 0
+        self.__features = ""
+        self.__constraints = []
+        self.__kleidungstypen = []
+    
+    def get_style_id(self):
+        return self.__style_id
 
-    def get_style_name(self) -> str:
-        return self._style_name
+    def set_style_id(self, style_id: int):
+        self.__style_id = style_id
 
-    def set_style_name(self, value: str):
-        self._style_name = value
+    def get_features(self):
+        return self.__features
 
-    def get_style_description(self):
-        return self._style_description
+    def set_features(self, features: str):
+        self.__features = features
 
-    def set_style_description(self, value):
-        self._style_description = value
+    def get_constraints(self):
+        return self.__constraints
 
-    def get_created_by(self):
-        return self._created_by
+    def set_constraints(self, constraints: list):
+        self.__constraints = constraints
 
-    def set_created_by(self, value: str):
-        self._created_by = value
+    def get_kleidungstypen(self):
+        return self.__kleidungstypen
 
-    def to_dict(self) -> dict:
-        result = super().to_dict()
-        result.update({
-            'style_name': self._style_name,
-            'style_description': self._style_description,
-            'created_by': self._created_by
-        })
-        return result
+    def set_kleidungstypen(self, kleidungstypen: list):
+        self.__kleidungstypen = kleidungstypen
+
+    def __str__(self):
+        
+        return "Style: {}, {}, {}, {}".format(
+            self.__style_id,
+            self.__features,
+            self.__constraints,
+            self.__kleidungstypen
+        )
 
     @staticmethod
-    def from_dict(data: dict) -> 'Style':
+    def from_dict(dictionary=None):
+        
+        if dictionary is None:
+            dictionary = dict()
         obj = Style()
-        obj.set_id(data.get('id'))
-        obj.set_style_name(data.get('style_name'))
-        obj.set_style_description(data.get('style_description'))
-        obj.set_created_by(data.get('created_by'))
-        if 'created_at' in data:
-            obj.set_created_at(datetime.fromisoformat(data['created_at']))
+        obj.set_style_id(dictionary.get("style_id", 0))
+        obj.set_features(dictionary.get("features", ""))
+        obj.set_constraints(dictionary.get("constraints", []))
+        obj.set_kleidungstypen(dictionary.get("kleidungstypen", []))
         return obj
+
+    def set_name(self, name):
+        pass

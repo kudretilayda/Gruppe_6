@@ -1,61 +1,71 @@
-from server.bo.BusinessObject import BusinessObject
+from src.server.bo.BusinessObject import BusinessObject
 
 
+class User (BusinessObject):
 
-class User(BusinessObject):
-    """Klasse für Person-Objekte."""
     def __init__(self):
         super().__init__()
-        self._google_id = " "
-        self._first_name = " "
-        self._last_name = " "
-        self._nick_name = None
-        self._email = " "
+        self.__user_id = 0
+        self.__lastname = ""
+        self.__firstname = ""
+        self.__nickname = ""
+        self.__google_id = ""
+        self.__email = ""
 
-    def get_google_id(self):
-        """Gibt Google ID des Users zurück"""
-        return self._google_id
+    def get_user_id(self):
+        return self.__user_id
 
-    def set_google_id(self, value):
-        """Setzt Google ID des Users"""
-        self._google_id = value
-
-    def get_firstname(self):
-        """Gibt den Vornamen des Users zurück"""
-        return self._firstname
-
-    def set_firstname(self, value):
-        """Setzt den Vornamen des Users"""
-        self._firstname = value
+    def set_user_id(self, value):
+        self.__user_id = value
 
     def get_lastname(self):
-        """Gibt den Nachnamen des Users zurück"""
-        return self._lastname
+        return self.__lastname
 
-    def set_lastname(self, value):
-        """Setzt den Nachnamen des Users"""
-        self._lastname = value
+    def set_lastname(self, lastname):
+        self.__lastname = lastname
+
+    def get_firstname(self):
+        return self.__firstname
+
+    def set_firstname(self, firstname):
+        self.__firstname = firstname
 
     def get_nickname(self):
-        """Gibt den Nickname des Users zurück"""
-        return self._nickname
+        return self.__nickname
 
     def set_nickname(self, value):
-        """Setzt den Nickname des Users"""
-        self._nickname = value
+        self.__nickname = value
+
+    def get_google_id(self):
+        return self.__google_id
+
+    def set_google_id(self, value):
+        self.__google_id = value
+
+    def get_email(self):
+        return self.__email
+
+    def set_email(self, value):
+        self.__email = value
 
     def __str__(self):
-        """Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz"""
-        return "User: {}, {}, {}, {},{},{}".format(self.get_id(), self._google_user_id, self._first_name, self._last_name, self._nickname, self._email)
-    
-    
-   
+        return "User: {}, {}, {}, {}".format(
+            self.get_user_id(),
+            self.get_lastname(),
+            self.get_email(),
+            self.get_firstname()
+        )
+
     @staticmethod
-    def from_dict(dictionary=dict()):
+    def from_dict(dictionary=None):
+        
+        if dictionary is None:
+            dictionary = dict()
         obj = User()
-        obj.set_id(dictionary["id"]) #Setzt die ID des Users aus dem Dictionary
-        obj.set_google_user_id(dictionary["google_user_id"]) #Setzt die Google User ID aus dem Dictionary
-        obj.set_nick_name(dictionary["nick_name"]) #Setzt den Nickname aus dem Dictionary
-        obj.set_first_name(dictionary["first_name"]) #Setzt den Vornamen aus dem Dictionary
-        obj.set_last_name(dictionary["last_name"]) #Setzt den Nachnamen aus dem Dictionary
+        obj.set_user_id(dictionary.get("user_id", ""))
+        obj.set_lastname(dictionary.get("nachname", ""))
+        obj.set_firstname(dictionary.get("vorname", ""))
+        obj.set_nickname(dictionary.get("nickname", ""))
+        obj.set_google_id(dictionary.get("google_id", ""))
+        obj.set_email(dictionary.get("email", ""))
         return obj

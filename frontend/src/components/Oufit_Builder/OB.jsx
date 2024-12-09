@@ -1,4 +1,4 @@
-// src/components/OB.jsx
+// src/components/Outfit_Builder.jsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
 

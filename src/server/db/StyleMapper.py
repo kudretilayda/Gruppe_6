@@ -1,79 +1,52 @@
-from server.db.Mapper import Mapper
-from server.bo.Style import Style
-import uuid
+from src.server.db.Mapper import Mapper
+from src.server.bo.Style import Style
+
 
 class StyleMapper(Mapper):
-    def __init__(self):
-        super().__init__()
-
     def find_all(self):
-        result = []
+        results = []
         cursor = self._cnx.cursor()
-        cursor.execute("SELECT * from style")
+        cursor.execute("SELECT * FROM digital_wardrobe.style")
         tuples = cursor.fetchall()
 
-        for (id, style_name, style_description, created_by, created_at) in tuples:
+        for (id, style_features, style_constraints) in tuples:
             style = Style()
             style.set_id(id)
-            style.set_style_name(style_name)
-            style.set_style_description(style_description)
-            style.set_created_by(created_by)
-            style.set_created_at(created_at)
-            result.append(style)
+            style.set_features(style_features)
+            style.set_constraints(style_constraints)
+            results.append(style)
 
         self._cnx.commit()
         cursor.close()
-        return result
+        return results
 
-    def find_by_id(self, style_id):
+    def find_by_key(self, key):
+        results = None
         cursor = self._cnx.cursor()
-        command = "SELECT * FROM style WHERE id=%s"
-        cursor.execute(command, (style_id,))
+        command = f"SELECT * FROM style WHERE id={key}"
+        cursor.execute(command)
         tuples = cursor.fetchall()
 
-        try:
-            (id, style_name, style_description, created_by, created_at) = tuples[0]
-            style = Style()
-            style.set_id(id)
-            style.set_style_name(style_name)
-            style.set_style_description(style_description)
-            style.set_created_by(created_by)
-            style.set_created_at(created_at)
-            return style
-        except IndexError:
-            return None
-        finally:
-            self._cnx.commit()
-            cursor.close()
-
-    def find_by_person(self, person_id):
-        result = []
-        cursor = self._cnx.cursor()
-        command = "SELECT * FROM style WHERE created_by=%s"
-        cursor.execute(command, (person_id,))
-        tuples = cursor.fetchall()
-
-        for (id, style_name, style_description, created_by, created_at) in tuples:
-            style = Style()
-            style.set_id(id)
-            style.set_style_name(style_name)
-            style.set_style_description(style_description)
-            style.set_created_by(created_by)
-            style.set_created_at(created_at)
-            result.append(style)
+        if tuples:
+            (id, style_features, style_constraints) = tuples[0]
+            results = Style()
+            results.set_id(id)
+            results.set_features(style_features)
+            results.set_constraints(style_constraints)
 
         self._cnx.commit()
         cursor.close()
-        return result
+        return results
 
     def insert(self, style):
         cursor = self._cnx.cursor()
-        
-        if not style.get_id():
-            style.set_id(str(uuid.uuid4()))
+        cursor.execute("SELECT MAX(id) AS maxid FROM digital_wardrobe.style")
+        max_id = cursor.fetchone()[0]
+        style.set_id(max_id + 1 if max_id else 1)
 
-        command = "INSERT INTO style (id, style_name, style_description, created_by) VALUES (%s,%s,%s,%s)"
-        data = (style.get_id(), style.get_style_name(), style.get_style_description(), style.get_created_by())
+        command = ("INSERT INTO digital_wardrobe.style (id, style_features, style_constraints) "
+                   "VALUES (%s, %s, %s)")
+        data = (style.get_id(), style.get_features(), style.get_constraints())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -82,8 +55,10 @@ class StyleMapper(Mapper):
 
     def update(self, style):
         cursor = self._cnx.cursor()
-        command = "UPDATE style SET style_name=%s, style_description=%s WHERE id=%s"
-        data = (style.get_style_name(), style.get_style_description(), style.get_id())
+        command = ("UPDATE digital_wardrobe.style "
+                   "SET style_features=%s, style_constraints=%s "
+                   "WHERE id=%s")
+        data = (style.get_features(), style.get_constraints(), style.get_id())
         cursor.execute(command, data)
 
         self._cnx.commit()
@@ -91,7 +66,16 @@ class StyleMapper(Mapper):
 
     def delete(self, style):
         cursor = self._cnx.cursor()
-        command = "DELETE FROM style WHERE id=%s"
-        cursor.execute(command, (style.get_id(),))
+        command = f"DELETE FROM style WHERE id={style.get_id()}"
+        cursor.execute(command)
+
         self._cnx.commit()
         cursor.close()
+
+
+
+if __name__ == "__main__":
+    with StyleMapper() as mapper:
+        result = mapper.find_all()
+        for s in result:
+            print(s)

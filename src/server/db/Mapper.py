@@ -1,35 +1,45 @@
-from abc import ABC, abstractmethod
-import os
-from server.db.database import MySQLConnector
-from typing import List, Optional
 import mysql.connector as connector
+import os
+from contextlib import AbstractContextManager
+from abc import ABC, abstractmethod
 
-class Mapper(ABC):
+
+class Mapper(AbstractContextManager, ABC):
     def __init__(self):
         self._cnx = None
 
+    def __enter__(self):
 
-        """Wenn wir uns in der Cloud befinden, wird diese Verbindung genutzt"""
-        if os.getenv('GAE_ENV', '').startswith('standard'):
+        if os.getenv('DATABASE_URL', '').startswith(''):
             self._cnx = connector.connect(user='demo', password='demo',
-                                          unix_socket='/cloudsql/smartfridge-app-428309:europe-west3:smartfridge',
-                                          database='Sopra')
+                                          unix_socket='/cloudsql/digital-wardrobe-442615',
+                                          database='digital_wardrobe')
 
         else:
-            """Sollten wir uns Lokal aufhalten, wird diese Verbindung genutzt"""
-            self._cnx = connector.connect(user='root', password='9902',
-                              host='localhost',
-                              database='sopra')
-
-
+            self._cnx = connector.connect(user='demo', password='demo',
+                                          host='localhost:3306',
+                                          database='digital_wardrobe')
         return self
 
-
-
     def __exit__(self, exc_type, exc_val, exc_tb):
-        """Verbindung mit der Datenbank trennen"""
-        if exc_type or exc_val or exc_tb:
-            self._cnx.rollback()
-        else:
-            self._cnx.commit()
         self._cnx.close()
+
+    @abstractmethod
+    def find_all(self):             # Tupel auslesen
+        pass
+
+    @abstractmethod
+    def find_by_key(self, key):     # Tupel mit ID auslesen
+        pass
+
+    @abstractmethod
+    def insert(self, obj):          # Einfügen von Objekten in die DB
+        pass
+
+    @abstractmethod
+    def update(self, obj):          # Abbilden von Objekten, die in der DB enthalten sind
+        pass
+
+    @abstractmethod
+    def delete(self, obj):          # Löschen von Objekten in der DB
+        pass
