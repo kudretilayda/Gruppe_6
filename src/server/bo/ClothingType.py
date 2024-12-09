@@ -6,7 +6,7 @@ class ClothingType(BusinessObject):
         super().__init__()
         self._id = int
         self._name = ""
-        self._verwendung = ""
+        self._usage = ""
 
     def get_id(self):
         return self._id
@@ -20,15 +20,15 @@ class ClothingType(BusinessObject):
     def set_name(self, value):
         self._name = value
 
-    def get_verwendung(self):
-        return self._verwendung
+    def get_usage(self):
+        return self._usage
 
-    def set_verwendung(self, value):
-        self._verwendung = value
+    def set_usage(self, value):
+        self._usage = value
 
     def __str__(self):
         return "Kleidungstyp: {}, Name: {}, Verwendung: {}".format(
-            self.get_id(), self._name, self._verwendung
+            self.get_id(), self._name, self._usage
         )
 
     @staticmethod
@@ -38,5 +38,5 @@ class ClothingType(BusinessObject):
         obj = ClothingType()
         obj.set_id(dictionary.get("clothing_type_id", 0))
         obj.set_name(dictionary.get("clothing_type_name", ""))
-        obj.set_verwendung(dictionary.get("clothing_type_verwendung", 0))
+        obj.set_usage(dictionary.get("clothing_type_usage", 0))
         return obj
