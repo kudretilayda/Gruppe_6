@@ -2,8 +2,8 @@ from flask import Flask
 from flask_cors import CORS
 from flask_restx import Api, Resource, fields
 
-from server.Admin import WardrobeAdministration
-from server.bo.User import Person
+from server.Admin import Admin
+from server.bo.User import User
 from server.bo.Wardrobe import Wardrobe
 from server.bo.Style import Style
 from server.bo.Outfit import Outfit
@@ -35,7 +35,7 @@ bo = api.model('BusinessObject', {
     'id': fields.String(attribute='_id', description='Unique identifier'),
 })
 
-user = api.inherit('Person', bo, {
+user = api.inherit('User', bo, {
     'user_id': fields.String(attribute='_user_id', description='User ID'),
     'google_id': fields.String(attribute='_google_id', description='Google user ID'),
     'first_name': fields.String(attribute='_first_name', description='First name'),
@@ -43,3 +43,224 @@ user = api.inherit('Person', bo, {
     'nick_name': fields.String(attribute='_nick_name', description='Nickname'),
     'email': fields.String(attribute='_email', description='Email address')
 })
+
+wardrobe = api.inherit('Wardrobe', bo, {
+    'person_id': fields.Integer(attribute='_person_id', description='ID des Besitzers'),
+})
+
+clothing_type = api.inherit('ClothingType', bo, {
+    'type_name': fields.String(attribute='_type_name', description='Bezeichnung des Kleidungstyps'),
+    'type_usage': fields.String(attribute='_type_usage', description='Verwendungszweck des Kleidungstyps'),
+})
+
+clothing_item = api.inherit('ClothingItem', bo, {
+    'wardrobe_id': fields.Integer(attribute='_wardrobe_id', description='ID des zugehörigen Kleiderschranks'),
+    'clothing_type_id': fields.Integer(attribute='_clothing_type_id', description='ID des Kleidungstyps'), 
+    'clothing_item_name': fields.String(attribute='_clothing_item_name', description='Bezeichnung des Kleidungsstücks'),
+    'color': fields.String(attribute='_color', description='Farbe des Kleidungsstücks'),
+    'brand': fields.String(attribute='_brand', description='Marke des Kleidungsstücks'),
+    'season': fields.String(attribute='_season', description='Saison für das Kleidungsstück'),
+})
+
+style = api.inherit('Style', bo, {
+    'style_features': fields.String(attribute='_style_features', description='Merkmale des Stils'),
+    'style_constraints': fields.String(attribute='_style_constraints', description='Beschränkungen des Stils'),
+})
+
+outfit = api.inherit('Outfit', bo, {
+    'outfit_name': fields.String(attribute='_outfit_name', description='Name des Outfits'),
+    'style_id': fields.Integer(attribute='_style_id', description='ID des zugehörigen Stils'),
+})
+
+constraint = api.inherit('Constraint', bo, {
+    'style_id': fields.Integer(attribute='_style_id', description='ID des zugehörigen Stils'),
+    'constraint_type': fields.String(attribute='_constraint_type', description='Art des Constraints'),
+    'attribute': fields.String(attribute='_attribute', description='Betroffenes Attribut'),
+    'constrain': fields.String(attribute='_constrain', description='Bedingung'),
+    'val': fields.String(attribute='_val', description='Wert'),
+})
+
+unary_constraint = api.inherit('UnaryConstraint', constraint, {
+    'reference_object_id': fields.Integer(attribute='_reference_object_id', description='ID des Referenzobjekts'),
+})
+
+binary_constraint = api.inherit('BinaryConstraint', constraint, {
+    'reference_object1_id': fields.Integer(attribute='_reference_object1_id', description='ID des ersten Referenzobjekts'),
+    'reference_object2_id': fields.Integer(attribute='_reference_object2_id', description='ID des zweiten Referenzobjekts'),
+})
+
+mutex_constraint = api.inherit('MutexConstraint', constraint, {
+    'item_type_1': fields.Integer(attribute='_item_type_1', description='ID des ersten Kleidungstyps'),
+    'item_type_2': fields.Integer(attribute='_item_type_2', description='ID des zweiten Kleidungstyps'),
+})
+
+implication_constraint = api.inherit('ImplicationConstraint', constraint, {
+    'if_type': fields.Integer(attribute='_if_type', description='ID des "wenn" Kleidungstyps'),
+    'then_type': fields.Integer(attribute='_then_type', description='ID des "dann" Kleidungstyps'),
+})
+
+cardinality_constraint = api.inherit('CardinalityConstraint', constraint, {
+    'item_type': fields.Integer(attribute='_item_type', description='ID des betroffenen Kleidungstyps'),
+    'min_count': fields.Integer(attribute='_min_count', description='Minimale Anzahl'),
+    'max_count': fields.Integer(attribute='_max_count', description='Maximale Anzahl'),
+})
+
+#API Endpoints für User
+
+@wardrobe_ns.route('/user')
+@wardrobe_ns.response(500, 'Server-Error')
+class UserListOperations(Resource):
+    @wardrobe_ns.marshal_list_with(user)
+    
+    @secured
+    def get(self):
+        """Auslesen aller User"""
+        adm = Admin()
+        user = adm.get_all_user()
+        return user
+    
+@wardrobe_ns.marshal_with(user, code=200)
+@wardrobe_ns.expect(user)
+@secured
+def post(self):
+        """Neuen User anlegen"""
+        adm = Admin()
+        proposal = User.from_dict(api.payload)
+        if proposal is not None:
+            p = adm.create_user(
+                 proposal.get_google_id(),
+                 proposal.get_first_name(),
+                 proposal.get_last_name(),
+                 proposal.get_nickname(),
+                 proposal.get_email()
+            )
+            return p, 200
+        else:
+            return '', 500
+         # 500: server-fehler
+
+#API Endpoints für ClothingItem
+
+@wardrobe_ns.route('/clothing-items')
+@wardrobe_ns.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+class ClothingListOperations(Resource):
+    @wardrobe_ns.marshal_list_with(clothing_item)
+    @secured
+    def get(self):
+        """Auslesen aller Kleidungsstücke"""
+        adm = Admin()
+        items = adm.get_all_clothing_items()
+        return items
+
+    @wardrobe_ns.marshal_with(clothing_item, code=200)
+    @wardrobe_ns.expect(clothing_item)
+    @secured
+    def post(self):
+        """Anlegen eines neuen Kleidungsstücks"""
+        adm = Admin()
+        proposal = clothing_item.from_dict(api.payload)
+        
+        if proposal is not None:
+            c = adm.create_clothing_item(proposal.get_type(), proposal.get_owner())
+            return c, 200
+        else:
+            return '', 500
+
+#API Endpoints für Styles
+
+@wardrobe_ns.route('/styles')
+@wardrobe_ns.response(500, 'Server-Error.')
+class StyleListOperations(Resource):
+    @wardrobe_ns.marshal_list_with(style)
+    @secured
+    def get(self):
+        """Auslesen aller Styles"""
+        adm = Admin()
+        styles = adm.get_all_styles()
+        return styles
+
+    @wardrobe_ns.marshal_with(style, code=200)
+    @wardrobe_ns.expect(style)
+    @secured
+    def post(self):
+        """Anlegen eines neuen Styles"""
+        adm = Admin()
+        proposal = Style.from_dict(api.payload)
+        
+        if proposal is not None:
+            s = adm.create_style(proposal.get_features(),
+                                 proposal.get_constraints()
+            )
+            return s, 200
+        else:
+            return '', 500
+
+#API Endpoints für Outfits
+
+@wardrobe_ns.route('/outfits')
+@wardrobe_ns.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+class OutfitListOperations(Resource):
+    @wardrobe_ns.marshal_list_with(outfit)
+    @secured
+    def get(self):
+        """Auslesen aller Outfits"""
+        adm = Admin()
+        outfits = adm.get_all_outfits()
+        return outfits
+
+    @wardrobe_ns.marshal_with(outfit, code=200)
+    @wardrobe_ns.expect(outfit)
+    @secured
+    def post(self):
+        """Anlegen eines neuen Outfits"""
+        adm = Admin()
+        proposal = Outfit.from_dict(api.payload)
+        
+        if proposal is not None:
+            o = adm.create_outfit(proposal.get_style(), proposal.get_items())
+            return o, 200
+        else:
+            return '', 500
+
+
+#API Endpoint für Kleidungsstücke einer Person
+@wardrobe_ns.route('/persons/<int:id>/clothing-items')
+@wardrobe_ns.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@wardrobe_ns.param('id', 'Die ID der Person')
+class PersonClothingOperations(Resource):
+    @wardrobe_ns.marshal_list_with(clothing_item)
+    @secured
+    def get(self, id):
+        """Auslesen aller Kleidungsstücke einer bestimmten Person"""
+        adm = Admin()
+        person = adm.get_person_by_id(id)
+        
+        if person is not None:
+            items = adm.get_clothing_items_by_person(user)
+            return items
+        else:
+            return "Person not found", 500
+
+
+#API Endpoint für Style-basierte Outfit-Vorschläge
+
+@wardrobe_ns.route('/persons/<int:id>/outfit-proposals/<int:style_id>')
+@wardrobe_ns.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@wardrobe_ns.param('id', 'Die ID der Person')
+@wardrobe_ns.param('style_id', 'Die ID des Styles')
+class OutfitProposalOperations(Resource):
+    @wardrobe_ns.marshal_with(outfit)
+    @secured
+    def get(self, id, style_id):
+        """Generiert Outfit-Vorschläge basierend auf Style und verfügbarer Kleidung"""
+        adm = Admin()
+        person = adm.get_person_by_id(id)
+        style = adm.get_style_by_id(style_id)
+        
+        if person is not None and style is not None:
+            proposal = adm.generate_outfit_proposal(user, style)
+            return proposal
+        else:
+            return "Person or Style not found", 500
+        
+
