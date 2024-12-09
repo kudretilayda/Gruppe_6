@@ -4,15 +4,15 @@ from src.server.bo.BusinessObject import BusinessObject
 class Wardrobe(BusinessObject):
     def __init__(self):
         super().__init__()
-        self._eigentuemer = 0
+        self._wardrobe_owner = 0
         self._inhalt = []
         self._outfits = []
 
     def get_eigentuemer(self):
-        return self._eigentuemer
+        return self._wardrobe_owner
 
-    def set_eigentuemer(self, user):
-        self._eigentuemer = user
+    def set_wardrobe_owner(self, user):
+        self._wardrobe_owner = user
 
     def get_inhalt(self):
         return self._inhalt
