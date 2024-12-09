@@ -1,32 +1,31 @@
 import ConstraintBO from "./ConstraintBO";
 
 /**
- * Repräsentiert eine Implikations-Einschränkung (Implication Constraint).
+ * Represents an Implication Constraint.
  *
- * Eine ImplicationConstraint besitzt eine Bedingung (condition) 
- * und eine Implikation (implication).
+ * An ImplicationConstraint has a condition and an implication.
  */
 export default class ImplicationConstraintBO extends ConstraintBO {
   /**
-   * Konstruiert ein ImplicationConstraintBO-Objekt.
+   * Constructs an ImplicationConstraintBO object.
    *
-   * @param {Object} condition - Die Bedingung.
-   * @param {Object} implication - Die Implikation.
-   * @param {String} name - Der Name der Einschränkung.
-   * @param {String} beschreibung - Die Beschreibung der Einschränkung.
+   * @param {Object} condition - The condition.
+   * @param {Object} implication - The implication.
+   * @param {String} name - The name of the constraint.
+   * @param {String} description - The description of the constraint.
    */
   constructor(
     condition = null,
     implication = null,
     name = "",
-    beschreibung = ""
+    description = ""
   ) {
-    super(name, beschreibung);
+    super(name, description);
     this.condition = condition;
     this.implication = implication;
   }
 
-  // Getter und Setter für condition
+  // Getter and setter for condition
   getCondition() {
     return this.condition;
   }
@@ -35,7 +34,7 @@ export default class ImplicationConstraintBO extends ConstraintBO {
     this.condition = value;
   }
 
-  // Getter und Setter für implication
+  // Getter and setter for implication
   getImplication() {
     return this.implication;
   }
@@ -44,15 +43,15 @@ export default class ImplicationConstraintBO extends ConstraintBO {
     this.implication = value;
   }
 
-  // String-Darstellung des Objekts
+  // String representation of the object
   toString() {
     return `ImplicationConstraint: ${JSON.stringify(this.getCondition())} -> ${JSON.stringify(this.getImplication())}`;
   }
 
   /**
-   * Wandelt eine JSON-Struktur in ein ImplicationConstraintBO-Objekt um.
-   * @param {Object} dictionary - Die JSON-Daten, die das ImplicationConstraintBO beschreiben.
-   * @returns {ImplicationConstraintBO} - Ein neues ImplicationConstraintBO-Objekt.
+   * Converts a JSON structure into an ImplicationConstraintBO object.
+   * @param {Object} dictionary - The JSON data describing the ImplicationConstraintBO.
+   * @returns {ImplicationConstraintBO} - A new ImplicationConstraintBO object.
    */
   static fromJSON(dictionary = {}) {
     const implicationConstraint = new ImplicationConstraintBO();
@@ -61,4 +60,3 @@ export default class ImplicationConstraintBO extends ConstraintBO {
     return implicationConstraint;
   }
 }
-
