@@ -1,5 +1,5 @@
 from src.server.db.Mapper import Mapper
-from src.server.bo.Kleidungsstueck import Kleidungsstueck
+from server.bo.ClothingItem import Kleidungsstueck
 
 
 class ClothingItemMapper(Mapper):

@@ -1,7 +1,7 @@
 from src.server.bo.BusinessObject import BusinessObject
 
 
-class Kleidungsstueck(BusinessObject):
+class ClothingItem(BusinessObject):
 
     def __init__(self):
         super().__init__()
@@ -59,10 +59,10 @@ class Kleidungsstueck(BusinessObject):
 
         if dictionary is None:
             dictionary = {}
-        obj = Kleidungsstueck()
-        obj.set_kleidungsstueck_id(dictionary.get("kleidungsstueck_id", 0))
-        obj.set_kleidungstyp(dictionary.get("kleidungstyp", None))
-        obj.set_kleidungsstueck_name(dictionary.get("kleidungsstueck_name", ""))
-        obj.set_kleidungsstueck_size(dictionary.get("kleidungsstueck_size", 0))
-        obj.set_kleidungsstueck_color(dictionary.get("kleidungsstueck_color", ""))
+        obj = ClothingItem()
+        obj.set_kleidungsstueck_id(dictionary.get("clothingitem", 0))
+        obj.set_kleidungstyp(dictionary.get("clothingitem", None))
+        obj.set_kleidungsstueck_name(dictionary.get("clothingitem_name", ""))
+        obj.set_kleidungsstueck_size(dictionary.get("clothingitem_size", 0))
+        obj.set_kleidungsstueck_color(dictionary.get("clothingitem_color", ""))
         return obj
