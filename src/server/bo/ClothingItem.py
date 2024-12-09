@@ -5,53 +5,33 @@ class ClothingItem(BusinessObject):
 
     def __init__(self):
         super().__init__()
-        self.__kleidungsstueck_id = 0
-        self.__kleidungstyp = None
-        self.__kleidungsstueck_name = ""
-        self.__kleidungsstueck_usage = ""
-        self.__kleidungsstueck_size = 0
-        self.__kleidungsstueck_color = ""   # vllt Features wie size und color in constraints reinmachen
+        self._item_id = 0
+        self._clothing_type = None
+        self._item_name = ""
 
-    def get_kleidungsstueck_id(self):
-        return self.__kleidungsstueck_id
+    def get_item_id(self):
+        return self._item_id
 
-    def set_kleidungsstueck_id(self, kleidungsstueck_id: int):
-        self.__kleidungsstueck_id = kleidungsstueck_id
+    def set_item_id(self, item_id: int):
+        self._item_id = item_id
 
-    # Getter und Setter für kleidungstyp
-    def get_kleidungstyp(self):
-        return self.__kleidungstyp
+    def get_clothing_type(self):
+        return self._clothing_type
 
-    def set_kleidungstyp(self, kleidungstyp):
-        self.__kleidungstyp = kleidungstyp
+    def set_kleidungstyp(self, clothing_type):
+        self._clothing_type = clothing_type
 
-    # Getter und Setter für kleidungsstueck_name
-    def get_kleidungsstueck_name(self):
-        return self.__kleidungsstueck_name
+    def get_item_name(self):
+        return self._item_name
 
-    def set_kleidungsstueck_name(self, kleidungsstueck_name: str):
-        self.__kleidungsstueck_name = kleidungsstueck_name
-
-    def get_kleidungsstueck_size(self):
-        return self.__kleidungsstueck_size
-
-    def set_kleidungsstueck_size(self, kleidungsstueck_size: int):
-        self.__kleidungsstueck_size = kleidungsstueck_size
-
-    # Getter und Setter für kleidungsstueck_color
-    def get_kleidungsstueck_color(self):
-        return self.__kleidungsstueck_color
-
-    def set_kleidungsstueck_color(self, kleidungsstueck_color: str):
-        self.__kleidungsstueck_color = kleidungsstueck_color
+    def set_item_name(self, item_name: str):
+        self._item_name = item_name
 
     def __str__(self):
-        return "Kleidungsstück ID: {}, Typ: {}, Name: {}, Größe: {}, Farbe: {}".format(
-            self.get_kleidungsstueck_id(),
-            self.get_kleidungstyp(),
-            self.get_kleidungsstueck_name(),
-            self.get_kleidungsstueck_size(),
-            self.get_kleidungsstueck_color()
+        return "Kleidungsstück ID: {}, Typ: {}, Name: {}".format(
+            self.get_item_id(),
+            self.get_clothing_type(),
+            self.get_item_name(),
         )
 
     @staticmethod
@@ -60,9 +40,7 @@ class ClothingItem(BusinessObject):
         if dictionary is None:
             dictionary = {}
         obj = ClothingItem()
-        obj.set_kleidungsstueck_id(dictionary.get("clothingitem", 0))
+        obj.set_item_id(dictionary.get("clothingitem", 0))
         obj.set_kleidungstyp(dictionary.get("clothingitem", None))
-        obj.set_kleidungsstueck_name(dictionary.get("clothingitem_name", ""))
-        obj.set_kleidungsstueck_size(dictionary.get("clothingitem_size", 0))
-        obj.set_kleidungsstueck_color(dictionary.get("clothingitem_color", ""))
+        obj.set_item_name(dictionary.get("clothingitem_name", ""))
         return obj
