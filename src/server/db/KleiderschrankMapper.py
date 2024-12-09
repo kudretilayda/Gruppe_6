@@ -1,49 +1,38 @@
 from src.server.db.Mapper import Mapper
-from src.server.bo.Wardrobe import Wardrobe
+from src.server.bo.Kleiderschrank import Kleiderschrank
 
 
 class WardrobeMapper(Mapper):
-    """Mapper-Klasse für Wardrobe-Objekte."""
-
-    def _init_(self):
-        super()._init_()
-
     def find_all(self):
-        """Auslesen aller Wardrobe-Objekte."""
         result = []
-        cursor = self._cnx().cursor()
-        cursor.execute("SELECT * FROM wardrobe")
+        cursor = self._cnx.cursor()
+        cursor.execute("SELECT * FROM digital_wardrobe.wardrobe")
         tuples = cursor.fetchall()
 
-        for (id, person_id, owner_name, created_at) in tuples:
-            wardrobe = Wardrobe()
+        for (id, wardrobe_owner) in tuples:
+            wardrobe = Kleiderschrank()
             wardrobe.set_id(id)
-            wardrobe.set_person_id(person_id)
-            wardrobe.set_owner_name(owner_name)
-            wardrobe.set_creation_date(created_at)
+            wardrobe.set_owner(wardrobe_owner)
             result.append(wardrobe)
 
-        self._cnx().commit()
+        self._cnx.commit()
         cursor.close()
         return result
 
     def find_by_key(self, key):
-        """Suchen eines Wardrobe-Objekts nach ID."""
         result = None
-        cursor = self._cnx().cursor()
-        command = "SELECT * FROM wardrobe WHERE id='{}'".format(key)
+        cursor = self._cnx.cursor()
+        command = f"SELECT * FROM wardrobe WHERE id={key}"
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        if tuples is not None and len(tuples) > 0:
-            (id, person_id, owner_name, created_at) = tuples[0]
-            result = Wardrobe()
+        if tuples:
+            (id, wardrobe_owner) = tuples[0]
+            result = Kleiderschrank()
             result.set_id(id)
-            result.set_person_id(person_id)
-            result.set_owner_name(owner_name)
-            result.set_creation_date(created_at)
+            result.set_owner(wardrobe_owner)
 
-        self._cnx().commit()
+        self._cnx.commit()
         cursor.close()
         return result
 
@@ -57,7 +46,7 @@ class WardrobeMapper(Mapper):
 
         if tuples is not None and len(tuples) > 0:
             (id, person_id, owner_name, created_at) = tuples[0]
-            result = Wardrobe()
+            result = Kleiderschrank()
             result.set_id(id)
             result.set_person_id(person_id)
             result.set_owner_name(owner_name)
@@ -68,40 +57,34 @@ class WardrobeMapper(Mapper):
         return result
 
     def insert(self, wardrobe):
-        """Einfügen eines Wardrobe-Objekts in die Datenbank."""
-        cursor = self._cnx().cursor()
-        cursor.execute("SELECT MAX(id) AS maxid FROM wardrobe")
-        tuples = cursor.fetchall()
+        cursor = self._cnx.cursor()
+        cursor.execute("SELECT MAX(id) AS maxid FROM digital_wardrobe.wardrobe")
+        max_id = cursor.fetchone()[0]
+        wardrobe.set_id(max_id + 1 if max_id else 1)
 
-        for (maxid) in tuples:
-            if maxid[0] is None:
-                wardrobe.set_id(1)
-            else:
-                wardrobe.set_id(maxid[0] + 1)
+        command = ("INSERT INTO digital_wardrobe.wardrobe (id, wardrobe_owner) "
+                   "VALUES (%s, %s)")
+        data = (wardrobe.get_id(), wardrobe.get_owner())
+        cursor.execute(command, data)
 
-        command = "INSERT INTO wardrobe (id, person_id, owner_name) VALUES ('{}','{}','{}')" \
-            .format(wardrobe.get_id(), wardrobe.get_person_id(), wardrobe.get_owner_name())
-        cursor.execute(command)
-
-        self._cnx().commit()
+        self._cnx.commit()
         cursor.close()
         return wardrobe
 
     def update(self, wardrobe):
-        """Aktualisieren eines Wardrobe-Objekts in der Datenbank."""
-        cursor = self._cnx().cursor()
-        command = "UPDATE wardrobe SET owner_name='{}' WHERE id='{}'"\
-            .format(wardrobe.get_owner_name(), wardrobe.get_id())
-        cursor.execute(command)
+        cursor = self._cnx.cursor()
+        command = ("UPDATE digital_wardrobe.wardrobe "
+                   "SET wardrobe_owner=%s WHERE id=%s")
+        data = (wardrobe.get_owner(), wardrobe.get_id())
+        cursor.execute(command, data)
 
-        self._cnx().commit()
+        self._cnx.commit()
         cursor.close()
 
     def delete(self, wardrobe):
-        """Löschen eines Wardrobe-Objekts aus der Datenbank."""
-        cursor = self._cnx().cursor()
-        command = "DELETE FROM wardrobe WHERE id='{}'".format(wardrobe.get_id())
+        cursor = self._cnx.cursor()
+        command = f"DELETE FROM wardrobe WHERE id={wardrobe.get_id()}"
         cursor.execute(command)
 
-        self._cnx().commit()
+        self._cnx.commit()
         cursor.close()
