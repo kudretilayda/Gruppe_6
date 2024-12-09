@@ -3,7 +3,7 @@
 from flask import request
 from flask_restx import Namespace, Resource, fields
 from config.security_config import SecurityConfig
-from admin.Administration import Administration
+from server.Administration import Administration
 
 person_namespace = Namespace('persons', description='Person operations')
 

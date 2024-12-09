@@ -2,7 +2,7 @@
 
 from flask import request
 from flask_restx import Namespace, Resource, fields
-from admin.Administration import WardrobeAdministration
+from server.Administration import WardrobeAdministration
 from SecurityDecorator import SecurityDecorator
 
 api = Namespace('constraint', description='Constraint related operations')
