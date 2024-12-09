@@ -1,119 +1,45 @@
-#from SecurityDecorator import secured
-
 from flask import Flask
-from flask_restx import Api, Resource, fields
 from flask_cors import CORS
+from flask_restx import Api, Resource, fields
 
-app = Flask(__name__)
-CORS(app, resources={r"/kleiderschrank/*": {"origins": "*"}})
+from server.Admin import WardrobeAdministration
+from server.bo.User import Person
+from server.bo.Wardrobe import Wardrobe
+from server.bo.Style import Style
+from server.bo.Outfit import Outfit
+from server.bo.ClothingItem import ClothingItem
+from server.bo.ClothingType import ClothingType
+from server.constraints.Constraint import Constraint
+from server.constraints.BinaryConstraint import BinaryConstraint
+from server.constraints.UnaryConstraint import UnaryConstraint
+from server.constraints.CardinalityConstraint import CardinalityConstraint
+from server.constraints.ImplicationConstraint import ImplicationConstraint
+from server.constraints.MutexConstraint import MutexConstraint
+import traceback
+from SecurityDecorator import secured
 
-api = Api(app, version='1.0', title='Digitaler Kleiderschrank API',
-          description='API für den digitalen Kleiderschrank')
+app=Flask(__name__)
 
-kleiderschrank = api.namespace('kleiderschrank', description='Digitaler Kleiderschrank Funktionen')
+# CORS aktivieren
+CORS(app, supports_credentials=True, resources=r'/wardrobe/*')
 
-# Business Object Basismodell
+# API-Objekt erstellen
+api = Api(app, version='1.0', title='Digital Wardrobe API',
+          description='An API for managing a digital wardrobe.')
+
+# Namespace
+wardrobe_ns = api.namespace('wardrobe', description='Digital Wardrobe functionalities')
+
+# Modelle für Flask-RestX
 bo = api.model('BusinessObject', {
-    'id': fields.Integer(attribute='_id', description='Der Unique Identifier eines BusinessObject')
+    'id': fields.String(attribute='_id', description='Unique identifier'),
 })
 
-# User Modell
-user = api.inherit('User', bo, {
-    'user_id': fields.Integer(attribute='_user_id', description='User ID'),
-    'nachname': fields.String(attribute='_nachname', description='Nachname des Users'),
-    'vorname': fields.String(attribute='_vorname', description='Vorname des Users'),
-    'nickname': fields.String(attribute='_nickname', description='Nickname des Users'),
-    'google_id': fields.String(attribute='_google_id', description='Google ID des Users'),
-    'email': fields.String(attribute='_email', description='Email des Users')
+user = api.inherit('Person', bo, {
+    'user_id': fields.String(attribute='_user_id', description='User ID'),
+    'google_id': fields.String(attribute='_google_id', description='Google user ID'),
+    'first_name': fields.String(attribute='_first_name', description='First name'),
+    'last_name': fields.String(attribute='_last_name', description='Last name'),
+    'nick_name': fields.String(attribute='_nick_name', description='Nickname'),
+    'email': fields.String(attribute='_email', description='Email address')
 })
-
-# Constraint Modell
-constraint = api.inherit('Constraint', bo, {
-    'name': fields.String(attribute='_name', description='Name des Constraints'),
-    'beschreibung': fields.String(attribute='_beschreibung', description='Beschreibung des Constraints')
-})
-
-# UnaryConstraint Modell
-unary_constraint = api.inherit('UnaryConstraint', constraint, {
-    'bezugsobjekt': fields.String(attribute='_bezugsobjekt', description='Bezugsobjekt des UnaryConstraints'),
-    'bedingung': fields.String(attribute='_bedingung', description='Bedingung des UnaryConstraints')
-})
-
-# BinaryConstraint Modell
-binary_constraint = api.inherit('BinaryConstraint', constraint, {
-    'object1': fields.String(attribute='_object1', description='Bezugsobjekt 1'),
-    'object2': fields.String(attribute='_object2', description='Bezugsobjekt 2'),
-    'bedingung': fields.String(attribute='_bedingung', description='Bedingung des BinaryConstraints')
-})
-
-# CardinalityConstraint Modell
-cardinality_constraint = api.inherit('CardinalityConstraint', constraint, {
-    'min_count': fields.Integer(attribute='_min_count', description='Minimale Kardinalität'),
-    'max_count': fields.Integer(attribute='_max_count', description='Maximale Kardinalität'),
-    'object1': fields.String(attribute='_object1', description='Erstes Objekt'),
-    'object2': fields.String(attribute='_object2', description='Zweites Objekt')
-})
-
-# ImplicationConstraint Modell
-implication_constraint = api.inherit('ImplicationConstraint', constraint, {
-    'condition': fields.String(attribute='_condition', description='Bedingung'),
-    'implication': fields.String(attribute='_implication', description='Implikation')
-})
-
-# MutexConstraint Modell
-mutex_constraint = api.inherit('MutexConstraint', constraint, {
-    'object1': fields.String(attribute='_object1', description='Erstes Objekt'),
-    'object2': fields.String(attribute='_object2', description='Zweites Objekt')
-})
-
-@kleiderschrank.route('/user')
-class UserListOperations(Resource):
-    @kleiderschrank.marshal_list_with(user)
-    def get(self):
-        """Alle User auslesen"""
-        return []  # Zunächst leere Liste zurückgeben
-    
-@kleiderschrank.route('/constraint')
-class ConstraintListOperations(Resource):
-    @kleiderschrank.marshal_list_with(constraint)
-    def get(self):
-        """Alle Constraints auslesen"""
-        return []  # Zunächst leere Liste zurückgeben
-    
-@kleiderschrank.route('/unary-constraint')
-class UnaryConstraintListOperations(Resource):
-    @kleiderschrank.marshal_list_with(unary_constraint)
-    def get(self):
-        """Alle UnaryConstraints auslesen"""
-        return []
-
-@kleiderschrank.route('/binary-constraint')
-class BinaryConstraintListOperations(Resource):
-    @kleiderschrank.marshal_list_with(binary_constraint)
-    def get(self):
-        """Alle BinaryConstraints auslesen"""
-        return []
-
-@kleiderschrank.route('/cardinality-constraint')
-class CardinalityConstraintListOperations(Resource):
-    @kleiderschrank.marshal_list_with(cardinality_constraint)
-    def get(self):
-        """Alle CardinalityConstraints auslesen"""
-        return []
-
-@kleiderschrank.route('/implication-constraint')
-class ImplicationConstraintListOperations(Resource):
-    @kleiderschrank.marshal_list_with(implication_constraint)
-    def get(self):
-        """Alle ImplicationConstraints auslesen"""
-        return []
-
-@kleiderschrank.route('/mutex-constraint')
-class MutexConstraintListOperations(Resource):
-    @kleiderschrank.marshal_list_with(mutex_constraint)
-    def get(self):
-        """Alle MutexConstraints auslesen"""
-        return []
-
-if __name__ == '__main__':
-    app.run(debug=True)
