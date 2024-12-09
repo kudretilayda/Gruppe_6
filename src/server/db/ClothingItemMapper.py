@@ -1,5 +1,5 @@
 from src.server.db.Mapper import Mapper
-from server.bo.ClothingItem import Kleidungsstueck
+from src.server.bo.ClothingItem import ClothingItem
 
 
 class ClothingItemMapper(Mapper):
@@ -10,11 +10,11 @@ class ClothingItemMapper(Mapper):
         tuples = cursor.fetchall()
 
         for (id, wardrobe_id, clothing_type_id, clothing_item_name) in tuples:
-            clothing_item = Kleidungsstueck()
+            clothing_item = ClothingItem()
             clothing_item.set_id(id)
             clothing_item.set_wardrobe_id(wardrobe_id)
-            clothing_item.set_clothing_type_id(clothing_type_id)
-            clothing_item.set_name(clothing_item_name)
+            clothing_item.set_clothing_type(clothing_type_id)
+            clothing_item.set_item_name(clothing_item_name)
             result.append(clothing_item)
 
         self._cnx.commit()
@@ -30,11 +30,11 @@ class ClothingItemMapper(Mapper):
 
         if tuples:
             (id, wardrobe_id, clothing_type_id, clothing_item_name) = tuples[0]
-            result = Kleidungsstueck()
+            result = ClothingItem()
             result.set_id(id)
             result.set_wardrobe_id(wardrobe_id)
-            result.set_clothing_type_id(clothing_type_id)
-            result.set_name(clothing_item_name)
+            result.set_clothing_type(clothing_type_id)
+            result.set_item_name(clothing_item_name)
 
         self._cnx.commit()
         cursor.close()
@@ -43,44 +43,21 @@ class ClothingItemMapper(Mapper):
     def find_by_type(self, type_id):
         result = []
         cursor = self._cnx.cursor()
-        command = ("SELECT id, name, type_id, style_id, size, color, brand "
+        command = ("SELECT id, name, type_id, style_id "
                    "FROM clothing_items WHERE type_id={}").format(
             type_id)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, name, type_id, style_id, size, color, brand) in tuples:
-            clothing_item = Kleidungsstueck()
+        for (id, name, type_id, style_id) in tuples:
+            clothing_item = ClothingItem()
             clothing_item.set_id(id)
-            clothing_item.set_name(name)
-            clothing_item.set_type_id(type_id)
-            clothing_item.set_style_id(style_id)
+            clothing_item.set_item_name(name)
+            clothing_item.set_clothing_type(type_id)
             result.append(clothing_item)
 
         self._cnx.commit()
         cursor.close()
-        return result
-
-    def find_by_style(self, style_id):
-        result = []
-        cursor = self._cnx.cursor()
-        command = ("SELECT id, name, type_id, style_id, size, color, brand "
-                   "FROM clothing_items WHERE style_id={}").format(
-            style_id)
-        cursor.execute(command)
-        tuples = cursor.fetchall()
-
-        for (id, name, type_id, style_id, size, color, brand) in tuples:
-            clothing_item = Kleidungsstueck()
-            clothing_item.set_id(id)
-            clothing_item.set_name(name)
-            clothing_item.set_type_id(type_id)
-            clothing_item.set_style_id(style_id)
-            result.append(clothing_item)
-
-        self._cnx.commit()
-        cursor.close()
-
         return result
 
     def insert(self, clothing_item):

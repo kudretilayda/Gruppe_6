@@ -1,5 +1,5 @@
 from src.server.db.Mapper import Mapper
-from server.bo.Wardrobe import Kleiderschrank
+from src.server.bo.Wardrobe import Wardrobe
 
 
 class WardrobeMapper(Mapper):
@@ -10,7 +10,7 @@ class WardrobeMapper(Mapper):
         tuples = cursor.fetchall()
 
         for (id, wardrobe_owner) in tuples:
-            wardrobe = Kleiderschrank()
+            wardrobe = Wardrobe()
             wardrobe.set_id(id)
             wardrobe.set_owner(wardrobe_owner)
             result.append(wardrobe)
@@ -28,7 +28,7 @@ class WardrobeMapper(Mapper):
 
         if tuples:
             (id, wardrobe_owner) = tuples[0]
-            result = Kleiderschrank()
+            result = Wardrobe()
             result.set_id(id)
             result.set_owner(wardrobe_owner)
 
@@ -46,11 +46,10 @@ class WardrobeMapper(Mapper):
 
         if tuples is not None and len(tuples) > 0:
             (id, person_id, owner_name, created_at) = tuples[0]
-            result = Kleiderschrank()
+            result = Wardrobe()
             result.set_id(id)
             result.set_person_id(person_id)
             result.set_owner_name(owner_name)
-            result.set_creation_date(created_at)
 
         self._cnx().commit()
         cursor.close()

@@ -18,7 +18,7 @@ class ClothingItem(BusinessObject):
     def get_clothing_type(self):
         return self._clothing_type
 
-    def set_kleidungstyp(self, clothing_type):
+    def set_clothing_type(self, clothing_type):
         self._clothing_type = clothing_type
 
     def get_item_name(self):
@@ -41,6 +41,6 @@ class ClothingItem(BusinessObject):
             dictionary = {}
         obj = ClothingItem()
         obj.set_item_id(dictionary.get("clothingitem", 0))
-        obj.set_kleidungstyp(dictionary.get("clothingitem", None))
+        obj.set_clothing_type(dictionary.get("clothingitem", None))
         obj.set_item_name(dictionary.get("clothingitem_name", ""))
         return obj
