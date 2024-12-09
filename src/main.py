@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_cors import CORS
 from flask_restx import Api, Resource, fields
-from server.Administration import HalilsTaverneAdministration
+from server.Administration import Administration
 from server.bo.BinaryConstraint import BinaryConstraint
 from server.bo.CardinalityConstraint import CardinalityConstraint
 from server.bo.ClothingItems import ClothingItem
@@ -14,7 +14,6 @@ from server.bo.UnaryConstraint import UnaryConstraint
 from server.bo.User import User
 from server.bo.Wardrobe import Wardrobe
 import traceback
-from server.db.conversion import convert_quantity
 from SecurityDecorator import secured
 
 app = Flask(__name__)
@@ -25,7 +24,7 @@ app = Flask(__name__)
 CORS(app, supports_credentials=True, resources=r'/wardrobe/*')
 
 #API-Objekt erstellen
-api = Api(app, version='1.0', title='DigitalWardrobeDemo API',
+api = Api(app, version='1.0', title='DigitalWardrobe API',
           description='An API for managing a digital wardrobe.')
 
 # Namespace
@@ -36,33 +35,43 @@ Wardrobe_ns = api.namespace('wardrobe', description='Wardrobe-related functional
 #Restx ist eine Erweiterung von Flask, die es ermöglicht, RESTful APIs zu erstellen.
 #RESTful APIs sind APIs, die auf dem REST-Prinzip basieren, das besagt, dass jede Ressource über eine eindeutige URL angesprochen wird.
 
-#Im folgenden Abschnitt werden die Modelle für die verschiedenen Business-Objekte definiert.
+
+# Modelle für Flask-RestX
 bo = api.model('BusinessObject', {
-    'id': fields.Integer(attribute='_id', description='Unique identifier of a business object')
+    'id': fields.String(attribute='_id', description='Unique identifier'),
+    'created_at': fields.DateTime(attribute='_created_at', description='Creation timestamp')
 })
 
+
 user = api.inherit('User', bo, {
+    'google_id': fields.String(attribute='_google_id', required=True, description='Google ID of the user'),
     'firstname': fields.String(attribute='_firstname', required=True, description='First name of the user'),
     'lastname': fields.String(attribute='_lastname', required=True, description='Last name of the user'),
     'nickname': fields.String(attribute='_nickname', description='Nickname of the user'),
-    'google_id': fields.String(attribute='_google_id', required=True, description='Google ID of the user'),
     'email': fields.String(attribute='_email', required=True, description='Email address of the user')
 })
 
-clothing = api.inherit('Clothing', bo, {
-    'name': fields.String(attribute='_name', required=True, description='Name of the clothing item'),
-    'type_id': fields.Integer(attribute='_type_id', required=True, description='Type of the clothing item'),
-    'color': fields.String(attribute='_color', description='Color of the clothing item'),
-    'wardrobe_id': fields.Integer(attribute='_wardrobe_id', required=True, description='Identifier of the associated wardrobe'),
-    'seasons': fields.List(fields.String, attribute='_seasons', description='Seasons associated with the clothing item'),
-    'occasions': fields.List(fields.String, attribute='_occasions', description='Occasions suitable for the clothing item')
+wardrobe = api.inherit('Wardrobe', bo, {
+    'person_id': fields.String(attribute='_person_id', description='Owner ID'),
+    'owner_name': fields.String(attribute='_owner_name', description='Owner name')
 })
 
-constraint = api.inherit('Constraint', bo, {
-    'style_id': fields.Integer(attribute='_style_id', required=True, description='Identifier of the associated style'),
-    'type': fields.String(attribute='_type', required=True, description='Type of the constraint (e.g., binary, unary)'),
-    'value': fields.String(attribute='_value', required=True, description='Constraint-specific rules in JSON format')
+
+clothing_type = api.inherit('ClothingType', bo, {
+    'type_name': fields.String(attribute='_type_name', required=True, description='Type name'),
+    'category': fields.String(attribute='_category', required=True, description='Category'),
+    'type_description': fields.String(attribute='_type_description', description='Type description')
 })
+
+clothing_item = api.inherit('ClothingItem', bo, {
+    'wardrobe_id': fields.String(attribute='_wardrobe_id', required=True),
+    'clothing_type_id': fields.String(attribute='_clothing_type_id', required=True),
+    'product_name': fields.String(attribute='_product_name', required=True),
+    'color': fields.String(attribute='_color'),
+    'brand': fields.String(attribute='_brand'),
+    'season': fields.String(attribute='_season')
+})
+
 
 outfit = api.inherit('Outfit', bo, {
     'name': fields.String(attribute='_name', required=True, description='Name of the outfit'),
@@ -83,4 +92,10 @@ style = api.inherit('Style', bo, {
     'occasions': fields.List(fields.String, attribute='_occasions', description='Occasions suitable for the style'),
     'constraints': fields.List(fields.Nested(constraint), attribute='_constraints', description='List of constraints for the style'),
     'tags': fields.List(fields.String, attribute='_tags', description='Tags associated with the style')
+})
+
+constraint = api.inherit('Constraint', bo, {
+    'style_id': fields.Integer(attribute='_style_id', required=True, description='Identifier of the associated style'),
+    'type': fields.String(attribute='_type', required=True, description='Type of the constraint (e.g., binary, unary)'),
+    'value': fields.String(attribute='_value', required=True, description='Constraint-specific rules in JSON format')
 })
