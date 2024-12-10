@@ -254,3 +254,89 @@ class Administration(object):
         with OutfitMapper() as mapper:
             mapper.delete(outfit)
 
+#Constraint-spezifische Methoden
+    
+    def create_constraint(self, style_id, constraint_type, attribute=None, constrain=None, val=None):
+        constraint = constraint()
+        constraint.set_style_id(style_id)
+        constraint.set_constraint_type(constraint_type)
+        constraint.set_attribute(attribute)
+        constraint.set_constrain(constrain)
+        constraint.set_val(val)
+
+        with ConstraintMapper() as mapper:
+            return mapper.insert(constraint)
+
+    def create_binary_constraint(self, style_id, reference_object1_id, reference_object2_id):
+        binary_constraint = BinaryConstraint()
+        binary_constraint.set_style_id(style_id)
+        binary_constraint.set_reference_object1_id(reference_object1_id)
+        binary_constraint.set_reference_object2_id(reference_object2_id)
+
+        with ConstraintMapper() as mapper:
+            return mapper.insert(binary_constraint)
+
+    def create_unary_constraint(self, style_id, reference_object_id, attribute, constrain, val):
+        unary_constraint = UnaryConstraint()
+        unary_constraint.set_style_id(style_id)
+        unary_constraint.set_reference_object_id(reference_object_id)
+        unary_constraint.set_attribute(attribute)
+        unary_constraint.set_constrain(constrain)
+        unary_constraint.set_val(val)
+
+        with ConstraintMapper() as mapper:
+            return mapper.insert(unary_constraint)
+
+    def create_cardinality_constraint(self, style_id, item_type, min_count, max_count):
+        cardinality_constraint = CardinalityConstraint()
+        cardinality_constraint.set_style_id(style_id)
+        cardinality_constraint.set_item_type(item_type)
+        cardinality_constraint.set_min_count(min_count)
+        cardinality_constraint.set_max_count(max_count)
+
+        with ConstraintMapper() as mapper:
+            return mapper.insert(cardinality_constraint)
+
+    def create_mutex_constraint(self, style_id, item_type_1, item_type_2):
+        mutex_constraint = MutexConstraint()
+        mutex_constraint.set_style_id(style_id)
+        mutex_constraint.set_item_type_1(item_type_1)
+        mutex_constraint.set_item_type_2(item_type_2)
+
+        with ConstraintMapper() as mapper:
+            return mapper.insert(mutex_constraint)
+
+    def create_implication_constraint(self, style_id, if_type, then_type):
+        implication_constraint = ImplicationConstraint()
+        implication_constraint.set_style_id(style_id)
+        implication_constraint.set_if_type(if_type)
+        implication_constraint.set_then_type(then_type)
+
+        with ConstraintMapper() as mapper:
+            return mapper.insert(implication_constraint)
+
+    def get_constraints_by_style(self, style_id):
+        with ConstraintMapper() as mapper:
+            return mapper.find_by_style_id(style_id)
+
+    def get_all_constraints(self):
+        with ConstraintMapper() as mapper:
+            return mapper.find_all()
+
+    def get_all_mutex_constraints(self):
+        with ConstraintMapper() as mapper:
+            return mapper.find_all_mutex_constraints()
+
+    def get_all_implication_constraints(self):
+        with ConstraintMapper() as mapper:
+            return mapper.find_all_implication_constraints()
+
+    def get_mutex_constraints_by_style(self, style):
+        with ConstraintMapper() as mapper:
+            return mapper.find_mutex_constraints_by_style_id(style.get_id())
+
+    def get_implication_constraints_by_style(self, style):
+        with ConstraintMapper() as mapper:
+            return mapper.find_implication_constraints_by_style_id(style.get_id())
+        
+    #ConstraintMapper anpassen
