@@ -12,8 +12,8 @@ class StyleMapper(Mapper):
         for (id, style_features, style_constraints) in tuples:
             style = Style()
             style.set_id(id)
-            style.set_features(style_features)
-            style.set_constraints(style_constraints)
+            style.set_style_features(style_features)
+            style.set_style_constraints(style_constraints)
             results.append(style)
 
         self._cnx.commit()
@@ -31,8 +31,8 @@ class StyleMapper(Mapper):
             (id, style_features, style_constraints) = tuples[0]
             results = Style()
             results.set_id(id)
-            results.set_features(style_features)
-            results.set_constraints(style_constraints)
+            results.set_style_features(style_features)
+            results.set_style_constraints(style_constraints)
 
         self._cnx.commit()
         cursor.close()

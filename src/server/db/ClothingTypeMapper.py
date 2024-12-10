@@ -1,5 +1,5 @@
 from src.server.db.Mapper import Mapper
-from src.server.bo.Kleidungstyp import Kleidungstyp
+from src.server.bo.ClothingType import ClothingType
 
 
 class ClothingTypeMapper(Mapper):
@@ -10,7 +10,7 @@ class ClothingTypeMapper(Mapper):
         tuples = cursor.fetchall()
 
         for (id, type_name, type_usage) in tuples:
-            clothing_type = Kleidungstyp()
+            clothing_type = ClothingType()
             clothing_type.set_id(id)
             clothing_type.set_name(type_name)
             clothing_type.set_usage(type_usage)
@@ -29,28 +29,10 @@ class ClothingTypeMapper(Mapper):
 
         if tuples:
             (id, type_name, type_usage) = tuples[0]
-            results = Kleidungstyp()
+            results = ClothingType()
             results.set_id(id)
             results.set_name(type_name)
             results.set_usage(type_usage)
-
-        self._cnx.commit()
-        cursor.close()
-        return results
-
-    def find_by_category(self, category):
-        results = []
-        cursor = self._cnx.cursor()
-        command = "SELECT id, name, category FROM clothing_types WHERE category='{}'".format(category)
-        cursor.execute(command)
-        tuples = cursor.fetchall()
-
-        for (id, name, category) in tuples:
-            clothing_type = Kleidungstyp()
-            clothing_type.set_id(id)
-            clothing_type.set_name(name)
-            clothing_type.set_category(category)
-            results.append(clothing_type)
 
         self._cnx.commit()
         cursor.close()
