@@ -5,19 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0b36f84f-6ad4-4404-a25a-055e1c7ce6fe" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0ba7c31d-66a9-426f-a9cb-112c76a75293.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/0ba7c31d-66a9-426f-a9cb-112c76a75293.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/constraints/Constraint Tests.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/db/ConstraintMapper-v4.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/Constraints/BinaryConstraint.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/constraints/BinaryConstraint.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/Constraints/CardinalityConstraint.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/constraints/CardinalityConstraint.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/Constraints/Constraint.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/constraints/Constraint.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/Constraints/ImplicationConstraint.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/constraints/ImplicationConstraint.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/Constraints/MutexConstraint.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/constraints/MutexConstraint.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/Constraints/UnaryConstraint.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/constraints/UnaryConstraint.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/db/Mapper.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/db/Mapper.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/db/StyleMapper.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/db/StyleMapper.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/db/UserMapper.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/db/UserMapper.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,6 +49,7 @@
     "Python.BinaryConstraint.executor": "Run",
     "Python.BusinessObject.executor": "Run",
     "Python.CardinalityConstraint.executor": "Run",
+    "Python.Constraint Tests.executor": "Run",
     "Python.Constraint.executor": "Run",
     "Python.ConstraintMapper.executor": "Run",
     "Python.ImplicationConstraint.executor": "Run",
@@ -77,7 +68,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "Draft__Backend",
-    "last_opened_file_path": "C:/Users/serta/Downloads/PythonBankBeispiel-RELEASE_1.2.2/PythonBankBeispiel-RELEASE_1.2.2",
+    "last_opened_file_path": "C:/Users/serta/Documents/GitHub/Gruppe_6/src/server/db",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -96,14 +87,38 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\serta\Documents\GitHub\Gruppe_6\src\server\db" />
       <recent name="C:\Users\serta\Documents\GitHub\Gruppe_6\src\server\bo" />
     </key>
   </component>
-  <component name="RunManager" selected="Database Script.mysql-dump.sql">
+  <component name="RunManager" selected="Python.Constraint Tests">
     <configuration name="mysql-dump.sql" type="DatabaseScript" editBeforeRun="true" temporary="true" nameIsGenerated="true">
       <script-file value="$PROJECT_DIR$/mysql/mysql-dump.sql" />
       <script-mode>FILE</script-mode>
       <data-source id="0ba7c31d-66a9-426f-a9cb-112c76a75293" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Constraint Tests" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Gruppe_6" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/server/constraints" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/server/constraints/Constraint Tests.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
     <configuration name="ConstraintMapper" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
@@ -152,29 +167,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="MutexConstraint" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="Gruppe_6" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/server/bo" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="C:\Users\serta\Documents\GitHub\Gruppe_6\src\server\Constraints\MutexConstraint.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="User" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Gruppe_6" />
       <option name="ENV_FILES" value="" />
@@ -200,11 +192,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.Constraint Tests" />
         <item itemvalue="Database Script.mysql-dump.sql" />
         <item itemvalue="Python.Mapper" />
         <item itemvalue="Python.User" />
         <item itemvalue="Python.ConstraintMapper" />
-        <item itemvalue="Python.MutexConstraint" />
       </list>
     </recent_temporary>
   </component>
@@ -234,6 +226,7 @@
       <workItem from="1733150931754" duration="1737000" />
       <workItem from="1733240463823" duration="1190000" />
       <workItem from="1733687161187" duration="923000" />
+      <workItem from="1733787021370" duration="4020000" />
     </task>
     <servers />
   </component>
@@ -246,6 +239,7 @@
     <SUITE FILE_PATH="coverage/Gruppe_6$Kleidungstyp.coverage" NAME="Kleidungstyp Coverage Results" MODIFIED="1732397323955" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
     <SUITE FILE_PATH="coverage/Gruppe_6$CardinalityConstraint.coverage" NAME="CardinalityConstraint Coverage Results" MODIFIED="1732648363628" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
     <SUITE FILE_PATH="coverage/Gruppe_6$Mapper.coverage" NAME="Mapper Coverage Results" MODIFIED="1733702373951" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/db" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$Constraint_Tests.coverage" NAME="Constraint Tests Coverage Results" MODIFIED="1733794068113" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/constraints" />
     <SUITE FILE_PATH="coverage/Gruppe_6$User.coverage" NAME="User Coverage Results" MODIFIED="1733697451058" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
     <SUITE FILE_PATH="coverage/Gruppe_6$BusinessObject.coverage" NAME="BusinessObject Coverage Results" MODIFIED="1732396874777" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
     <SUITE FILE_PATH="coverage/Gruppe_6$Kleiderschrank.coverage" NAME="Kleiderschrank Coverage Results" MODIFIED="1732648373453" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
