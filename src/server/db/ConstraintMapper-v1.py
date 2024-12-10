@@ -7,6 +7,9 @@ from src.server.constraints.MutexConstraint import MutexConstraint
 
 
 class ConstraintMapper(Mapper):
+    def __init__(self):
+        super().__init__()
+        
     def find_all(self):
         cursor = self._cnx.cursor()
         query = "SELECT * FROM digital_wardrobe.constraint_rule"
