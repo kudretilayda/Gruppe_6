@@ -63,12 +63,9 @@ class User (BusinessObject):
             dictionary = dict()
         obj = User()
         obj.set_user_id(dictionary.get("user_id", ""))
-        obj.set_lastname(dictionary.get("nachname", ""))
-        obj.set_firstname(dictionary.get("vorname", ""))
+        obj.set_lastname(dictionary.get("lastname", ""))
+        obj.set_firstname(dictionary.get("firstname", ""))
         obj.set_nickname(dictionary.get("nickname", ""))
         obj.set_google_id(dictionary.get("google_id", ""))
         obj.set_email(dictionary.get("email", ""))
         return obj
-
-    def set_creation_date(self, created_at):
-        pass

@@ -1,1275 +1,501 @@
 from flask import Flask
-from flask_restx import Api, Resource, fields
 from flask_cors import CORS
+from flask_restx import Api, Resource, fields
 
 from server.Admin import Admin
-from server.bo.BinaryConstraint import BinaryConstraint
-from server.bo.BusinessObject import BusinessObject
-from server.bo.CardinalityConstraint import CardinalityConstraint
-from server.bo.Constraint import Constraint
-from server.bo.ImplicationConstraint import ImplicationConstraint
-from server.bo.Kleiderschrank import Kleiderschrank
-from server.bo.Kleidungsstueck import Kleidungsstueck
-from server.bo.Kleidungstyp import Kleidungstyp
-from server.bo.MutexConstraint import MutexConstraint
-from server.bo.Outfit import Outfit
-from server.bo.Style import Style
-from server.bo.UnaryConstraint import UnaryConstraint
 from server.bo.User import User
+from server.bo.Wardrobe import Wardrobe
+from server.bo.Style import Style
+from server.bo.Outfit import Outfit
+from server.bo.ClothingItem import ClothingItem
+from server.bo.ClothingType import ClothingType
+from server.constraints.Constraint import Constraint, BinaryConstraint, UnaryConstraint, CardinalityConstraint, MutexConstraint, ImplicationConstraint
 
+#from server.constraints.Constraint import Constraint
+#from server.constraints.BinaryConstraint import BinaryConstraint
+#from server.constraints.UnaryConstraint import UnaryConstraint
+#from server.constraints.CardinalityConstraint import CardinalityConstraint
+#from server.constraints.ImplicationConstraint import ImplicationConstraint
+#from server.constraints.MutexConstraint import MutexConstraint
+import traceback
+from SecurityDecorator import secured
 
-app = Flask(__name__)
-CORS(app, resources={r"/kleiderschrank/*": {"origins": "*"}})
+app=Flask(__name__)
 
-api = Api(app, version='1.0', title='Digitaler Kleiderschrank API',
-          description='API für den digitalen Kleiderschrank')
+# CORS aktivieren
+CORS(app, supports_credentials=True, resources=r'/wardrobe/*')
 
-kleiderschrank = api.namespace('kleiderschrank', description='Digitaler Kleiderschrank Funktionen')
+# API-Objekt erstellen
+api = Api(app, version='1.0', title='Digital Wardrobe API',
+          description='An API for managing a digital wardrobe.')
 
-# Business Object Basismodell
+# Namespace
+wardrobe_ns = api.namespace('wardrobe', description='Digital Wardrobe functionalities')
+
+# Modelle für Flask-RestX
 bo = api.model('BusinessObject', {
-    'id': fields.Integer(attribute='_id', description='Der Unique Identifier eines BusinessObject')
+    'id': fields.String(attribute='_id', description='Unique identifier'),
 })
 
-# User Modell
 user = api.inherit('User', bo, {
-    'user_id': fields.Integer(attribute='_user_id', description='User ID'),
-    'nachname': fields.String(attribute='_nachname', description='Nachname des Users'),
-    'vorname': fields.String(attribute='_vorname', description='Vorname des Users'),
-    'nickname': fields.String(attribute='_nickname', description='Nickname des Users'),
-    'google_id': fields.String(attribute='_google_id', description='Google ID des Users'),
-    'email': fields.String(attribute='_email', description='Email des Users')
+    'user_id': fields.String(attribute='_user_id', description='User ID'),
+    'google_id': fields.String(attribute='_google_id', description='Google user ID'),
+    'first_name': fields.String(attribute='_first_name', description='First name'),
+    'last_name': fields.String(attribute='_last_name', description='Last name'),
+    'nick_name': fields.String(attribute='_nick_name', description='Nickname'),
+    'email': fields.String(attribute='_email', description='Email address')
 })
 
-# Constraint Modell
+wardrobe = api.inherit('Wardrobe', bo, {
+    'user_id': fields.Integer(attribute='_user_id', description='ID des Besitzers'),
+})
+
+clothing_type = api.inherit('ClothingType', bo, {
+    'type_name': fields.String(attribute='_type_name', description='Bezeichnung des Kleidungstyps'),
+    'type_usage': fields.String(attribute='_type_usage', description='Verwendungszweck des Kleidungstyps'),
+})
+
+clothing_item = api.inherit('ClothingItem', bo, {
+    'wardrobe_id': fields.Integer(attribute='_wardrobe_id', description='ID des zugehörigen Kleiderschranks'),
+    'clothing_type_id': fields.Integer(attribute='_clothing_type_id', description='ID des Kleidungstyps'), 
+    'clothing_item_name': fields.String(attribute='_clothing_item_name', description='Bezeichnung des Kleidungsstücks'),
+    'color': fields.String(attribute='_color', description='Farbe des Kleidungsstücks'),
+    'brand': fields.String(attribute='_brand', description='Marke des Kleidungsstücks'),
+    'season': fields.String(attribute='_season', description='Saison für das Kleidungsstück'),
+})
+
+style = api.inherit('Style', bo, {
+    'style_features': fields.String(attribute='_style_features', description='Merkmale des Stils'),
+    'style_constraints': fields.String(attribute='_style_constraints', description='Beschränkungen des Stils'),
+})
+
+outfit = api.inherit('Outfit', bo, {
+    'outfit_name': fields.String(attribute='_outfit_name', description='Name des Outfits'),
+    'style_id': fields.Integer(attribute='_style_id', description='ID des zugehörigen Stils'),
+})
+
 constraint = api.inherit('Constraint', bo, {
-    'name': fields.String(attribute='_name', description='Name des Constraints'),
-    'beschreibung': fields.String(attribute='_beschreibung', description='Beschreibung des Constraints')
+    'style_id': fields.Integer(attribute='_style_id', description='ID des zugehörigen Stils'),
+    'constraint_type': fields.String(attribute='_constraint_type', description='Art des Constraints'),
+    'attribute': fields.String(attribute='_attribute', description='Betroffenes Attribut'),
+    'constrain': fields.String(attribute='_constrain', description='Bedingung'),
+    'val': fields.String(attribute='_val', description='Wert'),
 })
 
-# UnaryConstraint Modell
 unary_constraint = api.inherit('UnaryConstraint', constraint, {
-    'bezugsobjekt': fields.String(attribute='_bezugsobjekt', description='Bezugsobjekt des UnaryConstraints'),
-    'bedingung': fields.String(attribute='_bedingung', description='Bedingung des UnaryConstraints')
+    'reference_object_id': fields.Integer(attribute='_reference_object_id', description='ID des Referenzobjekts'),
 })
 
-# BinaryConstraint Modell
 binary_constraint = api.inherit('BinaryConstraint', constraint, {
-    'object1': fields.String(attribute='_object1', description='Bezugsobjekt 1'),
-    'object2': fields.String(attribute='_object2', description='Bezugsobjekt 2'),
-    'bedingung': fields.String(attribute='_bedingung', description='Bedingung des BinaryConstraints')
+    'reference_object1_id': fields.Integer(attribute='_reference_object1_id', description='ID des ersten Referenzobjekts'),
+    'reference_object2_id': fields.Integer(attribute='_reference_object2_id', description='ID des zweiten Referenzobjekts'),
 })
 
-# CardinalityConstraint Modell
-cardinality_constraint = api.inherit('CardinalityConstraint', constraint, {
-    'min_count': fields.Integer(attribute='_min_count', description='Minimale Kardinalität'),
-    'max_count': fields.Integer(attribute='_max_count', description='Maximale Kardinalität'),
-    'object1': fields.String(attribute='_object1', description='Erstes Objekt'),
-    'object2': fields.String(attribute='_object2', description='Zweites Objekt')
-})
-
-# ImplicationConstraint Modell
-implication_constraint = api.inherit('ImplicationConstraint', constraint, {
-    'condition': fields.String(attribute='_condition', description='Bedingung'),
-    'implication': fields.String(attribute='_implication', description='Implikation')
-})
-
-# MutexConstraint Modell
 mutex_constraint = api.inherit('MutexConstraint', constraint, {
-    'object1': fields.String(attribute='_object1', description='Erstes Objekt'),
-    'object2': fields.String(attribute='_object2', description='Zweites Objekt')
+    'item_type_1': fields.Integer(attribute='_item_type_1', description='ID des ersten Kleidungstyps'),
+    'item_type_2': fields.Integer(attribute='_item_type_2', description='ID des zweiten Kleidungstyps'),
 })
 
+implication_constraint = api.inherit('ImplicationConstraint', constraint, {
+    'if_type': fields.Integer(attribute='_if_type', description='ID des "wenn" Kleidungstyps'),
+    'then_type': fields.Integer(attribute='_then_type', description='ID des "dann" Kleidungstyps'),
+})
 
+cardinality_constraint = api.inherit('CardinalityConstraint', constraint, {
+    'item_type': fields.Integer(attribute='_item_type', description='ID des betroffenen Kleidungstyps'),
+    'min_count': fields.Integer(attribute='_min_count', description='Minimale Anzahl'),
+    'max_count': fields.Integer(attribute='_max_count', description='Maximale Anzahl'),
+})
 
-"""
-Basisklassen und Modelle
-"""
+#API Endpoints für User
 
-@kleiderschrank.route('/user')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
+@wardrobe_ns.route('/user')
+@wardrobe_ns.response(500, 'Server-Error')
 class UserListOperations(Resource):
-    """Auslesen aller User-Objekte."""
-    
-    @kleiderschrank.marshal_list_with(user)
+    @wardrobe_ns.marshal_list_with(user)
     @secured
     def get(self):
-        adm = Administration()
-        users = adm.get_all_users()
-        return users
-
-    @kleiderschrank.marshal_with(user, code=200)
-    @kleiderschrank.expect(user)
-    @secured
-    def post(self):
-        """Anlegen eines neuen User-Objekts."""
-        adm = Administration()
-        pluser = User.from_dict(api.payload)
-        
-        if pluser is not None:
-            new_user = adm.create_user(
-                google_id=pluser.get_google_id(),
-                email=pluser.get_email(),
-                nachname=pluser.get_nachname(),
-                vorname=pluser.get_vorname(),
-                koerpergroesse=pluser.get_koerpergroesse(),
-                genre=pluser.get_genre(),
-                geburtsdatum=pluser.get_geburtsdatum(),
-                religion=pluser.get_religion(),
-                is_raucher=pluser.get_is_raucher(),
-                haarfarbe=pluser.get_haarfarbe()
-            )
-            return new_user, 200
-        else:
-            return '', 500
-
-@kleiderschrank.route('/user/<id>')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class UserOperations(Resource):
-    @kleiderschrank.marshal_with(user)
-    @secured
-    def get(self, id):
-        """Auslesen eines bestimmten User-Objekts anhand der ID."""
-        adm = Administration()
-        single_user = adm.get_user_by_id(id)
-        return single_user
-
-    @kleiderschrank.marshal_with(user)
-    @kleiderschrank.expect(user, validate=True)
-    @secured
-    def put(self, id):
-        """Update eines bestimmten User-Objekts anhand der ID."""
-        adm = Administration()
-        user = User.from_dict(api.payload)
-        
-        if user is not None:
-            user.set_id(id)
-            updated_user = adm.change_user(user)
-            return updated_user, 200
-        else:
-            return '', 500
-
-    @secured
-    def delete(self, id):
-        """Löschen eines bestimmten User-Objekts anhand der ID."""
-        adm = Administration()
-        user_to_delete = adm.get_user_by_id(id)
-        adm.delete_user(user_to_delete)
-        return '', 200
-
-@kleiderschrank.route('/user-by-google-id/<string:google_id>')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class UserGoogleOperations(Resource):
-    @kleiderschrank.marshal_with(user)
-    @secured
-    def get(self, google_id):
-        """Auslesen eines bestimmten User-Objekts anhand der Google-ID."""
-        adm = Administration()
-        user = adm.get_user_by_google_id(google_id)
+        """Auslesen aller User"""
+        adm = Admin()
+        user = adm.get_all_user()
         return user
-
-
-"""
-Constraint Methoden
-"""
-
-@kleiderschrank.route('/constraint')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class ConstraintListOperations(Resource):
-    """Auslesen von Constraint-Objekten."""
-
-    @kleiderschrank.marshal_list_with(constraint)
-    @secured
-    def get(self):
-        """Alle Constraints auslesen"""
-        adm = Admin()
-        data = adm.get_all_constraints()
-        return data
-
-@kleiderschrank.route('/constraint/<int:id>')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class ConstraintOperations(Resource):
-    @kleiderschrank.marshal_with(constraint)
-    @secured
-    def get(self, id):
-        """Ein bestimmtes Constraint-Objekt auslesen"""
-        adm = Admin()
-        data = adm.get_constraint_by_id(id)
-        return data
-
-@kleiderschrank.route('/constraint-by-user/<int:user_id>')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class ConstraintUserOperations(Resource):
-    @kleiderschrank.marshal_list_with(constraint)
-    @secured
-    def get(self, user_id):
-        """Alle Constraints eines Users auslesen"""
-        adm = Admin()
-        data = adm.get_constraints_by_user_id(user_id)
-        return data
-
-"""
-Unary Constraint Methoden
-"""
-
-@kleiderschrank.route('/unary-constraint')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class UnaryConstraintListOperations(Resource):
-    """Auslesen und Erstellen von UnaryConstraint-Objekten."""
-
-    @kleiderschrank.marshal_list_with(unary_constraint)
-    @secured
-    def get(self):
-        """Alle UnaryConstraints auslesen"""
-        adm = Admin()
-        data = adm.get_all_unary_constraints()
-        return data
-
-    @kleiderschrank.marshal_with(unary_constraint, code=200)
-    @kleiderschrank.expect(unary_constraint)
-    @secured
-    def post(self):
-        """Neues UnaryConstraint anlegen"""
-        adm = Admin()
-        pl_constraint = UnaryConstraint.from_dict(api.payload)
-        
-        if pl_constraint is not None:
-            constraint = adm.create_unary_constraint(
-                bezugsobjekt=pl_constraint.get_bezugsobjekt(),
-                bedingung=pl_constraint.get_bedingung()
-            )
-            return constraint, 200
-        else:
-            return '', 500
-
-@kleiderschrank.route('/unary-constraint/<int:id>')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class UnaryConstraintOperations(Resource):
-    @kleiderschrank.marshal_with(unary_constraint)
-    @secured
-    def get(self, id):
-        """Einzelnes UnaryConstraint auslesen"""
-        adm = Admin()
-        data = adm.get_unary_constraint_by_id(id)
-        return data
-
-    @kleiderschrank.marshal_with(unary_constraint)
-    @kleiderschrank.expect(unary_constraint, validate=True)
-    @secured
-    def put(self, id):
-        """UnaryConstraint aktualisieren"""
-        adm = Admin()
-        constraint = UnaryConstraint.from_dict(api.payload)
-        
-        if constraint is not None:
-            constraint.set_id(id)
-            data = adm.update_unary_constraint(constraint)
-            return data, 200
-        else:
-            return '', 500
-
-    @secured
-    def delete(self, id):
-        """UnaryConstraint löschen"""
-        adm = Admin()
-        constraint = adm.get_unary_constraint_by_id(id)
-        adm.delete_unary_constraint(constraint)
-        return '', 200
-
-@kleiderschrank.route('/unary-constraint-by-user/<int:user_id>')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class UnaryConstraintUserOperations(Resource):
-    @kleiderschrank.marshal_list_with(unary_constraint)
-    @secured
-    def get(self, user_id):
-        """Alle UnaryConstraints eines Users auslesen"""
-        adm = Admin()
-        data = adm.get_unary_constraints_by_user_id(user_id)
-        return data
-
-"""
-UnaryConstraint Kleidungsstück Operationen
-"""
-@kleiderschrank.route('/unary-constraint/<int:constraint_id>/kleidungsstueck/<int:kleidungsstueck_id>')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class UnaryConstraintKleidungsstueckeManagementOperations(Resource):
-    @kleiderschrank.marshal_list_with(kleidungsstueck)
-    @secured
-    def get(self, constraint_id):
-        """Alle Kleidungsstücke eines UnaryConstraints auslesen"""
-        adm = Admin()
-        data = adm.get_kleidungsstuecke_by_unary_constraint_id(constraint_id)
-        return data
-
-    @secured
-    def post(self, constraint_id, kleidungsstueck_id):
-        """Kleidungsstück zu UnaryConstraint hinzufügen"""
-        adm = Admin()
-        result = adm.add_kleidungsstueck_to_unary_constraint(constraint_id, kleidungsstueck_id)
-        if result:
-            return '', 200
-        else:
-            return '', 500
-
-    @secured
-    def delete(self, constraint_id, kleidungsstueck_id):
-        """Kleidungsstück aus UnaryConstraint entfernen"""
-        adm = Admin()
-        result = adm.remove_kleidungsstueck_from_unary_constraint(constraint_id, kleidungsstueck_id)
-        if result:
-            return '', 200
-        else:
-            return '', 500
-
-"""
-Binary Constraint Methoden
-"""
     
-@kleiderschrank.route('/binary-constraint')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class BinaryConstraintListOperations(Resource):
-    """Auslesen und Erstellen von BinaryConstraint-Objekten."""
-
-    @kleiderschrank.marshal_list_with(binary_constraint)
-    @secured
-    def get(self):
-        """Alle BinaryConstraints auslesen"""
+@wardrobe_ns.marshal_with(user, code=200)
+@wardrobe_ns.expect(user)
+@secured
+def post(self):
+        """Neuen User anlegen"""
         adm = Admin()
-        data = adm.get_all_binary_constraints()
-        return data
-
-    @kleiderschrank.marshal_with(binary_constraint, code=200)
-    @kleiderschrank.expect(binary_constraint)
-    @secured
-    def post(self):
-        """Neues BinaryConstraint anlegen"""
-        adm = Admin()
-        pl_constraint = BinaryConstraint.from_dict(api.payload)
-        
-        if pl_constraint is not None:
-            constraint = adm.create_binary_constraint(
-                obj1=pl_constraint.get_obj1(),
-                obj2=pl_constraint.get_obj2(),
-                bedingung=pl_constraint.get_bedingung()
+        proposal = User.from_dict(api.payload)
+        if proposal is not None:
+            p = adm.create_user(
+                 proposal.get_google_id(),
+                 proposal.get_first_name(),
+                 proposal.get_last_name(),
+                 proposal.get_nickname(),
+                 proposal.get_email()
             )
-            return constraint, 200
+            return p, 200
         else:
             return '', 500
+         # 500: server-fehler
 
-@kleiderschrank.route('/binary-constraint/<int:id>')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class BinaryConstraintOperations(Resource):
-    @kleiderschrank.marshal_with(binary_constraint)
-    @secured
-    def get(self, id):
-        """Einzelnes BinaryConstraint auslesen"""
-        adm = Admin()
-        data = adm.get_binary_constraint_by_id(id)
-        return data
-
-    @kleiderschrank.marshal_with(binary_constraint)
-    @kleiderschrank.expect(binary_constraint, validate=True)
-    @secured
-    def put(self, id):
-        """BinaryConstraint aktualisieren"""
-        adm = Admin()
-        constraint = BinaryConstraint.from_dict(api.payload)
-        
-        if constraint is not None:
-            constraint.set_id(id)
-            data = adm.update_binary_constraint(constraint)
-            return data, 200
-        else:
-            return '', 500
-
-    @secured
-    def delete(self, id):
-        """BinaryConstraint löschen"""
-        adm = Admin()
-        constraint = adm.get_binary_constraint_by_id(id)
-        adm.delete_binary_constraint(constraint)
-        return '', 200
-
-@kleiderschrank.route('/binary-constraint-by-user/<int:user_id>')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class BinaryConstraintUserOperations(Resource):
-    @kleiderschrank.marshal_list_with(binary_constraint)
+@wardrobe_ns.route('/user/<int:user_id>')
+@wardrobe_ns.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@wardrobe_ns.param('user_id', 'Die ID des Person-Objekts')
+class UserOperations(Resource):
+    @wardrobe_ns.marshal_with(user)
     @secured
     def get(self, user_id):
-        """Alle BinaryConstraints eines Users auslesen"""
         adm = Admin()
-        data = adm.get_binary_constraints_by_user_id(user_id)
-        return data
+        pers = adm.get_user_by_id(user_id)
+        return User
 
-"""
-BinaryConstraint Kleidungsstück Operationen
-"""
-@kleiderschrank.route('/binary-constraint/<int:constraint_id>/kleidungsstueck/<int:kleidungsstueck_id>')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class BinaryConstraintKleidungsstueckeManagementOperations(Resource):
-    @kleiderschrank.marshal_list_with(kleidungsstueck)
+    @wardrobe_ns.marshal_with(user)
+    @wardrobe_ns.expect(user, validate=True)
     @secured
-    def get(self, constraint_id):
-        """Alle Kleidungsstücke eines BinaryConstraints auslesen"""
+    def put(self, user_id):
         adm = Admin()
-        data = adm.get_kleidungsstuecke_by_binary_constraint_id(constraint_id)
-        return data
+        p = user.from_dict(api.payload)
 
-    @secured
-    def post(self, constraint_id, kleidungsstueck_id):
-        """Kleidungsstück zu BinaryConstraint hinzufügen"""
-        adm = Admin()
-        result = adm.add_kleidungsstueck_to_binary_constraint(constraint_id, kleidungsstueck_id)
-        if result:
-            return '', 200
+        if p is not None:
+            p.set_id(user_id)
+            adm.save_user(p)
+            return p, 200
         else:
             return '', 500
 
     @secured
-    def delete(self, constraint_id, kleidungsstueck_id):
-        """Kleidungsstück aus BinaryConstraint entfernen"""
+    def delete(self, user_id):
         adm = Admin()
-        result = adm.remove_kleidungsstueck_from_binary_constraint(constraint_id, kleidungsstueck_id)
-        if result:
-            return '', 200
-        else:
-            return '', 500
-
-"""
-Cardinality Constraint Methoden
-"""
-
-@kleiderschrank.route('/cardinality-constraint')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class CardinalityConstraintListOperations(Resource):
-    """Auslesen und Erstellen von CardinalityConstraint-Objekten."""
-
-    @kleiderschrank.marshal_list_with(cardinality_constraint)
-    @secured
-    def get(self):
-        """Alle CardinalityConstraints auslesen"""
-        adm = Admin()
-        data = adm.get_all_cardinality_constraints()
-        return data
-
-    @kleiderschrank.marshal_with(cardinality_constraint, code=200)
-    @kleiderschrank.expect(cardinality_constraint)
-    @secured
-    def post(self):
-        """Neues CardinalityConstraint anlegen"""
-        adm = Admin()
-        pl_constraint = CardinalityConstraint.from_dict(api.payload)
-        
-        if pl_constraint is not None:
-            constraint = adm.create_cardinality_constraint(
-                min_count=pl_constraint.get_min_count(),
-                max_count=pl_constraint.get_max_count(),
-                obj1=pl_constraint.get_obj1(),
-                obj2=pl_constraint.get_obj2()
-            )
-            return constraint, 200
-        else:
-            return '', 500
-
-@kleiderschrank.route('/cardinality-constraint/<int:id>')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class CardinalityConstraintOperations(Resource):
-    @kleiderschrank.marshal_with(cardinality_constraint)
-    @secured
-    def get(self, id):
-        """Einzelnes CardinalityConstraint auslesen"""
-        adm = Admin()
-        data = adm.get_cardinality_constraint_by_id(id)
-        return data
-
-    @kleiderschrank.marshal_with(cardinality_constraint)
-    @kleiderschrank.expect(cardinality_constraint, validate=True)
-    @secured
-    def put(self, id):
-        """CardinalityConstraint aktualisieren"""
-        adm = Admin()
-        constraint = CardinalityConstraint.from_dict(api.payload)
-        
-        if constraint is not None:
-            constraint.set_id(id)
-            data = adm.update_cardinality_constraint(constraint)
-            return data, 200
-        else:
-            return '', 500
-
-    @secured
-    def delete(self, id):
-        """CardinalityConstraint löschen"""
-        adm = Admin()
-        constraint = adm.get_cardinality_constraint_by_id(id)
-        adm.delete_cardinality_constraint(constraint)
+        pers = adm.get_user_by_id(user_id)
+        adm.delete_user(User)
         return '', 200
 
-@kleiderschrank.route('/cardinality-constraint-by-user/<int:user_id>')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class CardinalityConstraintUserOperations(Resource):
-    @kleiderschrank.marshal_list_with(cardinality_constraint)
+
+@wardrobe_ns.route('/user/<int:user_id>/wardrobe')
+@wardrobe_ns.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@wardrobe_ns.param('user_id', 'Die ID der Person')
+class UserWardrobeOperations(Resource):
+    @wardrobe_ns.marshal_with(wardrobe)
     @secured
     def get(self, user_id):
-        """Alle CardinalityConstraints eines Users auslesen"""
         adm = Admin()
-        data = adm.get_cardinality_constraints_by_user_id(user_id)
-        return data
+        w = adm.get_wardrobe_by_person(user_id)
+        return w
 
-"""
-CardinalityConstraint Kleidungsstück Operationen
-"""
-@kleiderschrank.route('/cardinality-constraint/<int:constraint_id>/kleidungsstueck/<int:kleidungsstueck_id>')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class CardinalityConstraintKleidungsstueckeManagementOperations(Resource):
-    @kleiderschrank.marshal_list_with(kleidungsstueck)
+    @wardrobe_ns.marshal_with(wardrobe, code=200)
+    @wardrobe_ns.expect(wardrobe)
     @secured
-    def get(self, constraint_id):
-        """Alle Kleidungsstücke eines CardinalityConstraints auslesen"""
+    def post(self, user_id):
         adm = Admin()
-        data = adm.get_kleidungsstuecke_by_cardinality_constraint_id(constraint_id)
-        return data
+        proposal = Wardrobe.from_dict(api.payload)
 
+        if proposal is not None:
+            proposal.set_person_id(user_id)
+            w = adm.create_wardrobe(proposal)
+            return w, 200
+        else:
+            return '', 500
+
+
+#API Endpoints für Wardrobe
+
+@wardrobe_ns.route('/wardrobes/<int:wardrobe_id>')
+@wardrobe_ns.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@wardrobe_ns.param('wardrobe_id', 'Die ID des Wardrobes')
+class WardrobeOperations(Resource):
+    @wardrobe_ns.marshal_with(wardrobe)
     @secured
-    def post(self, constraint_id, kleidungsstueck_id):
-        """Kleidungsstück zu CardinalityConstraint hinzufügen"""
+    def get(self, wardrobe_id):
         adm = Admin()
-        result = adm.add_kleidungsstueck_to_cardinality_constraint(constraint_id, kleidungsstueck_id)
-        if result:
-            return '', 200
+        ward = adm.get_wardrobe_by_id(wardrobe_id)
+        return ward
+
+    @wardrobe_ns.marshal_with(wardrobe)
+    @wardrobe_ns.expect(wardrobe, validate=True)
+    @secured
+    def put(self, wardrobe_id):
+        adm = Admin()
+        w = Wardrobe.from_dict(api.payload)
+
+        if w is not None:
+            w.set_id(wardrobe_id)
+            adm.save_wardrobe(w)
+            return w, 200
         else:
             return '', 500
 
     @secured
-    def delete(self, constraint_id, kleidungsstueck_id):
-        """Kleidungsstück aus CardinalityConstraint entfernen"""
+    def delete(self, wardrobe_id):
         adm = Admin()
-        result = adm.remove_kleidungsstueck_from_cardinality_constraint(constraint_id, kleidungsstueck_id)
-        if result:
-            return '', 200
-        else:
-            return '', 500
-
-"""
-Mutex Constraint Methoden
-"""
-
-@kleiderschrank.route('/mutex-constraint')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class MutexConstraintListOperations(Resource):
-    """Auslesen und Erstellen von MutexConstraint-Objekten."""
-
-    @kleiderschrank.marshal_list_with(mutex_constraint)
-    @secured
-    def get(self):
-        """Alle MutexConstraints auslesen"""
-        adm = Admin()
-        data = adm.get_all_mutex_constraints()
-        return data
-
-    @kleiderschrank.marshal_with(mutex_constraint, code=200)
-    @kleiderschrank.expect(mutex_constraint)
-    @secured
-    def post(self):
-        """Neues MutexConstraint anlegen"""
-        adm = Admin()
-        pl_constraint = MutexConstraint.from_dict(api.payload)
-        
-        if pl_constraint is not None:
-            constraint = adm.create_mutex_constraint(
-                obj1=pl_constraint.get_obj1(),
-                obj2=pl_constraint.get_obj2()
-            )
-            return constraint, 200
-        else:
-            return '', 500
-
-@kleiderschrank.route('/mutex-constraint/<int:id>')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class MutexConstraintOperations(Resource):
-    @kleiderschrank.marshal_with(mutex_constraint)
-    @secured
-    def get(self, id):
-        """Einzelnes MutexConstraint auslesen"""
-        adm = Admin()
-        data = adm.get_mutex_constraint_by_id(id)
-        return data
-
-    @kleiderschrank.marshal_with(mutex_constraint)
-    @kleiderschrank.expect(mutex_constraint, validate=True)
-    @secured
-    def put(self, id):
-        """MutexConstraint aktualisieren"""
-        adm = Admin()
-        constraint = MutexConstraint.from_dict(api.payload)
-        
-        if constraint is not None:
-            constraint.set_id(id)
-            data = adm.update_mutex_constraint(constraint)
-            return data, 200
-        else:
-            return '', 500
-
-    @secured
-    def delete(self, id):
-        """MutexConstraint löschen"""
-        adm = Admin()
-        constraint = adm.get_mutex_constraint_by_id(id)
-        adm.delete_mutex_constraint(constraint)
+        ward = adm.get_wardrobe_by_id(wardrobe_id)
+        adm.delete_wardrobe(ward)
         return '', 200
 
-@kleiderschrank.route('/mutex-constraint-by-user/<int:user_id>')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class MutexConstraintUserOperations(Resource):
-    @kleiderschrank.marshal_list_with(mutex_constraint)
-    @secured
-    def get(self, user_id):
-        """Alle MutexConstraints eines Users auslesen"""
-        adm = Admin()
-        data = adm.get_mutex_constraints_by_user_id(user_id)
-        return data
 
-"""
-MutexConstraint Kleidungsstück Operationen
-"""
-@kleiderschrank.route('/mutex-constraint/<int:constraint_id>/kleidungsstueck/<int:kleidungsstueck_id>')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class MutexConstraintKleidungsstueckeManagementOperations(Resource):
-    @kleiderschrank.marshal_list_with(kleidungsstueck)
-    @secured
-    def get(self, constraint_id):
-        """Alle Kleidungsstücke eines MutexConstraints auslesen"""
-        adm = Admin()
-        data = adm.get_kleidungsstuecke_by_mutex_constraint_id(constraint_id)
-        return data
+#API Endpoints für ClothingItem
 
-    @secured
-    def post(self, constraint_id, kleidungsstueck_id):
-        """Kleidungsstück zu MutexConstraint hinzufügen"""
-        adm = Admin()
-        result = adm.add_kleidungsstueck_to_mutex_constraint(constraint_id, kleidungsstueck_id)
-        if result:
-            return '', 200
-        else:
-            return '', 500
-
-    @secured
-    def delete(self, constraint_id, kleidungsstueck_id):
-        """Kleidungsstück aus MutexConstraint entfernen"""
-        adm = Admin()
-        result = adm.remove_kleidungsstueck_from_mutex_constraint(constraint_id, kleidungsstueck_id)
-        if result:
-            return '', 200
-        else:
-            return '', 500
-
-"""
-Implication Constraint Methoden
-"""
-
-@kleiderschrank.route('/implication-constraint')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class ImplicationConstraintListOperations(Resource):
-    """Auslesen und Erstellen von ImplicationConstraint-Objekten."""
-
-    @kleiderschrank.marshal_list_with(implication_constraint)
+@wardrobe_ns.route('/clothing-items')
+@wardrobe_ns.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+class ClothingListOperations(Resource):
+    @wardrobe_ns.marshal_list_with(clothing_item)
     @secured
     def get(self):
-        """Alle ImplicationConstraints auslesen"""
+        """Auslesen aller Kleidungsstücke"""
         adm = Admin()
-        data = adm.get_all_implication_constraints()
-        return data
+        items = adm.get_all_clothing_items()
+        return items
 
-    @kleiderschrank.marshal_with(implication_constraint, code=200)
-    @kleiderschrank.expect(implication_constraint)
+    @wardrobe_ns.marshal_with(clothing_item, code=200)
+    @wardrobe_ns.expect(clothing_item)
     @secured
     def post(self):
-        """Neues ImplicationConstraint anlegen"""
+        """Anlegen eines neuen Kleidungsstücks"""
         adm = Admin()
-        pl_constraint = ImplicationConstraint.from_dict(api.payload)
+        proposal = clothing_item.from_dict(api.payload)
         
-        if pl_constraint is not None:
-            constraint = adm.create_implication_constraint(
-                condition=pl_constraint.get_condition(),
-                implication=pl_constraint.get_implication()
-            )
-            return constraint, 200
+        if proposal is not None:
+            c = adm.create_clothing_item(proposal.get_type(), proposal.get_owner())
+            return c, 200
         else:
             return '', 500
 
-@kleiderschrank.route('/implication-constraint/<int:id>')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class ImplicationConstraintOperations(Resource):
-    @kleiderschrank.marshal_with(implication_constraint)
-    @secured
-    def get(self, id):
-        """Einzelnes ImplicationConstraint auslesen"""
-        adm = Admin()
-        data = adm.get_implication_constraint_by_id(id)
-        return data
 
-    @kleiderschrank.marshal_with(implication_constraint)
-    @kleiderschrank.expect(implication_constraint, validate=True)
+#API Endpoints für ClothingType
+
+@wardrobe_ns.route('/clothing-types')
+class ClothingTypeListOperations(Resource):
+    @wardrobe_ns.marshal_list_with(clothing_type)
     @secured
-    def put(self, id):
-        """ImplicationConstraint aktualisieren"""
+    def get(self):
         adm = Admin()
-        constraint = ImplicationConstraint.from_dict(api.payload)
-        
-        if constraint is not None:
-            constraint.set_id(id)
-            data = adm.update_implication_constraint(constraint)
-            return data, 200
+        types = adm.get_all_clothing_types()
+        return types
+
+    @wardrobe_ns.marshal_with(clothing_type, code=201)
+    @wardrobe_ns.expect(clothing_type)
+    @secured
+    def post(self):
+        adm = Admin()
+        proposal = ClothingType.from_dict(api.payload)
+
+        if proposal is not None:
+            ctype = adm.create_clothing_type(proposal)
+            return ctype, 200
+        else:
+            return '', 500
+
+
+#API Endpoints für ClothingItem
+
+@wardrobe_ns.route('/clothing-items/<int:item_id>')
+@wardrobe_ns.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@wardrobe_ns.param('item_id', 'Die ID des Kleidungsstücks')
+class ClothingItemOperations(Resource):
+    @wardrobe_ns.marshal_with(clothing_item)
+    @secured
+    def get(self, item_id):
+        adm = Admin()
+        item = adm.get_clothing_item_by_id(item_id)
+        return item
+
+    @wardrobe_ns.marshal_with(clothing_item)
+    @wardrobe_ns.expect(clothing_item, validate=True)
+    @secured  
+    def put(self, item_id):
+        adm = Admin()
+        item = ClothingItem.from_dict(api.payload)
+
+        if item is not None:
+            item.set_id(item_id)
+            adm.save_clothing_item(item)
+            return item, 200
         else:
             return '', 500
 
     @secured
-    def delete(self, id):
-        """ImplicationConstraint löschen"""
+    def delete(self, item_id):
         adm = Admin()
-        constraint = adm.get_implication_constraint_by_id(id)
-        adm.delete_implication_constraint(constraint)
+        item = adm.get_clothing_item_by_id(item_id)
+        adm.delete_clothing_item(item)
         return '', 200
 
-@kleiderschrank.route('/implication-constraint-by-user/<int:user_id>')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class ImplicationConstraintUserOperations(Resource):
-    @kleiderschrank.marshal_list_with(implication_constraint)
-    @secured
-    def get(self, user_id):
-        """Alle ImplicationConstraints eines Users auslesen"""
-        adm = Admin()
-        data = adm.get_implication_constraints_by_user_id(user_id)
-        return data
 
-"""
-ImplicationConstraint Kleidungsstück Operationen
-"""
-@kleiderschrank.route('/implication-constraint/<int:constraint_id>/kleidungsstueck/<int:kleidungsstueck_id>')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class ImplicationConstraintKleidungsstueckeManagementOperations(Resource):
-    @kleiderschrank.marshal_list_with(kleidungsstueck)
-    @secured
-    def get(self, constraint_id):
-        """Alle Kleidungsstücke eines ImplicationConstraints auslesen"""
-        adm = Admin()
-        data = adm.get_kleidungsstuecke_by_implication_constraint_id(constraint_id)
-        return data
+#API Endpoints für Styles
 
-    @secured
-    def post(self, constraint_id, kleidungsstueck_id):
-        """Kleidungsstück zu ImplicationConstraint hinzufügen"""
-        adm = Admin()
-        result = adm.add_kleidungsstueck_to_implication_constraint(constraint_id, kleidungsstueck_id)
-        if result:
-            return '', 200
-        else:
-            return '', 500
-
-    @secured
-    def delete(self, constraint_id, kleidungsstueck_id):
-        """Kleidungsstück aus ImplicationConstraint entfernen"""
-        adm = Admin()
-        result = adm.remove_kleidungsstueck_from_implication_constraint(constraint_id, kleidungsstueck_id)
-        if result:
-            return '', 200
-        else:
-            return '', 500
-
-
-"""
-Style Methoden
-"""
-
-@kleiderschrank.route('/style')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
+@wardrobe_ns.route('/styles')
+@wardrobe_ns.response(500, 'Server-Error.')
 class StyleListOperations(Resource):
-    """Auslesen und Erstellen von Style-Objekten."""
-
-    @kleiderschrank.marshal_list_with(style)
+    @wardrobe_ns.marshal_list_with(style)
     @secured
     def get(self):
-        """Alle Styles auslesen"""
+        """Auslesen aller Styles"""
         adm = Admin()
-        data = adm.get_all_styles()
-        return data
+        styles = adm.get_all_styles()
+        return styles
 
-    @kleiderschrank.marshal_with(style, code=200)
-    @kleiderschrank.expect(style)
+    @wardrobe_ns.marshal_with(style, code=200)
+    @wardrobe_ns.expect(style)
     @secured
     def post(self):
-        """Neuen Style anlegen"""
+        """Anlegen eines neuen Styles"""
         adm = Admin()
-        pl_style = Style.from_dict(api.payload)
+        proposal = Style.from_dict(api.payload)
         
-        if pl_style is not None:
-            style = adm.create_style(
-                features=pl_style.get_features(),
-                constraints=pl_style.get_constraints(),
-                bezeichnung=pl_style.get_bezeichnung()
+        if proposal is not None:
+            s = adm.create_style(proposal.get_features(),
+                                 proposal.get_constraints()
             )
-            return style, 200
+            return s, 200
         else:
             return '', 500
 
-@kleiderschrank.route('/style/<int:id>')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class StyleOperations(Resource):
-    @kleiderschrank.marshal_with(style)
-    @secured
-    def get(self, id):
-        """Einzelnen Style auslesen"""
-        adm = Admin()
-        data = adm.get_style_by_id(id)
-        return data
 
-    @kleiderschrank.marshal_with(style)
-    @kleiderschrank.expect(style, validate=True)
-    @secured
-    def put(self, id):
-        """Style aktualisieren"""
-        adm = Admin()
-        style = Style.from_dict(api.payload)
-        
-        if style is not None:
-            style.set_id(id)
-            data = adm.update_style(style)
-            return data, 200
-        else:
-            return '', 500
+#API Endpoints für Outfits
 
-    @secured
-    def delete(self, id):
-        """Style löschen"""
-        adm = Admin()
-        style = adm.get_style_by_id(id)
-        adm.delete_style(style)
-        return '', 200
-
-@kleiderschrank.route('/style-by-user/<int:user_id>')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class StyleUserOperations(Resource):
-    @kleiderschrank.marshal_list_with(style)
-    @secured
-    def get(self, user_id):
-        """Alle Styles eines Users auslesen"""
-        adm = Admin()
-        data = adm.get_styles_by_user_id(user_id)
-        return data
-    
-@kleiderschrank.route('/style/<int:id>/constraints')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class StyleConstraintOperations(Resource):
-    @kleiderschrank.marshal_list_with(constraint)
-    @secured
-    def get(self, id):
-        """Alle Constraints eines Styles auslesen"""
-        adm = Admin()
-        data = adm.get_constraints_by_style_id(id)
-        return data
-
-@kleiderschrank.route('/style/<int:id>/unary-constraints')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class StyleUnaryConstraintOperations(Resource):
-    @kleiderschrank.marshal_list_with(unary_constraint)
-    @secured
-    def get(self, id):
-        """Alle UnaryConstraints eines Styles auslesen"""
-        adm = Admin()
-        data = adm.get_unary_constraints_by_style_id(id)
-        return data
-
-@kleiderschrank.route('/style/<int:id>/binary-constraints')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class StyleBinaryConstraintOperations(Resource):
-    @kleiderschrank.marshal_list_with(binary_constraint)
-    @secured
-    def get(self, id):
-        """Alle BinaryConstraints eines Styles auslesen"""
-        adm = Admin()
-        data = adm.get_binary_constraints_by_style_id(id)
-        return data
-
-@kleiderschrank.route('/style/<int:id>/cardinality-constraints')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class StyleCardinalityConstraintOperations(Resource):
-    @kleiderschrank.marshal_list_with(cardinality_constraint)
-    @secured
-    def get(self, id):
-        """Alle CardinalityConstraints eines Styles auslesen"""
-        adm = Admin()
-        data = adm.get_cardinality_constraints_by_style_id(id)
-        return data
-
-@kleiderschrank.route('/style/<int:id>/mutex-constraints')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class StyleMutexConstraintOperations(Resource):
-    @kleiderschrank.marshal_list_with(mutex_constraint)
-    @secured
-    def get(self, id):
-        """Alle MutexConstraints eines Styles auslesen"""
-        adm = Admin()
-        data = adm.get_mutex_constraints_by_style_id(id)
-        return data
-
-@kleiderschrank.route('/style/<int:id>/implication-constraints')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class StyleImplicationConstraintOperations(Resource):
-    @kleiderschrank.marshal_list_with(implication_constraint)
-    @secured
-    def get(self, id):
-        """Alle ImplicationConstraints eines Styles auslesen"""
-        adm = Admin()
-        data = adm.get_implication_constraints_by_style_id(id)
-        return data
-
-"""
-Kleiderschrank Methoden
-"""
-
-@kleiderschrank.route('/kleiderschrank')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class KleiderschrankListOperations(Resource):
-    """Auslesen und Erstellen von Kleiderschrank-Objekten."""
-
-    @kleiderschrank.marshal_list_with(kleiderschrank)
-    @secured
-    def get(self):
-        """Alle Kleiderschränke auslesen"""
-        adm = Admin()
-        data = adm.get_all_kleiderschraenke()
-        return data
-
-    @kleiderschrank.marshal_with(kleiderschrank, code=200)
-    @kleiderschrank.expect(kleiderschrank)
-    @secured
-    def post(self):
-        """Neuen Kleiderschrank anlegen"""
-        adm = Admin()
-        pl_kleiderschrank = Kleiderschrank.from_dict(api.payload)
-        
-        if pl_kleiderschrank is not None:
-            neuer_kleiderschrank = adm.create_kleiderschrank(
-                name=pl_kleiderschrank.get_name(),
-                beschreibung=pl_kleiderschrank.get_beschreibung()
-            )
-            return neuer_kleiderschrank, 200
-        else:
-            return '', 500
-
-@kleiderschrank.route('/kleiderschrank/<int:id>')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class KleiderschrankOperations(Resource):
-    @kleiderschrank.marshal_with(kleiderschrank)
-    @secured
-    def get(self, id):
-        """Einzelnen Kleiderschrank auslesen"""
-        adm = Admin()
-        data = adm.get_kleiderschrank_by_id(id)
-        return data
-
-    @kleiderschrank.marshal_with(kleiderschrank)
-    @kleiderschrank.expect(kleiderschrank, validate=True)
-    @secured
-    def put(self, id):
-        """Kleiderschrank aktualisieren"""
-        adm = Admin()
-        kleiderschrank = Kleiderschrank.from_dict(api.payload)
-        
-        if kleiderschrank is not None:
-            kleiderschrank.set_id(id)
-            data = adm.update_kleiderschrank(kleiderschrank)
-            return data, 200
-        else:
-            return '', 500
-
-    @secured
-    def delete(self, id):
-        """Kleiderschrank löschen"""
-        adm = Admin()
-        kleiderschrank = adm.get_kleiderschrank_by_id(id)
-        adm.delete_kleiderschrank(kleiderschrank)
-        return '', 200
-
-@kleiderschrank.route('/kleiderschrank-by-user/<int:user_id>')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class KleiderschrankUserOperations(Resource):
-    @kleiderschrank.marshal_list_with(kleiderschrank)
-    @secured
-    def get(self, user_id):
-        """Alle Kleiderschränke eines Users auslesen"""
-        adm = Admin()
-        data = adm.get_kleiderschraenke_by_user_id(user_id)
-        return data
-
-
-"""
-Kleidungsstück Methoden
-"""
-
-@kleiderschrank.route('/kleidungsstueck')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class KleidungsstueckListOperations(Resource):
-    """Auslesen und Erstellen von Kleidungsstueck-Objekten."""
-
-    @kleiderschrank.marshal_list_with(kleidungsstueck)
-    @secured
-    def get(self):
-        """Alle Kleidungsstücke auslesen"""
-        adm = Admin()
-        data = adm.get_all_kleidungsstuecke()
-        return data
-
-    @kleiderschrank.marshal_with(kleidungsstueck, code=200)
-    @kleiderschrank.expect(kleidungsstueck)
-    @secured
-    def post(self):
-        """Neues Kleidungsstück anlegen"""
-        adm = Admin()
-        pl_kleidungsstueck = Kleidungsstueck.from_dict(api.payload)
-        
-        if pl_kleidungsstueck is not None:
-            kleidungsstueck = adm.create_kleidungsstueck(
-                kleidungstyp=pl_kleidungsstueck.get_kleidungstyp(),
-                name=pl_kleidungsstueck.get_name()
-            )
-            return kleidungsstueck, 200
-        else:
-            return '', 500
-
-@kleiderschrank.route('/kleidungsstueck/<int:id>')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class KleidungsstueckOperations(Resource):
-    @kleiderschrank.marshal_with(kleidungsstueck)
-    @secured
-    def get(self, id):
-        """Einzelnes Kleidungsstück auslesen"""
-        adm = Admin()
-        data = adm.get_kleidungsstueck_by_id(id)
-        return data
-
-    @kleiderschrank.marshal_with(kleidungsstueck)
-    @kleiderschrank.expect(kleidungsstueck, validate=True)
-    @secured
-    def put(self, id):
-        """Kleidungsstück aktualisieren"""
-        adm = Admin()
-        kleidungsstueck = Kleidungsstueck.from_dict(api.payload)
-        
-        if kleidungsstueck is not None:
-            kleidungsstueck.set_id(id)
-            data = adm.update_kleidungsstueck(kleidungsstueck)
-            return data, 200
-        else:
-            return '', 500
-
-    @secured
-    def delete(self, id):
-        """Kleidungsstück löschen"""
-        adm = Admin()
-        kleidungsstueck = adm.get_kleidungsstueck_by_id(id)
-        adm.delete_kleidungsstueck(kleidungsstueck)
-        return '', 200
-
-@kleiderschrank.route('/kleidungsstueck-by-user/<int:user_id>')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class KleidungsstueckUserOperations(Resource):
-    @kleiderschrank.marshal_list_with(kleidungsstueck)
-    @secured
-    def get(self, user_id):
-        """Alle Kleidungsstücke eines Users auslesen"""
-        adm = Admin()
-        data = adm.get_kleidungsstuecke_by_user_id(user_id)
-        return data
-    
-"""
-Kleidungstyp Methoden
-"""
-    
-@kleiderschrank.route('/kleidungstyp')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class KleidungstypListOperations(Resource):
-    """Auslesen und Erstellen von Kleidungstyp-Objekten."""
-
-    @kleiderschrank.marshal_list_with(kleidungstyp)
-    @secured
-    def get(self):
-        """Alle Kleidungstypen auslesen"""
-        adm = Admin()
-        data = adm.get_all_kleidungstypen()
-        return data
-
-    @kleiderschrank.marshal_with(kleidungstyp, code=200)
-    @kleiderschrank.expect(kleidungstyp)
-    @secured
-    def post(self):
-        """Neuen Kleidungstyp anlegen"""
-        adm = Admin()
-        pl_kleidungstyp = Kleidungstyp.from_dict(api.payload)
-        
-        if pl_kleidungstyp is not None:
-            kleidungstyp = adm.create_kleidungstyp(
-                bezeichnung=pl_kleidungstyp.get_bezeichnung(),
-                verwendung=pl_kleidungstyp.get_verwendung()
-            )
-            return kleidungstyp, 200
-        else:
-            return '', 500
-
-@kleiderschrank.route('/kleidungstyp/<int:id>')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class KleidungstypOperations(Resource):
-    @kleiderschrank.marshal_with(kleidungstyp)
-    @secured
-    def get(self, id):
-        """Einzelnen Kleidungstyp auslesen"""
-        adm = Admin()
-        data = adm.get_kleidungstyp_by_id(id)
-        return data
-
-    @kleiderschrank.marshal_with(kleidungstyp)
-    @kleiderschrank.expect(kleidungstyp, validate=True)
-    @secured
-    def put(self, id):
-        """Kleidungstyp aktualisieren"""
-        adm = Admin()
-        kleidungstyp = Kleidungstyp.from_dict(api.payload)
-        
-        if kleidungstyp is not None:
-            kleidungstyp.set_id(id)
-            data = adm.update_kleidungstyp(kleidungstyp)
-            return data, 200
-        else:
-            return '', 500
-
-    @secured
-    def delete(self, id):
-        """Kleidungstyp löschen"""
-        adm = Admin()
-        kleidungstyp = adm.get_kleidungstyp_by_id(id)
-        adm.delete_kleidungstyp(kleidungstyp)
-        return '', 200
-
-@kleiderschrank.route('/kleidungstyp-by-user/<int:user_id>')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class KleidungstypUserOperations(Resource):
-    @kleiderschrank.marshal_list_with(kleidungstyp)
-    @secured
-    def get(self, user_id):
-        """Alle Kleidungstypen eines Users auslesen"""
-        adm = Admin()
-        data = adm.get_kleidungstypen_by_user_id(user_id)
-        return data
-
-"""
-Outfit Methoden
-"""
-
-@kleiderschrank.route('/outfit')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
+@wardrobe_ns.route('/outfits')
+@wardrobe_ns.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
 class OutfitListOperations(Resource):
-    @kleiderschrank.marshal_list_with(outfit)
+    @wardrobe_ns.marshal_list_with(outfit)
     @secured
     def get(self):
-        """Alle Outfits auslesen"""
+        """Auslesen aller Outfits"""
         adm = Admin()
-        data = adm.get_all_outfits()
-        return data
+        outfits = adm.get_all_outfits()
+        return outfits
 
-    @kleiderschrank.marshal_with(outfit, code=200)
-    @kleiderschrank.expect(outfit)
+    @wardrobe_ns.marshal_with(outfit, code=200)
+    @wardrobe_ns.expect(outfit)
     @secured
     def post(self):
-        """Neues Outfit anlegen"""
+        """Anlegen eines neuen Outfits"""
         adm = Admin()
-        pl_outfit = Outfit.from_dict(api.payload)
+        proposal = Outfit.from_dict(api.payload)
         
-        if pl_outfit is not None:
-            outfit = adm.create_outfit(
-                name=pl_outfit.get_name()
-            )
-            return outfit, 200
+        if proposal is not None:
+            o = adm.create_outfit(proposal.get_style(), proposal.get_items())
+            return o, 200
         else:
             return '', 500
-
-@kleiderschrank.route('/outfit/<int:id>')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class OutfitOperations(Resource):
-    @kleiderschrank.marshal_with(outfit)
     @secured
-    def get(self, id):
-        """Einzelnes Outfit auslesen"""
+    def delete(self, outfit_id):
         adm = Admin()
-        data = adm.get_outfit_by_id(id)
-        return data
-
-    @kleiderschrank.marshal_with(outfit)
-    @kleiderschrank.expect(outfit, validate=True)
-    @secured
-    def put(self, id):
-        """Outfit aktualisieren"""
-        adm = Admin()
-        outfit = Outfit.from_dict(api.payload)
-        
-        if outfit is not None:
-            outfit.set_id(id)
-            data = adm.update_outfit(outfit)
-            return data, 200
-        else:
-            return '', 500
-
-    @secured
-    def delete(self, id):
-        """Outfit löschen"""
-        adm = Admin()
-        outfit = adm.get_outfit_by_id(id)
-        adm.delete_outfit(outfit)
+        outf = adm.get_outfit_by_id(outfit_id)
+        adm.delete_outfit(outf)
         return '', 200
 
-@kleiderschrank.route('/outfit-by-user/<int:user_id>')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class OutfitUserOperations(Resource):
-    @kleiderschrank.marshal_list_with(outfit)
-    @secured
-    def get(self, user_id):
-        """Alle Outfits eines Users auslesen"""
-        adm = Admin()
-        data = adm.get_outfits_by_user_id(user_id)
-        return data
 
-@kleiderschrank.route('/outfit/<int:id>/kleidungsstuecke')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class OutfitKleidungsstueckeOperations(Resource):
-    @kleiderschrank.marshal_list_with(kleidungsstueck)
+#API Endpoint für Kleidungsstücke einer Person
+@wardrobe_ns.route('/persons/<int:id>/clothing-items')
+@wardrobe_ns.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@wardrobe_ns.param('id', 'Die ID der Person')
+class PersonClothingOperations(Resource):
+    @wardrobe_ns.marshal_list_with(clothing_item)
     @secured
     def get(self, id):
-        """Alle Kleidungsstücke eines Outfits auslesen"""
+        """Auslesen aller Kleidungsstücke einer bestimmten Person"""
         adm = Admin()
-        data = adm.get_kleidungsstuecke_by_outfit_id(id)
-        return data
-    
-@kleiderschrank.route('/outfit/<int:outfit_id>/kleidungsstueck/<int:kleidungsstueck_id>')
-@kleiderschrank.response(500, 'Wenn ein Server-seitiger Fehler aufkommt')
-class OutfitKleidungsstueckManagementOperations(Resource):
+        person = adm.get_person_by_id(id)
+        
+        if person is not None:
+            items = adm.get_clothing_items_by_person(user)
+            return items
+        else:
+            return "Person not found", 500
+
+
+#API Endpoint für Style-basierte Outfit-Vorschläge
+
+@wardrobe_ns.route('/user/<int:id>/outfit-proposals/<int:style_id>')
+@wardrobe_ns.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.')
+@wardrobe_ns.param('id', 'Die ID der Person')
+@wardrobe_ns.param('style_id', 'Die ID des Styles')
+class OutfitProposalOperations(Resource):
+    @wardrobe_ns.marshal_with(outfit)
     @secured
-    def post(self, outfit_id, kleidungsstueck_id):
-        """Kleidungsstück zu einem Outfit hinzufügen"""
+    def get(self, id, style_id):
+        """Generiert Outfit-Vorschläge basierend auf Style und verfügbarer Kleidung"""
         adm = Admin()
-        result = adm.add_kleidungsstueck_to_outfit(outfit_id, kleidungsstueck_id)
-        if result:
-            return '', 200
+        person = adm.get_user_by_id(id)
+        style = adm.get_style_by_id(style_id)
+        
+        if person is not None and style is not None:
+            proposal = adm.generate_outfit_proposal(user, style)
+            return proposal
+        else:
+            return "User or Style not found", 500
+
+
+@wardrobe_ns.route('/styles')
+class StyleListOperations(Resource):
+    @wardrobe_ns.marshal_list_with(style) 
+    @secured
+    def get(self):
+        adm = Admin()
+        styles = adm.get_all_styles()
+        return styles
+
+    @wardrobe_ns.marshal_with(style, code=200)
+    @wardrobe_ns.expect(style)
+    @secured
+    def post(self):
+        adm = Admin()
+        proposal = Style.from_dict(api.payload)
+        if proposal is not None:
+            s = adm.create_style(proposal)
+            return s, 200
+        else:
+            return '', 500
+
+@wardrobe_ns.route('/styles/<int:style_id>')
+@wardrobe_ns.response(500, 'Falls es zu einem Server-seitigen Fehler kommt.') 
+@wardrobe_ns.param('style_id', 'Die ID des Stils')
+class StyleOperations(Resource):
+    @wardrobe_ns.marshal_with(style)
+    @secured
+    def get(self, style_id):
+        adm = Admin()
+        s = adm.get_style_by_id(style_id)
+        return s
+
+    @wardrobe_ns.marshal_with(style)
+    @wardrobe_ns.expect(style, validate=True)
+    @secured
+    def put(self, style_id):
+        adm = Admin()
+        s = Style.from_dict(api.payload)
+
+        if s is not None:
+            s.set_id(style_id)
+            adm.save_style(s)
+            return s, 200
         else:
             return '', 500
 
     @secured
-    def delete(self, outfit_id, kleidungsstueck_id):
-        """Kleidungsstück aus einem Outfit entfernen"""
+    def delete(self, style_id):
         adm = Admin()
-        result = adm.remove_kleidungsstueck_from_outfit(outfit_id, kleidungsstueck_id)
-        if result:
-            return '', 200
-        else:
-            return '', 500
+        s = adm.get_style_by_id(style_id)
+        adm.delete_style(s)
+        return '', 200
+
+
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+
+
+
+
+
+
+
+
+
+

@@ -25,16 +25,16 @@ DROP TABLE IF EXISTS `binary_constraint`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `binary_constraint` (
-  `constraint_id` varchar(36) NOT NULL,
-  `reference_object1_id` varchar(36) NOT NULL,
-  `reference_object2_id` varchar(36) NOT NULL,
-  PRIMARY KEY (`constraint_id`),
+  `id` int NOT NULL AUTO_INCREMENT,
+  `reference_object1_id` int NOT NULL,
+  `reference_object2_id` int NOT NULL,
+  PRIMARY KEY (`id`),
   KEY `reference_object1_id` (`reference_object1_id`),
   KEY `reference_object2_id` (`reference_object2_id`),
-  CONSTRAINT `binary_constraint_ibfk_1` FOREIGN KEY (`constraint_id`) REFERENCES `constraint_rule` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `binary_constraint_ibfk_1` FOREIGN KEY (`id`) REFERENCES `constraint_rule` (`id`) ON DELETE CASCADE,
   CONSTRAINT `binary_constraint_ibfk_2` FOREIGN KEY (`reference_object1_id`) REFERENCES `clothing_type` (`id`),
   CONSTRAINT `binary_constraint_ibfk_3` FOREIGN KEY (`reference_object2_id`) REFERENCES `clothing_type` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,35 +43,8 @@ CREATE TABLE `binary_constraint` (
 
 LOCK TABLES `binary_constraint` WRITE;
 /*!40000 ALTER TABLE `binary_constraint` DISABLE KEYS */;
+INSERT INTO `binary_constraint` VALUES (1,1,2);
 /*!40000 ALTER TABLE `binary_constraint` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cardinality_constraint`
---
-
-DROP TABLE IF EXISTS `cardinality_constraint`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `cardinality_constraint` (
-  `constraint_id` varchar(36) NOT NULL,
-  `min_value` int NOT NULL,
-  `max_value` int NOT NULL,
-  `reference_object_id` varchar(36) NOT NULL,
-  PRIMARY KEY (`constraint_id`),
-  KEY `idx_cardinality_reference_object` (`reference_object_id`),
-  CONSTRAINT `cardinality_constraint_ibfk_1` FOREIGN KEY (`constraint_id`) REFERENCES `constraint_rule` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `cardinality_constraint_ibfk_2` FOREIGN KEY (`reference_object_id`) REFERENCES `clothing_type` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cardinality_constraint`
---
-
-LOCK TABLES `cardinality_constraint` WRITE;
-/*!40000 ALTER TABLE `cardinality_constraint` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cardinality_constraint` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -82,19 +55,16 @@ DROP TABLE IF EXISTS `clothing_item`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `clothing_item` (
-  `id` varchar(36) NOT NULL,
-  `wardrobe_id` varchar(36) NOT NULL,
-  `type_id` varchar(36) NOT NULL,
-  `product_name` varchar(255) NOT NULL,
-  `color` varchar(50) DEFAULT NULL,
-  `brand` varchar(100) DEFAULT NULL,
-  `season` varchar(50) DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `wardrobe_id` int NOT NULL,
+  `clothing_type_id` int NOT NULL,
+  `clothing_item_name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `wardrobe_id` (`wardrobe_id`),
-  KEY `idx_clothing_type` (`type_id`),
+  KEY `clothing_type_id` (`clothing_type_id`),
   CONSTRAINT `clothing_item_ibfk_1` FOREIGN KEY (`wardrobe_id`) REFERENCES `wardrobe` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `clothing_item_ibfk_2` FOREIGN KEY (`type_id`) REFERENCES `clothing_type` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  CONSTRAINT `clothing_item_ibfk_2` FOREIGN KEY (`clothing_type_id`) REFERENCES `clothing_type` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -103,7 +73,7 @@ CREATE TABLE `clothing_item` (
 
 LOCK TABLES `clothing_item` WRITE;
 /*!40000 ALTER TABLE `clothing_item` DISABLE KEYS */;
-INSERT INTO `clothing_item` VALUES ('1','1','1','Blue Jeans','Blau','Levi\'s','Winter'),('2','2','2','Red T-Shirt','Rot','Nike','Sommer');
+INSERT INTO `clothing_item` VALUES (1,1,1,'Gelbe Jacke'),(2,1,2,'Beige Chino'),(3,2,3,'Rotes T-Shirt'),(4,2,4,'Weiße Sportschuhe');
 /*!40000 ALTER TABLE `clothing_item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -115,12 +85,11 @@ DROP TABLE IF EXISTS `clothing_type`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `clothing_type` (
-  `id` varchar(36) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `type_name` varchar(255) NOT NULL,
-  `type_description` text,
-  `category` varchar(50) NOT NULL,
+  `type_usage` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -129,7 +98,7 @@ CREATE TABLE `clothing_type` (
 
 LOCK TABLES `clothing_type` WRITE;
 /*!40000 ALTER TABLE `clothing_type` DISABLE KEYS */;
-INSERT INTO `clothing_type` VALUES ('1','Hose','Bequeme Jeans','unterteile'),('2','T-Shirt','Rotes Baumwoll-T-Shirt','oberteile');
+INSERT INTO `clothing_type` VALUES (1,'Jacke','Winterjacke'),(2,'Hose','Chino'),(3,'T-Shirt','Sommerbekleidung'),(4,'Schuhe','Sportschuhe');
 /*!40000 ALTER TABLE `clothing_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -141,13 +110,16 @@ DROP TABLE IF EXISTS `constraint_rule`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `constraint_rule` (
-  `id` varchar(36) NOT NULL,
-  `style_id` varchar(36) NOT NULL,
-  `constraint_type` enum('binary','unary','implikation','mutex','cardinality') NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `style_id` int NOT NULL,
+  `constraint_type` enum('binary','unary','implikation','mutex','kardinalitaet') NOT NULL,
+  `attribute` varchar(255) DEFAULT NULL,
+  `constrain` varchar(255) DEFAULT NULL,
+  `val` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `idx_constraint_style` (`style_id`),
+  KEY `style_id` (`style_id`),
   CONSTRAINT `constraint_rule_ibfk_1` FOREIGN KEY (`style_id`) REFERENCES `style` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -156,65 +128,8 @@ CREATE TABLE `constraint_rule` (
 
 LOCK TABLES `constraint_rule` WRITE;
 /*!40000 ALTER TABLE `constraint_rule` DISABLE KEYS */;
+INSERT INTO `constraint_rule` VALUES (1,1,'unary','season','EQUAL','Sommer'),(2,2,'binary','color','NOT EQUAL','Gelb');
 /*!40000 ALTER TABLE `constraint_rule` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `implication_constraint`
---
-
-DROP TABLE IF EXISTS `implication_constraint`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `implication_constraint` (
-  `constraint_id` varchar(36) NOT NULL,
-  `antecedent_object_id` varchar(36) NOT NULL,
-  `consequent_object_id` varchar(36) NOT NULL,
-  PRIMARY KEY (`constraint_id`),
-  KEY `idx_implication_antecedent` (`antecedent_object_id`),
-  KEY `idx_implication_consequent` (`consequent_object_id`),
-  CONSTRAINT `implication_constraint_ibfk_1` FOREIGN KEY (`constraint_id`) REFERENCES `constraint_rule` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `implication_constraint_ibfk_2` FOREIGN KEY (`antecedent_object_id`) REFERENCES `clothing_type` (`id`),
-  CONSTRAINT `implication_constraint_ibfk_3` FOREIGN KEY (`consequent_object_id`) REFERENCES `clothing_type` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `implication_constraint`
---
-
-LOCK TABLES `implication_constraint` WRITE;
-/*!40000 ALTER TABLE `implication_constraint` DISABLE KEYS */;
-/*!40000 ALTER TABLE `implication_constraint` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `mutex_constraint`
---
-
-DROP TABLE IF EXISTS `mutex_constraint`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `mutex_constraint` (
-  `constraint_id` varchar(36) NOT NULL,
-  `conflicting_object1_id` varchar(36) NOT NULL,
-  `conflicting_object2_id` varchar(36) NOT NULL,
-  PRIMARY KEY (`constraint_id`),
-  KEY `idx_mutex_conflicting_object1` (`conflicting_object1_id`),
-  KEY `idx_mutex_conflicting_object2` (`conflicting_object2_id`),
-  CONSTRAINT `mutex_constraint_ibfk_1` FOREIGN KEY (`constraint_id`) REFERENCES `constraint_rule` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `mutex_constraint_ibfk_2` FOREIGN KEY (`conflicting_object1_id`) REFERENCES `clothing_type` (`id`),
-  CONSTRAINT `mutex_constraint_ibfk_3` FOREIGN KEY (`conflicting_object2_id`) REFERENCES `clothing_type` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `mutex_constraint`
---
-
-LOCK TABLES `mutex_constraint` WRITE;
-/*!40000 ALTER TABLE `mutex_constraint` DISABLE KEYS */;
-/*!40000 ALTER TABLE `mutex_constraint` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -225,17 +140,13 @@ DROP TABLE IF EXISTS `outfit`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `outfit` (
-  `id` varchar(36) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `outfit_name` varchar(255) NOT NULL,
-  `style_id` varchar(36) DEFAULT NULL,
-  `created_by` varchar(36) NOT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `style_id` int NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `created_by` (`created_by`),
-  KEY `idx_outfit_style` (`style_id`),
-  CONSTRAINT `outfit_ibfk_1` FOREIGN KEY (`style_id`) REFERENCES `style` (`id`),
-  CONSTRAINT `outfit_ibfk_2` FOREIGN KEY (`created_by`) REFERENCES `person` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  KEY `style_id` (`style_id`),
+  CONSTRAINT `outfit_ibfk_1` FOREIGN KEY (`style_id`) REFERENCES `style` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -244,7 +155,7 @@ CREATE TABLE `outfit` (
 
 LOCK TABLES `outfit` WRITE;
 /*!40000 ALTER TABLE `outfit` DISABLE KEYS */;
-INSERT INTO `outfit` VALUES ('1','Casual Outfit','1','1','2024-12-01 20:15:08'),('2','Sport Outfit','2','2','2024-12-01 20:15:08');
+INSERT INTO `outfit` VALUES (1,'Sommerliches Outfit',1),(2,'Business Outfit',2);
 /*!40000 ALTER TABLE `outfit` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -256,13 +167,13 @@ DROP TABLE IF EXISTS `outfit_items`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `outfit_items` (
-  `outfit_id` varchar(36) NOT NULL,
-  `clothing_item_id` varchar(36) NOT NULL,
+  `outfit_id` int NOT NULL,
+  `clothing_item_id` int NOT NULL,
   PRIMARY KEY (`outfit_id`,`clothing_item_id`),
   KEY `clothing_item_id` (`clothing_item_id`),
   CONSTRAINT `outfit_items_ibfk_1` FOREIGN KEY (`outfit_id`) REFERENCES `outfit` (`id`) ON DELETE CASCADE,
   CONSTRAINT `outfit_items_ibfk_2` FOREIGN KEY (`clothing_item_id`) REFERENCES `clothing_item` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -271,7 +182,7 @@ CREATE TABLE `outfit_items` (
 
 LOCK TABLES `outfit_items` WRITE;
 /*!40000 ALTER TABLE `outfit_items` DISABLE KEYS */;
-INSERT INTO `outfit_items` VALUES ('1','1'),('2','2');
+INSERT INTO `outfit_items` VALUES (2,1),(2,2),(1,3),(1,4);
 /*!40000 ALTER TABLE `outfit_items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -283,16 +194,15 @@ DROP TABLE IF EXISTS `person`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `person` (
-  `id` varchar(36) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `google_id` varchar(255) NOT NULL,
-  `firstname` varchar(255) NOT NULL,
   `lastname` varchar(255) NOT NULL,
+  `firstname` varchar(255) NOT NULL,
   `nickname` varchar(255) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `email` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `google_id` (`google_id`),
-  KEY `idx_person_google_id` (`google_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  UNIQUE KEY `google_id` (`google_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -301,7 +211,7 @@ CREATE TABLE `person` (
 
 LOCK TABLES `person` WRITE;
 /*!40000 ALTER TABLE `person` DISABLE KEYS */;
-INSERT INTO `person` VALUES ('1','google_12345','Max','Mustermann','Maxi','2024-12-01 20:15:08'),('2','google_67890','Erika','Musterfrau','Eri','2024-12-01 20:15:08');
+INSERT INTO `person` VALUES (1,'google123','Müller','Hans','hansm','hans.mueller@example.com'),(2,'google456','Schmidt','Anna','annas','anna.schmidt@example.com');
 /*!40000 ALTER TABLE `person` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -313,14 +223,11 @@ DROP TABLE IF EXISTS `style`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `style` (
-  `id` varchar(36) NOT NULL,
-  `style_name` varchar(255) NOT NULL,
-  `style_description` text,
-  `created_by` varchar(36) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `created_by` (`created_by`),
-  CONSTRAINT `style_ibfk_1` FOREIGN KEY (`created_by`) REFERENCES `person` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  `id` int NOT NULL AUTO_INCREMENT,
+  `style_features` text,
+  `style_constraints` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -329,7 +236,7 @@ CREATE TABLE `style` (
 
 LOCK TABLES `style` WRITE;
 /*!40000 ALTER TABLE `style` DISABLE KEYS */;
-INSERT INTO `style` VALUES ('1','Casual Style','Lässiger Look für den Alltag','1'),('2','Sportlich','Sportlicher Look für Aktivitäten','2');
+INSERT INTO `style` VALUES (1,'Sommerbekleidung','Nur Sommersachen kombinieren'),(2,'Business Casual','Keine gelbe Jacke mit Chino-Hose');
 /*!40000 ALTER TABLE `style` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -341,13 +248,16 @@ DROP TABLE IF EXISTS `unary_constraint`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `unary_constraint` (
-  `constraint_id` varchar(36) NOT NULL,
-  `reference_object_id` varchar(36) NOT NULL,
-  PRIMARY KEY (`constraint_id`),
+  `id` int NOT NULL AUTO_INCREMENT,
+  `reference_object_id` int NOT NULL,
+  `attribute` varchar(255) DEFAULT NULL,
+  `constrain` varchar(255) DEFAULT NULL,
+  `val` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `reference_object_id` (`reference_object_id`),
-  CONSTRAINT `unary_constraint_ibfk_1` FOREIGN KEY (`constraint_id`) REFERENCES `constraint_rule` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `unary_constraint_ibfk_1` FOREIGN KEY (`id`) REFERENCES `constraint_rule` (`id`) ON DELETE CASCADE,
   CONSTRAINT `unary_constraint_ibfk_2` FOREIGN KEY (`reference_object_id`) REFERENCES `clothing_type` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -356,6 +266,7 @@ CREATE TABLE `unary_constraint` (
 
 LOCK TABLES `unary_constraint` WRITE;
 /*!40000 ALTER TABLE `unary_constraint` DISABLE KEYS */;
+INSERT INTO `unary_constraint` VALUES (1,3,'season','EQUAL','Sommer');
 /*!40000 ALTER TABLE `unary_constraint` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -367,15 +278,12 @@ DROP TABLE IF EXISTS `wardrobe`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `wardrobe` (
-  `id` varchar(36) NOT NULL,
-  `person_id` varchar(36) NOT NULL,
-  `owner_name` varchar(255) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `wardrobe_owner` int NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `person_id` (`person_id`),
-  KEY `idx_wardrobe_person` (`person_id`),
-  CONSTRAINT `wardrobe_ibfk_1` FOREIGN KEY (`person_id`) REFERENCES `person` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  KEY `wardrobe_owner` (`wardrobe_owner`),
+  CONSTRAINT `wardrobe_ibfk_1` FOREIGN KEY (`wardrobe_owner`) REFERENCES `person` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -384,7 +292,7 @@ CREATE TABLE `wardrobe` (
 
 LOCK TABLES `wardrobe` WRITE;
 /*!40000 ALTER TABLE `wardrobe` DISABLE KEYS */;
-INSERT INTO `wardrobe` VALUES ('1','1','Max\'s Wardrobe','2024-12-01 20:15:08'),('2','2','Erika\'s Wardrobe','2024-12-01 20:15:08');
+INSERT INTO `wardrobe` VALUES (1,1),(2,2);
 /*!40000 ALTER TABLE `wardrobe` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -397,4 +305,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-01 21:15:48
+-- Dump completed on 2024-12-08 23:37:07

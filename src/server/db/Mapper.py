@@ -25,21 +25,21 @@ class Mapper(AbstractContextManager, ABC):
         self._cnx.close()
 
     @abstractmethod
-    def find_all(self):             # Liest Tupel aus und gibt sie als Objekte zurück
+    def find_all(self):             # Tupel auslesen
         pass
 
     @abstractmethod
-    def find_by_key(self, key):     # Liest Tupel mit ID aus
+    def find_by_key(self, key):     # Tupel mit ID auslesen
         pass
 
     @abstractmethod
-    def insert(self, obj):          # Fügt Objekt in die DB ein
+    def insert(self, obj):          # Einfügen von Objekten in die DB
         pass
 
     @abstractmethod
-    def update(self, obj):          # Objekt wird auf einen bereits in der DB enthaltenen Datensatz abgebildet
+    def update(self, obj):          # Abbilden von Objekten, die in der DB enthalten sind
         pass
 
     @abstractmethod
-    def delete(self, obj):          # Objekt in der DB wird gelöscht
+    def delete(self, obj):          # Löschen von Objekten in der DB
         pass
