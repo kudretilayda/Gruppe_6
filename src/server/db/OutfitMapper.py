@@ -1,3 +1,4 @@
+from src.server.bo.ClothingItem import ClothingItem
 from src.server.db.Mapper import Mapper
 from src.server.bo.Outfit import Outfit
 
@@ -12,8 +13,8 @@ class OutfitMapper(Mapper):
         for (id, outfit_name, style_id) in tuples:
             outfit = Outfit()
             outfit.set_id(id)
-            outfit.set_name(outfit_name)
-            outfit.set_style_id(style_id)
+            outfit.set_outfit_name(outfit_name)
+            outfit.set_style(style_id)
             result.append(outfit)
 
         self._cnx.commit()
@@ -31,8 +32,8 @@ class OutfitMapper(Mapper):
             (id, outfit_name, style_id) = tuples[0]
             result = Outfit()
             result.set_id(id)
-            result.set_name(outfit_name)
-            result.set_style_id(style_id)
+            result.set_outfit_name(outfit_name)
+            result.set_style(style_id)
 
         self._cnx.commit()
         cursor.close()
@@ -45,10 +46,10 @@ class OutfitMapper(Mapper):
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, outfit_name, style_id, created_by, created_at) in tuples:
+        for (id, outfit_name, style_id) in tuples:
             outfit = Outfit()
             outfit.set_id(id)
-            outfit.set_name(outfit_name)
+            outfit.set_outfit_name(outfit_name)
             outfit.set_style(style_id)
             result.append(outfit)
 
@@ -65,15 +66,12 @@ class OutfitMapper(Mapper):
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, wardrobe_id, type_id, product_name, color, brand, season) in tuples:
-            clothing_item = clothing_item()
+        for (id, wardrobe_id, type_id, item_name) in tuples:
+            clothing_item = ClothingItem()
             clothing_item.set_id(id)
             clothing_item.set_wardrobe_id(wardrobe_id)
-            clothing_item.set_type_id(type_id)
-            clothing_item.set_product_name(product_name)
-            clothing_item.set_color(color)
-            clothing_item.set_brand(brand)
-            clothing_item.set_season(season)
+            clothing_item.set_clothing_type(type_id)
+            clothing_item.set_item_name(item_name)
             result.append(clothing_item)
 
         self._cnx().commit()
@@ -129,4 +127,3 @@ class OutfitMapper(Mapper):
         cursor.execute(command)
         self._cnx().commit()
         cursor.close()
-

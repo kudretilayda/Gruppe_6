@@ -6,6 +6,7 @@ class Outfit(BusinessObject):
     def __init__(self):
         super().__init__()
         self._outfit_id = 0
+        self._outfit_name = ""
         self._items = []
         self._style = None
 
@@ -26,6 +27,12 @@ class Outfit(BusinessObject):
 
     def set_style(self, style):
         self._style = style
+
+    def get_outfit_name(self):
+        return self._outfit_name
+
+    def set_outfit_name(self, outfit_name):
+        self._outfit_name = outfit_name
 
     def __str__(self):
         return "Outfit: {}, {}, {}".format(

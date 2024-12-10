@@ -9,9 +9,9 @@ class ClothingItemMapper(Mapper):
         cursor.execute("SELECT * FROM digital_wardrobe.clothing_item")
         tuples = cursor.fetchall()
 
-        for (id, wardrobe_id, clothing_type_id, clothing_item_name) in tuples:
+        for (item_id, wardrobe_id, clothing_type_id, clothing_item_name) in tuples:
             clothing_item = ClothingItem()
-            clothing_item.set_id(id)
+            clothing_item.set_id(item_id)
             clothing_item.set_wardrobe_id(wardrobe_id)
             clothing_item.set_clothing_type(clothing_type_id)
             clothing_item.set_item_name(clothing_item_name)
@@ -29,9 +29,9 @@ class ClothingItemMapper(Mapper):
         tuples = cursor.fetchall()
 
         if tuples:
-            (id, wardrobe_id, clothing_type_id, clothing_item_name) = tuples[0]
+            (item_id, wardrobe_id, clothing_type_id, clothing_item_name) = tuples[0]
             result = ClothingItem()
-            result.set_id(id)
+            result.set_id(item_id)
             result.set_wardrobe_id(wardrobe_id)
             result.set_clothing_type(clothing_type_id)
             result.set_item_name(clothing_item_name)
@@ -43,15 +43,15 @@ class ClothingItemMapper(Mapper):
     def find_by_type(self, type_id):
         result = []
         cursor = self._cnx.cursor()
-        command = ("SELECT id, name, type_id, style_id "
+        command = ("SELECT id, name, type_id "
                    "FROM clothing_items WHERE type_id={}").format(
             type_id)
         cursor.execute(command)
         tuples = cursor.fetchall()
 
-        for (id, name, type_id, style_id) in tuples:
+        for (item_id, name, type_id) in tuples:
             clothing_item = ClothingItem()
-            clothing_item.set_id(id)
+            clothing_item.set_id(item_id)
             clothing_item.set_item_name(name)
             clothing_item.set_clothing_type(type_id)
             result.append(clothing_item)
