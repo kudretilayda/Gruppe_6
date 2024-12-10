@@ -4,14 +4,14 @@ from server.db.ClothingItemMapper import ClothingItemMapper
 from server.db.ClothingTypeMapper import ClothingTypeMapper
 from server.db.StyleMapper import StyleMapper
 from server.db.OutfitMapper import OutfitMapper
-#from server.db.ConstraintMapper import ConstraintMapper
+from server.db.ConstraintMapper import ConstraintMapper
 from server.bo.User import Person
 from server.bo.Wardrobe import Wardrobe
 from server.bo.ClothingItem import ClothingItem
 from server.bo.ClothingType import ClothingType
 from server.bo.Style import Style
 from server.bo.Outfit import Outfit
-#from server.bo.Constraint import Constraint, BinaryConstraint, UnaryConstraint, CardinalityConstraint, MutexConstraint, ImplicationConstraint
+from server.constraints.Constraint import Constraint, BinaryConstraint, UnaryConstraint, CardinalityConstraint, MutexConstraint, ImplicationConstraint
 
 
 class Administration(object):
@@ -102,7 +102,7 @@ class Administration(object):
         with UserMapper() as mapper:
             mapper.delete(user)
 
-###Wardrobe spezifische Methoden###
+### Wardrobe spezifische Methoden ###
 
     def create_wardrobe(self, user_id):
         wardrobe = Wardrobe()
@@ -133,7 +133,7 @@ class Administration(object):
             mapper.delete(wardrobe)
 
  
- #ClothingItem-spezifische Methoden
+ ### ClothingItem-spezifische Methoden ###
 
     def create_clothing_item(self, wardrobe_id, clothing_type_id, clothing_item_name, color=None, brand=None, season=None):
         clothing_item = ClothingItem()
@@ -169,7 +169,7 @@ class Administration(object):
             self._cleanup_clothing_item_references(clothing_item)
             mapper.delete(clothing_item)
 
-#ClothingType-spezifische Methoden
+### ClothingType-spezifische Methoden ###
 
     def create_clothing_type(self, type_name, type_usage):
         clothing_type = ClothingType()
@@ -187,7 +187,7 @@ class Administration(object):
         with ClothingTypeMapper() as mapper:
             return mapper.find_all()
         
-#Style-spezifische Methoden
+### Style-spezifische Methoden ###
     
     def create_style(self, style_features, style_constraints):
         style = Style()
@@ -216,7 +216,7 @@ class Administration(object):
             mapper.delete(style)
 
 
-#Outfit-spezifische Methoden
+### Outfit-spezifische Methoden ###
     
     def create_outfit(self, outfit_name, style_id):
         outfit = Outfit()
@@ -254,7 +254,7 @@ class Administration(object):
         with OutfitMapper() as mapper:
             mapper.delete(outfit)
 
-#Constraint-spezifische Methoden
+### Constraint-spezifische Methoden ###
     
     def create_constraint(self, style_id, constraint_type, attribute=None, constrain=None, val=None):
         constraint = constraint()
@@ -339,4 +339,52 @@ class Administration(object):
         with ConstraintMapper() as mapper:
             return mapper.find_implication_constraints_by_style_id(style.get_id())
         
-    #ConstraintMapper anpassen
+###ConstraintMapper anpassen ###
+
+
+### Business Logic Methoden ###
+
+    def validate_outfit(self, outfit):
+        return self._validate_outfit_basic(outfit) and \
+               self._validate_outfit_mutex(outfit) and \
+               self._validate_outfit_implications(outfit) and \
+               self._validate_outfit_cardinality(outfit)
+
+    def extend_outfit(self, outfit, item):
+        test_outfit = self._create_test_outfit(outfit, item)
+        if self.validate_outfit(test_outfit):
+            self.add_item_to_outfit(outfit.get_id(), item.get_id())
+            return outfit
+        return None
+
+    def find_matching_styles_for_wardrobe(self, user):
+        wardrobe_items = self.get_clothing_items_by_wardrobe_id(self.get_wardrobe_by_person_id(user.get_id()).get_id())
+        all_styles = self.get_all_styles()
+        matching_styles = [style for style in all_styles if self._can_create_outfit_with_style(style, wardrobe_items)]
+        return matching_styles
+
+    def generate_occasion_based_outfits(self, user, occasion):
+        wardrobe_items = self.get_clothing_items_by_wardrobe_id(self.get_wardrobe_by_person_id(user.get_id()).get_id())
+        suitable_styles = self._get_styles_for_occasion(occasion)
+        outfits = [self._create_outfit_for_style_and_occasion(style, wardrobe_items, occasion) for style in suitable_styles]
+        return [outfit for outfit in outfits if outfit is not None]
+
+    def generate_style_recommendations(self, user):
+        wardrobe_items = self.get_clothing_items_by_wardrobe_id(self.get_wardrobe_by_person_id(user.get_id()).get_id())
+        current_styles = self._get_person_used_styles(user)
+        all_styles = self.get_all_styles()
+        recommendations = [style for style in all_styles if style not in current_styles and self._is_style_suitable(style, wardrobe_items)]
+        return recommendations
+      
+    def find_similar_outfits(self, outfit):
+        similar_outfits = []
+        similar_outfits.extend(self._find_outfits_with_similar_types(outfit.get_items()))
+        similar_outfits.extend(self._find_outfits_by_style(self.get_style_by_id(outfit.get_style_id())))
+        return list(set(similar_outfits))  # Remove duplicates
+
+    def find_missing_essentials(self, user):
+        wardrobe_items = self.get_clothing_items_by_wardrobe_id(self.get_wardrobe_by_person_id(user.get_id()).get_id())
+        essentials = self._get_essential_clothing_types()
+        missing = [essential for essential in essentials if not self._has_clothing_type(wardrobe_items, essential)]
+        return missing
+
