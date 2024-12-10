@@ -16,10 +16,20 @@ CREATE TABLE person (
 -- Wardrobe
 DROP TABLE IF EXISTS wardrobe;
 CREATE TABLE wardrobe (
+<<<<<<< Updated upstream
     id INT AUTO_INCREMENT PRIMARY KEY,
     wardrobe_owner INT NOT NULL, -- 'Eigentuemer' verweist auf 'User'
     FOREIGN KEY (wardrobe_owner) REFERENCES person(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+=======
+    id VARCHAR(36) NOT NULL,  -- Korrekt als 'id' definSiert
+    person_id VARCHAR(36) NOT NULL,
+    owner_name VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    FOREIGN KEY (person_id) REFERENCES person(id) ON DELETE CASCADE -- Verweis auf 'id' in person
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+>>>>>>> Stashed changes
 
 <<<<<<< HEAD
 -- Clothing Item
