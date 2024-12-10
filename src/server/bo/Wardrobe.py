@@ -8,7 +8,7 @@ class Wardrobe(BusinessObject):
         self._inhalt = []
         self._outfits = []
 
-    def get_eigentuemer(self):
+    def get_wardrobe_owner(self):
         return self._wardrobe_owner
 
     def set_wardrobe_owner(self, user):
@@ -17,11 +17,11 @@ class Wardrobe(BusinessObject):
     def get_inhalt(self):
         return self._inhalt
 
-    def set_inhalt(self, value):
-        self._inhalt = value
+    def set_inhalt(self, values):
+        self._inhalt = values
 
     def get_outfits(self):
         return self._outfits
 
-    def set_outfits(self, value):
-        self._outfits = value
+    def set_outfits(self, values):
+        self._outfits = values

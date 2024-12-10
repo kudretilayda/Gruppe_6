@@ -9,13 +9,14 @@ class UserMapper(Mapper):
         cursor.execute("SELECT * FROM digital_wardrobe.person")
         tuples = cursor.fetchall()
 
-        for (user_id, google_id, firstname, lastname, nickname, created_at) in tuples:
+        for (user_id, google_id, firstname, lastname, nickname, email) in tuples:
             user = User()
             user.set_user_id(user_id)
             user.set_google_id(google_id)
             user.set_firstname(firstname)
             user.set_lastname(lastname)
             user.set_nickname(nickname)
+            user.set_email(email)
             result.append(user)
 
         self._cnx().commit()
@@ -30,13 +31,14 @@ class UserMapper(Mapper):
         tuples = cursor.fetchall()
 
         if tuples is not None and len(tuples) > 0:
-            (user_id, google_id, firstname, lastname, nickname, created_at) = tuples[0]
+            (user_id, google_id, firstname, lastname, nickname, email) = tuples[0]
             result = User()
             result.set_id(user_id)
             result.set_google_id(google_id)
             result.set_firstname(firstname)
             result.set_lastname(lastname)
             result.set_nickname(nickname)
+            result.set_email(email)
 
         self._cnx().commit()
         cursor.close()
@@ -50,13 +52,14 @@ class UserMapper(Mapper):
         tuples = cursor.fetchall()
 
         if tuples is not None and len(tuples) > 0:
-            (user_id, google_id, firstname, lastname, nickname, created_at) = tuples[0]
+            (user_id, google_id, firstname, lastname, nickname, email) = tuples[0]
             result = User()
             result.set_id(user_id)
             result.set_google_id(google_id)
             result.set_firstname(firstname)
             result.set_lastname(lastname)
             result.set_nickname(nickname)
+            result.set_email(email)
 
         self._cnx().commit()
         cursor.close()

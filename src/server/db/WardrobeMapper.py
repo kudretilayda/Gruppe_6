@@ -1,5 +1,5 @@
 from src.server.db.Mapper import Mapper
-from server.bo.Wardrobe import Kleiderschrank
+from src.server.bo.Wardrobe import Wardrobe
 
 
 class WardrobeMapper(Mapper):
@@ -9,10 +9,10 @@ class WardrobeMapper(Mapper):
         cursor.execute("SELECT * FROM digital_wardrobe.wardrobe")
         tuples = cursor.fetchall()
 
-        for (id, wardrobe_owner) in tuples:
-            wardrobe = Kleiderschrank()
-            wardrobe.set_id(id)
-            wardrobe.set_owner(wardrobe_owner)
+        for (wardrobe_id, wardrobe_owner) in tuples:
+            wardrobe = Wardrobe()
+            wardrobe.set_id(wardrobe_id)
+            wardrobe.set_wardrobe_owner(wardrobe_owner)
             result.append(wardrobe)
 
         self._cnx.commit()
@@ -27,17 +27,16 @@ class WardrobeMapper(Mapper):
         tuples = cursor.fetchall()
 
         if tuples:
-            (id, wardrobe_owner) = tuples[0]
-            result = Kleiderschrank()
-            result.set_id(id)
-            result.set_owner(wardrobe_owner)
+            (wardrobe_id, wardrobe_owner) = tuples[0]
+            result = Wardrobe()
+            result.set_id(wardrobe_id)
+            result.set_wardrobe_owner(wardrobe_owner)
 
         self._cnx.commit()
         cursor.close()
         return result
 
     def find_by_person_id(self, person_id):
-        """Suchen eines Wardrobe-Objekts nach Person ID."""
         result = None
         cursor = self._cnx().cursor()
         command = "SELECT * FROM wardrobe WHERE person_id='{}'".format(person_id)
@@ -45,12 +44,10 @@ class WardrobeMapper(Mapper):
         tuples = cursor.fetchall()
 
         if tuples is not None and len(tuples) > 0:
-            (id, person_id, owner_name, created_at) = tuples[0]
-            result = Kleiderschrank()
-            result.set_id(id)
-            result.set_person_id(person_id)
-            result.set_owner_name(owner_name)
-            result.set_creation_date(created_at)
+            (wardrobe_id, person_id, owner_name) = tuples[0]
+            result = Wardrobe()
+            result.set_id(wardrobe_id)
+            result.set_wardrobe_owner(person_id)
 
         self._cnx().commit()
         cursor.close()
