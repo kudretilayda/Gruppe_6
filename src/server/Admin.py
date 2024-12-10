@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from src.server.bo.BinaryConstraint import BinaryConstraint
 from src.server.bo.BusinessObject import BusinessObject
 from src.server.bo.CardinalityConstraint import CardinalityConstraint
@@ -7,16 +8,21 @@ from src.server.bo.Wardrobe import Wardrobe
 from server.bo.ClothingItem import ClothingItem
 from server.bo.ClothingType import ClothingType
 from src.server.bo.MutexConstraint import MutexConstraint
+=======
+from src.server.constraints.BinaryConstraint import BinaryConstraint
+from src.server.constraints.CardinalityConstraint import CardinalityConstraint
+from src.server.constraints.ImplicationConstraint import ImplicationConstraint
+from server.bo.Wardrobe import Kleiderschrank
+from src.server.constraints.MutexConstraint import MutexConstraint
+>>>>>>> cb40ce594841218d73ecccfcb843f3b4c9718885
 from src.server.bo.Outfit import Outfit
 from src.server.bo.Style import Style
-from src.server.bo.UnaryConstraint import UnaryConstraint
+from src.server.constraints.UnaryConstraint import UnaryConstraint
 from src.server.bo.User import User
 
-from src.server.db.ConstraintMapper import ConstraintMapper
 # from src.server.db.KleiderschrankMapper import KleiderschrankMapper
-from src.server.db.KleidungsstueckMapper import Kleidungsstueck
-from src.server.db.KleidungstypMapper import Kleidungstyp
-from src.server.db.Mapper import Mapper
+from server.db.ClothingItemMapper import Kleidungsstueck
+from server.db.ClothingTypeMapper import Kleidungstyp
 from src.server.db.StyleMapper import StyleMapper
 # from src.server.db.UserMapper import UserMappper
 

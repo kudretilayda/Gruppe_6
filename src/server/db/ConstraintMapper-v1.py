@@ -1,12 +1,37 @@
 from src.server.db.Mapper import Mapper
-from src.server.bo.BinaryConstraint import BinaryConstraint
-from src.server.bo.CardinalityConstraint import CardinalityConstraint
-from src.server.bo.UnaryConstraint import UnaryConstraint
-from src.server.bo.ImplicationConstraint import ImplicationConstraint
-from src.server.bo.MutexConstraint import MutexConstraint
+from src.server.constraints.BinaryConstraint import BinaryConstraint
+from src.server.constraints.CardinalityConstraint import CardinalityConstraint
+from src.server.constraints.UnaryConstraint import UnaryConstraint
+from src.server.constraints.ImplicationConstraint import ImplicationConstraint
+from src.server.constraints.MutexConstraint import MutexConstraint
 
 
 class ConstraintMapper(Mapper):
+    def find_all(self):
+        cursor = self._cnx.cursor()
+        query = "SELECT * FROM digital_wardrobe.constraint_rule"
+        cursor.execute(query)
+        results = cursor.fetchall()
+        constraints = []
+
+        for result in results:
+            constraint_type = result[1]
+            if constraint_type == 'implication':
+                constraints.append(ImplicationConstraint(result[0], result[2]))
+
+            elif constraint_type == 'mutex':
+                constraints.append(MutexConstraint(result[0], result[2]))
+
+            elif constraint_type == 'cardinality':
+                constraints.append(CardinalityConstraint(result[0], result[2], result[3]))
+
+            elif constraint_type == 'unary':
+                constraints.append(UnaryConstraint(result[0], result[2]))
+
+            elif constraint_type == 'binary':
+                constraints.append(BinaryConstraint(result[0], result[2], result[3]))
+        return constraints
+
     def find_by_key(self, constraint_id):
         cursor = self._cnx.cursor()
         query = "SELECT * FROM digital_wardrobe.constraint_rule WHERE id = %s"
@@ -34,31 +59,6 @@ class ConstraintMapper(Mapper):
 
         self._cnx.commit()
         cursor.close()
-
-    def find_all(self):
-        cursor = self._cnx.cursor()
-        query = "SELECT * FROM digital_wardrobe.constraint_rule"
-        cursor.execute(query)
-        results = cursor.fetchall()
-        constraints = []
-
-        for result in results:
-            constraint_type = result[1]
-            if constraint_type == 'implication':
-                constraints.append(ImplicationConstraint(result[0], result[2]))
-
-            elif constraint_type == 'mutex':
-                constraints.append(MutexConstraint(result[0], result[2]))
-
-            elif constraint_type == 'cardinality':
-                constraints.append(CardinalityConstraint(result[0], result[2], result[3]))
-
-            elif constraint_type == 'unary':
-                constraints.append(UnaryConstraint(result[0], result[2]))
-
-            elif constraint_type == 'binary':
-                constraints.append(BinaryConstraint(result[0], result[2], result[3]))
-        return constraints
 
     def insert(self, constraint):
         cursor = self._cnx.cursor()
