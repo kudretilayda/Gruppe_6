@@ -1,16 +1,12 @@
-from src.server.constraints.BinaryConstraint import BinaryConstraint
-from src.server.constraints.CardinalityConstraint import CardinalityConstraint
-from src.server.constraints.ImplicationConstraint import ImplicationConstraint
-from server.bo.Wardrobe import Kleiderschrank
-from src.server.constraints.MutexConstraint import MutexConstraint
+from src.server.bo.Constraints import *
+
+from src.server.bo.Wardrobe import Wardrobe
 from src.server.bo.Outfit import Outfit
 from src.server.bo.Style import Style
-from src.server.constraints.UnaryConstraint import UnaryConstraint
 from src.server.bo.User import User
 
 # from src.server.db.KleiderschrankMapper import KleiderschrankMapper
-from server.db.ClothingItemMapper import Kleidungsstueck
-from server.db.ClothingTypeMapper import Kleidungstyp
+from src.server.db.ClothingTypeMapper import ClothingType
 from src.server.db.StyleMapper import StyleMapper
 # from src.server.db.UserMapper import UserMappper
 
