@@ -24,6 +24,7 @@ class ConstraintRule(ABC):
         )
 
 
+# Unary Constraint
 class UnaryConstraint(ConstraintRule):
     def __init__(self, style_id: int, reference_object_id: int, attribute: str, condition: str, val: str):
         super().__init__(style_id, "unary", attribute, condition, val)
@@ -41,6 +42,7 @@ class UnaryConstraint(ConstraintRule):
         return True
 
 
+# Binary
 class BinaryConstraint(ConstraintRule):
     def __init__(self, style_id: int, object_1, object_2, attribute: str, condition: str, value: str):
         super().__init__(style_id, "binary", attribute, condition, value)
@@ -57,6 +59,7 @@ class BinaryConstraint(ConstraintRule):
         return True
 
 
+# Implication
 class ImplicationConstraint(ConstraintRule):
     def __init__(self, style_id: int, condition_a, condition_b):
         super().__init__(style_id, "implication", None, None, None)
@@ -70,6 +73,7 @@ class ImplicationConstraint(ConstraintRule):
 
 
 
+# Mutex
 class MutexConstraint(ConstraintRule):
     def __init__(self, style_id: int, objects: list):
         super().__init__(style_id, "mutex", None, None, None)
@@ -83,6 +87,7 @@ class MutexConstraint(ConstraintRule):
         return True
 
 
+# Cardinality
 class CardinalityConstraint(ConstraintRule):
     def __init__(self, style_id: int, objects: list, min_count: int, max_count: int):
         super().__init__(style_id, "cardinality", None, None, None)
