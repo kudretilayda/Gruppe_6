@@ -81,14 +81,14 @@ class ConstraintMapper(Mapper):
                 return ImplicationConstraint(style_id, None, None)
 
             elif constraint_type == "mutex":
-                # result.append(MutexConstraint(style_id, []))
-                return MutexConstraint(style_id, [])
+                result.append(MutexConstraint(style_id, []))
+                return result
 
             elif constraint_type == "cardinality":
                 min_count = int(condition) if condition and condition.isdigit() else 0
                 max_count = int(value) if value and value.isdigit() else 0
-                # result.append(CardinalityConstraint(style_id, [], min_count, max_count))
-                return CardinalityConstraint(style_id, [], int(condition), int(value))
+                result.append(CardinalityConstraint(style_id, [], min_count, max_count))
+                return result
 
         cursor.close()
         return None
@@ -96,10 +96,8 @@ class ConstraintMapper(Mapper):
     def insert(self, constraint):
         cursor = self._cnx.cursor()
 
-        query_rule = """
-            INSERT INTO digital_wardrobe.constraint_rule (style_id, constraint_type, attribute, constrain, val) 
-            VALUES (%s, %s, %s, %s, %s)
-        """
+        query_rule = """INSERT INTO digital_wardrobe.constraint_rule 
+        (style_id, constraint_type, attribute, constrain, val) VALUES (%s, %s, %s, %s, %s)"""
 
         cursor.execute(query_rule, (
             constraint.style_id,
@@ -117,10 +115,8 @@ class ConstraintMapper(Mapper):
             cursor.execute(unary_query, (constraint_id, constraint.reference_object_id))
 
         elif isinstance(constraint, BinaryConstraint):
-            binary_query = """
-                INSERT INTO digital_wardrobe.binary_constraint (id, reference_object1_id, reference_object2_id) 
-                VALUES (%s, %s, %s)
-            """
+            binary_query = """INSERT INTO digital_wardrobe.binary_constraint 
+            (id, reference_object1_id, reference_object2_id) VALUES (%s, %s, %s)"""
             cursor.execute(binary_query, (constraint_id, constraint.object_1, constraint.object_2))
 
         self._cnx.commit()
@@ -129,11 +125,8 @@ class ConstraintMapper(Mapper):
 
     def update(self, constraint):
         cursor = self._cnx.cursor()
-        query_rule = """
-            UPDATE digital_wardrobe.constraint_rule 
-            SET style_id = %s, attribute = %s, constrain = %s, val = %s 
-            WHERE id = %s
-        """
+        query_rule = """UPDATE digital_wardrobe.constraint_rule 
+            SET style_id = %s, attribute = %s, constrain = %s, val = %s WHERE id = %s"""
         cursor.execute(query_rule, (
             constraint.style_id,
             constraint.attribute,
@@ -148,11 +141,8 @@ class ConstraintMapper(Mapper):
             cursor.execute(unary_query, (constraint.reference_object_id, constraint.style_id))
 
         elif isinstance(constraint, BinaryConstraint):
-            binary_query = """
-                UPDATE digital_wardrobe.binary_constraint 
-                SET reference_object1_id = %s, reference_object2_id = %s 
-                WHERE id = %s
-            """
+            binary_query = """UPDATE digital_wardrobe.binary_constraint 
+                SET reference_object1_id = %s, reference_object2_id = %s WHERE id = %s"""
             cursor.execute(binary_query, (constraint.object_1, constraint.object_2, constraint.style_id))
 
         self._cnx.commit()
