@@ -1,4 +1,9 @@
-from src.server.bo.Constraints import *
+from src.server.bo.Constraints import (
+    UnaryConstraint,
+    BinaryConstraint,
+    ImplicationConstraint,
+    MutexConstraint,
+    CardinalityConstraint)
 
 from src.server.bo.Wardrobe import Wardrobe
 from src.server.bo.Outfit import Outfit
