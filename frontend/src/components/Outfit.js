@@ -1,13 +1,13 @@
 // src/components/Outfit.js
 import React from 'react';
 
-const Outfit = ({ name, kleidungsstuecke }) => {
+const Outfit = ({ name, clothingItems }) => {
   return (
     <div className="outfit">
       <h3>{name}</h3>
       <ul>
-        {kleidungsstuecke.map((ks, index) => (
-          <li key={index}>{ks}</li>
+        {clothingItems.map((item, index) => (
+          <li key={index}>{item}</li>
         ))}
       </ul>
     </div>

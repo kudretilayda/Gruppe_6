@@ -1,13 +1,13 @@
-// src/components/Kleidungsstueck.js
+// src/components/ClothingItem.js
 import React from 'react';
 
-const Kleidungsstueck = ({ typ, bezeichnung }) => {
+const ClothingItem = ({ type, description }) => {
   return (
-    <div className="kleidungsstueck">
-      <h3>{bezeichnung}</h3>
-      <p>Typ: {typ}</p>
+    <div className="clothing-item">
+      <h3>{description}</h3>
+      <p>Type: {type}</p>
     </div>
   );
 };
 
-export default Kleidungsstueck;
+export default ClothingItem;
