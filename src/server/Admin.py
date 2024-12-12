@@ -11,7 +11,7 @@ from server.bo.ClothingItem import ClothingItem
 from server.bo.ClothingType import ClothingType
 from server.bo.Style import Style
 from server.bo.Outfit import Outfit
-from server.constraints.Constraint import Constraint, BinaryConstraint, UnaryConstraint, CardinalityConstraint, MutexConstraint, ImplicationConstraint
+from server.Constraints.Constraint import Constraint, BinaryConstraint, UnaryConstraint, CardinalityConstraint, MutexConstraint, ImplicationConstraint
 
 
 class Administration(object):

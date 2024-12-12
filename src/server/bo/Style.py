@@ -6,8 +6,8 @@ class Style (BusinessObject):
     def __init__(self):
         super().__init__()
         self.__style_id = 0
-        self.__style_features = ""
-        self.__style_constraints = []
+        self.__style_features = None
+        self.__style_constraints = None
         self.__clothing_type = []
     
     def get_style_id(self):

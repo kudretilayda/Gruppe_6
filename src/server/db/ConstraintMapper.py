@@ -1,90 +1,134 @@
-from server.db.Mapper import Mapper
-from server.constraints.Constraint import (
-    Constraint,
-    BinaryConstraint, 
-    UnaryConstraint,
-    ImplikationConstraint,
-    MutexConstraint,
-    KardinalitaetConstraint
-)
-import uuid
+class Constraint:
+    def __init__(self):
+        self._id = None
+        self._style_id = None
+        self._constraint_type = None
+        self._attribute = None
+        self._constrain = None
+        self._val = None
 
-class ConstraintMapper(Mapper):
+    def get_id(self):
+        return self._id
+
+    def set_id(self, id):
+        self._id = id
+
+    def get_style_id(self):
+        return self._style_id
+
+    def set_style_id(self, style_id):
+        self._style_id = style_id
+
+    def get_constraint_type(self):
+        return self._constraint_type
+
+    def set_constraint_type(self, constraint_type):
+        self._constraint_type = constraint_type
+
+    def get_attribute(self):
+        return self._attribute
+
+    def set_attribute(self, attribute):
+        self._attribute = attribute
+
+    def get_constrain(self):
+        return self._constrain
+
+    def set_constrain(self, constrain):
+        self._constrain = constrain
+
+    def get_val(self):
+        return self._val
+
+    def set_val(self, val):
+        self._val = val
+
+class BinaryConstraint(Constraint):
     def __init__(self):
         super().__init__()
+        self._reference_object1_id = None
+        self._reference_object2_id = None
 
-    def find_by_style(self, style_id):
-        cursor = self._cnx.cursor()
-        command = """
-            SELECT cr.*, bc.reference_object1_id, bc.reference_object2_id,
-                   uc.reference_object_id
-            FROM constraint_rule cr
-            LEFT JOIN binary_constraint bc ON cr.id = bc.id
-            LEFT JOIN unary_constraint uc ON cr.id = uc.id
-            WHERE cr.style_id=%s"""
-        cursor.execute(command, (style_id,))
-        tuples = cursor.fetchall()
-        result = []
+    def get_reference_object1_id(self):
+        return self._reference_object1_id
 
-        for tuple in tuples:
-            if tuple[4]:  # Binary constraint
-                constraint = BinaryConstraint()
-                constraint.set_reference_object1_id(tuple[4])
-                constraint.set_reference_object2_id(tuple[5])
-            elif tuple[6]:  # Unary constraint
-                constraint = UnaryConstraint()
-                constraint.set_reference_object_id(tuple[6])
-            else:
-                constraint = Constraint()
+    def set_reference_object1_id(self, reference_object1_id):
+        self._reference_object1_id = reference_object1_id
 
-            constraint.set_id(tuple[0])
-            constraint.set_style_id(tuple[1])
-            constraint.set_constraint_type(tuple[2])
-            result.append(constraint)
+    def get_reference_object2_id(self):
+        return self._reference_object2_id
 
-        self._cnx.commit()
-        cursor.close()
-        return result
+    def set_reference_object2_id(self, reference_object2_id):
+        self._reference_object2_id = reference_object2_id
 
-    def insert(self, constraint):
-        cursor = self._cnx.cursor()
-        try:
-            if not constraint.get_id():
-                constraint.set_id(str(uuid.uuid4()))
+class UnaryConstraint(Constraint):
+    def __init__(self):
+        super().__init__()
+        self._reference_object_id = None
 
-            command = "INSERT INTO constraint_rule (id, style_id, constraint_type) VALUES (%s,%s,%s)"
-            data = (constraint.get_id(), constraint.get_style_id(), constraint.get_constraint_type())
-            cursor.execute(command, data)
+    def get_reference_object_id(self):
+        return self._reference_object_id
 
-            if isinstance(constraint, BinaryConstraint):
-                command = """INSERT INTO binary_constraint 
-                           (id, reference_object1_id, reference_object2_id)
-                           VALUES (%s,%s,%s)"""
-                data = (constraint.get_id(), constraint.get_reference_object1_id(),
-                       constraint.get_reference_object2_id())
-                cursor.execute(command, data)
-            elif isinstance(constraint, UnaryConstraint):
-                command = "INSERT INTO unary_constraint (id, reference_object_id) VALUES (%s,%s)"
-                data = (constraint.get_id(), constraint.get_reference_object_id())
-                cursor.execute(command, data)
+    def set_reference_object_id(self, reference_object_id):
+        self._reference_object_id = reference_object_id
 
-            self._cnx.commit()
-            return constraint
-        except:
-            self._cnx.rollback()
-            raise
-        finally:
-            cursor.close()
+class CardinalityConstraint(Constraint):
+    def __init__(self):
+        super().__init__()
+        self._item_type = None
+        self._min_count = None
+        self._max_count = None
 
-    def delete(self, constraint):
-        cursor = self._cnx.cursor()
-        try:
-            # Constraints will be cascade deleted from binary/unary tables
-            command = "DELETE FROM constraint_rule WHERE id=%s"
-            cursor.execute(command, (constraint.get_id(),))
-            self._cnx.commit()
-        except:
-            self._cnx.rollback()
-            raise
-        finally:
-            cursor.close()
+    def get_item_type(self):
+        return self._item_type
+
+    def set_item_type(self, item_type):
+        self._item_type = item_type
+
+    def get_min_count(self):
+        return self._min_count
+
+    def set_min_count(self, min_count):
+        self._min_count = min_count
+
+    def get_max_count(self):
+        return self._max_count
+
+    def set_max_count(self, max_count):
+        self._max_count = max_count
+
+class MutexConstraint(Constraint):
+    def __init__(self):
+        super().__init__()
+        self._item_type_1 = None
+        self._item_type_2 = None
+
+    def get_item_type_1(self):
+        return self._item_type_1
+
+    def set_item_type_1(self, item_type_1):
+        self._item_type_1 = item_type_1
+
+    def get_item_type_2(self):
+        return self._item_type_2
+
+    def set_item_type_2(self, item_type_2):
+        self._item_type_2 = item_type_2
+
+class ImplicationConstraint(Constraint):
+    def __init__(self):
+        super().__init__()
+        self._if_type = None
+        self._then_type = None
+
+    def get_if_type(self):
+        return self._if_type
+
+    def set_if_type(self, if_type):
+        self._if_type = if_type
+
+    def get_then_type(self):
+        return self._then_type
+
+    def set_then_type(self, then_type):
+        self._then_type = then_type
