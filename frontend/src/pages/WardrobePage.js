@@ -31,3 +31,19 @@ const WardrobePage = () => {
 };
 
 export default WardrobePage;
+
+// 2. version
+// src/pages/WardrobePage.js
+import React from 'react';
+import Wardrobe from '../components/Wardrobe';
+
+const WardrobePage = () => {
+  return (
+    <div>
+      <h1>Welcome to Your Digital Wardrobe</h1>
+      <Wardrobe />
+    </div>
+  );
+};
+
+export default WardrobePage;
