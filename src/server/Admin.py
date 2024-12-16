@@ -163,6 +163,10 @@ class Administration(object):
         with ClothingItemMapper() as mapper:
             mapper.update(clothing_item)
 
+    def post_clothing_item(self, clothing_item):
+        with ClothingItemMapper() as mapper:
+            mapper.post(clothing_item)
+
     def delete_clothing_item(self, clothing_item):
         with ClothingItemMapper() as mapper:
             # Erst alle Referenzen auf ClothingItem löschen (Outfits)
