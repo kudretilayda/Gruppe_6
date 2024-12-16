@@ -456,5 +456,63 @@ class Administration(object):
                 if not self._validate_implication_constraint(constraint, items):
                     return False
         return True
-
     
+    def _validate_outfit_cardinality(self, outfit):
+        style = self.get_style_by_id(outfit.get_style_id())
+        items = [self.get_clothing_item_by_id(item_id) for item_id in outfit.get_items()]
+        
+        with ConstraintMapper() as mapper:
+            constraints = mapper.find_by_style_id(style.get_id())
+            for constraint in constraints:
+                if not self._validate_cardinality_constraint(constraint, items):
+                    return False
+        return True
+
+    def _create_test_outfit(self, outfit, item):
+        test_outfit = Outfit()
+        test_outfit.set_style_id(outfit.get_style_id())
+        test_outfit.set_items(outfit.get_items() + [item.get_id()])
+        return test_outfit
+
+    def _can_create_outfit_with_style(self, style, items):
+        required_types = self._get_required_types(style)
+        available_types = {item.get_clothing_type_id() for item in items}
+        return all(req_type in available_types for req_type in required_types)
+
+    def _get_styles_for_occasion(self, occasion):
+        all_styles = self.get_all_styles()
+        return [style for style in all_styles if self._is_style_suitable_for_occasion(style, occasion)]
+
+    def _create_outfit_for_style_and_occasion(self, style, items, occasion):
+        suitable_items = [item for item in items if self._is_item_suitable_for_occasion(item, occasion)]
+        
+        if not suitable_items:
+            return None
+            
+        return self.generate_style_based_outfit(style, suitable_items)
+
+    def _get_user_used_styles(self, user):
+        outfits = self._get_user_outfits(user)
+        return {outfit.get_style_id() for outfit in outfits}
+
+    def _is_style_suitable(self, style, items):
+        required_types = self._get_required_types(style)
+        return all(any(item.get_clothing_type_id() == req_type for item in items) for req_type in required_types)
+
+    def _find_outfits_with_similar_types(self, item_ids):
+        items = [self.get_clothing_item_by_id(item_id) for item_id in item_ids]
+        item_types = {item.get_clothing_type_id() for item in items}
+        all_outfits = self.get_all_outfits()
+        
+        similar_outfits = []
+        for outfit in all_outfits:
+            outfit_items = [self.get_clothing_item_by_id(item_id) for item_id in outfit.get_items()]
+            outfit_types = {item.get_clothing_type_id() for item in outfit_items}
+            
+            similarity = len(item_types.intersection(outfit_types)) / len(item_types)
+            if similarity >= 0.7:
+                similar_outfits.append(outfit)
+                
+        return similar_outfits
+
+   
