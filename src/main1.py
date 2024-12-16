@@ -315,3 +315,123 @@ class ClothingTypeListOperations(Resource):
         else:
             return '', 500
 
+# API Endpoints for Styles
+
+@wardrobe_ns.route('/styles')
+@wardrobe_ns.response(500, 'Server-Error')
+class StyleListOperations(Resource):
+    @wardrobe_ns.marshal_list_with(style)
+    @secured
+    def get(self):
+        """Get all styles"""
+        adm = Admin()
+        styles = adm.get_all_styles()
+        return styles
+
+    @wardrobe_ns.marshal_with(style, code=200)
+    @wardrobe_ns.expect(style)
+    @secured
+    def post(self):
+        """Create a new style"""
+        adm = Admin()
+        proposal = Style.from_dict(api.payload)
+        if proposal is not None:
+            style = adm.create_style(proposal.get_style_features(), proposal.get_style_constraints())
+            return style, 200
+        else:
+            return '', 500
+
+@wardrobe_ns.route('/styles/<int:style_id>')
+@wardrobe_ns.response(500, 'Server-Error')
+@wardrobe_ns.param('style_id', 'ID of the style')
+class StyleOperations(Resource):
+    @wardrobe_ns.marshal_with(style)
+    @secured
+    def get(self, style_id):
+        """Get a style by ID"""
+        adm = Admin()
+        style = adm.get_style_by_id(style_id)
+        return style
+
+    @wardrobe_ns.marshal_with(style)
+    @wardrobe_ns.expect(style, validate=True)
+    @secured
+    def put(self, style_id):
+        """Update a style"""
+        adm = Admin()
+        style = Style.from_dict(api.payload)
+        if style is not None:
+            style.set_id(style_id)
+            adm.save_style(style)
+            return style, 200
+        else:
+            return '', 500
+
+    @secured
+    def delete(self, style_id):
+
+        adm = Admin()
+        style = adm.get_style_by_id(style_id)
+        adm.delete_style(style)
+        return '', 200
+
+# API Endpoints for Outfits
+
+@wardrobe_ns.route('/outfits')
+@wardrobe_ns.response(500, 'Server-Error')
+class OutfitListOperations(Resource):
+    @wardrobe_ns.marshal_list_with(outfit)
+    @secured
+    def get(self):
+        """Get all outfits"""
+        adm = Admin()
+        outfits = adm.get_all_outfits()
+        return outfits
+
+    @wardrobe_ns.marshal_with(outfit, code=200)
+    @wardrobe_ns.expect(outfit)
+    @secured
+    def post(self):
+        """Create a new outfit"""
+        adm = Admin()
+        proposal = Outfit.from_dict(api.payload)
+        if proposal is not None:
+            outfit = adm.create_outfit(proposal.get_outfit_name(), proposal.get_style_id())
+            return outfit, 200
+        else:
+            return '', 500
+
+@wardrobe_ns.route('/outfits/<int:outfit_id>')
+@wardrobe_ns.response(500, 'Server-Error')
+@wardrobe_ns.param('outfit_id', 'ID of the outfit')
+class OutfitOperations(Resource):
+    @wardrobe_ns.marshal_with(outfit)
+    @secured
+    def get(self, outfit_id):
+        """Get an outfit by ID"""
+        adm = Admin()
+        outfit = adm.get_outfit_by_id(outfit_id)
+        return outfit
+
+    @wardrobe_ns.marshal_with(outfit)
+    @wardrobe_ns.expect(outfit, validate=True)
+    @secured
+    def put(self, outfit_id):
+        """Update an outfit"""
+        adm = Admin()
+        outfit = Outfit.from_dict(api.payload)
+        if outfit is not None:
+            outfit.set_id(outfit_id)
+            adm.save_outfit(outfit)
+            return outfit, 200
+        else:
+            return '', 500
+
+    @secured
+    def delete(self, outfit_id):
+        """Delete an outfit"""
+        adm = Admin()
+        outfit = adm.get_outfit_by_id(outfit_id)
+        adm.delete_outfit(outfit)
+        return '', 200
+
