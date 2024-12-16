@@ -5,10 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0b36f84f-6ad4-4404-a25a-055e1c7ce6fe" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Dummy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/RuleEngine.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/bo/RuleEngine.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/db/ConstraintMapper.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/db/ConstraintMapper.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server/Admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/Admin.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,6 +28,7 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="SWAP_SIDES_IN_COMPARE_BRANCHES" value="true" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -69,7 +69,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "Draft__Backend",
+    "git-widget-placeholder": "DraftBackend",
     "last_opened_file_path": "C:/Users/serta/Documents/GitHub/Gruppe_6/src/server/db",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
