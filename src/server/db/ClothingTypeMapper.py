@@ -1,5 +1,5 @@
-from src.server.db.Mapper import Mapper
-from src.server.bo.clothingtype import ClothingType
+from server.db.Mapper import Mapper
+from server.bo.ClothingType import ClothingType
 
 
 class ClothingTypeMapper(Mapper):
