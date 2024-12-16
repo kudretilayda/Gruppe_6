@@ -5,30 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0b36f84f-6ad4-4404-a25a-055e1c7ce6fe" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Dummy.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main_version_alt.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/bo/Constraints.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/bo/RuleEngine.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0ba7c31d-66a9-426f-a9cb-112c76a75293.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/0ba7c31d-66a9-426f-a9cb-112c76a75293.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dummy.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dummy.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main1.py" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/firebaseconfig.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/Admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/Admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/constraints/BinaryConstraint.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/constraints/CardinalityConstraint.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/constraints/Constraint Tests.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/constraints/Constraint.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/constraints/ImplicationConstraint.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/constraints/MutexConstraint.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/constraints/UnaryConstraint.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/db/ConstraintMapper-v1.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/db/ConstraintMapper-v2.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/db/ConstraintMapper-v3.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/db/ConstraintMapper-v4.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/db/ConstraintMapper.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/db/ConstraintMapper.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main_version_alt.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main_version_alt.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server/db/ClothingItemMapper.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/db/ClothingItemMapper.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server/db/OutfitMapper.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/db/OutfitMapper.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,7 +71,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "Merging marsel-backend-draft",
+    "git-widget-placeholder": "marsel-backend-draft",
     "last_opened_file_path": "C:/Users/serta/Documents/GitHub/Gruppe_6/src/server/db",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",

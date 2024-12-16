@@ -1,6 +1,6 @@
 from src.server.bo.User import User
 from src.server.bo.Wardrobe import Wardrobe
-from src.server.bo.ClothingItem import ClothingItem
+from src.server.bo.clothingItem import ClothingItem
 from src.server.bo.ClothingType import ClothingType
 from src.server.bo.Outfit import Outfit
 from src.server.bo.Style import Style
