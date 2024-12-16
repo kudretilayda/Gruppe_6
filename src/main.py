@@ -105,13 +105,13 @@ def after_request(response):
 @wardrobe_ns.route('/user')
 @wardrobe_ns.response(500, 'Server-Error')
 class UserListOperations(Resource):
-    @wardrobe_ns.marshal_list_with(user)
+    @wardrobe_ns.marshal_list_with(User)
     @secured
     @monitor_performance
     def get(self):
         """Get all users"""
         try:
-            adm = Admin()
+            adm = Administration()
             users = adm.get_all_user()
             return users
         except Exception as e:
