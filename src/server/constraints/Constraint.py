@@ -1,4 +1,4 @@
-from .business_object import BusinessObject
+from src.server.bo import BusinessObject
 from abc import ABC, abstractmethod
 
 class Constraint(BusinessObject, ABC):

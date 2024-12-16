@@ -1,5 +1,5 @@
-from mapper.clothing_item_mapper import ClothingItemMapper
-from bo.clothing_item import ClothingItem
+from src.server.db.clothing_item_mapper import ClothingItemMapper
+from src.server.bo.clothing_item import ClothingItem
 
 class ClothingItemService:
     @staticmethod

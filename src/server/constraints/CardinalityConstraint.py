@@ -1,4 +1,4 @@
-from src.server.Constraints.Constraint import Constraint
+from src.server.constraints.Constraint import Constraint
 
 
 class CardinalityConstraint(Constraint):

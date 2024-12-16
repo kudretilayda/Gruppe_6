@@ -1,4 +1,4 @@
-from mapper.clothing_type_mapper import ClothingTypeMapper
+from src.server.db.clothing_type_mapper import ClothingTypeMapper
 from bo.clothing_type import ClothingType
 
 class ClothingTypeService:
