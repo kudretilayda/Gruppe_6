@@ -1,4 +1,4 @@
-from business_object import BusinessObject
+from src.server.bo.BusinessObject import BusinessObject
 
 
 class Outfit(BusinessObject):
