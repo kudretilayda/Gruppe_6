@@ -435,3 +435,68 @@ class OutfitOperations(Resource):
         adm.delete_outfit(outfit)
         return '', 200
 
+# API Endpoints for Clothing Items of a User
+
+@wardrobe_ns.route('/user/<int:user_id>/clothing-items')
+@wardrobe_ns.response(500, 'Server-Error')
+@wardrobe_ns.param('user_id', 'ID of the user')
+class UserClothingItemsOperations(Resource):
+    @wardrobe_ns.marshal_list_with(clothing_item)
+    @secured
+    def get(self, user_id):
+        """Get all clothing items of a user"""
+        adm = Admin()
+        user = adm.get_user_by_id(user_id)
+        if user is not None:
+            items = adm.get_clothing_items_by_user(user)
+            return items
+        else:
+            return "User not found", 500
+
+# API Endpoints for Style-based Outfit Proposals
+
+@wardrobe_ns.route('/user/<int:user_id>/outfit-proposals/<int:style_id>')
+@wardrobe_ns.response(500, 'Server-Error')
+@wardrobe_ns.param('user_id', 'ID of the user')
+@wardrobe_ns.param('style_id', 'ID of the style')
+class OutfitProposalOperations(Resource):
+    @wardrobe_ns.marshal_with(outfit)
+    @secured
+    def get(self, user_id, style_id):
+        """Generate outfit proposals based on style and available clothing items"""
+        adm = Admin()
+        user = adm.get_user_by_id(user_id)
+        style = adm.get_style_by_id(style_id)
+        if user is not None and style is not None:
+            proposal = adm.generate_outfit_proposal(user, style)
+            return proposal
+        else:
+            return "User or Style not found", 500
+
+# API Endpoints for Constraints
+
+@wardrobe_ns.route('/constraints')
+class ConstraintListOperations(Resource):
+    @wardrobe_ns.marshal_list_with(constraint)
+    @secured
+    def get(self):
+        """Get all constraints"""
+        adm = Admin()
+        constraints = adm.get_all_constraints()
+        return constraints
+
+@wardrobe_ns.route('/binary-constraints')
+class BinaryConstraintOperations(Resource):
+    @wardrobe_ns.marshal_with(binary_constraint, code=201)
+    @wardrobe_ns.expect(binary_constraint)
+    @secured
+    def post(self):
+        """Create a new binary constraint"""
+        adm = Admin()
+        proposal = BinaryConstraint.from_dict(api.payload)
+        if proposal is not None:
+            constraint = adm.create_binary_constraint(proposal)
+            return constraint, 201
+        else:
+            return '', 500
+
