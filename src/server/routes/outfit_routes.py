@@ -1,70 +1,124 @@
 from flask import request
 from flask_restx import Resource, fields
 from main import api
-from services.style_service import StyleService
 from utils.auth import require_auth
 
-# API Models for request/response validation
-style_model = api.model('Style', {
-    'id': fields.Integer(readonly=True),
-    'features': fields.String(required=True),
+# API Models
+outfit_item = api.model('OutfitItem', {
+    'item_id': fields.Integer(required=True),
 })
 
-constraint_model = api.model('Constraint', {
-    'type': fields.String(required=True, enum=['unary', 'binary', 'mutex', 'implication', 'cardinality']),
-    'reference_object1': fields.Integer(required=False),
-    'reference_object2': fields.Integer(required=False),
-    'min_count': fields.Integer(required=False),
-    'max_count': fields.Integer(required=False)
+outfit_create = api.model('OutfitCreate', {
+    'name': fields.String(required=True),
+    'style_id': fields.Integer(required=True),
+    'items': fields.List(fields.Nested(outfit_item), required=True)
 })
 
-style_creation_model = api.model('StyleCreation', {
-    'features': fields.String(required=True),
-    'constraints': fields.List(fields.Nested(constraint_model))
+outfit_proposal_request = api.model('OutfitProposalRequest', {
+    'style_id': fields.Integer(required=True),
+    'wardrobe_id': fields.Integer(required=True),
+    'preferred_items': fields.List(fields.Integer, required=False)
 })
 
-@api.route('/api/styles')
-class StyleListResource(Resource):
+outfit_completion_request = api.model('OutfitCompletionRequest', {
+    'partial_outfit_items': fields.List(fields.Integer, required=True),
+    'style_id': fields.Integer(required=True),
+    'wardrobe_id': fields.Integer(required=True)
+})
+
+@api.route('/api/outfits')
+class OutfitResource(Resource):
     @require_auth
-    @api.marshal_list_with(style_model)
-    def get(self):
-        """Get all styles"""
-        return StyleService.get_all_styles()
-
-    @require_auth
-    @api.expect(style_creation_model)
-    @api.marshal_with(style_model)
+    @api.expect(outfit_create)
     def post(self):
-        """Create a new style with constraints"""
-        data = request.json
-        return StyleService.create_style(data), 201
+        """Erstellt ein neues Outfit"""
+        try:
+            data = request.json
+            outfit_service = OutfitService()
+            
+            outfit = outfit_service.create_outfit(
+                name=data['name'],
+                style_id=data['style_id'],
+                items=[item['item_id'] for item in data['items']],
+                created_by=request.user['id']  # From auth middleware
+            )
+            
+            return {'id': outfit.get_id()}, 201
+        except ValueError as e:
+            return {'message': str(e)}, 400
+        except Exception as e:
+            return {'message': 'Internal server error'}, 500
 
-@api.route('/api/styles/<int:style_id>')
-class StyleResource(Resource):
+@api.route('/api/outfits/propose')
+class OutfitProposalResource(Resource):
     @require_auth
-    @api.marshal_with(style_model)
-    def get(self, style_id):
-        """Get a specific style by ID"""
-        style = StyleService.get_style_by_id(style_id)
-        if style:
-            return style
-        api.abort(404, f"Style {style_id} not found")
+    @api.expect(outfit_proposal_request)
+    def post(self):
+        """Generiert Outfit-Vorschläge"""
+        try:
+            data = request.json
+            outfit_service = OutfitService()
+            
+            proposals = outfit_service.generate_outfit_proposals(
+                style_id=data['style_id'],
+                wardrobe_id=data['wardrobe_id'],
+                preferred_items=data.get('preferred_items')
+            )
+            
+            return proposals, 200
+        except Exception as e:
+            return {'message': str(e)}, 500
+
+@api.route('/api/outfits/complete')
+class OutfitCompletionResource(Resource):
+    @require_auth
+    @api.expect(outfit_completion_request)
+    def post(self):
+        """Schlägt Vervollständigungen für ein teilweise gewähltes Outfit vor"""
+        try:
+            data = request.json
+            outfit_service = OutfitService()
+            
+            suggestions = outfit_service.complete_partial_outfit(
+                partial_outfit_items=data['partial_outfit_items'],
+                style_id=data['style_id'],
+                wardrobe_id=data['wardrobe_id']
+            )
+            
+            return suggestions, 200
+        except Exception as e:
+            return {'message': str(e)}, 500
+
+@api.route('/api/outfits/<int:outfit_id>')
+class OutfitDetailResource(Resource):
+    @require_auth
+    def get(self, outfit_id):
+        """Holt ein spezifisches Outfit"""
+        try:
+            outfit_service = OutfitService()
+            outfit = outfit_service.get_outfit_by_id(outfit_id)
+            
+            if not outfit:
+                return {'message': 'Outfit not found'}, 404
+                
+            return {
+                'id': outfit.get_id(),
+                'name': outfit.get_outfit_name(),
+                'style_id': outfit.get_style_id(),
+                'items': outfit.get_items()
+            }, 200
+        except Exception as e:
+            return {'message': str(e)}, 500
 
     @require_auth
-    @api.expect(style_model)
-    @api.marshal_with(style_model)
-    def put(self, style_id):
-        """Update a specific style"""
-        data = request.json
-        style = StyleService.update_style(style_id, data)
-        if style:
-            return style
-        api.abort(404, f"Style {style_id} not found")
-
-    @require_auth
-    def delete(self, style_id):
-        """Delete a specific style"""
-        success = StyleService.delete_style(style_id)
-        if success:
-            return {'message': 'Style deleted successfully'}, 200
-        api.abort(404, f"Style {style_id} not found")
+    def delete(self, outfit_id):
+        """Löscht ein Outfit"""
+        try:
+            outfit_service = OutfitService()
+            success = outfit_service.delete_outfit(outfit_id)
+            
+            if success:
+                return {'message': 'Outfit deleted'}, 200
+            return {'message': 'Outfit not found'}, 404
+        except Exception as e:
+            return {'message': str(e)}, 500
