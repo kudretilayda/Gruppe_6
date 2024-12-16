@@ -5,10 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0b36f84f-6ad4-4404-a25a-055e1c7ce6fe" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/bo/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/db/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server/bo/User.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/bo/User.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server/bo/business_object.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/bo/business_object.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,6 +88,8 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="\\k10235.bawue-cloud.public\dfs\User-Homes\d.primorac\Documents\GitHub\Gruppe_6\src" />
+      <recent name="\\k10235.bawue-cloud.public\dfs\User-Homes\d.primorac\Documents\GitHub\Gruppe_6\src\server\bo" />
       <recent name="C:\Users\serta\Documents\GitHub\Gruppe_6\src\server\db" />
       <recent name="C:\Users\serta\Documents\GitHub\Gruppe_6\src\server\bo" />
     </key>

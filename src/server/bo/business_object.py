@@ -1,7 +1,7 @@
 class BusinessObject:
     def __init__(self):
-        self._id = None  # Basisklasse mit ID für alle BOs
-        
+        self._id = 0
+
     def get_id(self):
         return self._id
         
