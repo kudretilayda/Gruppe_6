@@ -5,12 +5,12 @@ class User (BusinessObject):
 
     def __init__(self):
         super().__init__()
-        self.__user_id = ""
-        self.__nachname = ""
-        self.__vorname = ""
+        self.__user_id = 0
+        self.__lastname = ""
+        self.__firstname = ""
         self.__nickname = ""
         self.__google_id = ""
-        self.__email = ""  
+        self.__email = ""
 
     def get_user_id(self):
         return self.__user_id
@@ -18,17 +18,17 @@ class User (BusinessObject):
     def set_user_id(self, value):
         self.__user_id = value
 
-    def get_nachname(self):
-        return self.__nachname
+    def get_lastname(self):
+        return self.__lastname
 
-    def set_nachname(self, value):
-        self.__nachname = value
+    def set_lastname(self, lastname):
+        self.__lastname = lastname
 
-    def get_vorname(self):
-        return self.__vorname
+    def get_firstname(self):
+        return self.__firstname
 
-    def set_vorname(self, value):
-        self.__vorname = value
+    def set_firstname(self, firstname):
+        self.__firstname = firstname
 
     def get_nickname(self):
         return self.__nickname
@@ -49,12 +49,11 @@ class User (BusinessObject):
         self.__email = value
 
     def __str__(self):
-
         return "User: {}, {}, {}, {}".format(
             self.get_user_id(),
-            self.get_nachname(),
+            self.get_lastname(),
             self.get_email(),
-            self.get_vorname()
+            self.get_firstname()
         )
 
     @staticmethod
@@ -64,8 +63,8 @@ class User (BusinessObject):
             dictionary = dict()
         obj = User()
         obj.set_user_id(dictionary.get("user_id", ""))
-        obj.set_nachname(dictionary.get("nachname", ""))
-        obj.set_vorname(dictionary.get("vorname", ""))
+        obj.set_lastname(dictionary.get("lastname", ""))
+        obj.set_firstname(dictionary.get("firstname", ""))
         obj.set_nickname(dictionary.get("nickname", ""))
         obj.set_google_id(dictionary.get("google_id", ""))
         obj.set_email(dictionary.get("email", ""))
