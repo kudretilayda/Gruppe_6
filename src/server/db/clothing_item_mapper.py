@@ -1,4 +1,4 @@
-from bo.clothing_item import ClothingItem
+from src.server.bo.clothing_item import ClothingItem
 from db_connector import DBConnector
 
 class ClothingItemMapper:

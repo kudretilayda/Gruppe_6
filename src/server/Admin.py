@@ -5,10 +5,10 @@ from src.server.db.ClothingTypeMapper import ClothingTypeMapper
 from src.server.db.StyleMapper import StyleMapper
 from src.server.db.OutfitMapper import OutfitMapper
 from src.server.db.ConstraintMapper import ConstraintMapper
-from src.server.bo.User import Person
+from src.server.bo.User import User
 from src.server.bo.Wardrobe import Wardrobe
 from src.server.bo.ClothingItem import ClothingItem
-from src.server.bo.ClothingType import ClothingType
+from src.server.bo.clothingtype import ClothingType
 from src.server.bo.Style import Style
 from src.server.bo.Outfit import Outfit
 from src.server.bo.Constraints import Constraints, BinaryConstraint, UnaryConstraint, CardinalityConstraint, MutexConstraint, ImplicationConstraint

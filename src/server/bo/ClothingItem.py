@@ -44,7 +44,7 @@ class ClothingItem(BusinessObject):
         if dictionary is None:
             dictionary = {}
         obj = ClothingItem()
-        obj.set_id(dictionary.get("clothingitem", 0))
+        obj.set_id(dictionary.get("Dlothingitem", 0))
         obj.set_clothing_type(dictionary.get("clothingitem", None))
         obj.set_item_name(dictionary.get("clothingitem_name", ""))
         return obj
