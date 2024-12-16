@@ -39,12 +39,10 @@ class ClothingItem(BusinessObject):
         self._wardrobe_id = wardrobe_id
 
     @staticmethod
-    def from_dict(dictionary=None):
+    def from_dict(dictionary=dict()):
 
-        if dictionary is None:
-            dictionary = {}
         obj = ClothingItem()
-        obj.set_id(dictionary.get("clothingitem", 0))
-        obj.set_clothing_type(dictionary.get("clothingitem", None))
-        obj.set_item_name(dictionary.get("clothingitem_name", ""))
+        obj.set_id(dictionary("clothingitem", 0))
+        obj.set_clothing_type(dictionary("clothingitem", None))
+        obj.set_item_name(dictionary("clothingitem_name", ""))
         return obj

@@ -35,18 +35,12 @@ class Outfit(BusinessObject):
         self._outfit_name = outfit_name
 
     def __str__(self):
-        return "Outfit: {}, {}, {}".format(
-            self._outfit_id,
-            self._items,
-            self._style()
-        )
+        return "Outfit: {}, {}, {}".format(self._outfit_id, self._items, self._style())
 
     @staticmethod
-    def from_dict(dictionary=None, style_instance=None):
-        if dictionary is None:
-            dictionary = dict()
+    def from_dict(dictionary=dict(), style_instance=None):
         obj = Outfit()
-        obj.set_outfit_id(dictionary.get("outfit_id", 0))
-        obj.set_items(dictionary.get("kleidungsstuecke", []))
+        obj.set_outfit_id(dictionary("outfit_id", 0))
+        obj.set_items(dictionary("kleidungsstuecke", []))
         obj.set_style(style_instance)
         return obj

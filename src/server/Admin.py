@@ -5,7 +5,7 @@ from server.db.ClothingTypeMapper import ClothingTypeMapper
 from server.db.StyleMapper import StyleMapper
 from server.db.OutfitMapper import OutfitMapper
 from server.db.ConstraintMapper import ConstraintMapper
-from server.bo.User import Person
+from server.bo.User import User
 from server.bo.Wardrobe import Wardrobe
 from server.bo.ClothingItem import ClothingItem
 from server.bo.ClothingType import ClothingType
@@ -38,7 +38,7 @@ class Administration(object):
 #### User-spezifische Methoden ####
    
     def create_user(self, user_id, google_id, vorname="", nachname="", nickname="", email=""):
-        user = user()
+        user = User()
         user.set_user_id(user_id)
         user.set_google_id(google_id)
         user.set_vorname(vorname)
@@ -50,8 +50,6 @@ class Administration(object):
             return mapper.insert(user)
     
   
-    
-
     def get_user_by_id(self, user_id):
         """Den User mit gegebener ID ausgeben."""
         with UserMapper() as mapper:

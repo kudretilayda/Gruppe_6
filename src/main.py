@@ -111,7 +111,7 @@ class UserListOperations(Resource):
         """Get all users"""
         adm = Admin()
         users = adm.get_all_user()
-        return users
+        return user
 
     @wardrobe_ns.marshal_with(user, code=200)
     @wardrobe_ns.expect(user)

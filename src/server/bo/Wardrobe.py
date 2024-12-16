@@ -25,3 +25,5 @@ class Wardrobe(BusinessObject):
 
     def set_outfits(self, values):
         self._outfits = values
+
+#static method
