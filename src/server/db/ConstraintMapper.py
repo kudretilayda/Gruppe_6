@@ -1,134 +1,166 @@
-class Constraint:
-    def __init__(self):
-        self._id = None
-        self._style_id = None
-        self._constraint_type = None
-        self._attribute = None
-        self._constrain = None
-        self._val = None
+from src.server.db.Mapper import Mapper
+from src.server.bo.Constraints import (
+    UnaryConstraint,
+    BinaryConstraint,
+    ImplicationConstraint,
+    MutexConstraint,
+    CardinalityConstraint)
 
-    def get_id(self):
-        return self._id
 
-    def set_id(self, id):
-        self._id = id
+class ConstraintMapper(Mapper):
 
-    def get_style_id(self):
-        return self._style_id
+    def find_all(self):
+        result = []
+        cursor = self._cnx.cursor()
 
-    def set_style_id(self, style_id):
-        self._style_id = style_id
+        query = ("SELECT id, style_id, constraint_type, attribute, constrain, val "
+                 "FROM digital_wardrobe.constraint_rule")
+        cursor.execute(query)
+        tuples = cursor.fetchall()
 
-    def get_constraint_type(self):
-        return self._constraint_type
+        for (constraint_id, style_id, constraint_type, attribute, condition, value) in tuples:
+            if constraint_type == "unary":
+                unary_query = "SELECT reference_object_id FROM digital_wardrobe.unary_constraint WHERE id = %s"
+                cursor.execute(unary_query, (constraint_id,))
+                unary_data = cursor.fetchone()
+                if unary_data:
+                    result.append(UnaryConstraint(style_id, unary_data[0], attribute, condition, value))
 
-    def set_constraint_type(self, constraint_type):
-        self._constraint_type = constraint_type
+            elif constraint_type == "binary":
+                binary_query = ("SELECT reference_object1_id, reference_object2_id "
+                                "FROM digital_wardrobe.binary_constraint WHERE id = %s")
+                cursor.execute(binary_query, (constraint_id,))
+                binary_data = cursor.fetchone()
+                if binary_data:
+                    result.append(
+                        BinaryConstraint(style_id, binary_data[0], binary_data[1], attribute, condition, value))
 
-    def get_attribute(self):
-        return self._attribute
+            elif constraint_type == "implication":
+                result.append(ImplicationConstraint(style_id, None, None))
 
-    def set_attribute(self, attribute):
-        self._attribute = attribute
+            elif constraint_type == "mutex":
+                # result.append(MutexConstraint(style_id, []))
+                result.append(MutexConstraint(style_id, []))
 
-    def get_constrain(self):
-        return self._constrain
 
-    def set_constrain(self, constrain):
-        self._constrain = constrain
+            elif constraint_type == "cardinality":
+                # result.append(CardinalityConstraint(style_id, [], min_count, max_count))
+                result.append(CardinalityConstraint(style_id, [], int(condition), int(value)))
 
-    def get_val(self):
-        return self._val
+            self._cnx.commit()
+            cursor.close()
+            return result
 
-    def set_val(self, val):
-        self._val = val
+    def find_by_key(self, key):
+        cursor = self._cnx.cursor()
+        query = ("SELECT id, style_id, constraint_type, attribute, constrain, val "
+                 "FROM digital_wardrobe.constraint_rule WHERE id = %s")
+        cursor.execute(query, (key,))
+        result = cursor.fetchone()
 
-class BinaryConstraint(Constraint):
-    def __init__(self):
-        super().__init__()
-        self._reference_object1_id = None
-        self._reference_object2_id = None
+        if result:
+            (constraint_id, style_id, constraint_type, attribute, condition, value) = result
 
-    def get_reference_object1_id(self):
-        return self._reference_object1_id
+            if constraint_type == "unary":
+                unary_query = ("SELECT reference_object_id "
+                               "FROM digital_wardrobe.unary_constraint WHERE id = %s")
+                cursor.execute(unary_query, (constraint_id,))
+                unary_data = cursor.fetchone()
+                if unary_data:
+                    return UnaryConstraint(style_id, unary_data[0], attribute, condition, value)
 
-    def set_reference_object1_id(self, reference_object1_id):
-        self._reference_object1_id = reference_object1_id
+            elif constraint_type == "binary":
+                binary_query = ("SELECT reference_object1_id, reference_object2_id "
+                                "FROM digital_wardrobe.binary_constraint WHERE id = %s")
+                cursor.execute(binary_query, (constraint_id,))
+                binary_data = cursor.fetchone()
+                if binary_data:
+                    return BinaryConstraint(style_id, binary_data[0], binary_data[1], attribute, condition, value)
 
-    def get_reference_object2_id(self):
-        return self._reference_object2_id
+            elif constraint_type == "implication":
+                return ImplicationConstraint(style_id, None, None)
 
-    def set_reference_object2_id(self, reference_object2_id):
-        self._reference_object2_id = reference_object2_id
+            elif constraint_type == "mutex":
+                result.append(MutexConstraint(style_id, []))
+                return result
 
-class UnaryConstraint(Constraint):
-    def __init__(self):
-        super().__init__()
-        self._reference_object_id = None
+            elif constraint_type == "cardinality":
+                min_count = int(condition) if condition and condition.isdigit() else 0
+                max_count = int(value) if value and value.isdigit() else 0
+                result.append(CardinalityConstraint(style_id, [], min_count, max_count))
+                return result
 
-    def get_reference_object_id(self):
-        return self._reference_object_id
+        cursor.close()
+        return None
 
-    def set_reference_object_id(self, reference_object_id):
-        self._reference_object_id = reference_object_id
+    def insert(self, constraint):
+        cursor = self._cnx.cursor()
 
-class CardinalityConstraint(Constraint):
-    def __init__(self):
-        super().__init__()
-        self._item_type = None
-        self._min_count = None
-        self._max_count = None
+        query_rule = """INSERT INTO digital_wardrobe.constraint_rule 
+        (style_id, constraint_type, attribute, constrain, val) VALUES (%s, %s, %s, %s, %s)"""
 
-    def get_item_type(self):
-        return self._item_type
+        cursor.execute(query_rule, (
+            constraint.style_id,
+            constraint.constraint_type,
+            constraint.attribute,
+            constraint.condition,
+            constraint.val
+        ))
 
-    def set_item_type(self, item_type):
-        self._item_type = item_type
+        constraint_id = cursor.lastrowid
 
-    def get_min_count(self):
-        return self._min_count
+        if isinstance(constraint, UnaryConstraint):
+            unary_query = ("INSERT INTO digital_wardrobe.unary_constraint (id, reference_object_id) "
+                           "VALUES (%s, %s)")
+            cursor.execute(unary_query, (constraint_id, constraint.reference_object_id))
 
-    def set_min_count(self, min_count):
-        self._min_count = min_count
+        elif isinstance(constraint, BinaryConstraint):
+            binary_query = """INSERT INTO digital_wardrobe.binary_constraint 
+            (id, reference_object1_id, reference_object2_id) VALUES (%s, %s, %s)"""
+            cursor.execute(binary_query, (constraint_id, constraint.object_1, constraint.object_2))
 
-    def get_max_count(self):
-        return self._max_count
+        self._cnx.commit()
+        cursor.close()
+        return constraint
 
-    def set_max_count(self, max_count):
-        self._max_count = max_count
+    def update(self, constraint):
+        cursor = self._cnx.cursor()
+        query_rule = """UPDATE digital_wardrobe.constraint_rule 
+            SET style_id = %s, attribute = %s, constrain = %s, val = %s WHERE id = %s"""
+        cursor.execute(query_rule, (
+            constraint.style_id,
+            constraint.attribute,
+            constraint.condition,
+            constraint.val,
+            constraint.style_id
+        ))
 
-class MutexConstraint(Constraint):
-    def __init__(self):
-        super().__init__()
-        self._item_type_1 = None
-        self._item_type_2 = None
+        if isinstance(constraint, UnaryConstraint):
+            unary_query = ("UPDATE digital_wardrobe.unary_constraint "
+                           "SET reference_object_id = %s WHERE id = %s")
+            cursor.execute(unary_query, (constraint.reference_object_id, constraint.style_id))
 
-    def get_item_type_1(self):
-        return self._item_type_1
+        elif isinstance(constraint, BinaryConstraint):
+            binary_query = """UPDATE digital_wardrobe.binary_constraint 
+                SET reference_object1_id = %s, reference_object2_id = %s WHERE id = %s"""
+            cursor.execute(binary_query, (constraint.object_1, constraint.object_2, constraint.style_id))
 
-    def set_item_type_1(self, item_type_1):
-        self._item_type_1 = item_type_1
+        self._cnx.commit()
+        cursor.close()
 
-    def get_item_type_2(self):
-        return self._item_type_2
+    def delete(self, constraint):
+        cursor = self._cnx.cursor()
 
-    def set_item_type_2(self, item_type_2):
-        self._item_type_2 = item_type_2
+        if isinstance(constraint, UnaryConstraint):
+            unary_query = "DELETE FROM digital_wardrobe.unary_constraint WHERE id = %s"
+            cursor.execute(unary_query, (constraint.style_id,))
 
-class ImplicationConstraint(Constraint):
-    def __init__(self):
-        super().__init__()
-        self._if_type = None
-        self._then_type = None
+        elif isinstance(constraint, BinaryConstraint):
+            binary_query = "DELETE FROM digital_wardrobe.binary_constraint WHERE id = %s"
+            cursor.execute(binary_query, (constraint.style_id,))
 
-    def get_if_type(self):
-        return self._if_type
+        query_rule = "DELETE FROM digital_wardrobe.constraint_rule WHERE id = %s"
+        cursor.execute(query_rule, (constraint.style_id,))
 
-    def set_if_type(self, if_type):
-        self._if_type = if_type
-
-    def get_then_type(self):
-        return self._then_type
-
-    def set_then_type(self, then_type):
-        self._then_type = then_type
+        self._cnx.commit()
+        cursor.close()
