@@ -6,6 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="0b36f84f-6ad4-4404-a25a-055e1c7ce6fe" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server/Admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/Admin.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,49 +43,49 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Database Script.mysql-dump.sql.executor": "Run",
-    "Python.BinaryConstraint.executor": "Run",
-    "Python.BusinessObject.executor": "Run",
-    "Python.CardinalityConstraint.executor": "Run",
-    "Python.Constraint Tests.executor": "Run",
-    "Python.Constraint.executor": "Run",
-    "Python.ConstraintMapper.executor": "Run",
-    "Python.Dummy.executor": "Debug",
-    "Python.ImplicationConstraint.executor": "Run",
-    "Python.Kleiderschrank.executor": "Run",
-    "Python.Kleidungsstueck.executor": "Run",
-    "Python.Kleidungsstück(prüfen,  ggf Mapper).executor": "Run",
-    "Python.Kleidungstyp.executor": "Run",
-    "Python.Mapper.executor": "Run",
-    "Python.MutexConstraint.executor": "Run",
-    "Python.Outfit.executor": "Run",
-    "Python.Style.executor": "Run",
-    "Python.UnaryConstraint.executor": "Run",
-    "Python.User.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "marsel-backend-draft",
-    "last_opened_file_path": "C:/Users/serta/Documents/GitHub/Gruppe_6/src/server/db",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Database Script.mysql-dump.sql.executor&quot;: &quot;Run&quot;,
+    &quot;Python.BinaryConstraint.executor&quot;: &quot;Run&quot;,
+    &quot;Python.BusinessObject.executor&quot;: &quot;Run&quot;,
+    &quot;Python.CardinalityConstraint.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Constraint Tests.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Constraint.executor&quot;: &quot;Run&quot;,
+    &quot;Python.ConstraintMapper.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Dummy.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.ImplicationConstraint.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Kleiderschrank.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Kleidungsstueck.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Kleidungsstück(prüfen,  ggf Mapper).executor&quot;: &quot;Run&quot;,
+    &quot;Python.Kleidungstyp.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Mapper.executor&quot;: &quot;Run&quot;,
+    &quot;Python.MutexConstraint.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Outfit.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Style.executor&quot;: &quot;Run&quot;,
+    &quot;Python.UnaryConstraint.executor&quot;: &quot;Run&quot;,
+    &quot;Python.User.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;marsel-backend-draft&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/serta/Documents/GitHub/Gruppe_6/src/server/db&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ],
-    "RunConfigurationTargetLRU": [
-      "0ba7c31d-66a9-426f-a9cb-112c76a75293"
+    &quot;RunConfigurationTargetLRU&quot;: [
+      &quot;0ba7c31d-66a9-426f-a9cb-112c76a75293&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\serta\Documents\GitHub\Gruppe_6\src\server\db" />
@@ -205,8 +207,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-e768b9ed790e-JavaScript-PY-243.21565.199" />
-        <option value="bundled-python-sdk-cab1f2013843-4ae2d6a61b08-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-243.21565.199" />
+        <option value="bundled-python-sdk-d7ad00fb9fc3-c546a90a8094-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-242.23726.102" />
       </set>
     </attachedChunks>
   </component>
