@@ -228,3 +228,90 @@ class WardrobeOperations(Resource):
         adm.delete_wardrobe(wardrobe)
         return '', 200
 
+# API Endpoints for ClothingItem
+
+@wardrobe_ns.route('/clothing-items')
+@wardrobe_ns.response(500, 'Server-Error')
+class ClothingListOperations(Resource):
+    @wardrobe_ns.marshal_list_with(clothing_item)
+    @secured
+    def get(self):
+        """Get all clothing items"""
+        adm = Admin()
+        items = adm.get_all_clothing_items()
+        return items
+
+    @wardrobe_ns.marshal_with(clothing_item, code=200)
+    @wardrobe_ns.expect(clothing_item)
+    @secured
+    def post(self):
+        """Create a new clothing item"""
+        adm = Admin()
+        proposal = ClothingItem.from_dict(api.payload)
+        if proposal is not None:
+            item = adm.create_clothing_item(proposal.get_wardrobe_id(), proposal.get_clothing_type_id(),
+                                            proposal.get_clothing_item_name(), proposal.get_color(),
+                                            proposal.get_brand(), proposal.get_season())
+            return item, 200
+        else:
+            return '', 500
+
+@wardrobe_ns.route('/clothing-items/<int:item_id>')
+@wardrobe_ns.response(500, 'Server-Error')
+@wardrobe_ns.param('item_id', 'ID of the clothing item')
+class ClothingItemOperations(Resource):
+    @wardrobe_ns.marshal_with(clothing_item)
+    @secured
+    def get(self, item_id):
+        """Get a clothing item by ID"""
+        adm = Admin()
+        item = adm.get_clothing_item_by_id(item_id)
+        return item
+
+    @wardrobe_ns.marshal_with(clothing_item)
+    @wardrobe_ns.expect(clothing_item, validate=True)
+    @secured
+    def put(self, item_id):
+        """Update a clothing item"""
+        adm = Admin()
+        item = ClothingItem.from_dict(api.payload)
+        if item is not None:
+            item.set_id(item_id)
+            adm.save_clothing_item(item)
+            return item, 200
+        else:
+            return '', 500
+
+    @secured
+    def delete(self, item_id):
+        """Delete a clothing item"""
+        adm = Admin()
+        item = adm.get_clothing_item_by_id(item_id)
+        adm.delete_clothing_item(item)
+        return '', 200
+
+# API Endpoints for ClothingType
+
+@wardrobe_ns.route('/clothing-types')
+class ClothingTypeListOperations(Resource):
+    @wardrobe_ns.marshal_list_with(clothing_type)
+    @secured
+    def get(self):
+        """Get all clothing types"""
+        adm = Admin()
+        types = adm.get_all_clothing_types()
+        return types
+
+    @wardrobe_ns.marshal_with(clothing_type, code=201)
+    @wardrobe_ns.expect(clothing_type)
+    @secured
+    def post(self):
+        """Create a new clothing type"""
+        adm = Admin()
+        proposal = ClothingType.from_dict(api.payload)
+        if proposal is not None:
+            ctype = adm.create_clothing_type(proposal.get_type_name(), proposal.get_type_usage())
+            return ctype, 201
+        else:
+            return '', 500
+
