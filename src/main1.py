@@ -500,3 +500,81 @@ class BinaryConstraintOperations(Resource):
         else:
             return '', 500
 
+@wardrobe_ns.route('/unary-constraints')
+class UnaryConstraintOperations(Resource):
+    @wardrobe_ns.marshal_with(unary_constraint, code=201)
+    @wardrobe_ns.expect(unary_constraint)
+    @secured
+    def post(self):
+        """Create a new unary constraint"""
+        adm = Admin()
+        proposal = UnaryConstraint.from_dict(api.payload)
+        if proposal is not None:
+            constraint = adm.create_unary_constraint(proposal)
+            return constraint, 201
+        else:
+            return '', 500
+
+@wardrobe_ns.route('/cardinality-constraints')
+class CardinalityConstraintOperations(Resource):
+    @wardrobe_ns.marshal_with(cardinality_constraint, code=201)
+    @wardrobe_ns.expect(cardinality_constraint)
+    @secured
+    def post(self):
+        """Create a new cardinality constraint"""
+        adm = Admin()
+        proposal = CardinalityConstraint.from_dict(api.payload)
+        if proposal is not None:
+            constraint = adm.create_cardinality_constraint(proposal)
+            return constraint, 201
+        else:
+            return '', 500
+
+@wardrobe_ns.route('/mutex-constraints')
+class MutexConstraintOperations(Resource):
+    @wardrobe_ns.marshal_list_with(mutex_constraint)
+    @secured
+    def get(self):
+        """Get all mutex constraints"""
+        adm = Admin()
+        constraints = adm.get_all_mutex_constraints()
+        return constraints
+
+    @wardrobe_ns.marshal_with(mutex_constraint, code=201)
+    @wardrobe_ns.expect(mutex_constraint)
+    @secured
+    def post(self):
+        """Create a new mutex constraint"""
+        adm = Admin()
+        proposal = MutexConstraint.from_dict(api.payload)
+        if proposal is not None:
+            constraint = adm.create_mutex_constraint(proposal)
+            return constraint, 201
+        else:
+            return '', 500
+
+@wardrobe_ns.route('/implication-constraints')
+class ImplicationConstraintOperations(Resource):
+    @wardrobe_ns.marshal_list_with(implication_constraint)
+    @secured
+    def get(self):
+        """Get all implication constraints"""
+        adm = Admin()
+        constraints = adm.get_all_implication_constraints()
+        return constraints
+
+    @wardrobe_ns.marshal_with(implication_constraint, code=201)
+    @wardrobe_ns.expect(implication_constraint)
+    @secured
+    def post(self):
+        """Create a new implication constraint"""
+        adm = Admin()
+        proposal = ImplicationConstraint.from_dict(api.payload)
+        if proposal is not None:
+            constraint = adm.create_implication_constraint(proposal)
+            return constraint, 201
+        else:
+            return '', 500
+
+if __name__ == '__main__':
+    app.run(debug=True)
