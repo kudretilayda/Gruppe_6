@@ -26,4 +26,10 @@ class Wardrobe(BusinessObject):
     def set_outfits(self, values):
         self._outfits = values
 
-#static method
+    @staticmethod
+    def from_dict(dictionary=dict()):
+        obj = Wardrobe()
+        
+        #ergänzen
+
+        return obj
