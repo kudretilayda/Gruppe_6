@@ -52,15 +52,15 @@ class Administration(object):
   
     
 
-    def get_user_by_id(self, number):
+    def get_user_by_id(self, user_id):
         """Den User mit gegebener ID ausgeben."""
         with UserMapper() as mapper:
-            return mapper.find_by_id(number)
+            return mapper.find_by_id(user_id)
 
-    def get_user_by_google_id(self, id):
+    def get_user_by_google_id(self, google_id):
         """Den User mit der gegebenen google_id ausgeben."""
         with UserMapper() as mapper:
-            return mapper.find_user_by_google_id(id)
+            return mapper.find_user_by_google_id(google_id)
 
     def get_user_by_vorname(self, vorname):
         """Alle User mit dem Vornamen auslesen."""
@@ -88,7 +88,7 @@ class Administration(object):
             return mapper.find_all()
     
     def change_user(self, user):
-        """Den gegebenen User speichern."""
+        """Den gegebenen User ändern."""
         with UserMapper() as mapper:
             return mapper.update(user)
     
@@ -115,7 +115,7 @@ class Administration(object):
         with WardrobeMapper() as mapper:
             return mapper.find_by_id(wardrobe_id)
 
-    def get_wardrobe_by_person_id(self, user_id):
+    def get_wardrobe_by_user_id(self, user_id):
         with WardrobeMapper() as mapper:
             return mapper.find_by_user_id(user_id)
 
@@ -388,3 +388,73 @@ class Administration(object):
         missing = [essential for essential in essentials if not self._has_clothing_type(wardrobe_items, essential)]
         return missing
 
+### Helper Methods ###
+
+    def _cleanup_user_references(self, user):
+        wardrobes = self.get_wardrobe_by_user_id(user.get_id())
+        if wardrobes is not None:
+            for wardrobe in wardrobes:
+                self.delete_wardrobe(wardrobe)
+
+    def _cleanup_wardrobe_references(self, wardrobe):
+        items = self.get_clothing_items_by_wardrobe_id(wardrobe.get_id())
+        if items is not None:
+            for item in items:
+                self.delete_clothing_item(item)
+    
+    def _cleanup_clothing_item_references(self, clothing_item):
+        outfits = self._find_outfits_containing_item(clothing_item)
+        if outfits is not None:
+            for outfit in outfits:
+                self.remove_item_from_outfit(outfit.get_id(), clothing_item.get_id())
+
+    def _cleanup_style_references(self, style):
+        outfits = self.get_outfits_by_style_id(style.get_id())
+        if outfits is not None:
+            for outfit in outfits:
+                self.delete_outfit(outfit)
+
+        constraints = self.get_constraints_by_style(style.get_id())
+        if constraints is not None:
+            for constraint in constraints:
+                self._delete_constraint(constraint)
+
+    def _delete_constraint(self, constraint):
+        with ConstraintMapper() as mapper:
+            mapper.delete(constraint)
+
+    def _validate_outfit_basic(self, outfit):
+        style = self.get_style_by_id(outfit.get_style_id())
+        items = [self.get_clothing_item_by_id(item_id) for item_id in outfit.get_items()]
+        
+        with ConstraintMapper() as mapper:
+            constraints = mapper.find_by_style_id(style.get_id())
+            for constraint in constraints:
+                for item in items:
+                    if not self._validate_unary_constraint(constraint, item):
+                        return False
+        return True
+    
+    def _validate_outfit_mutex(self, outfit):
+        style = self.get_style_by_id(outfit.get_style_id())
+        items = [self.get_clothing_item_by_id(item_id) for item_id in outfit.get_items()]
+        
+        with ConstraintMapper() as mapper:
+            constraints = mapper.find_by_style_id(style.get_id())
+            for constraint in constraints:
+                if not self._validate_mutex_constraint(constraint, items):
+                    return False
+        return True
+
+    def _validate_outfit_implications(self, outfit):
+        style = self.get_style_by_id(outfit.get_style_id())
+        items = [self.get_clothing_item_by_id(item_id) for item_id in outfit.get_items()]
+        
+        with ConstraintMapper() as mapper:
+            constraints = mapper.find_by_style_id(style.get_id())
+            for constraint in constraints:
+                if not self._validate_implication_constraint(constraint, items):
+                    return False
+        return True
+
+    
