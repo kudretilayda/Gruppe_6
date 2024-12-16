@@ -100,3 +100,69 @@ cardinality_constraint = api.inherit('CardinalityConstraint', constraint, {
     'max_count': fields.Integer(attribute='_max_count', description='Maximum count'),
 })
 
+# API Endpoints for User
+
+@wardrobe_ns.route('/user')
+@wardrobe_ns.response(500, 'Server-Error')
+class UserListOperations(Resource):
+    @wardrobe_ns.marshal_list_with(user)
+    @secured
+    def get(self):
+        """Get all users"""
+        adm = Admin()
+        users = adm.get_all_user()
+        return users
+
+    @wardrobe_ns.marshal_with(user, code=200)
+    @wardrobe_ns.expect(user)
+    @secured
+    def post(self):
+        """Create a new user"""
+        adm = Admin()
+        proposal = User.from_dict(api.payload)
+        if proposal is not None:
+            user = adm.create_user(
+                proposal.get_google_id(),
+                proposal.get_first_name(),
+                proposal.get_last_name(),
+                proposal.get_nickname(),
+                proposal.get_email()
+            )
+            return user, 200
+        else:
+            return '', 500
+
+@wardrobe_ns.route('/user/<int:user_id>')
+@wardrobe_ns.response(500, 'Server-Error')
+@wardrobe_ns.param('user_id', 'ID of the user')
+class UserOperations(Resource):
+    @wardrobe_ns.marshal_with(user)
+    @secured
+    def get(self, user_id):
+        """Get a user by ID"""
+        adm = Admin()
+        user = adm.get_user_by_id(user_id)
+        return user
+
+    @wardrobe_ns.marshal_with(user)
+    @wardrobe_ns.expect(user, validate=True)
+    @secured
+    def put(self, user_id):
+        """Update a user"""
+        adm = Admin()
+        user = User.from_dict(api.payload)
+        if user is not None:
+            user.set_id(user_id)
+            adm.save_user(user)
+            return user, 200
+        else:
+            return '', 500
+
+    @secured
+    def delete(self, user_id):
+        """Delete a user"""
+        adm = Admin()
+        user = adm.get_user_by_id(user_id)
+        adm.delete_user(user)
+        return '', 200
+
