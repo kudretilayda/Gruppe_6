@@ -8,14 +8,14 @@ import time
 import os
 import traceback
 
-from src.server.Admin import Administration
+from server.Admin import Administration
 from server.bo.User import User
 from server.bo.Wardrobe import Wardrobe
 from server.bo.Style import Style
 from server.bo.Outfit import Outfit
-from server.bo.clothingItem import ClothingItem
+from server.bo.ClothingItem import ClothingItem
 from server.bo.ClothingType import ClothingType
-from server.bo.Constraints import Constraints, BinaryConstraint, UnaryConstraint,CardinalityConstraint, MutexConstraint, ImplicationConstraint
+from server.bo.Constraints import ConstraintRule, BinaryConstraint, UnaryConstraint,CardinalityConstraint, MutexConstraint, ImplicationConstraint
 from SecurityDecorator import secured
 
 
