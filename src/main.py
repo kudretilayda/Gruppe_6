@@ -9,7 +9,7 @@ from server.bo.Style import Style
 from server.bo.Outfit import Outfit
 from server.bo.ClothingItem import ClothingItem
 from server.bo.ClothingType import ClothingType
-from server.Constraints.Constraint import Constraint, BinaryConstraint, UnaryConstraint, CardinalityConstraint, MutexConstraint, ImplicationConstraint
+from server.bo.Constraints import Constraints, BinaryConstraint, UnaryConstraint, CardinalityConstraint, MutexConstraint, ImplicationConstraint
 import traceback
 from SecurityDecorator import secured
 
