@@ -1,0 +1,16 @@
+runtime: python39
+entrypoint: gunicorn -b :$PORT main:app
+
+instance_class: F1
+
+automatic_scaling:
+  target_cpu_utilization: 0.65
+  min_instances: 1
+  max_instances: 10
+
+env_variables:
+  DB_USER: "your-db-user"
+  DB_PASS: "your-db-password"
+  DB_NAME: "your-db-name"
+  DB_HOST: "your-db-host"
+  GOOGLE_CLIENT_ID: "your-google-client-id"
