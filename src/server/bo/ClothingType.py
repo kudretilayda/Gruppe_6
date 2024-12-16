@@ -36,13 +36,7 @@ class ClothingType(BusinessObject):
         if dictionary is None:
             dictionary = {}
         obj = ClothingType()
-<<<<<<< HEAD
-        obj.set_id(dictionary.get("kleidungstyp_id", 0))
-        obj.set_name(dictionary.get("kleidungstyp_name", ""))
-        obj.set_verwendung(dictionary.get("kleidungstyp_verwendung", 0))
-=======
         obj.set_id(dictionary.get("clothing_type_id", 0))
         obj.set_name(dictionary.get("clothing_type_name", ""))
         obj.set_usage(dictionary.get("clothing_type_usage", 0))
->>>>>>> cb40ce594841218d73ecccfcb843f3b4c9718885
         return obj
