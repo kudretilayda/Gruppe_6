@@ -38,7 +38,7 @@ class Administration(object):
 #### User-spezifische Methoden ####
    
     def create_user(self, user_id, google_id, vorname="", nachname="", nickname="", email=""):
-        user = user()
+        user = User()
         user.set_user_id(user_id)
         user.set_google_id(google_id)
         user.set_vorname(vorname)
@@ -261,7 +261,7 @@ class Administration(object):
 ### Constraint-spezifische Methoden ###
     
     def create_constraint(self, style_id, constraint_type, attribute=None, constrain=None, val=None):
-        constraint = constraint()
+        constraint = ConstraintRule()
         constraint.set_style_id(style_id)
         constraint.set_constraint_type(constraint_type)
         constraint.set_attribute(attribute)

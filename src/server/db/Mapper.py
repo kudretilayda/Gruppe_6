@@ -2,14 +2,21 @@ import mysql.connector as connector
 import os
 from contextlib import AbstractContextManager
 from abc import ABC, abstractmethod
-
+from contextlib import AbstractContextManager
+from abc import ABC, abstractmethod
+from src.server.config import get_db_connection
 
 class Mapper(AbstractContextManager, ABC):
     def __init__(self):
         self._cnx = None
 
     def __enter__(self):
+        self._cnx = get_db_connection()
+        return self
 
+        """"""""" 
+        Wird vorsichtshalber auskommentiert / sollte demnächst nochmal überprüft werden
+        
         if os.getenv('DATABASE_URL', '').startswith(''):
             self._cnx = connector.connect(user='demo', password='demo',
                                           unix_socket='/cloudsql/digital-wardrobe-442615',
@@ -20,7 +27,7 @@ class Mapper(AbstractContextManager, ABC):
                                           host='localhost:3306',
                                           database='digital_wardrobe')
         return self
-
+        """""""""""
     def __exit__(self, exc_type, exc_val, exc_tb):
         self._cnx.close()
 
