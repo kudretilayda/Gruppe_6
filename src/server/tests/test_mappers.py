@@ -68,32 +68,30 @@ def test_clothing_type_mapper():
             print(f"Error in ClothingTypeMapper test: {str(e)}")
 
 
-def test_person_mapper():
-    print("\nTesting PersonMapper...")
+def test_user_mapper():
+    print("\nTesting UserMapper...")
     with UserMapper() as mapper:
         try:
             # Create test
-            person = User()
-            person.set_firstname("Test")
-            person.set_lastname("Person")
-            person.set_google_id("test123")
-            person.set_email("test@test.com")
+            user = User()
+            user.set_firstname("Test")
+            user.set_lastname("User")
+            user.set_google_id("test123")
+            user.set_email("test@test.com")
 
-            created_person = mapper.insert(person)
-            print(f"Created person with ID: {created_person.get_id()}")
+            created_user = mapper.insert(user)
+            print(f"Created user with ID: {created_user.get_id()}")
 
             # Read test
-            found_person = mapper.find_by_key(created_person.get_id())
-            print(f"Found person: {found_person}")
+            found_user = mapper.find_by_key(created_user.get_id())
+            print(f"Found user: {found_user}")
 
             # Delete test
-            mapper.delete(found_person)
-            print("Deleted test person")
+            mapper.delete(found_user)
+            print("Deleted test user")
 
         except Exception as e:
-            print(f"Error in PersonMapper test: {str(e)}")
-
-
+            print(f"Error in UserMapper test: {str(e)}")
 def test_style_mapper():
     print("\nTesting StyleMapper...")
     with StyleMapper() as mapper:
@@ -200,7 +198,7 @@ def main():
     print("Starting Mapper Tests...")
 
     # Führe alle Tests aus
-    test_person_mapper()
+    test_user_mapper()
     test_wardrobe_mapper()
     test_clothing_type_mapper()
     test_clothing_item_mapper()
