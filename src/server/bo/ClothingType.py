@@ -2,10 +2,10 @@ from src.server.bo.BusinessObject import BusinessObject
 
 
 class ClothingType(BusinessObject):
-    def __init__(self):
+    def __init__(self, name):
         super().__init__()
         self._id = int
-        self._name = ""
+        self._name = name
         self._usage = ""
 
     def get_id(self):
@@ -29,10 +29,10 @@ class ClothingType(BusinessObject):
     def __str__(self):
         return "Kleidungstyp: {}, Name: {}, Verwendung: {}".format(self.get_id(), self._name, self._usage)
 
-    @staticmethod
+'''    @staticmethod
     def from_dict(dictionary=dict()):
         obj = ClothingType()
         obj.set_id(dictionary("clothing_type_id", 0))
         obj.set_name(dictionary("clothing_type_name", ""))
         obj.set_usage(dictionary("clothing_type_usage", 0))
-        return obj
+        return obj'''

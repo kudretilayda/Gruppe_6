@@ -7,8 +7,8 @@ class Outfit(BusinessObject):
         super().__init__()
         self._outfit_id = 0
         self._outfit_name = ""
-        self._items = []
-        self._style = None
+        self.items = []
+        self.style = None
 
     def get_outfit_id(self):
         return self._outfit_id

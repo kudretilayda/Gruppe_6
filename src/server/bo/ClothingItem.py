@@ -8,7 +8,7 @@ class ClothingItem(BusinessObject):
         self._item_id = 0
         self._wardrobe_id = 0
         self._item_name = ""
-        self._clothing_type = None
+        self.clothing_type = None
 
     def get_id(self):
         return self._item_id
@@ -38,11 +38,11 @@ class ClothingItem(BusinessObject):
     def set_wardrobe_id(self, wardrobe_id):
         self._wardrobe_id = wardrobe_id
 
-    @staticmethod
+'''    @staticmethod
     def from_dict(dictionary=dict()):
 
         obj = ClothingItem()
         obj.set_id(dictionary("clothingitem", 0))
         obj.set_clothing_type(dictionary("clothingitem", None))
         obj.set_item_name(dictionary("clothingitem_name", ""))
-        return obj
+        return obj'''

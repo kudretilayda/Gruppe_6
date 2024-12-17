@@ -35,17 +35,23 @@ class Style (BusinessObject):
         self.__clothing_type  = clothing_type
 
     def __str__(self):
-        
-        return "Style: {}, {}, {}, {}".format(self.__style_id, self.__style_features, self.__style_constraints, self.__clothing_type)
+        return "Style: {}, {}, {}, {}".format(self.__style_id,
+                                              self.__style_features,
+                                              self.__style_constraints,
+                                              self.__clothing_type)
 
-    @staticmethod
+    def validate(self):
+        for constraint in self.__style_constraints:
+            if constraint.validate():
+                return True
+            else:
+                return False
+
+'''    @staticmethod
     def from_dict(dictionary=dict()):
         obj = Style()
         obj.set_style_id(dictionary("style_id", 0))
         obj.set_style_features(dictionary("style_features", ""))
         obj.set_style_constraints(dictionary("style_constraints", []))
         obj.set_clothing_type(dictionary("clothing_type", []))
-        return obj
-
-    def set_name(self, name):
-        pass
+        return obj'''
