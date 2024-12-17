@@ -1,5 +1,5 @@
-from flask import request
-from flask_restx import Resource, fields
+from flask import request # type: ignore
+from flask_restx import Resource, fields # type: ignore
 from main import api
 from utils.auth import require_auth
 
@@ -34,7 +34,7 @@ class OutfitResource(Resource):
         """Erstellt ein neues Outfit"""
         try:
             data = request.json
-            outfit_service = OutfitService()
+            outfit_service = outfit_service()
             
             outfit = outfit_service.create_outfit(
                 name=data['name'],
@@ -57,7 +57,7 @@ class OutfitProposalResource(Resource):
         """Generiert Outfit-Vorschläge"""
         try:
             data = request.json
-            outfit_service = OutfitService()
+            outfit_service = outfit_service()
             
             proposals = outfit_service.generate_outfit_proposals(
                 style_id=data['style_id'],
@@ -77,7 +77,7 @@ class OutfitCompletionResource(Resource):
         """Schlägt Vervollständigungen für ein teilweise gewähltes Outfit vor"""
         try:
             data = request.json
-            outfit_service = OutfitService()
+            outfit_service = outfit_service()
             
             suggestions = outfit_service.complete_partial_outfit(
                 partial_outfit_items=data['partial_outfit_items'],
@@ -95,7 +95,7 @@ class OutfitDetailResource(Resource):
     def get(self, outfit_id):
         """Holt ein spezifisches Outfit"""
         try:
-            outfit_service = OutfitService()
+            outfit_service = outfit_service()
             outfit = outfit_service.get_outfit_by_id(outfit_id)
             
             if not outfit:
@@ -114,7 +114,7 @@ class OutfitDetailResource(Resource):
     def delete(self, outfit_id):
         """Löscht ein Outfit"""
         try:
-            outfit_service = OutfitService()
+            outfit_service = outfit_service()
             success = outfit_service.delete_outfit(outfit_id)
             
             if success:

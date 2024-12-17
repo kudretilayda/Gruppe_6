@@ -1,5 +1,5 @@
-from flask import request
-from flask_restx import Resource, fields
+from flask import request # type: ignore
+from flask_restx import Resource, fields # type: ignore
 from main import api
 from services.clothing_type_service import ClothingTypeService
 from utils.auth import require_auth

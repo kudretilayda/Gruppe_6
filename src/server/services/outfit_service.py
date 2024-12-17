@@ -27,7 +27,7 @@ class OutfitService:
                 outfit.add_item(item_id)
 
             # Style-Validierung durchführen
-            from src.server.service.StyleService import StyleService
+            from src.server.services.StyleService import StyleService
             style_service = StyleService()
             style = style_service.get_style_by_id(style_id)
             
@@ -49,8 +49,8 @@ class OutfitService:
         """Generiert Outfit-Vorschläge basierend auf Style und verfügbaren Items"""
         try:
             # Services laden
-            from src.server.service.StyleService import StyleService
-            from src.server.service.ClothingItemService import ClothingItemService
+            from src.server.services.StyleService import StyleService
+            from src.server.services.ClothingItemService import ClothingItemService
             
             style_service = StyleService()
             clothing_service = ClothingItemService()
@@ -82,8 +82,8 @@ class OutfitService:
         """Schlägt Vervollständigungen für ein teilweise gewähltes Outfit vor"""
         try:
             # Services laden
-            from src.server.service.StyleService import StyleService
-            from src.server.service.ClothingItemService import ClothingItemService
+            from src.server.services.StyleService import StyleService
+            from src.server.services.ClothingItemService import ClothingItemService
             
             style_service = StyleService()
             clothing_service = ClothingItemService()

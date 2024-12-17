@@ -1,4 +1,4 @@
-from flask import Flask, request, g
+from flask import Flask, request
 from flask_cors import CORS
 from flask_restx import Api, Resource, fields
 from logging.handlers import RotatingFileHandler
@@ -13,7 +13,7 @@ from server.bo.User import User
 from server.bo.Wardrobe import Wardrobe
 from server.bo.Style import Style
 from server.bo.Outfit import Outfit
-from server.bo.clothingItem import ClothingItem
+from server.bo.ClothingItem import ClothingItem
 from server.bo.ClothingType import ClothingType
 from server.bo.Constraints import (Constraints, BinaryConstraint, UnaryConstraint,
                                    CardinalityConstraint, MutexConstraint, ImplicationConstraint)
