@@ -1,22 +1,22 @@
-from src.server.bo.User import User
-from src.server.bo.Wardrobe import Wardrobe
-from src.server.bo.ClothingItem import ClothingItem
-from src.server.bo.ClothingType import ClothingType
-from src.server.bo.Outfit import Outfit
-from src.server.bo.Style import Style
+from src.server1.bo.User import User
+from src.server1.bo.Wardrobe import Wardrobe
+from src.server1.bo.ClothingItem import ClothingItem
+from src.server1.bo.ClothingType import ClothingType
+from src.server1.bo.Outfit import Outfit
+from src.server1.bo.Style import Style
 
-from src.server.db.UserMapper import UserMapper
-from src.server.db.WardrobeMapper import WardrobeMapper
-from src.server.db.ClothingItemMapper import ClothingItemMapper
-from src.server.db.ClothingTypeMapper import ClothingTypeMapper
-from src.server.db.OutfitMapper import OutfitMapper
-from src.server.db.StyleMapper import StyleMapper
+from src.server1.db.UserMapper import UserMapper
+from src.server1.db.WardrobeMapper import WardrobeMapper
+from src.server1.db.ClothingItemMapper import ClothingItemMapper
+from src.server1.db.ClothingTypeMapper import ClothingTypeMapper
+from src.server1.db.OutfitMapper import OutfitMapper
+from src.server1.db.StyleMapper import StyleMapper
 
-from src.server.db.ConstraintMapper import ConstraintMapper
-from src.server.bo.Constraints import (UnaryConstraint, BinaryConstraint,
-                                       ImplicationConstraint, MutexConstraint, CardinalityConstraint)
+from src.server1.db.ConstraintMapper import ConstraintMapper
+from src.server1.bo.Constraints import (UnaryConstraint, BinaryConstraint,
+                                        ImplicationConstraint, MutexConstraint, CardinalityConstraint)
 
-from src.server.bo.RuleEngine import RuleEngine
+from src.server1.bo.RuleEngine import RuleEngine
 
 # Erstellen User
 jar_jar_binks = User()

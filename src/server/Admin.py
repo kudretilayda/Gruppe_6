@@ -1,4 +1,4 @@
-from src.server.UserMapper import UserMapper
+from src.server.db.UserMapper import UserMapper
 from src.server.db.WardrobeMapper import WardrobeMapper
 from src.server.db.ClothingItemMapper import ClothingItemMapper
 from src.server.db.ClothingTypeMapper import ClothingTypeMapper
@@ -16,7 +16,7 @@ from src.server.bo.Constraints import (
     BinaryConstraint,
     ImplicationConstraint,
     MutexConstraint,
-    CardinalityConstraint, ConstraintRule)
+    CardinalityConstraint)
 
 
 class Administration(object):
