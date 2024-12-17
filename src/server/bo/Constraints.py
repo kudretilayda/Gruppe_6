@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from ClothingType import ClothingType
+from Outfit import Outfit
 from src.server.bo.BusinessObject import BusinessObject
 from typing import List
 
@@ -111,3 +112,38 @@ class Implication(BinaryConstraint):
         type1_present = any(item.get_type() == self._reference_object1 for item in outfit.get_items())
         type2_present = any(item.get_type() == self._reference_object2 for item in outfit.get_items())
         return not type1_present or type2_present
+
+class Cardinality(UnaryConstraint):
+    """Definiert minimale und maximale Anzahl eines ClothingTypes"""
+    def __init__(self, reference_object: 'ClothingType', min_count: int, max_count: int):
+        super().__init__(reference_object)
+        self._constraint_type = "CARDINALITY"
+        self._min_count = min_count
+        self._max_count = max_count
+
+    def get_min_count(self) -> int:
+        return self._min_count
+
+    def set_min_count(self, min_count: int):
+        self._min_count = min_count
+
+    def get_max_count(self) -> int:
+        return self._max_count
+
+    def set_max_count(self, max_count: int):
+        self._max_count = max_count
+
+    def validate(self, outfit: 'Outfit') -> bool:
+        """Prüft, ob die Anzahl der Items vom referenzierten Typ im erlaubten Bereich liegt"""
+        count = sum(1 for item in outfit.get_items() if item.get_type() == self._reference_object)
+        return self._min_count <= count <= self._max_count
+
+    @staticmethod
+    def from_dict(dictionary=dict()):
+        obj = Cardinality(None, 0, 0)  # Temporär None als reference_object
+        obj.set_constraint_id(dictionary.get("constraint_id", 0))
+        obj.set_style_id(dictionary.get("style_id", 0))
+        obj.set_min_count(dictionary.get("min_count", 0))
+        obj.set_max_count(dictionary.get("max_count", 0))
+        # reference_object muss separat gesetzt werden
+        return obj
