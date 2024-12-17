@@ -108,3 +108,5 @@ class CardinalityConstraint(ConstraintRule):
             raise ValueError(f"Kardinalität verletzt: {count} ausgewählt. "
                              f"Wert muss zwischen {self.min_count} und {self.max_count} liegen.")
         return True
+
+#static method?
