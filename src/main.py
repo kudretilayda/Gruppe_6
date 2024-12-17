@@ -18,51 +18,6 @@ from src.server.bo.Constraints import ConstraintRule, BinaryConstraint, UnaryCon
 from src.SecurityDecorator import secured
 
 
-# Logging Setup
-def setup_logging():
-    log_dir = "logs"
-    if not os.path.exists(log_dir):
-        os.makedirs(log_dir)
-
-    logger = logging.getLogger('digital_wardrobe')
-    logger.setLevel(logging.INFO)
-
-    formatter = logging.Formatter(
-        '%(asctime)s - [%(levelname)s] - %(message)s'
-    )
-
-    # App logs
-    file_handler = RotatingFileHandler(
-        os.path.join(log_dir, 'app.log'),
-        maxBytes=1024 * 1024,
-        backupCount=5
-    )
-    file_handler.setFormatter(formatter)
-    logger.addHandler(file_handler)
-
-    return logger
-
-
-# Performance Monitoring Decorator
-def monitor_performance(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        start_time = time.time()
-        try:
-            result = f(*args, **kwargs)
-            duration = time.time() - start_time
-            logging.getLogger('digital_wardrobe').info(
-                f"Endpoint {f.__name__} completed in {duration:.2f}s"
-            )
-            return result
-        except Exception as e:
-            logging.getLogger('digital_wardrobe').error(
-                f"Error in {f.__name__}: {str(e)}"
-            )
-            raise
-
-    return decorated_function
-
 app = Flask(__name__)
 api = Api(app, version='1.0', title='Digital Wardrobe API',
           description='An API for managing a digital wardrobe')
@@ -159,7 +114,6 @@ class UserListOperations(Resource):
             users = adm.get_all_users()
             return users
         except Exception as e:
-            logger.error(f"Error getting users: {str(e)}")
             return {'error': 'Internal server error'}, 500
 
     @wardrobe_ns.marshal_with(user)
@@ -173,7 +127,7 @@ class UserListOperations(Resource):
             result = adm.create_user(user)
             return result, 201
         except Exception as e:
-            logger.error(f"Error creating user: {str(e)}")
+
             return {'error': 'Internal server error'}, 500
 
 @wardrobe_ns.route('/user/<int:id>')
@@ -189,7 +143,7 @@ class UserOperations(Resource):
                 return user
             return {'message': 'User not found'}, 404
         except Exception as e:
-            logger.error(f"Error getting user: {str(e)}")
+
             return {'error': 'Internal server error'}, 500
 
     @wardrobe_ns.marshal_with(user)
@@ -204,7 +158,7 @@ class UserOperations(Resource):
             result = adm.save_user(updated_user)
             return result
         except Exception as e:
-            logger.error(f"Error updating user: {str(e)}")
+
             return {'error': 'Internal server error'}, 500
 
     @secured
@@ -218,7 +172,7 @@ class UserOperations(Resource):
                 return '', 204
             return {'message': 'User not found'}, 404
         except Exception as e:
-            logger.error(f"Error deleting user: {str(e)}")
+
             return {'error': 'Internal server error'}, 500
 
 # 2. Wardrobe Endpoints
@@ -233,7 +187,7 @@ class WardrobeListOperations(Resource):
             wardrobes = adm.get_all_wardrobes()
             return wardrobes
         except Exception as e:
-            logger.error(f"Error getting wardrobes: {str(e)}")
+
             return {'error': 'Internal server error'}, 500
 
     @wardrobe_ns.marshal_with(wardrobe)
@@ -247,7 +201,7 @@ class WardrobeListOperations(Resource):
             result = adm.create_wardrobe(wardrobe)
             return result, 201
         except Exception as e:
-            logger.error(f"Error creating wardrobe: {str(e)}")
+
             return {'error': 'Internal server error'}, 500
 
 @wardrobe_ns.route('/wardrobe/<int:id>')
@@ -263,7 +217,7 @@ class WardrobeOperations(Resource):
                 return wardrobe
             return {'message': 'Wardrobe not found'}, 404
         except Exception as e:
-            logger.error(f"Error getting wardrobe: {str(e)}")
+
             return {'error': 'Internal server error'}, 500
 
     @wardrobe_ns.marshal_with(wardrobe)
@@ -278,7 +232,7 @@ class WardrobeOperations(Resource):
             result = adm.save_wardrobe(updated_wardrobe)
             return result
         except Exception as e:
-            logger.error(f"Error updating wardrobe: {str(e)}")
+
             return {'error': 'Internal server error'}, 500
 
     @secured
@@ -292,7 +246,7 @@ class WardrobeOperations(Resource):
                 return '', 204
             return {'message': 'Wardrobe not found'}, 404
         except Exception as e:
-            logger.error(f"Error deleting wardrobe: {str(e)}")
+
             return {'error': 'Internal server error'}, 500
 
 # 3. ClothingItem Endpoints
@@ -307,7 +261,7 @@ class ClothingItemListOperations(Resource):
             items = adm.get_all_clothing_items()
             return items
         except Exception as e:
-            logger.error(f"Error getting clothing items: {str(e)}")
+
             return {'error': 'Internal server error'}, 500
 
     @wardrobe_ns.marshal_with(clothing_item)
@@ -325,7 +279,7 @@ class ClothingItemListOperations(Resource):
             )
             return result, 201
         except Exception as e:
-            logger.error(f"Error creating clothing item: {str(e)}")
+
             return {'error': 'Internal server error'}, 500
 
 @wardrobe_ns.route('/clothing-item/<int:id>')
@@ -341,7 +295,7 @@ class ClothingItemOperations(Resource):
                 return item
             return {'message': 'Clothing item not found'}, 404
         except Exception as e:
-            logger.error(f"Error getting clothing item: {str(e)}")
+
             return {'error': 'Internal server error'}, 500
 
     @wardrobe_ns.marshal_with(clothing_item)
@@ -356,7 +310,7 @@ class ClothingItemOperations(Resource):
             result = adm.save_clothing_item(updated_item)
             return result
         except Exception as e:
-            logger.error(f"Error updating clothing item: {str(e)}")
+
             return {'error': 'Internal server error'}, 500
 
     @secured
@@ -370,7 +324,7 @@ class ClothingItemOperations(Resource):
                 return '', 204
             return {'message': 'Clothing item not found'}, 404
         except Exception as e:
-            logger.error(f"Error deleting clothing item: {str(e)}")
+
             return {'error': 'Internal server error'}, 500
 
 # 4. Style Endpoints
@@ -385,7 +339,7 @@ class StyleListOperations(Resource):
             styles = adm.get_all_styles()
             return styles
         except Exception as e:
-            logger.error(f"Error getting styles: {str(e)}")
+
             return {'error': 'Internal server error'}, 500
 
     @wardrobe_ns.marshal_with(style)
@@ -402,7 +356,7 @@ class StyleListOperations(Resource):
             )
             return result, 201
         except Exception as e:
-            logger.error(f"Error creating style: {str(e)}")
+
             return {'error': 'Internal server error'}, 500
 
 @wardrobe_ns.route('/style/<int:id>')
@@ -418,7 +372,7 @@ class StyleOperations(Resource):
                 return style
             return {'message': 'Style not found'}, 404
         except Exception as e:
-            logger.error(f"Error getting style: {str(e)}")
+
             return {'error': 'Internal server error'}, 500
 
     @wardrobe_ns.marshal_with(style)
@@ -433,7 +387,7 @@ class StyleOperations(Resource):
             result = adm.save_style(updated_style)
             return result
         except Exception as e:
-            logger.error(f"Error updating style: {str(e)}")
+
             return {'error': 'Internal server error'}, 500
 
     @secured
@@ -447,7 +401,7 @@ class StyleOperations(Resource):
                 return '', 204
             return {'message': 'Style not found'}, 404
         except Exception as e:
-            logger.error(f"Error deleting style: {str(e)}")
+
             return {'error': 'Internal server error'}, 500
 
 # 5. Outfit Endpoints
@@ -462,7 +416,7 @@ class OutfitListOperations(Resource):
             outfits = adm.get_all_outfits()
             return outfits
         except Exception as e:
-            logger.error(f"Error getting outfits: {str(e)}")
+
             return {'error': 'Internal server error'}, 500
 
     @wardrobe_ns.marshal_with(outfit)
@@ -479,7 +433,7 @@ class OutfitListOperations(Resource):
             )
             return result, 201
         except Exception as e:
-            logger.error(f"Error creating outfit: {str(e)}")
+
             return {'error': 'Internal server error'}, 500
 
 @wardrobe_ns.route('/outfit/<int:id>')
@@ -495,7 +449,7 @@ class OutfitOperations(Resource):
                 return outfit
             return {'message': 'Outfit not found'}, 404
         except Exception as e:
-            logger.error(f"Error getting outfit: {str(e)}")
+
             return {'error': 'Internal server error'}, 500
 
     @wardrobe_ns.marshal_with(outfit)
@@ -510,7 +464,7 @@ class OutfitOperations(Resource):
             result = adm.save_outfit(updated_outfit)
             return result
         except Exception as e:
-            logger.error(f"Error updating outfit: {str(e)}")
+
             return {'error': 'Internal server error'}, 500
 
     @secured
@@ -524,7 +478,7 @@ class OutfitOperations(Resource):
                 return '', 204
             return {'message': 'Outfit not found'}, 404
         except Exception as e:
-            logger.error(f"Error deleting outfit: {str(e)}")
+
             return {'error': 'Internal server error'}, 500
 
 if __name__ == '__main__':
