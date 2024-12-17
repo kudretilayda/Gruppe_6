@@ -28,6 +28,13 @@ class ConstraintRule(ABC):
 class UnaryConstraint(ConstraintRule):
     def __init__(self, style_id: int, reference_object_id: int, attribute: str, condition: str, val: str):
         super().__init__(style_id, "unary", attribute, condition, val)
+
+        # Outfit --> Style --> Constraints
+        # Typ Ebene Style und Typ
+        # Gegenstandsebene Item und Outfit
+        # An Style Constraints anhängen
+        # Integrität prüfen: Das Das und Das ist enthalten. Das Outfit muss Style folgen
+        
         self.reference_object_id = reference_object_id
 
     def validate(self):
