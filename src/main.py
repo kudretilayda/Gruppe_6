@@ -3,42 +3,90 @@
 from flask import Flask
 from flask_restx import Api, Resource, fields
 from flask_cors import CORS
+from src.server.Admin import Administration
+
+from src.server.bo.Outfit import Outfit
+from src.server.bo.Style import Style
+from src.server.bo.User import User
+from src.server.bo.Wardrobe import Wardrobe
+from src.server.bo.Constraints import (
+    UnaryConstraint,
+    BinaryConstraint,
+    ImplicationConstraint,
+    MutexConstraint,
+    CardinalityConstraint, ConstraintRule)
+
+import traceback
+from SecurityDecorator import secured
 
 app = Flask(__name__)
-CORS(app, resources={r"/kleiderschrank/*": {"origins": "*"}})
 
-api = Api(app, version='1.0', title='Digitaler Kleiderschrank API',
-          description='API für den digitalen Kleiderschrank')
+#CORS aktivieren
+#CORS steht für Cross-Origin Resource Sharing und ist ein Mechanismus, der es Webseiten ermöglicht, Ressourcen von anderen Domains zu laden.
+"""CORS(app, resources={r"/api/":{"origins":"*"}})"""
+CORS(app, supports_credentials=True, resources=r'/wardrobe/*')
 
-kleiderschrank = api.namespace('kleiderschrank', description='Digitaler Kleiderschrank Funktionen')
+#API-Objekt erstellen
+api = Api(app, version='1.0', title='DigitalWardrobe API',
+          description='An API for managing a digital wardrobe.')
 
-# Business Object Basismodell
+# Namespace
+#Der Namespace ist Container für die API-Endpunkte, die zu einem bestimmten Thema gehören.
+Wardrobe_ns = api.namespace('wardrobe', description='Wardrobe-related functionalities')
+
+# Modelle für Flask-Restx: Flast-Restx verwendet die Modelle, um die JSON-Objekte zu serialisieren und zu deserialisieren,
+#Restx ist eine Erweiterung von Flask, die es ermöglicht, RESTful APIs zu erstellen.
+#RESTful APIs sind APIs, die auf dem REST-Prinzip basieren, das besagt, dass jede Ressource über eine eindeutige URL angesprochen wird.
+
+
+# Modelle für Flask-RestX
 bo = api.model('BusinessObject', {
     'id': fields.Integer(attribute='_id', description='Der Unique Identifier eines BusinessObject')
 })
 
 # User Modell
 user = api.inherit('User', bo, {
-    'user_id': fields.Integer(attribute='_user_id', description='User ID'),
-    'nachname': fields.String(attribute='_nachname', description='Nachname des Users'),
-    'vorname': fields.String(attribute='_vorname', description='Vorname des Users'),
-    'nickname': fields.String(attribute='_nickname', description='Nickname des Users'),
-    'google_id': fields.String(attribute='_google_id', description='Google ID des Users'),
-    'email': fields.String(attribute='_email', description='Email des Users')
+    'google_id': fields.String(attribute='_google_id', required=True, description='Google ID of the user'),
+    'firstname': fields.String(attribute='_firstname', required=True, description='First name of the user'),
+    'lastname': fields.String(attribute='_lastname', required=True, description='Last name of the user'),
+    'nickname': fields.String(attribute='_nickname', description='Nickname of the user'),
+    'email': fields.String(attribute='_email', required=True, description='Email address of the user')
+})
+
+wardrobe = api.inherit('Wardrobe', bo, {
+    'person_id': fields.String(attribute='_person_id', description='Owner ID'),
+    'owner_name': fields.String(attribute='_owner_name', description='Owner name')
+})
+
+
+clothing_type = api.inherit('ClothingType', bo, {
+    'type_name': fields.String(attribute='_type_name', required=True, description='Type name'),
+    'category': fields.String(attribute='_category', required=True, description='Category'),
+    'type_description': fields.String(attribute='_type_description', description='Type description')
+})
+
+clothing_item = api.inherit('ClothingItem', bo, {
+    'wardrobe_id': fields.String(attribute='_wardrobe_id', required=True),
+    'clothing_type': fields.String(attribute='_clothing_type', required=True),
+    'item_name': fields.String(attribute='_item_name', required=True),
+})
+
+
+outfit = api.inherit('Outfit', bo, {
+    'name': fields.String(attribute='_name', required=True, description='Name of the outfit'),
+    'style_id': fields.Integer(attribute='_style_id', required=True, description='Identifier of the associated style'),
+    'wardrobe_id': fields.Integer(attribute='_wardrobe_id', required=True, description='Identifier of the wardrobe associated with the outfit'),
+    'items': fields.List(fields.Integer, attribute='_items', description='List of clothing item IDs in the outfit')
 })
 
 # Constraint Modell
 constraint = api.inherit('Constraint', bo, {
-    'name': fields.String(attribute='_name', description='Name des Constraints'),
-    'beschreibung': fields.String(attribute='_beschreibung', description='Beschreibung des Constraints')
+    'style_id': fields.Integer(attribute='_style_id', required=True, description='Identifier of the associated style'),
+    'type': fields.String(attribute='_type', required=True, description='Type of the constraint (e.g., binary, unary)'),
+    'value': fields.String(attribute='_value', required=True, description='Constraint-specific rules in JSON format')
 })
 
-# UnaryConstraint Modell
-unary_constraint = api.inherit('UnaryConstraint', constraint, {
-    'bezugsobjekt': fields.String(attribute='_bezugsobjekt', description='Bezugsobjekt des UnaryConstraints'),
-    'bedingung': fields.String(attribute='_bedingung', description='Bedingung des UnaryConstraints')
-})
-
+''' 
 # BinaryConstraint Modell
 binary_constraint = api.inherit('BinaryConstraint', constraint, {
     'object1': fields.String(attribute='_object1', description='Bezugsobjekt 1'),
@@ -117,3 +165,4 @@ class MutexConstraintListOperations(Resource):
 
 if __name__ == '__main__':
     app.run(debug=True)
+'''
