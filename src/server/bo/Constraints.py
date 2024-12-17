@@ -1,105 +1,89 @@
 from abc import ABC, abstractmethod
+from ClothingType import ClothingType
+from src.server.bo.BusinessObject import BusinessObject
+from typing import List
 
+class Constraint(BusinessObject, ABC):
+    """Abstrakte Basisklasse für alle Constraints"""
+    def __init__(self):
+        super().__init__()
+        self._constraint_id = None
+        self._constraint_type = None
+        self._style_id = None  # Referenz zum Style, zu dem der Constraint gehört
 
-class ConstraintRule(ABC):
-    def __init__(self, style_id: id, constraint_type: str, condition, attribute, val):
-        self.style_id = style_id
-        self.constraint_type = constraint_type
-        self.attribute = attribute
-        self.condition = condition
-        self.val = val
+    def get_constraint_id(self) -> int:
+        return self._constraint_id
+
+    def set_constraint_id(self, constraint_id: int):
+        self._constraint_id = constraint_id
+
+    def get_style_id(self) -> int:
+        return self._style_id
+
+    def set_style_id(self, style_id: int):
+        self._style_id = style_id
+
+    def get_constraint_type(self) -> str:
+        return self._constraint_type
+
+    def set_constraint_type(self, constraint_type: str):
+        self._constraint_type = constraint_type
 
     @abstractmethod
-    def validate(self, *args, **kwargs):
+    def validate(self, outfit: 'Outfit') -> bool:
+        """Validiert ein Outfit gegen diesen Constraint"""
         pass
 
-    def __str__(self):
-        return (
-            f"ConstraintRule: "
-            f"Style ID: {self.style_id}, "
-            f"Constraint Type: {self.constraint_type}, "
-            f"Condition: {self.condition}, "
-            f"Attribute: {self.attribute}, "
-            f"Value: {self.val}"
-        )
+    @staticmethod
+    def from_dict(dictionary=dict()):
+        # Wird von den konkreten Constraint-Klassen überschrieben
+        pass
 
+class UnaryConstraint(Constraint):
+    """Constraint für einen einzelnen ClothingType"""
+    def __init__(self, reference_object: 'ClothingType'):
+        super().__init__()
+        self._reference_object = reference_object
 
-# Unary Constraint
-class UnaryConstraint(ConstraintRule):
-    def __init__(self, style_id: int, reference_object_id: int, attribute: str, condition: str, val: str):
-        super().__init__(style_id, "unary", attribute, condition, val)
-        self.reference_object_id = reference_object_id
+    def get_reference_object(self) -> 'ClothingType':
+        return self._reference_object
 
-    def validate(self):
-        obj_value = getattr(self.reference_object_id, self.attribute)
+    def set_reference_object(self, reference_object: 'ClothingType'):
+        self._reference_object = reference_object
 
-        if self.condition == "equal" and obj_value != self.val:
-            raise ValueError(f"Unary Constraint verletzt: {self.attribute} und {self.val} müssen gleich sein")
+    @staticmethod
+    def from_dict(dictionary=dict()):
+        obj = UnaryConstraint(None)  # Temporär None als reference_object
+        obj.set_constraint_id(dictionary.get("constraint_id", 0))
+        obj.set_style_id(dictionary.get("style_id", 0))
+        obj.set_constraint_type(dictionary.get("constraint_type", ""))
+        # reference_object muss separat gesetzt werden
+        return obj
 
-        if self.condition == "not equal" and obj_value == self.val:
-            raise ValueError(f"Unary Constraint verletzt: {self.attribute} und {self.val} dürfen nicht gleich sein")
+class BinaryConstraint(Constraint):
+    """Constraint für zwei ClothingTypes"""
+    def __init__(self, reference_object1: 'ClothingType', reference_object2: 'ClothingType'):
+        super().__init__()
+        self._reference_object1 = reference_object1
+        self._reference_object2 = reference_object2
 
-        return True
+    def get_reference_object1(self) -> 'ClothingType':
+        return self._reference_object1
 
+    def set_reference_object1(self, reference_object: 'ClothingType'):
+        self._reference_object1 = reference_object
 
-# Binary
-class BinaryConstraint(ConstraintRule):
-    def __init__(self, style_id: int, object_1, object_2, attribute: str, condition: str, value: str):
-        super().__init__(style_id, "binary", attribute, condition, value)
-        self.object_1 = object_1
-        self.object_2 = object_2
+    def get_reference_object2(self) -> 'ClothingType':
+        return self._reference_object2
 
-    def validate(self):
-        obj1_value = getattr(self.object_1, self.attribute)
-        obj2_value = getattr(self.object_2, self.attribute)
+    def set_reference_object2(self, reference_object: 'ClothingType'):
+        self._reference_object2 = reference_object
 
-        if obj1_value == obj2_value and self.condition == "not equal":
-            raise ValueError(f"Binary Constraint verletzt: {self.object_1} und {self.object_2}"
-                             f"müssen denselben {self.attribute} teilen")
-        return True
-
-
-# Implication
-class ImplicationConstraint(ConstraintRule):
-    def __init__(self, style_id: int, condition_a, condition_b):
-        super().__init__(style_id, "implication", None, None, None)
-        self.condition_a = condition_a
-        self.condition_b = condition_b
-
-    def validate(self):
-        if self.condition_a and not self.condition_b:
-            raise ValueError(f"Implikation verletzt: {self.condition_a} erfüllt, aber {self.condition_b} nicht")
-        return True
-
-
-
-# Mutex
-class MutexConstraint(ConstraintRule):
-    def __init__(self, style_id: int, objects: list):
-        super().__init__(style_id, "mutex", None, None, None)
-        self.objects = objects
-
-    def validate(self):
-        selected = [obj for obj in self.objects if obj.is_selected()]
-
-        if len(selected) > 1:
-            raise ValueError("MutexConstraint verletzt: Mehr als ein Objekt ist ausgewählt.")
-        return True
-
-
-# Cardinality
-class CardinalityConstraint(ConstraintRule):
-    def __init__(self, style_id: int, objects: list, min_count: int, max_count: int):
-        super().__init__(style_id, "cardinality", None, None, None)
-        self.objects = objects
-        self.min_count = min_count
-        self.max_count = max_count
-
-    def validate(self):
-        count = sum(1 for obj in self.objects if obj.is_selected())
-        if count < self.min_count or count > self.max_count:
-            raise ValueError(f"Kardinalität verletzt: {count} ausgewählt. "
-                             f"Wert muss zwischen {self.min_count} und {self.max_count} liegen.")
-        return True
-
-#static method?
+    @staticmethod
+    def from_dict(dictionary=dict()):
+        obj = BinaryConstraint(None, None)  # Temporär None als reference_objects
+        obj.set_constraint_id(dictionary.get("constraint_id", 0))
+        obj.set_style_id(dictionary.get("style_id", 0))
+        obj.set_constraint_type(dictionary.get("constraint_type", ""))
+        # reference_objects müssen separat gesetzt werden
+        return obj

@@ -14,7 +14,7 @@ from server.bo.Outfit import Outfit
 from server.bo.Constraints import Constraints, BinaryConstraint, UnaryConstraint, CardinalityConstraint, MutexConstraint, ImplicationConstraint
 
 
-class Administration(object):
+class Admin(object):
     """Diese Klasse aggregiert nahezu sämtliche Applikationslogik (engl. Business Logic).
     Sie ist wie eine Spinne, die sämtliche Zusammenhänge in ihrem Netz (in unserem
     Fall die Daten der Applikation) überblickt und für einen geordneten Ablauf und
