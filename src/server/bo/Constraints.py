@@ -87,3 +87,27 @@ class BinaryConstraint(Constraint):
         obj.set_constraint_type(dictionary.get("constraint_type", ""))
         # reference_objects müssen separat gesetzt werden
         return obj
+
+class Mutex(BinaryConstraint):
+    """Zwei ClothingTypes schließen sich gegenseitig aus"""
+    def __init__(self, reference_object1: 'ClothingType', reference_object2: 'ClothingType'):
+        super().__init__(reference_object1, reference_object2)
+        self._constraint_type = "MUTEX"
+
+    def validate(self, outfit: 'Outfit') -> bool:
+        """Prüft, ob nicht beide referenzierten Types im Outfit vorhanden sind"""
+        type1_present = any(item.get_type() == self._reference_object1 for item in outfit.get_items())
+        type2_present = any(item.get_type() == self._reference_object2 for item in outfit.get_items())
+        return not (type1_present and type2_present)
+
+class Implication(BinaryConstraint):
+    """Wenn Type1 vorhanden ist, muss auch Type2 vorhanden sein"""
+    def __init__(self, reference_object1: 'ClothingType', reference_object2: 'ClothingType'):
+        super().__init__(reference_object1, reference_object2)
+        self._constraint_type = "IMPLICATION"
+
+    def validate(self, outfit: 'Outfit') -> bool:
+        """Wenn Type1 vorhanden ist, muss auch Type2 vorhanden sein"""
+        type1_present = any(item.get_type() == self._reference_object1 for item in outfit.get_items())
+        type2_present = any(item.get_type() == self._reference_object2 for item in outfit.get_items())
+        return not type1_present or type2_present
