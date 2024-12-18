@@ -8,7 +8,7 @@ class ClothingItem(BusinessObject):
         self._item_id = 0
         self._wardrobe_id = 0
         self._item_name = ""
-        self._clothing_type = None
+        self.clothing_type = None
 
     def get_id(self):
         return self._item_id

@@ -16,11 +16,11 @@ from src.server.bo.Constraints import (
     BinaryConstraint,
     ImplicationConstraint,
     MutexConstraint,
-    CardinalityConstraint, ConstraintRule)
+    CardinalityConstraint, Constraint)
 
 
-class Administration(object):
-    """Diese Klasse aggregiert nahezu sämtliche Applikationslogik (englisch Business Logic).
+class Admin(object):
+    """Diese Klasse aggregiert nahezu sämtliche Applikationslogik (engl. Business Logic).
     Sie ist wie eine Spinne, die sämtliche Zusammenhänge in ihrem Netz (in unserem
     Fall die Daten der Applikation) überblickt und für einen geordneten Ablauf und
     dauerhafte Konsistenz der Daten und Abläufe sorgt.
@@ -30,7 +30,7 @@ class Administration(object):
     Transaktion gleiche mehrere Teilaktionen durchgeführt werden, die das System
     von einem konsistenten Zustand in einen anderen, auch wieder konsistenten
     Zustand überführen. Wenn dies zwischenzeitig scheitern sollte, dann ist das
-    jeweilige Transaction Script dafür verantwortlich, eine Fehlerbehandlung
+    jeweilige Transaction Script dafür verwantwortlich, eine Fehlerbehandlung
     durchzuführen.
     Diese Klasse steht mit einer Reihe weiterer Datentypen in Verbindung. Diese
     sind:
@@ -42,12 +42,12 @@ class Administration(object):
 
 #### User-spezifische Methoden ####
 
-    def create_user(self, user_id, google_id, vorname="", nachname="", nickname="", email=""):
+    def create_user(self, user_id, google_id, firstname="", lastname="", nickname="", email=""):
         user = User()
         user.set_user_id(user_id)
         user.set_google_id(google_id)
-        user.set_firstname(vorname)
-        user.set_lastname(nachname)
+        user.set_firstname(firstname)
+        user.set_lastname(lastname)
         user.set_nickname(nickname)
         user.set_email(email)
 
@@ -256,7 +256,7 @@ class Administration(object):
 ### Constraint-spezifische Methoden ###
 
     def create_constraint(self, style_id, constraint_type, attribute=None, constrain=None, val=None):
-        constraint = ConstraintRule(style_id, constraint_type, attribute, constrain, val)
+        constraint = Constraint(style_id, constraint_type, attribute, constrain, val)
         constraint(style_id)
         constraint.set_constraint_type(constraint_type)
         constraint.set_attribute(attribute)

@@ -1,49 +1,38 @@
 from abc import ABC, abstractmethod
+from src.main import clothing_item
+from src.server.bo.ClothingType import ClothingType
+from src.server.bo.Style import Style
+from src.server.bo.Outfit import Outfit
+from src.server.bo.ClothingItem import ClothingItem
 
 
-class ConstraintRule(ABC):
-    def __init__(self, style_id: id, constraint_type: str, condition, attribute, val):
-        self.style_id = style_id
-        self.constraint_type = constraint_type
-        self.attribute = attribute
-        self.condition = condition
-        self.val = val
+class Constraint(ABC):
+    def __init__(self):
+        self._constraint_id = int
 
     @abstractmethod
     def validate(self, *args, **kwargs):
         pass
 
-    def __str__(self):
-        return (
-            f"ConstraintRule: "
-            f"Style ID: {self.style_id}, "
-            f"Constraint Type: {self.constraint_type}, "
-            f"Condition: {self.condition}, "
-            f"Attribute: {self.attribute}, "
-            f"Value: {self.val}"
-        )
-
 
 # Unary Constraint
-class UnaryConstraint(ConstraintRule):
-    def __init__(self, style_id: int, reference_object_id: int, attribute: str, condition: str, val: str):
-        super().__init__(style_id, "unary", attribute, condition, val)
-        self.reference_object_id = reference_object_id
+class UnaryConstraint(Constraint):
+    def validate(self, outfit):
+        for item in outfit.items:
+            if item.clothing_type in outfit.style.get_clothing_type():
+                return True
+            else:
+                return False
 
-    def validate(self):
-        obj_value = getattr(self.reference_object_id, self.attribute)
-
-        if self.condition == "equal" and obj_value != self.val:
-            raise ValueError(f"Unary Constraint verletzt: {self.attribute} und {self.val} müssen gleich sein")
-
-        if self.condition == "not equal" and obj_value == self.val:
-            raise ValueError(f"Unary Constraint verletzt: {self.attribute} und {self.val} dürfen nicht gleich sein")
-
-        return True
+        # Outfit --> Style --> Constraints
+        # Typ Ebene Style und Typ
+        # Gegenstandsebene Item und Outfit
+        # An Style Constraints anhängen
+        # Integrität prüfen: Das, das und das ist enthalten. Das Outfit muss Style folgen
 
 
 # Binary
-class BinaryConstraint(ConstraintRule):
+class BinaryConstraint(Constraint):
     def __init__(self, style_id: int, object_1, object_2, attribute: str, condition: str, value: str):
         super().__init__(style_id, "binary", attribute, condition, value)
         self.object_1 = object_1
@@ -60,7 +49,7 @@ class BinaryConstraint(ConstraintRule):
 
 
 # Implication
-class ImplicationConstraint(ConstraintRule):
+class ImplicationConstraint(Constraint):
     def __init__(self, style_id: int, condition_a, condition_b):
         super().__init__(style_id, "implication", None, None, None)
         self.condition_a = condition_a
@@ -74,7 +63,7 @@ class ImplicationConstraint(ConstraintRule):
 
 
 # Mutex
-class MutexConstraint(ConstraintRule):
+class MutexConstraint(Constraint):
     def __init__(self, style_id: int, objects: list):
         super().__init__(style_id, "mutex", None, None, None)
         self.objects = objects
@@ -88,7 +77,7 @@ class MutexConstraint(ConstraintRule):
 
 
 # Cardinality
-class CardinalityConstraint(ConstraintRule):
+class CardinalityConstraint(Constraint):
     def __init__(self, style_id: int, objects: list, min_count: int, max_count: int):
         super().__init__(style_id, "cardinality", None, None, None)
         self.objects = objects
