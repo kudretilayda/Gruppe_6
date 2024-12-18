@@ -5,7 +5,7 @@ class Wardrobe(BusinessObject):
     def __init__(self):
         super().__init__()
         self._wardrobe_owner = 0
-        self._inhalt = []
+        self._content = []
         self._outfits = []
 
     def get_wardrobe_owner(self):
@@ -14,11 +14,11 @@ class Wardrobe(BusinessObject):
     def set_wardrobe_owner(self, user):
         self._wardrobe_owner = user
 
-    def get_inhalt(self):
-        return self._inhalt
+    def get_content(self):
+        return self._content
 
-    def set_inhalt(self, values):
-        self._inhalt = values
+    def set_content(self, values):
+        self._content = values
 
     def get_outfits(self):
         return self._outfits

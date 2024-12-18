@@ -5,42 +5,42 @@ class User (BusinessObject):
 
     def __init__(self):
         super().__init__()
-        self.__user_id = 0
-        self.__lastname = ""
-        self.__firstname = ""
-        self.__nickname = ""
-        self.__google_id = ""
-        self.__email = ""
+        self._user_id = 0
+        self._lastname = ""
+        self._firstname = ""
+        self._nickname = ""
+        self._google_id = ""
+        self._email = ""
 
     def get_user_id(self):
-        return self.__user_id
+        return self._user_id
 
     def set_user_id(self, value):
-        self.__user_id = value
+        self._user_id = value
 
     def get_lastname(self):
-        return self.__lastname
+        return self._lastname
 
     def set_lastname(self, lastname):
-        self.__lastname = lastname
+        self._lastname = lastname
 
     def get_firstname(self):
-        return self.__firstname
+        return self._firstname
 
     def set_firstname(self, firstname):
-        self.__firstname = firstname
+        self._firstname = firstname
 
     def get_nickname(self):
-        return self.__nickname
+        return self._nickname
 
     def set_nickname(self, value):
-        self.__nickname = value
+        self._nickname = value
 
     def get_google_id(self):
-        return self.__google_id
+        return self._google_id
 
     def set_google_id(self, value):
-        self.__google_id = value
+        self._google_id = value
 
     def get_email(self):
         return self.__email

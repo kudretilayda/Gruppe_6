@@ -1,13 +1,12 @@
+#TypEbene
+
 from src.server.bo.BusinessObject import BusinessObject
 
-
 class ClothingType(BusinessObject):
-    def __init__(self, name: str, usage: str):
+    def __init__(self, name: str = "", usage: str= ""):
         super().__init__()
         self._id = None
         self._name = name
-        self.name = None
-        self.usage = None
         self._usage = usage
 
     def get_id(self):
@@ -33,11 +32,9 @@ class ClothingType(BusinessObject):
 
 
     @staticmethod
-    def from_dict(dictionary=None):
-        if dictionary is None:
-            dictionary = dict()
+    def from_dict(dictionary=dict()):
         obj = ClothingType()
-        obj.set_id(dictionary.get("clothing_type_id", 0))
-        obj.set_name(dictionary.get("clothing_type_name", ""))
-        obj.set_usage(dictionary.get("clothing_type_usage", ""))
+        obj.set_id(dictionary.get("id", 0))
+        obj.set_name(dictionary.get("name", ""))
+        obj.set_usage(dictionary.get("usage", ""))
         return obj
