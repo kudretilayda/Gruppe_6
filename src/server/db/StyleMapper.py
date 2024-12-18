@@ -68,4 +68,28 @@ class StyleMapper(Mapper):
         cursor.close()
         return style
 
-    
+    def update(self, style):
+        """Aktualisiert einen Style"""
+        cursor = self._cnx.cursor()
+
+        # Style-Basisdaten aktualisieren
+        command = "UPDATE style SET name=%s WHERE id=%s"
+        cursor.execute(command, (style.get_name(), style.get_id()))
+
+        # Clothing Types aktualisieren
+        # Zunächst alle bestehenden Verknüpfungen löschen
+        command = "DELETE FROM style_clothing_type WHERE style_id=%s"
+        cursor.execute(command, (style.get_id(),))
+
+        # Dann neue Verknüpfungen einfügen
+        for clothing_type in style.get_clothing_types():
+            command = """INSERT INTO style_clothing_type 
+                        (style_id, clothing_type_id) 
+                        VALUES (%s, %s)"""
+            cursor.execute(command, (style.get_id(), clothing_type.get_id()))
+
+        # Constraints aktualisieren würde über ConstraintMapper erfolgen
+
+        self._cnx.commit()
+        cursor.close()
+        return style
