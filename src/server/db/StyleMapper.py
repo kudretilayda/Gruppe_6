@@ -93,3 +93,8 @@ class StyleMapper(Mapper):
         self._cnx.commit()
         cursor.close()
         return style
+
+
+"Speichern und Laden von Styles"
+"Verwaltung der Beziehungen zu ClothingTypes"
+"Integration mit dem ConstraintMapper"
