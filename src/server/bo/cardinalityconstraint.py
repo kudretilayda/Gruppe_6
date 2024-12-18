@@ -1,22 +1,21 @@
-class kleidungsstueck:
-    def __init__(self, name, selected=False):
-        self.name= name
+class Kleidungsstück:
+    def init(self, name, selected=False):
+        self.name = name
         self.selected = selected
 
-    def is_select(self):
+    def is_selected(self):
         return self.selected
 
-class cardinalityconstraint:
-    def __init__(self, style_id, objects, min_count, max_count):
-        self.style_id = style_id
+
+class CardinalityConstraint:
+    def init(self, style_id, objects, min_count, max_count):
         self.objects = objects
         self.min_count = min_count
         self.max_count = max_count
 
-
     def validate(self):
-        selected_count = sum(obj.is_selected()
-            for obj in self.objects)
+        selected_count = sum(obj.is_selected() for obj in self.objects)
+
 
         if not (self.min_count <= selected_count <= self.max_count):
             print(f"Fehler: Es sind {selected_count} Objekte ausgewählt.")
@@ -27,8 +26,9 @@ class cardinalityconstraint:
             print("Anzahl der ausgewählten Objekte ist korrekt.")
             return True
 
-anzugshose = kleidungsstueck("anzugshose", selected=True)
-hose = kleidungsstueck("hose", selected=False)
+
+anzugshose = Kleidungsstück("anzugshose", selected=True)
+hose = Kleidungsstück("hose", selected=False)
 
 
-constraint = cardinalityconstraint(1, [anzugshose, hose], 1, 1)
+constraint = CardinalityConstraint(1, [anzugshose, hose], 1, 1)
