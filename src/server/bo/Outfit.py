@@ -17,10 +17,10 @@ class Outfit(BusinessObject):
         self._outfit_id = outfit_id
 
     def get_items(self):
-        return self._item
+        return self.item
 
     def set_items(self, item):
-        self.item = item
+        self.item.append(item)
 
     def get_style(self):
         return self.style
@@ -35,7 +35,7 @@ class Outfit(BusinessObject):
         self._outfit_name = outfit_name
 
     def __str__(self):
-        return "Outfit: {}, {}, {}".format(self._outfit_id, self.item, self.style())
+        return "Outfit: {}, {}, {}".format(self._outfit_id, self.item, self.style)
 
     @staticmethod
     def from_dict(dictionary=dict(), style_instance=None):

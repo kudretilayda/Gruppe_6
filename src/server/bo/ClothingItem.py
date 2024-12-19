@@ -7,7 +7,7 @@ class ClothingItem(BusinessObject):
         super().__init__()
         self._item_id = 0
         self._wardrobe_id = 0
-        self._item_name = ""
+        self.item_name = ""
         self.clothing_type = None
         self.selected = False
 
@@ -24,10 +24,10 @@ class ClothingItem(BusinessObject):
         self.clothing_type = clothing_type
 
     def get_item_name(self):
-        return self._item_name
+        return self.item_name
 
     def set_item_name(self, item_name: str):
-        self._item_name = item_name
+        self.item_name = item_name
 
     def set_wardrobe_id(self, wardrobe_id):
         self._wardrobe_id = wardrobe_id

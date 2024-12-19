@@ -17,4 +17,5 @@ class BinaryConstraint(Constraint):
         if a and b:
             return True
         else:
+            print(f'{self.item_1.item_name} hat nicht denselben Style wie {self.item_2.item_name}')
             return False
