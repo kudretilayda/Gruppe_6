@@ -5,18 +5,21 @@ from src.server.db.ClothingTypeMapper import ClothingTypeMapper
 from src.server.db.StyleMapper import StyleMapper
 from src.server.db.OutfitMapper import OutfitMapper
 from src.server.db.ConstraintMapper import ConstraintMapper
+
 from src.server.bo.User import User
 from src.server.bo.Wardrobe import Wardrobe
 from src.server.bo.ClothingItem import ClothingItem
 from src.server.bo.ClothingType import ClothingType
 from src.server.bo.Style import Style
 from src.server.bo.Outfit import Outfit
-from src.server.bo.Constraints.Constraint import (
-    UnaryConstraint,
-    BinaryConstraint,
-    ImplicationConstraint,
-    MutexConstraint,
-    CardinalityConstraint, Constraint)
+
+from src.server.bo.Constraints.Constraint import Constraint
+from src.server.bo.Constraints.Unary import UnaryConstraint
+from src.server.bo.Constraints.Binary import BinaryConstraint
+from src.server.bo.Constraints.Implication import ImplicationConstraint
+from src.server.bo.Constraints.Cardinality import CardinalityConstraint
+from src.server.bo.Constraints.Mutex import MutexConstraint
+
 
 
 class Admin(object):
