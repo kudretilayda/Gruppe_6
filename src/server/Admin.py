@@ -11,7 +11,7 @@ from src.server.bo.ClothingItem import ClothingItem
 from src.server.bo.ClothingType import ClothingType
 from src.server.bo.Style import Style
 from src.server.bo.Outfit import Outfit
-from src.server.bo.Constraints import (
+from src.server.bo.Constraints.Constraint import (
     UnaryConstraint,
     BinaryConstraint,
     ImplicationConstraint,

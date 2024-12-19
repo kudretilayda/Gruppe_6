@@ -2,19 +2,14 @@ from flask import Flask
 from flask_cors import CORS
 from flask_restx import Api, Resource, fields
 
-from src.server.Admin import Admin
-from src.server.bo.User import User
-from src.server.bo.Wardrobe import Wardrobe
-from src.server.bo.Style import Style
-from src.server.bo.Outfit import Outfit
-from src.server.bo.ClothingItem import ClothingItem
-from src.server.bo.ClothingType import ClothingType
-from src.server.bo.Constraints import (BinaryConstraint,
-                                       UnaryConstraint,
-                                       CardinalityConstraint,
-                                       MutexConstraint,
-                                       ImplicationConstraint)
-import traceback
+from server.Admin import Admin
+from server.bo.User import User
+from server.bo.Wardrobe import Wardrobe
+from server.bo.Style import Style
+from server.bo.Outfit import Outfit
+from server.bo.ClothingItem import ClothingItem
+from server.bo.ClothingType import ClothingType
+from src.server.bo.Constraints import Binary, Unary, CardinalityConstraint, MutexConstraint, ImplicationConstraint
 from SecurityDecorator import secured
 
 app = Flask(__name__)

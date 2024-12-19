@@ -1,3 +1,5 @@
+# Evtl. nicht nötig. Wird gelöscht.
+
 class RuleEngine:
 
     # Eine Klasse zur Verwaltung von Constraints. Diese Klasse wird nicht in der DB abgebildet

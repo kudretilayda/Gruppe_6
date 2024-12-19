@@ -7,8 +7,8 @@ class Style (BusinessObject):
         super().__init__()
         self._style_id = int
         self._style_features = ""
-        self._style_constraints = []
-        self._clothing_type = []
+        self.style_constraints = []
+        self.clothing_type = []
     
     def get_style_id(self):
         return self._style_id
@@ -23,25 +23,25 @@ class Style (BusinessObject):
         self._style_features = features
 
     def get_style_constraints(self):
-        return self._style_constraints
+        return self.style_constraints
 
-    def set_style_constraints(self, constraints: list):
-        self._style_constraints = constraints
+    def set_style_constraints(self, constraint):
+        self.style_constraints.append(constraint)
 
     def get_clothing_type(self):
-        return self._clothing_type
+        return self.clothing_type
 
-    def set_clothing_type(self, clothing_type: list):
-        self._clothing_type  = clothing_type
+    def set_clothing_type(self, clothing_type):
+        self.clothing_type.append(clothing_type)
 
     def __str__(self):
         return "Style: {}, {}, {}, {}".format(self._style_id,
                                               self._style_features,
-                                              self._style_constraints,
-                                              self._clothing_type)
+                                              self.style_constraints,
+                                              self.clothing_type)
 
     def validate(self):
-        for constraint in self._style_constraints:
+        for constraint in self.style_constraints:
             if constraint.validate():
                 return True
             else:
