@@ -82,3 +82,7 @@ hose.name = 'Hose'
 hose.selected = True
 cardinality_constraint = CardinalityConstraint([anzughose], 1, 1)
 print(cardinality_constraint.validate(), '\n')
+
+# Mutex
+print('Mutex Constraint:')
+print('\n')
