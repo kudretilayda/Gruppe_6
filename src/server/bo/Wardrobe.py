@@ -5,7 +5,7 @@ class Wardrobe(BusinessObject):
     def __init__(self):
         super().__init__()
         self._wardrobe_owner = 0
-        self._inhalt = []
+        self._items = []
         self._outfits = []
 
     def get_wardrobe_owner(self):
@@ -15,10 +15,10 @@ class Wardrobe(BusinessObject):
         self._wardrobe_owner = user
 
     def get_inhalt(self):
-        return self._inhalt
+        return self._items
 
     def set_inhalt(self, values):
-        self._inhalt = values
+        self._items = values
 
     def get_outfits(self):
         return self._outfits
@@ -26,10 +26,6 @@ class Wardrobe(BusinessObject):
     def set_outfits(self, values):
         self._outfits = values
 
-    @staticmethod
-    def from_dict(dictionary=dict()):
-        obj = Wardrobe()
-        
-        #ergänzen
-
-        return obj
+    @classmethod
+    def from_dict(cls, payload):
+        pass

@@ -5,13 +5,60 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0b36f84f-6ad4-4404-a25a-055e1c7ce6fe" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/frontend/src/api/api.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/security/SecurityDecorator.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/api/BinaryConstraintAPI.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/api/ClothingItemsAPI.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/api/ConstraintAPI.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/api/ImplicationConstraintAPI.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/api/MutexConstraintAPI.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/api/OutfitAPI.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/api/StyleAPI.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/api/UnaryConstraint.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/api/UserAPI.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/api/Wardrobe.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/api/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/bo/Constraints/Binary.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/bo/Constraints/Cardinality.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/bo/Constraints/Constraint.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/bo/Constraints/Constraint_Test.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/bo/Constraints/Implication.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/bo/Constraints/Mutex.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/bo/Constraints/Unary.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/services/BinaryConstraintService.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/services/ClothingItemsService.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/services/ConstraintService.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/services/ImplicationConstraintService.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/services/MutexConstraintService.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/services/OutfitService.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/services/StyleService.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/services/UnaryConstraintService.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/services/UserService.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/services/WardrobeService.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/api/BinaryConstraintBO.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/api/CardinalityConstraintBO.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/api/ConstraintBO.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/api/ImplicationConstraintBO.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/api/KleidungsstueckBO.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/api/KleidungstypBO.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/api/MutexConstraintBO.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/api/OutfitBO.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/api/StyleBO.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/api/UnaryConstraintBO.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/api/UserBO.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/SecurityDecorator.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/SecurityDecorator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server/Admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/Admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server/bo/ClothingItem.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/bo/ClothingItem.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/bo/ClothingType.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/bo/ClothingType.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/bo/Constraint_Test.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/bo/Constraint_Test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server/bo/Constraints.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/bo/Constraints.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server/bo/Outfit.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/bo/Outfit.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server/bo/RuleEngine.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/bo/Constraints/RuleEngine.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server/bo/Style.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/bo/Style.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server/bo/User.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/bo/User.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server/bo/Wardrobe.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/bo/Wardrobe.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server/db/ConstraintMapper.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/db/ConstraintMapper.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,7 +121,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "Sertan",
+    "git-widget-placeholder": "Merging Sertan",
     "last_opened_file_path": "C:/Users/serta/Documents/GitHub/Gruppe_6/src/server/db",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",

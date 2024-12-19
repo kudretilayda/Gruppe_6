@@ -1,5 +1,5 @@
 from src.server.db.Mapper import Mapper
-from src.server.bo.Constraints import (
+from src.server.bo.Constraints.Constraint import (
     UnaryConstraint,
     BinaryConstraint,
     ImplicationConstraint,
