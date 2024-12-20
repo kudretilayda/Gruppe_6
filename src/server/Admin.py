@@ -4,7 +4,12 @@ from src.server.db.ClothingItemMapper import ClothingItemMapper
 from src.server.db.ClothingTypeMapper import ClothingTypeMapper
 from src.server.db.StyleMapper import StyleMapper
 from src.server.db.OutfitMapper import OutfitMapper
-from src.server.db.ConstraintMapper import
+
+from src.server.db.ConstraintMapper.UnaryMapper import UnaryConstraintMapper
+from src.server.db.ConstraintMapper.BinaryMapper import BinaryConstraintMapper
+from src.server.db.ConstraintMapper.ImplicationMapper import ImplicationConstraintMapper
+from src.server.db.ConstraintMapper.CardinalityMapper import CardinalityConstraintMapper
+from src.server.db.ConstraintMapper.MutexMapper import MutexConstraintMapper
 
 from src.server.bo.User import User
 from src.server.bo.Wardrobe import Wardrobe
@@ -12,6 +17,7 @@ from src.server.bo.ClothingItem import ClothingItem
 from src.server.bo.ClothingType import ClothingType
 from src.server.bo.Style import Style
 from src.server.bo.Outfit import Outfit
+from src.server.bo.Constraints.RuleEngine import RuleEngine
 
 from src.server.bo.Constraints.Constraint import Constraint
 from src.server.bo.Constraints.Unary import UnaryConstraint
@@ -258,9 +264,9 @@ class Admin(object):
 
 ### Constraint-spezifische Methoden ###
 
-    def create_constraint(self, style_id, constraint_type, attribute=None, constrain=None, val=None):
-        constraint = Constraint(style_id, constraint_type, attribute, constrain, val)
-        constraint(style_id)
+    def create_constraint(self):
+        constraint = Constraint()
+        constraint()
         constraint.set_constraint_type(constraint_type)
         constraint.set_attribute(attribute)
         constraint.set_constrain(constrain)

@@ -5,17 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0b36f84f-6ad4-4404-a25a-055e1c7ce6fe" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/server/db/ConstraintMapper/BinaryMapper.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/db/ConstraintMapper/CardinalityMapper.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/db/ConstraintMapper/ImplicationMapper.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/db/ConstraintMapper/MutexMapper.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/db/ConstraintMapper/UnaryMapper.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0ba7c31d-66a9-426f-a9cb-112c76a75293.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/0ba7c31d-66a9-426f-a9cb-112c76a75293.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mysql/mysql-dump.sql" beforeDir="false" afterPath="$PROJECT_DIR$/mysql/mysql-dump.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server/Admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/Admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/db/ConstraintMapper.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
