@@ -4,7 +4,7 @@ from src.server.db.ClothingItemMapper import ClothingItemMapper
 from src.server.db.ClothingTypeMapper import ClothingTypeMapper
 from src.server.db.StyleMapper import StyleMapper
 from src.server.db.OutfitMapper import OutfitMapper
-from src.server.db.ConstraintMapper import ConstraintMapper
+from src.server.db.ConstraintMapper import
 
 from src.server.bo.User import User
 from src.server.bo.Wardrobe import Wardrobe
