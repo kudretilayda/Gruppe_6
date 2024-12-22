@@ -1,72 +1,61 @@
-#TypEbene
-
 from src.server.bo.BusinessObject import BusinessObject
-from ClothingType import ClothingType
-from Constraints import Constraint
-from Outfit import Outfit
-from typing import List
 
-class Style(BusinessObject):
-    def __init__(self, name: str = ""):
+
+class Style (BusinessObject):
+
+    def __init__(self):
         super().__init__()
-        self._style_id = None
-        self._name = name  #Verwende den Namen aus BusinessObject
-        self._features = []  #Liste von Features
-        self._constraints = []  #Liste von Constraints
-        self._clothing_types = []  #Liste von ClothingType-Objekten
-
-    def get_style_id(self) -> int:
+        self._style_id = int
+        self._style_features = ""
+        self.style_constraints = []
+        self.clothing_type = []
+    
+    def get_style_id(self):
         return self._style_id
 
     def set_style_id(self, style_id: int):
         self._style_id = style_id
 
-    def get_name(self):
-        return self._name
+    def get_style_features(self):
+        return self._style_features
 
-    def set_name(self, param):
-        self._name = param
+    def set_style_features(self, features: str):
+        self._style_features = features
 
-    def add_clothing_type(self, clothing_type: 'ClothingType'):
-        """Fügt einen ClothingType zum Style hinzu"""
-        if clothing_type not in self._clothing_types:
-            self._clothing_types.append(clothing_type)
+    def get_style_constraints(self):
+        return self.style_constraints
 
-    def remove_clothing_type(self, clothing_type: 'ClothingType'):
-        """Entfernt einen ClothingType aus dem Style"""
-        if clothing_type in self._clothing_types:
-            self._clothing_types.remove(clothing_type)
+    def set_style_constraints(self, constraint):
+        self.style_constraints.append(constraint)
 
-    def add_constraint(self, constraint: 'Constraint'):
-        """Fügt einen Constraint zum Style hinzu"""
-        if constraint not in self._constraints:
-            self._constraints.append(constraint)
+    def get_clothing_type(self):
+        return self.clothing_type
 
-    def remove_constraint(self, constraint: 'Constraint'):
-        """Entfernt einen Constraint aus dem Style"""
-        if constraint in self._constraints:
-            self._constraints.remove(constraint)
+    def set_clothing_type(self, clothing_type):
+        self.clothing_type.append(clothing_type)
 
-    def validate_outfit(self, outfit: 'Outfit') -> bool:
-        #Prüfe erlaubte Kleidungstypen
-        for item in outfit.get_items():
-            if item.get_type() not in self._clothing_types:
+    def __str__(self):
+        return "Style: {}, {}, {}, {}".format(self._style_id,
+                                              self._style_features,
+                                              self.style_constraints,
+                                              self.clothing_type)
+
+    def validate(self):
+        for constraint in self.style_constraints:
+            if constraint.validate():
+                return True
+            else:
                 return False
-        #Prüfe alle Constraints
-        return all(constraint.validate(outfit) for constraint in self._constraints)
 
-    def get_constraints(self) -> List['Constraint']:
-        return self._constraints
-
-    def get_clothing_types(self) -> List['ClothingType']:
-        return self._clothing_types
 
     @staticmethod
-    def from_dict(dictionary=dict()):
+    def from_dict(dictionary=None):
+        
+        if dictionary is None:
+            dictionary = dict()
         obj = Style()
         obj.set_style_id(dictionary.get("style_id", 0))
-        obj.set_name(dictionary.get("name", ""))
-        obj.__features = dictionary.get("features", [])
-        obj.__constraints = dictionary.get("constraints", [])
-        obj.__clothing_types = dictionary.get("clothing_types", [])
+        obj.set_style_features(dictionary.get("style_features", ""))
+        obj.set_style_constraints(dictionary.get("style_constraints", []))
+        obj.set_clothing_type(dictionary.get("clothing_type", []))
         return obj

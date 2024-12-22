@@ -43,10 +43,10 @@ class User (BusinessObject):
         self._google_id = value
 
     def get_email(self):
-        return self.__email
+        return self._email
 
     def set_email(self, value):
-        self.__email = value
+        self._email = value
 
     def __str__(self):
         return "User: {}, {}, {}, {}".format(self.get_user_id(), self.get_lastname(), self.get_email(), self.get_firstname())

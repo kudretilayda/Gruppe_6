@@ -9,8 +9,7 @@ from server.bo.Style import Style
 from server.bo.Outfit import Outfit
 from server.bo.ClothingItem import ClothingItem
 from server.bo.ClothingType import ClothingType
-from server.bo.Constraints import Constraints, BinaryConstraint, UnaryConstraint, CardinalityConstraint, MutexConstraint, ImplicationConstraint
-import traceback
+from src.server.bo.Constraints import Binary, Unary, CardinalityConstraint, MutexConstraint, ImplicationConstraint
 from SecurityDecorator import secured
 
 app = Flask(__name__)
@@ -110,7 +109,7 @@ class UserListOperations(Resource):
     def get(self):
         """Get all users"""
         adm = Admin()
-        users = adm.get_all_user()
+        users = adm.get_all_users()
         return user
 
     @wardrobe_ns.marshal_with(user, code=200)
@@ -175,7 +174,7 @@ class UserWardrobeOperations(Resource):
     def get(self, user_id):
         """Get the wardrobe of a user"""
         adm = Admin()
-        wardrobe = adm.get_wardrobe_by_user(user_id)
+        wardrobe = adm.get_wardrobe_by_user_id(user_id)
         return wardrobe
 
     @wardrobe_ns.marshal_with(wardrobe, code=200)
@@ -250,8 +249,7 @@ class ClothingListOperations(Resource):
         proposal = ClothingItem.from_dict(api.payload)
         if proposal is not None:
             item = adm.create_clothing_item(proposal.get_wardrobe_id(), proposal.get_clothing_type_id(),
-                                            proposal.get_clothing_item_name(), proposal.get_color(),
-                                            proposal.get_brand(), proposal.get_season())
+                                            proposal.get_clothing_item_name())
             return item, 200
         else:
             return '', 500
@@ -448,7 +446,7 @@ class UserClothingItemsOperations(Resource):
         adm = Admin()
         user = adm.get_user_by_id(user_id)
         if user is not None:
-            items = adm.get_clothing_items_by_user(user)
+            items = adm.get_clothing_type_by_id(user)
             return items
         else:
             return "User not found", 500

@@ -1,21 +1,35 @@
-from server.db.UserMapper import UserMapper
-from server.db.WardrobeMapper import WardrobeMapper
-from server.db.ClothingItemMapper import ClothingItemMapper
-from server.db.ClothingTypeMapper import ClothingTypeMapper
-from server.db.StyleMapper import StyleMapper
-from server.db.OutfitMapper import OutfitMapper
-from server.db.ConstraintMapper import ConstraintMapper
-from server.bo.User import User
-from server.bo.Wardrobe import Wardrobe
-from server.bo.ClothingItem import ClothingItem
-from server.bo.ClothingType import ClothingType
-from server.bo.Style import Style
-from server.bo.Outfit import Outfit
-from server.bo.Constraints import Constraints, BinaryConstraint, UnaryConstraint, CardinalityConstraint, MutexConstraint, ImplicationConstraint
+from src.server.db.UserMapper import UserMapper
+from src.server.db.WardrobeMapper import WardrobeMapper
+from src.server.db.ClothingItemMapper import ClothingItemMapper
+from src.server.db.ClothingTypeMapper import ClothingTypeMapper
+from src.server.db.StyleMapper import StyleMapper
+from src.server.db.OutfitMapper import OutfitMapper
+
+from src.server.db.ConstraintMapper.UnaryMapper import UnaryConstraintMapper
+from src.server.db.ConstraintMapper.BinaryMapper import BinaryConstraintMapper
+from src.server.db.ConstraintMapper.ImplicationMapper import ImplicationConstraintMapper
+from src.server.db.ConstraintMapper.CardinalityMapper import CardinalityConstraintMapper
+from src.server.db.ConstraintMapper.MutexMapper import MutexConstraintMapper
+
+from src.server.bo.User import User
+from src.server.bo.Wardrobe import Wardrobe
+from src.server.bo.ClothingItem import ClothingItem
+from src.server.bo.ClothingType import ClothingType
+from src.server.bo.Style import Style
+from src.server.bo.Outfit import Outfit
+from src.server.bo.Constraints.RuleEngine import RuleEngine
+
+from src.server.bo.Constraints.Constraint import Constraint
+from src.server.bo.Constraints.Unary import UnaryConstraint
+from src.server.bo.Constraints.Binary import BinaryConstraint
+from src.server.bo.Constraints.Implication import ImplicationConstraint
+from src.server.bo.Constraints.Cardinality import CardinalityConstraint
+from src.server.bo.Constraints.Mutex import MutexConstraint
+
 
 
 class Admin(object):
-    """Diese Klasse aggregiert nahezu sämtliche Applikationslogik (engl. Business Logic).
+    """Diese Klasse aggregiert nahezu sämtliche Applikationslogik.
     Sie ist wie eine Spinne, die sämtliche Zusammenhänge in ihrem Netz (in unserem
     Fall die Daten der Applikation) überblickt und für einen geordneten Ablauf und
     dauerhafte Konsistenz der Daten und Abläufe sorgt.
@@ -35,87 +49,77 @@ class Admin(object):
     def __init__(self):
         pass
 
-#### User-spezifische Methoden ####
-   
-    def create_user(self, user_id, google_id, vorname="", nachname="", nickname="", email=""):
+### User ###
+
+    def create_user(self, firstname, lastname, nickname, email, google_id):
         user = User()
-        user.set_user_id(user_id)
-        user.set_google_id(google_id)
-        user.set_vorname(vorname)
-        user.set_nachname(nachname)
+        user.set_firstname(firstname)
+        user.set_lastname(lastname)
         user.set_nickname(nickname)
         user.set_email(email)
+        user.set_google_id(google_id)
 
         with UserMapper() as mapper:
             return mapper.insert(user)
-    
-  
-    def get_user_by_id(self, user_id):
-        """Den User mit gegebener ID ausgeben."""
-        with UserMapper() as mapper:
-            return mapper.find_by_id(user_id)
-
-    def get_user_by_google_id(self, google_id):
-        """Den User mit der gegebenen google_id ausgeben."""
-        with UserMapper() as mapper:
-            return mapper.find_user_by_google_id(google_id)
-
-    def get_user_by_vorname(self, vorname):
-        """Alle User mit dem Vornamen auslesen."""
-        with UserMapper() as mapper:
-            return mapper.find_user_by_vorname(vorname)
-
-    def get_user_by_nachname(self, nachname):
-        """Alle User mit dem Nachnamen auslesen."""
-        with UserMapper() as mapper:
-            return mapper.find_user_by_nachname(nachname)
-
-    def get_user_by_nickname(self, nickname):
-        """Alle User mit dem Nickname auslesen."""
-        with UserMapper() as mapper:
-            return mapper.find_user_by_nickname(nickname)
-
-    def get_user_by_email(self, email):
-        """Alle User mit gegebener E-Mail-Adresse auslesen."""
-        with UserMapper() as mapper:
-            return mapper.find_user_by_email(email)
 
     def get_all_users(self):
-        """Alle User ausgeben."""
         with UserMapper() as mapper:
             return mapper.find_all()
+
+    def get_user_by_id(self, user_id):
+        with UserMapper() as mapper:
+            return mapper.find_by_key(user_id)
+
+    def get_user_by_google_id(self, google_id):
+        with UserMapper() as mapper:
+            return mapper.find_by_google_id(google_id)
     
     def change_user(self, user):
-        """Den gegebenen User ändern."""
         with UserMapper() as mapper:
             return mapper.update(user)
     
     def save_user(self, user):
-        """Den gegebenen Benutzer speichern."""
         with UserMapper() as mapper:
-            mapper.update(user)
+            mapper.insert(user)
 
     def delete_user(self, user):
-        """Den gegebenen Benutzer aus unserem System löschen."""
         with UserMapper() as mapper:
             mapper.delete(user)
 
-### Wardrobe spezifische Methoden ###
+# existiert nicht
+    '''
+    def get_user_by_firstname(self, firstname):
+        with UserMapper() as mapper:
+            return mapper.f(firstname)
+
+    def get_user_by_lastname(self, lastname):
+        with UserMapper() as mapper:
+            return mapper.find_user_by_lastname(lastname)
+
+    def get_user_by_nickname(self, nickname):
+        with UserMapper() as mapper:
+            return mapper.find_user_by_nickname(nickname)
+
+    def get_user_by_email(self, email):
+        with UserMapper() as mapper:
+            return mapper.find_by_email(email)'''
+
+### Wardrobe ###
 
     def create_wardrobe(self, user_id):
         wardrobe = Wardrobe()
-        wardrobe.set_user_id(user_id)
+        wardrobe.set_wardrobe_owner(user_id)
 
         with WardrobeMapper() as mapper:
             return mapper.insert(wardrobe)
 
     def get_wardrobe_by_id(self, wardrobe_id):
         with WardrobeMapper() as mapper:
-            return mapper.find_by_id(wardrobe_id)
+            return mapper.find_by_key(wardrobe_id)
 
     def get_wardrobe_by_user_id(self, user_id):
         with WardrobeMapper() as mapper:
-            return mapper.find_by_user_id(user_id)
+            return mapper.find_by_person_id(user_id)
 
     def get_all_wardrobes(self):
         with WardrobeMapper() as mapper:
@@ -131,39 +135,32 @@ class Admin(object):
             mapper.delete(wardrobe)
 
  
- ### ClothingItem-spezifische Methoden ###
+ ### ClothingItem ###
 
-    def create_clothing_item(self, wardrobe_id, clothing_type_id, clothing_item_name, color=None, brand=None, season=None):
+    def create_clothing_item(self, wardrobe_id, clothing_type_id, clothing_item_name):
         clothing_item = ClothingItem()
         clothing_item.set_wardrobe_id(wardrobe_id)
-        clothing_item.set_clothing_type_id(clothing_type_id)
-        clothing_item.set_clothing_item_name(clothing_item_name)
-        clothing_item.set_color(color)
-        clothing_item.set_brand(brand)
-        clothing_item.set_season(season)
+        clothing_item.set_clothing_type(clothing_type_id)
+        clothing_item.set_item_name(clothing_item_name)
 
         with ClothingItemMapper() as mapper:
             return mapper.insert(clothing_item)
-
-    def get_clothing_item_by_id(self, clothing_item_id):
-        with ClothingItemMapper() as mapper:
-            return mapper.find_by_id(clothing_item_id)
-
-    def get_clothing_items_by_wardrobe_id(self, wardrobe_id):
-        with ClothingItemMapper() as mapper:
-            return mapper.find_by_wardrobe_id(wardrobe_id)
 
     def get_all_clothing_items(self):
         with ClothingItemMapper() as mapper:
             return mapper.find_all()
 
+    def get_clothing_item_by_id(self, clothing_item_id):
+        with ClothingItemMapper() as mapper:
+            return mapper.find_by_key(clothing_item_id)
+
+    def get_clothing_items_by_wardrobe_id(self, wardrobe_id):
+        with ClothingItemMapper() as mapper:
+            return mapper.find_by_wardrobe_id(wardrobe_id)
+
     def save_clothing_item(self, clothing_item):
         with ClothingItemMapper() as mapper:
             mapper.update(clothing_item)
-
-    def post_clothing_item(self, clothing_item):
-        with ClothingItemMapper() as mapper:
-            mapper.post(clothing_item)
 
     def delete_clothing_item(self, clothing_item):
         with ClothingItemMapper() as mapper:
@@ -171,12 +168,12 @@ class Admin(object):
             self._cleanup_clothing_item_references(clothing_item)
             mapper.delete(clothing_item)
 
-### ClothingType-spezifische Methoden ###
+### ClothingType ###
 
     def create_clothing_type(self, type_name, type_usage):
         clothing_type = ClothingType()
-        clothing_type.set_type_name(type_name)
-        clothing_type.set_type_usage(type_usage)
+        clothing_type.set_name(type_name)
+        clothing_type.set_usage(type_usage)
 
         with ClothingTypeMapper() as mapper:
             return mapper.insert(clothing_type)
@@ -218,12 +215,12 @@ class Admin(object):
             mapper.delete(style)
 
 
-### Outfit-spezifische Methoden ###
+### Outfit ###
     
     def create_outfit(self, outfit_name, style_id):
         outfit = Outfit()
         outfit.set_outfit_name(outfit_name)
-        outfit.set_style_id(style_id)
+        outfit.set_style(style_id)
 
         with OutfitMapper() as mapper:
             return mapper.insert(outfit)
@@ -257,123 +254,118 @@ class Admin(object):
             mapper.delete(outfit)
 
 ### Constraint-spezifische Methoden ###
-    
-    def create_constraint(self, style_id, constraint_type, attribute=None, constrain=None, val=None):
-        constraint = constraint()
-        constraint.set_style_id(style_id)
-        constraint.set_constraint_type(constraint_type)
-        constraint.set_attribute(attribute)
-        constraint.set_constrain(constrain)
-        constraint.set_val(val)
 
-        with ConstraintMapper() as mapper:
+    def create_unary_constraint(self):
+        constraint = UnaryConstraint()
+
+        with UnaryConstraintMapper() as mapper:
             return mapper.insert(constraint)
 
-    def create_binary_constraint(self, style_id, reference_object1_id, reference_object2_id):
-        binary_constraint = BinaryConstraint()
-        binary_constraint.set_style_id(style_id)
-        binary_constraint.set_reference_object1_id(reference_object1_id)
-        binary_constraint.set_reference_object2_id(reference_object2_id)
+    def create_binary_constraint(self, item_1, item_2):
+        constraint = BinaryConstraint(item_1, item_2)
 
-        with ConstraintMapper() as mapper:
-            return mapper.insert(binary_constraint)
+        with BinaryConstraintMapper() as mapper:
+            return mapper.insert(constraint)
 
-    def create_unary_constraint(self, style_id, reference_object_id, attribute, constrain, val):
-        unary_constraint = UnaryConstraint()
-        unary_constraint.set_style_id(style_id)
-        unary_constraint.set_reference_object_id(reference_object_id)
-        unary_constraint.set_attribute(attribute)
-        unary_constraint.set_constrain(constrain)
-        unary_constraint.set_val(val)
+    def create_implication_constraint(self, if_type, then_type):
+        constraint = ImplicationConstraint(if_type, then_type)
 
-        with ConstraintMapper() as mapper:
-            return mapper.insert(unary_constraint)
+        with ImplicationConstraintMapper() as mapper:
+            return mapper.insert(constraint)
 
-    def create_cardinality_constraint(self, style_id, item_type, min_count, max_count):
-        cardinality_constraint = CardinalityConstraint()
-        cardinality_constraint.set_style_id(style_id)
-        cardinality_constraint.set_item_type(item_type)
-        cardinality_constraint.set_min_count(min_count)
-        cardinality_constraint.set_max_count(max_count)
+    def create_cardinality_constraint(self, objects, min_count, max_count):
+        constraint = CardinalityConstraint(objects, min_count, max_count)
 
-        with ConstraintMapper() as mapper:
-            return mapper.insert(cardinality_constraint)
+        with CardinalityConstraintMapper() as mapper:
+            return mapper.insert(constraint)
 
-    def create_mutex_constraint(self, style_id, item_type_1, item_type_2):
-        mutex_constraint = MutexConstraint()
-        mutex_constraint.set_style_id(style_id)
-        mutex_constraint.set_item_type_1(item_type_1)
-        mutex_constraint.set_item_type_2(item_type_2)
+    def create_mutex_constraint(self, mutex):
+        constraint = MutexConstraint(mutex)
 
-        with ConstraintMapper() as mapper:
-            return mapper.insert(mutex_constraint)
+        with MutexConstraintMapper() as mapper:
+            return mapper.insert(constraint)
 
-    def create_implication_constraint(self, style_id, if_type, then_type):
-        implication_constraint = ImplicationConstraint()
-        implication_constraint.set_style_id(style_id)
-        implication_constraint.set_if_type(if_type)
-        implication_constraint.set_then_type(then_type)
+    def save_constraint(self, constraint):
+        mapper_class = {
+            UnaryConstraint: UnaryConstraintMapper,
+            BinaryConstraint: BinaryConstraintMapper,
+            ImplicationConstraint: ImplicationConstraintMapper,
+            CardinalityConstraint: CardinalityConstraintMapper,
+            MutexConstraint: MutexConstraintMapper,
+        }[constraint]
 
-        with ConstraintMapper() as mapper:
-            return mapper.insert(implication_constraint)
+        with mapper_class() as mapper:
+            mapper.update(constraint)
 
-    def get_constraints_by_style(self, style_id):
-        with ConstraintMapper() as mapper:
-            return mapper.find_by_style_id(style_id)
-
-    def get_all_constraints(self):
-        with ConstraintMapper() as mapper:
-            return mapper.find_all()
-
-    def get_all_mutex_constraints(self):
-        with ConstraintMapper() as mapper:
-            return mapper.find_all_mutex_constraints()
-
-    def get_all_implication_constraints(self):
-        with ConstraintMapper() as mapper:
-            return mapper.find_all_implication_constraints()
-
-    def get_mutex_constraints_by_style(self, style):
-        with ConstraintMapper() as mapper:
-            return mapper.find_mutex_constraints_by_style_id(style.get_id())
-
-    def get_implication_constraints_by_style(self, style):
-        with ConstraintMapper() as mapper:
-            return mapper.find_implication_constraints_by_style_id(style.get_id())
+    def delete_constraint(self, constraint):
+        mapper_class = {
+            UnaryConstraint: UnaryConstraintMapper,
+            BinaryConstraint: BinaryConstraintMapper,
+            ImplicationConstraint: ImplicationConstraintMapper,
+            CardinalityConstraint: CardinalityConstraintMapper,
+            MutexConstraint: MutexConstraintMapper,
+        }[constraint]
         
-###ConstraintMapper anpassen ###
+        with mapper_class() as mapper: 
+            mapper.delete(constraint)
 
+# existiert nicht
+
+    '''    def get_constraints_by_style(self, style_id):
+            with ConstraintMapper() as mapper:
+                return mapper.find_by_style_id(style_id)
+
+        def get_all_constraints(self):
+            with ConstraintMapper() as mapper:
+                return mapper.find_all()
+
+        def get_all_mutex_constraints(self):
+            with ConstraintMapper() as mapper:
+                return mapper.find_all_mutex_constraints()
+
+        def get_all_implication_constraints(self):
+            with ConstraintMapper() as mapper:
+                return mapper.find_all_implication_constraints()
+
+        def get_mutex_constraints_by_style(self, style):
+            with ConstraintMapper() as mapper:
+                return mapper.find_mutex_constraints_by_style_id(style.get_id())
+
+        def get_implication_constraints_by_style(self, style):
+            with ConstraintMapper() as mapper:
+                return mapper.find_implication_constraints_by_style_id(style.get_id())'''
 
 ### Business Logic Methoden ###
-
+    
     def validate_outfit(self, outfit):
-        return self._validate_outfit_basic(outfit) and \
-               self._validate_outfit_mutex(outfit) and \
-               self._validate_outfit_implications(outfit) and \
-               self._validate_outfit_cardinality(outfit)
+        return (self._validate_outfit_unary(outfit) and
+                self._validate_outfit_binary(outfit) and
+                self._validate_outfit_mutex(outfit) and
+                self._validate_outfit_implications(outfit) and
+                self._validate_outfit_cardinality(outfit))
 
     def extend_outfit(self, outfit, item):
-        test_outfit = self._create_test_outfit(outfit, item)
-        if self.validate_outfit(test_outfit):
+        # test_outfit = self._create_test_outfit(outfit, item)
+        if self.validate_outfit(outfit):
             self.add_item_to_outfit(outfit.get_id(), item.get_id())
             return outfit
         return None
 
     def find_matching_styles_for_wardrobe(self, user):
-        wardrobe_items = self.get_clothing_items_by_wardrobe_id(self.get_wardrobe_by_person_id(user.get_id()).get_id())
+        wardrobe_items = self.get_clothing_items_by_wardrobe_id(self.get_wardrobe_by_user_id(user.get_id()).get_id())
         all_styles = self.get_all_styles()
         matching_styles = [style for style in all_styles if self._can_create_outfit_with_style(style, wardrobe_items)]
         return matching_styles
 
     def generate_occasion_based_outfits(self, user, occasion):
-        wardrobe_items = self.get_clothing_items_by_wardrobe_id(self.get_wardrobe_by_person_id(user.get_id()).get_id())
+        wardrobe_items = self.get_clothing_items_by_wardrobe_id(self.get_wardrobe_by_user_id(user.get_id()).get_id())
         suitable_styles = self._get_styles_for_occasion(occasion)
         outfits = [self._create_outfit_for_style_and_occasion(style, wardrobe_items, occasion) for style in suitable_styles]
         return [outfit for outfit in outfits if outfit is not None]
 
     def generate_style_recommendations(self, user):
-        wardrobe_items = self.get_clothing_items_by_wardrobe_id(self.get_wardrobe_by_person_id(user.get_id()).get_id())
-        current_styles = self._get_person_used_styles(user)
+        wardrobe_items = self.get_clothing_items_by_wardrobe_id(self.get_wardrobe_by_user_id(user.get_id()).get_id())
+        current_styles = self._get_user_used_styles(user)
         all_styles = self.get_all_styles()
         recommendations = [style for style in all_styles if style not in current_styles and self._is_style_suitable(style, wardrobe_items)]
         return recommendations
@@ -385,7 +377,7 @@ class Admin(object):
         return list(set(similar_outfits))  # Remove duplicates
 
     def find_missing_essentials(self, user):
-        wardrobe_items = self.get_clothing_items_by_wardrobe_id(self.get_wardrobe_by_person_id(user.get_id()).get_id())
+        wardrobe_items = self.get_clothing_items_by_wardrobe_id(self.get_wardrobe_by_user_id(user.get_id()).get_id())
         essentials = self._get_essential_clothing_types()
         missing = [essential for essential in essentials if not self._has_clothing_type(wardrobe_items, essential)]
         return missing
@@ -416,16 +408,12 @@ class Admin(object):
             for outfit in outfits:
                 self.delete_outfit(outfit)
 
-        constraints = self.get_constraints_by_style(style.get_id())
+        '''constraints = self.get_constraints_by_style(style.get_id())
         if constraints is not None:
             for constraint in constraints:
-                self._delete_constraint(constraint)
+                self._delete_constraint(constraint)'''
 
-    def _delete_constraint(self, constraint):
-        with ConstraintMapper() as mapper:
-            mapper.delete(constraint)
-
-    def _validate_outfit_basic(self, outfit):
+    '''def _validate_outfit_basic(self, outfit):
         style = self.get_style_by_id(outfit.get_style_id())
         items = [self.get_clothing_item_by_id(item_id) for item_id in outfit.get_items()]
         
@@ -435,9 +423,9 @@ class Admin(object):
                 for item in items:
                     if not self._validate_unary_constraint(constraint, item):
                         return False
-        return True
+        return True'''
     
-    def _validate_outfit_mutex(self, outfit):
+    '''def _validate_outfit_mutex(self, outfit):
         style = self.get_style_by_id(outfit.get_style_id())
         items = [self.get_clothing_item_by_id(item_id) for item_id in outfit.get_items()]
         
@@ -446,9 +434,9 @@ class Admin(object):
             for constraint in constraints:
                 if not self._validate_mutex_constraint(constraint, items):
                     return False
-        return True
+        return True'''
 
-    def _validate_outfit_implications(self, outfit):
+    '''def _validate_outfit_implications(self, outfit):
         style = self.get_style_by_id(outfit.get_style_id())
         items = [self.get_clothing_item_by_id(item_id) for item_id in outfit.get_items()]
         
@@ -457,9 +445,9 @@ class Admin(object):
             for constraint in constraints:
                 if not self._validate_implication_constraint(constraint, items):
                     return False
-        return True
+        return True'''
     
-    def _validate_outfit_cardinality(self, outfit):
+    '''def _validate_outfit_cardinality(self, outfit):
         style = self.get_style_by_id(outfit.get_style_id())
         items = [self.get_clothing_item_by_id(item_id) for item_id in outfit.get_items()]
         
@@ -468,11 +456,11 @@ class Admin(object):
             for constraint in constraints:
                 if not self._validate_cardinality_constraint(constraint, items):
                     return False
-        return True
+        return True'''
 
     def _create_test_outfit(self, outfit, item):
         test_outfit = Outfit()
-        test_outfit.set_style_id(outfit.get_style_id())
+        test_outfit.set_style(outfit.get_style_id())
         test_outfit.set_items(outfit.get_items() + [item.get_id()])
         return test_outfit
 
@@ -533,7 +521,7 @@ class Admin(object):
         essential_names = {'T-Shirt', 'Jeans', 'Jacket', 'Shoes'}
         return ctype.get_type_name() in essential_names
 
-    def _get_required_types(self, style):
+    '''def _get_required_types(self, style):
         required_types = set()
         
         with ConstraintMapper() as mapper:
@@ -542,7 +530,7 @@ class Admin(object):
                 if constraint.get_constrain() == "required":
                     required_types.add(constraint.get_reference_object_id())
         
-        return required_types
+        return required_types'''
 
     def _validate_mutex_constraint(self, constraint, items):
         type1_present = any(item.get_clothing_type_id() == constraint.get_item_type_1() for item in items)
@@ -618,4 +606,3 @@ class Admin(object):
                     return item
                     
             return None
-   

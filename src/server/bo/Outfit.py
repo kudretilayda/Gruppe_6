@@ -1,43 +1,46 @@
-#InstanzEbene
-
 from src.server.bo.BusinessObject import BusinessObject
-from typing import List
-
 
 
 class Outfit(BusinessObject):
 
     def __init__(self):
         super().__init__()
-        self._style_id = None #IDdeszugehörigenStyle
-        self._items = [] #ListevonClothingItems
-        self._name = ""
+        self._outfit_id = 0
+        self._outfit_name = ""
+        self.item = []
+        self.style = None
 
-    def get_style_id(self) -> int:
-        return self._style_id
+    def get_outfit_id(self):
+        return self._outfit_id
 
-    def set_style_id(self, style_id: int):
-        self._style_id = style_id
+    def set_outfit_id(self, outfit_id: int):
+        self._outfit_id = outfit_id
 
-    def get_items(self) -> List['ClothingItem']:
-        return self._items
+    def get_items(self):
+        return self.item
 
-    def add_item(self, item: 'ClothingItem'):
-        if item not in self._items:
-            self._items.append(item)
+    def set_items(self, item):
+        self.item.append(item)
 
-    def remove_item(self, item: 'ClothingItem'):
-        if item in self._items:
-            self._items.remove(item)
+    def get_style(self):
+        return self.style
 
-    def validate_integrity(self, style: 'Style') -> bool:
-        """Prüft die Integrität gegen einen Style"""
-        return style.validate_outfit(self)
+    def set_style(self, style):
+        self.style = style
+
+    def get_outfit_name(self):
+        return self._outfit_name
+
+    def set_outfit_name(self, outfit_name):
+        self._outfit_name = outfit_name
+
+    def __str__(self):
+        return "Outfit: {}, {}, {}".format(self._outfit_id, self.item, self.style)
 
     @staticmethod
-    def from_dict(dictionary=dict()):
+    def from_dict(dictionary=dict(), style_instance=None):
         obj = Outfit()
-        obj.set_id(dictionary.get("id", 0))
-        obj.set_style_id(dictionary.get("style_id", 0))
-        obj.set_name(dictionary.get("name", ""))
+        obj.set_outfit_id(dictionary("outfit_id", 0))
+        obj.set_items(dictionary("kleidungsstuecke", []))
+        obj.set_style(style_instance)
         return obj
