@@ -1,4 +1,4 @@
-from Constraint import Constraint
+from src.server.bo.Constraints.Constraint import Constraint
 from src.server.bo.Style import Style
 
 

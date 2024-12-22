@@ -2,8 +2,6 @@
 
 class RuleEngine:
 
-    # Eine Klasse zur Verwaltung von Constraints. Diese Klasse wird nicht in der DB abgebildet
-
     def __init__(self):
         self.constraints = []
 

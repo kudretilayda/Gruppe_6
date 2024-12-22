@@ -1,6 +1,10 @@
-from Constraint import Constraint
+from src.server.bo.Constraints.Constraint import Constraint
 
 class UnaryConstraint(Constraint):
+
+    def __init__(self):
+        super().__init__()
+        self.style = None
 
     def validate(self, outfit):
         for item in outfit.item:
