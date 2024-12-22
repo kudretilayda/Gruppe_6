@@ -9,7 +9,13 @@ from server.bo.Style import Style
 from server.bo.Outfit import Outfit
 from server.bo.ClothingItem import ClothingItem
 from server.bo.ClothingType import ClothingType
-from src.server.bo.Constraints import Binary, Unary, CardinalityConstraint, MutexConstraint, ImplicationConstraint
+
+from src.server.bo.Constraints.Unary import UnaryConstraint
+from src.server.bo.Constraints.Binary import BinaryConstraint
+from src.server.bo.Constraints.Implication import ImplicationConstraint
+from src.server.bo.Constraints.Cardinality import CardinalityConstraint
+from src.server.bo.Constraints.Mutex import MutexConstraint
+
 from SecurityDecorator import secured
 
 app = Flask(__name__)
