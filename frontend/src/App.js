@@ -38,4 +38,45 @@ const App = () => {
         );
     }
   };
+return (
+    <div className="app">
+      <header className="app-header">
+        <nav className="nav-container">
+          <h1 className="app-title">Digitaler Kleiderschrank</h1>
+          <div className="nav-buttons">
+            <button
+              className={`nav-button ${currentPage === 'home' ? 'active' : ''}`}
+              onClick={() => setCurrentPage('home')}
+            >
+              Home
+            </button>
+            <button
+              className={`nav-button ${currentPage === 'wardrobe' ? 'active' : ''}`}
+              onClick={() => setCurrentPage('wardrobe')}
+            >
+              Kleiderschrank
+            </button>
+            <button
+              className={`nav-button ${currentPage === 'styles' ? 'active' : ''}`}
+              onClick={() => setCurrentPage('styles')}
+            >
+              Styles
+            </button>
+            <button
+              className={`nav-button ${currentPage === 'outfits' ? 'active' : ''}`}
+              onClick={() => setCurrentPage('outfits')}
+            >
+              Outfits
+            </button>
+          </div>
+        </nav>
+      </header>
 
+      <main className="main-content">
+        {renderContent()}
+      </main>
+    </div>
+  );
+};
+
+export default App;
