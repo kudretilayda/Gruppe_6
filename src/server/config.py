@@ -1,6 +1,14 @@
-DB_CONFIG = {
-    'host': 'localhost',
-    'user': 'dein_benutzername',
-    'password': 'dein_passwort',
-    'database': 'deine_datenbank'
-}
+import mysql.connector
+
+def get_db_connection():
+    return mysql.connector.connect(
+        host="localhost", 
+        user="root",
+        password="demo",
+        database="digital_wardrobe"
+    )
+
+
+connection = get_db_connection()
+if connection.is_connected():
+    print("Verbindung erfolgreich!")

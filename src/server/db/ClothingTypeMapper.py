@@ -70,11 +70,3 @@ class ClothingTypeMapper(Mapper):
 
         self._cnx.commit()
         cursor.close()
-
-
-if __name__ == "__main__":
-    with ClothingTypeMapper() as mapper:
-        result = mapper.find_all()
-        for ct in result:
-            print(ct)
-

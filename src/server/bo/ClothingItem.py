@@ -7,8 +7,9 @@ class ClothingItem(BusinessObject):
         super().__init__()
         self._item_id = 0
         self._wardrobe_id = 0
-        self._item_name = ""
-        self._clothing_type = None
+        self.item_name = ""
+        self.clothing_type = None
+        self.selected = False
 
     def get_id(self):
         return self._item_id
@@ -17,16 +18,22 @@ class ClothingItem(BusinessObject):
         self._item_id = item_id
 
     def get_clothing_type(self):
-        return self._clothing_type
+        return self.clothing_type
 
     def set_clothing_type(self, clothing_type):
-        self._clothing_type = clothing_type
+        self.clothing_type = clothing_type
 
     def get_item_name(self):
-        return self._item_name
+        return self.item_name
 
     def set_item_name(self, item_name: str):
-        self._item_name = item_name
+        self.item_name = item_name
+
+    def set_wardrobe_id(self, wardrobe_id):
+        self._wardrobe_id = wardrobe_id
+
+    def is_selected(self):
+        return self.selected
 
     def __str__(self):
         return "Kleidungsstück ID: {}, Typ: {}, Name: {}".format(
@@ -35,16 +42,13 @@ class ClothingItem(BusinessObject):
             self.get_item_name(),
         )
 
-    def set_wardrobe_id(self, wardrobe_id):
-        self._wardrobe_id = wardrobe_id
-
     @staticmethod
     def from_dict(dictionary=None):
 
         if dictionary is None:
             dictionary = {}
         obj = ClothingItem()
-        obj.set_id(dictionary.get("clothingitem", 0))
-        obj.set_clothing_type(dictionary.get("clothingitem", None))
-        obj.set_item_name(dictionary.get("clothingitem_name", ""))
+        obj.set_id(dictionary.get("clothing Item", 0))
+        obj.set_clothing_type(dictionary.get("clothing Item", None))
+        obj.set_item_name(dictionary.get("clothing Item name", ""))
         return obj
