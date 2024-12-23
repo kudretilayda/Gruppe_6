@@ -19,7 +19,7 @@ import CheckroomIcon from "@mui/icons-material/Checkroom";
 import Register from "./components/Login_Register/Register";
 import Login from "./components/Login_Register/Login";
 import Header from "./Header";
-import OutfitBuilder from "./components/Oufit_Builder/OB";
+import OutfitBuilder from "./components/outfits/OB";
 
 const App = () => {
   const navigate = useNavigate();
