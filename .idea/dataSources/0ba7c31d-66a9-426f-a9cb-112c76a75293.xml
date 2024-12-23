@@ -995,7 +995,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <Charset>utf8mb4</Charset>
     </collation>
     <schema id="288" parent="1" name="digital_wardrobe">
-      <LastIntrospectionLocalTimestamp>2024-12-20.00:13:56</LastIntrospectionLocalTimestamp>
+      <LastIntrospectionLocalTimestamp>2024-12-23.01:25:29</LastIntrospectionLocalTimestamp>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
     <schema id="289" parent="1" name="information_schema">
@@ -1033,881 +1033,593 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </table>
-    <table id="298" parent="288" name="binary_constraints">
+    <table id="298" parent="288" name="cardinality_constraint">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </table>
-    <table id="299" parent="288" name="cardinality_constraint">
+    <table id="299" parent="288" name="clothing_item">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </table>
-    <table id="300" parent="288" name="cardinality_constraints">
+    <table id="300" parent="288" name="clothing_type">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </table>
-    <table id="301" parent="288" name="clothing_item">
+    <table id="301" parent="288" name="constraints">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </table>
-    <table id="302" parent="288" name="clothing_type">
+    <table id="302" parent="288" name="implication_constraint">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </table>
-    <table id="303" parent="288" name="constraints">
+    <table id="303" parent="288" name="mutex_constraint">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </table>
-    <table id="304" parent="288" name="implication_constraint">
+    <table id="304" parent="288" name="outfit">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </table>
-    <table id="305" parent="288" name="implication_constraints">
+    <table id="305" parent="288" name="outfit_items">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </table>
-    <table id="306" parent="288" name="mutex_constraint">
+    <table id="306" parent="288" name="person">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </table>
-    <table id="307" parent="288" name="mutex_constraints">
+    <table id="307" parent="288" name="style">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </table>
-    <table id="308" parent="288" name="outfit">
+    <table id="308" parent="288" name="unary_constraint">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </table>
-    <table id="309" parent="288" name="outfit_items">
+    <table id="309" parent="288" name="wardrobe">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </table>
-    <table id="310" parent="288" name="person">
-      <Engine>InnoDB</Engine>
-      <CollationName>utf8mb4_0900_ai_ci</CollationName>
-    </table>
-    <table id="311" parent="288" name="style">
-      <Engine>InnoDB</Engine>
-      <CollationName>utf8mb4_0900_ai_ci</CollationName>
-    </table>
-    <table id="312" parent="288" name="unary_constraint">
-      <Engine>InnoDB</Engine>
-      <CollationName>utf8mb4_0900_ai_ci</CollationName>
-    </table>
-    <table id="313" parent="288" name="unary_constraints">
-      <Engine>InnoDB</Engine>
-      <CollationName>utf8mb4_0900_ai_ci</CollationName>
-    </table>
-    <table id="314" parent="288" name="wardrobe">
-      <Engine>InnoDB</Engine>
-      <CollationName>utf8mb4_0900_ai_ci</CollationName>
-    </table>
-    <column id="315" parent="297" name="id">
+    <column id="310" parent="297" name="id">
       <AutoIncrement>1</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="316" parent="297" name="constraint_id">
+    <column id="311" parent="297" name="constraint_id">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="317" parent="297" name="item_1_id">
+    <column id="312" parent="297" name="item_1_id">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="318" parent="297" name="item_2_id">
+    <column id="313" parent="297" name="item_2_id">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <foreign-key id="319" parent="297" name="binary_constraint_ibfk_1">
+    <foreign-key id="314" parent="297" name="binary_constraint_ibfk_1">
       <ColNames>constraint_id</ColNames>
       <OnDelete>cascade</OnDelete>
       <RefColNames>id</RefColNames>
       <RefTableName>constraints</RefTableName>
     </foreign-key>
-    <foreign-key id="320" parent="297" name="binary_constraint_ibfk_2">
+    <foreign-key id="315" parent="297" name="binary_constraint_ibfk_2">
       <ColNames>item_1_id</ColNames>
       <OnDelete>cascade</OnDelete>
       <RefColNames>id</RefColNames>
       <RefTableName>clothing_item</RefTableName>
     </foreign-key>
-    <foreign-key id="321" parent="297" name="binary_constraint_ibfk_3">
+    <foreign-key id="316" parent="297" name="binary_constraint_ibfk_3">
       <ColNames>item_2_id</ColNames>
       <OnDelete>cascade</OnDelete>
       <RefColNames>id</RefColNames>
       <RefTableName>clothing_item</RefTableName>
     </foreign-key>
-    <index id="322" parent="297" name="PRIMARY">
+    <index id="317" parent="297" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="323" parent="297" name="constraint_id">
+    <index id="318" parent="297" name="constraint_id">
       <ColNames>constraint_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="324" parent="297" name="item_1_id">
+    <index id="319" parent="297" name="item_1_id">
       <ColNames>item_1_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="325" parent="297" name="item_2_id">
+    <index id="320" parent="297" name="item_2_id">
       <ColNames>item_2_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="326" parent="297" name="PRIMARY">
+    <key id="321" parent="297" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="327" parent="298" name="id">
+    <column id="322" parent="298" name="id">
       <AutoIncrement>1</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="328" parent="298" name="constraint_id">
+    <column id="323" parent="298" name="constraint_id">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="329" parent="298" name="item_1_id">
+    <column id="324" parent="298" name="min_count">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="330" parent="298" name="item_2_id">
+    <column id="325" parent="298" name="max_count">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <foreign-key id="331" parent="298" name="binary_constraints_ibfk_1">
+    <foreign-key id="326" parent="298" name="cardinality_constraint_ibfk_1">
       <ColNames>constraint_id</ColNames>
       <OnDelete>cascade</OnDelete>
       <RefColNames>id</RefColNames>
       <RefTableName>constraints</RefTableName>
     </foreign-key>
-    <foreign-key id="332" parent="298" name="binary_constraints_ibfk_2">
-      <ColNames>item_1_id</ColNames>
-      <OnDelete>cascade</OnDelete>
-      <RefColNames>id</RefColNames>
-      <RefTableName>clothing_item</RefTableName>
-    </foreign-key>
-    <foreign-key id="333" parent="298" name="binary_constraints_ibfk_3">
-      <ColNames>item_2_id</ColNames>
-      <OnDelete>cascade</OnDelete>
-      <RefColNames>id</RefColNames>
-      <RefTableName>clothing_item</RefTableName>
-    </foreign-key>
-    <index id="334" parent="298" name="PRIMARY">
+    <index id="327" parent="298" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="335" parent="298" name="constraint_id">
+    <index id="328" parent="298" name="constraint_id">
       <ColNames>constraint_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="336" parent="298" name="item_1_id">
-      <ColNames>item_1_id</ColNames>
-      <Type>btree</Type>
-    </index>
-    <index id="337" parent="298" name="item_2_id">
-      <ColNames>item_2_id</ColNames>
-      <Type>btree</Type>
-    </index>
-    <key id="338" parent="298" name="PRIMARY">
+    <key id="329" parent="298" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="339" parent="299" name="id">
+    <column id="330" parent="299" name="id">
       <AutoIncrement>1</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="340" parent="299" name="constraint_id">
+    <column id="331" parent="299" name="wardrobe_id">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="341" parent="299" name="min_count">
+    <column id="332" parent="299" name="clothing_type_id">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="342" parent="299" name="max_count">
-      <NotNull>1</NotNull>
-      <Position>4</Position>
-      <StoredType>int|0s</StoredType>
-    </column>
-    <foreign-key id="343" parent="299" name="cardinality_constraint_ibfk_1">
-      <ColNames>constraint_id</ColNames>
-      <OnDelete>cascade</OnDelete>
-      <RefColNames>id</RefColNames>
-      <RefTableName>constraints</RefTableName>
-    </foreign-key>
-    <index id="344" parent="299" name="PRIMARY">
-      <ColNames>id</ColNames>
-      <Type>btree</Type>
-      <Unique>1</Unique>
-    </index>
-    <index id="345" parent="299" name="constraint_id">
-      <ColNames>constraint_id</ColNames>
-      <Type>btree</Type>
-    </index>
-    <key id="346" parent="299" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <Primary>1</Primary>
-      <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
-    </key>
-    <column id="347" parent="300" name="id">
-      <AutoIncrement>1</AutoIncrement>
-      <NotNull>1</NotNull>
-      <Position>1</Position>
-      <StoredType>int|0s</StoredType>
-    </column>
-    <column id="348" parent="300" name="constraint_id">
-      <NotNull>1</NotNull>
-      <Position>2</Position>
-      <StoredType>int|0s</StoredType>
-    </column>
-    <column id="349" parent="300" name="min_count">
-      <NotNull>1</NotNull>
-      <Position>3</Position>
-      <StoredType>int|0s</StoredType>
-    </column>
-    <column id="350" parent="300" name="max_count">
-      <NotNull>1</NotNull>
-      <Position>4</Position>
-      <StoredType>int|0s</StoredType>
-    </column>
-    <foreign-key id="351" parent="300" name="cardinality_constraints_ibfk_1">
-      <ColNames>constraint_id</ColNames>
-      <OnDelete>cascade</OnDelete>
-      <RefColNames>id</RefColNames>
-      <RefTableName>constraints</RefTableName>
-    </foreign-key>
-    <index id="352" parent="300" name="PRIMARY">
-      <ColNames>id</ColNames>
-      <Type>btree</Type>
-      <Unique>1</Unique>
-    </index>
-    <index id="353" parent="300" name="constraint_id">
-      <ColNames>constraint_id</ColNames>
-      <Type>btree</Type>
-    </index>
-    <key id="354" parent="300" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <Primary>1</Primary>
-      <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
-    </key>
-    <column id="355" parent="301" name="id">
-      <AutoIncrement>1</AutoIncrement>
-      <NotNull>1</NotNull>
-      <Position>1</Position>
-      <StoredType>int|0s</StoredType>
-    </column>
-    <column id="356" parent="301" name="wardrobe_id">
-      <NotNull>1</NotNull>
-      <Position>2</Position>
-      <StoredType>int|0s</StoredType>
-    </column>
-    <column id="357" parent="301" name="clothing_type_id">
-      <NotNull>1</NotNull>
-      <Position>3</Position>
-      <StoredType>int|0s</StoredType>
-    </column>
-    <column id="358" parent="301" name="clothing_item_name">
+    <column id="333" parent="299" name="clothing_item_name">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>varchar(255)|0s</StoredType>
     </column>
-    <foreign-key id="359" parent="301" name="clothing_item_ibfk_1">
+    <foreign-key id="334" parent="299" name="clothing_item_ibfk_1">
       <ColNames>wardrobe_id</ColNames>
       <OnDelete>cascade</OnDelete>
       <RefColNames>id</RefColNames>
       <RefTableName>wardrobe</RefTableName>
     </foreign-key>
-    <foreign-key id="360" parent="301" name="clothing_item_ibfk_2">
+    <foreign-key id="335" parent="299" name="clothing_item_ibfk_2">
       <ColNames>clothing_type_id</ColNames>
       <RefColNames>id</RefColNames>
       <RefTableName>clothing_type</RefTableName>
     </foreign-key>
-    <index id="361" parent="301" name="PRIMARY">
+    <index id="336" parent="299" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="362" parent="301" name="wardrobe_id">
+    <index id="337" parent="299" name="wardrobe_id">
       <ColNames>wardrobe_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="363" parent="301" name="clothing_type_id">
+    <index id="338" parent="299" name="clothing_type_id">
       <ColNames>clothing_type_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="364" parent="301" name="PRIMARY">
+    <key id="339" parent="299" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="365" parent="302" name="id">
+    <column id="340" parent="300" name="id">
       <AutoIncrement>1</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="366" parent="302" name="type_name">
+    <column id="341" parent="300" name="type_name">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>varchar(255)|0s</StoredType>
     </column>
-    <column id="367" parent="302" name="type_usage">
+    <column id="342" parent="300" name="type_usage">
       <Position>3</Position>
       <StoredType>varchar(255)|0s</StoredType>
     </column>
-    <index id="368" parent="302" name="PRIMARY">
+    <index id="343" parent="300" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="369" parent="302" name="PRIMARY">
+    <key id="344" parent="300" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="370" parent="303" name="id">
+    <column id="345" parent="301" name="id">
       <AutoIncrement>1</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="371" parent="303" name="constraint_type">
+    <column id="346" parent="301" name="constraint_type">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>enum(&apos;Unary&apos;, &apos;Binary&apos;, &apos;Implication&apos;, &apos;Cardinality&apos;, &apos;Mutex&apos;)|0e</StoredType>
     </column>
-    <column id="372" parent="303" name="description">
+    <column id="347" parent="301" name="description">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>text|0s</StoredType>
     </column>
-    <index id="373" parent="303" name="PRIMARY">
+    <index id="348" parent="301" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="374" parent="303" name="PRIMARY">
+    <key id="349" parent="301" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="375" parent="304" name="id">
+    <column id="350" parent="302" name="id">
       <AutoIncrement>1</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="376" parent="304" name="constraint_id">
+    <column id="351" parent="302" name="constraint_id">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="377" parent="304" name="if_type_id">
+    <column id="352" parent="302" name="if_type_id">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="378" parent="304" name="then_type_id">
+    <column id="353" parent="302" name="then_type_id">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <foreign-key id="379" parent="304" name="implication_constraint_ibfk_1">
+    <foreign-key id="354" parent="302" name="implication_constraint_ibfk_1">
       <ColNames>constraint_id</ColNames>
       <OnDelete>cascade</OnDelete>
       <RefColNames>id</RefColNames>
       <RefTableName>constraints</RefTableName>
     </foreign-key>
-    <foreign-key id="380" parent="304" name="implication_constraint_ibfk_2">
+    <foreign-key id="355" parent="302" name="implication_constraint_ibfk_2">
       <ColNames>if_type_id</ColNames>
       <RefColNames>id</RefColNames>
       <RefTableName>clothing_type</RefTableName>
     </foreign-key>
-    <foreign-key id="381" parent="304" name="implication_constraint_ibfk_3">
+    <foreign-key id="356" parent="302" name="implication_constraint_ibfk_3">
       <ColNames>then_type_id</ColNames>
       <RefColNames>id</RefColNames>
       <RefTableName>clothing_type</RefTableName>
     </foreign-key>
-    <index id="382" parent="304" name="PRIMARY">
+    <index id="357" parent="302" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="383" parent="304" name="constraint_id">
+    <index id="358" parent="302" name="constraint_id">
       <ColNames>constraint_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="384" parent="304" name="if_type_id">
+    <index id="359" parent="302" name="if_type_id">
       <ColNames>if_type_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="385" parent="304" name="then_type_id">
+    <index id="360" parent="302" name="then_type_id">
       <ColNames>then_type_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="386" parent="304" name="PRIMARY">
+    <key id="361" parent="302" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="387" parent="305" name="id">
+    <column id="362" parent="303" name="id">
       <AutoIncrement>1</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="388" parent="305" name="constraint_id">
+    <column id="363" parent="303" name="constraint_id">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="389" parent="305" name="if_type_id">
+    <column id="364" parent="303" name="item_1_id">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="390" parent="305" name="then_type_id">
+    <column id="365" parent="303" name="item_2_id">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <foreign-key id="391" parent="305" name="implication_constraints_ibfk_1">
+    <foreign-key id="366" parent="303" name="mutex_constraint_ibfk_1">
       <ColNames>constraint_id</ColNames>
       <OnDelete>cascade</OnDelete>
       <RefColNames>id</RefColNames>
       <RefTableName>constraints</RefTableName>
     </foreign-key>
-    <foreign-key id="392" parent="305" name="implication_constraints_ibfk_2">
-      <ColNames>if_type_id</ColNames>
+    <foreign-key id="367" parent="303" name="mutex_constraint_ibfk_2">
+      <ColNames>item_1_id</ColNames>
+      <OnDelete>cascade</OnDelete>
       <RefColNames>id</RefColNames>
-      <RefTableName>clothing_type</RefTableName>
+      <RefTableName>clothing_item</RefTableName>
     </foreign-key>
-    <foreign-key id="393" parent="305" name="implication_constraints_ibfk_3">
-      <ColNames>then_type_id</ColNames>
+    <foreign-key id="368" parent="303" name="mutex_constraint_ibfk_3">
+      <ColNames>item_2_id</ColNames>
+      <OnDelete>cascade</OnDelete>
       <RefColNames>id</RefColNames>
-      <RefTableName>clothing_type</RefTableName>
+      <RefTableName>clothing_item</RefTableName>
     </foreign-key>
-    <index id="394" parent="305" name="PRIMARY">
+    <index id="369" parent="303" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="395" parent="305" name="constraint_id">
+    <index id="370" parent="303" name="constraint_id">
       <ColNames>constraint_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="396" parent="305" name="if_type_id">
-      <ColNames>if_type_id</ColNames>
+    <index id="371" parent="303" name="item_1_id">
+      <ColNames>item_1_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="397" parent="305" name="then_type_id">
-      <ColNames>then_type_id</ColNames>
+    <index id="372" parent="303" name="item_2_id">
+      <ColNames>item_2_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="398" parent="305" name="PRIMARY">
+    <key id="373" parent="303" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="399" parent="306" name="id">
+    <column id="374" parent="304" name="id">
       <AutoIncrement>1</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="400" parent="306" name="constraint_id">
-      <NotNull>1</NotNull>
-      <Position>2</Position>
-      <StoredType>int|0s</StoredType>
-    </column>
-    <column id="401" parent="306" name="item_1_id">
-      <NotNull>1</NotNull>
-      <Position>3</Position>
-      <StoredType>int|0s</StoredType>
-    </column>
-    <column id="402" parent="306" name="item_2_id">
-      <NotNull>1</NotNull>
-      <Position>4</Position>
-      <StoredType>int|0s</StoredType>
-    </column>
-    <foreign-key id="403" parent="306" name="mutex_constraint_ibfk_1">
-      <ColNames>constraint_id</ColNames>
-      <OnDelete>cascade</OnDelete>
-      <RefColNames>id</RefColNames>
-      <RefTableName>constraints</RefTableName>
-    </foreign-key>
-    <foreign-key id="404" parent="306" name="mutex_constraint_ibfk_2">
-      <ColNames>item_1_id</ColNames>
-      <OnDelete>cascade</OnDelete>
-      <RefColNames>id</RefColNames>
-      <RefTableName>clothing_item</RefTableName>
-    </foreign-key>
-    <foreign-key id="405" parent="306" name="mutex_constraint_ibfk_3">
-      <ColNames>item_2_id</ColNames>
-      <OnDelete>cascade</OnDelete>
-      <RefColNames>id</RefColNames>
-      <RefTableName>clothing_item</RefTableName>
-    </foreign-key>
-    <index id="406" parent="306" name="PRIMARY">
-      <ColNames>id</ColNames>
-      <Type>btree</Type>
-      <Unique>1</Unique>
-    </index>
-    <index id="407" parent="306" name="constraint_id">
-      <ColNames>constraint_id</ColNames>
-      <Type>btree</Type>
-    </index>
-    <index id="408" parent="306" name="item_1_id">
-      <ColNames>item_1_id</ColNames>
-      <Type>btree</Type>
-    </index>
-    <index id="409" parent="306" name="item_2_id">
-      <ColNames>item_2_id</ColNames>
-      <Type>btree</Type>
-    </index>
-    <key id="410" parent="306" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <Primary>1</Primary>
-      <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
-    </key>
-    <column id="411" parent="307" name="id">
-      <AutoIncrement>1</AutoIncrement>
-      <NotNull>1</NotNull>
-      <Position>1</Position>
-      <StoredType>int|0s</StoredType>
-    </column>
-    <column id="412" parent="307" name="constraint_id">
-      <NotNull>1</NotNull>
-      <Position>2</Position>
-      <StoredType>int|0s</StoredType>
-    </column>
-    <column id="413" parent="307" name="item_1_id">
-      <NotNull>1</NotNull>
-      <Position>3</Position>
-      <StoredType>int|0s</StoredType>
-    </column>
-    <column id="414" parent="307" name="item_2_id">
-      <NotNull>1</NotNull>
-      <Position>4</Position>
-      <StoredType>int|0s</StoredType>
-    </column>
-    <foreign-key id="415" parent="307" name="mutex_constraints_ibfk_1">
-      <ColNames>constraint_id</ColNames>
-      <OnDelete>cascade</OnDelete>
-      <RefColNames>id</RefColNames>
-      <RefTableName>constraints</RefTableName>
-    </foreign-key>
-    <foreign-key id="416" parent="307" name="mutex_constraints_ibfk_2">
-      <ColNames>item_1_id</ColNames>
-      <OnDelete>cascade</OnDelete>
-      <RefColNames>id</RefColNames>
-      <RefTableName>clothing_item</RefTableName>
-    </foreign-key>
-    <foreign-key id="417" parent="307" name="mutex_constraints_ibfk_3">
-      <ColNames>item_2_id</ColNames>
-      <OnDelete>cascade</OnDelete>
-      <RefColNames>id</RefColNames>
-      <RefTableName>clothing_item</RefTableName>
-    </foreign-key>
-    <index id="418" parent="307" name="PRIMARY">
-      <ColNames>id</ColNames>
-      <Type>btree</Type>
-      <Unique>1</Unique>
-    </index>
-    <index id="419" parent="307" name="constraint_id">
-      <ColNames>constraint_id</ColNames>
-      <Type>btree</Type>
-    </index>
-    <index id="420" parent="307" name="item_1_id">
-      <ColNames>item_1_id</ColNames>
-      <Type>btree</Type>
-    </index>
-    <index id="421" parent="307" name="item_2_id">
-      <ColNames>item_2_id</ColNames>
-      <Type>btree</Type>
-    </index>
-    <key id="422" parent="307" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <Primary>1</Primary>
-      <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
-    </key>
-    <column id="423" parent="308" name="id">
-      <AutoIncrement>1</AutoIncrement>
-      <NotNull>1</NotNull>
-      <Position>1</Position>
-      <StoredType>int|0s</StoredType>
-    </column>
-    <column id="424" parent="308" name="outfit_name">
+    <column id="375" parent="304" name="outfit_name">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>varchar(255)|0s</StoredType>
     </column>
-    <column id="425" parent="308" name="style_id">
+    <column id="376" parent="304" name="style_id">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <foreign-key id="426" parent="308" name="outfit_ibfk_1">
+    <foreign-key id="377" parent="304" name="outfit_ibfk_1">
       <ColNames>style_id</ColNames>
       <RefColNames>id</RefColNames>
       <RefTableName>style</RefTableName>
     </foreign-key>
-    <index id="427" parent="308" name="PRIMARY">
+    <index id="378" parent="304" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="428" parent="308" name="style_id">
+    <index id="379" parent="304" name="style_id">
       <ColNames>style_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="429" parent="308" name="PRIMARY">
+    <key id="380" parent="304" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="430" parent="309" name="outfit_id">
+    <column id="381" parent="305" name="outfit_id">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="431" parent="309" name="clothing_item_id">
+    <column id="382" parent="305" name="clothing_item_id">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <foreign-key id="432" parent="309" name="outfit_items_ibfk_1">
+    <foreign-key id="383" parent="305" name="outfit_items_ibfk_1">
       <ColNames>outfit_id</ColNames>
       <OnDelete>cascade</OnDelete>
       <RefColNames>id</RefColNames>
       <RefTableName>outfit</RefTableName>
     </foreign-key>
-    <foreign-key id="433" parent="309" name="outfit_items_ibfk_2">
+    <foreign-key id="384" parent="305" name="outfit_items_ibfk_2">
       <ColNames>clothing_item_id</ColNames>
       <RefColNames>id</RefColNames>
       <RefTableName>clothing_item</RefTableName>
     </foreign-key>
-    <index id="434" parent="309" name="PRIMARY">
+    <index id="385" parent="305" name="PRIMARY">
       <ColNames>outfit_id
 clothing_item_id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="435" parent="309" name="clothing_item_id">
+    <index id="386" parent="305" name="clothing_item_id">
       <ColNames>clothing_item_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="436" parent="309" name="PRIMARY">
+    <key id="387" parent="305" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="437" parent="310" name="id">
+    <column id="388" parent="306" name="id">
       <AutoIncrement>1</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="438" parent="310" name="google_id">
+    <column id="389" parent="306" name="google_id">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>varchar(255)|0s</StoredType>
     </column>
-    <column id="439" parent="310" name="lastname">
+    <column id="390" parent="306" name="lastname">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>varchar(255)|0s</StoredType>
     </column>
-    <column id="440" parent="310" name="firstname">
+    <column id="391" parent="306" name="firstname">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>varchar(255)|0s</StoredType>
     </column>
-    <column id="441" parent="310" name="nickname">
+    <column id="392" parent="306" name="nickname">
       <Position>5</Position>
       <StoredType>varchar(255)|0s</StoredType>
     </column>
-    <column id="442" parent="310" name="email">
+    <column id="393" parent="306" name="email">
       <NotNull>1</NotNull>
       <Position>6</Position>
       <StoredType>varchar(255)|0s</StoredType>
     </column>
-    <index id="443" parent="310" name="PRIMARY">
+    <index id="394" parent="306" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="444" parent="310" name="google_id">
+    <index id="395" parent="306" name="google_id">
       <ColNames>google_id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="445" parent="310" name="PRIMARY">
+    <key id="396" parent="306" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <key id="446" parent="310" name="google_id">
+    <key id="397" parent="306" name="google_id">
       <UnderlyingIndexName>google_id</UnderlyingIndexName>
     </key>
-    <column id="447" parent="311" name="id">
+    <column id="398" parent="307" name="id">
       <AutoIncrement>1</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="448" parent="311" name="style_features">
+    <column id="399" parent="307" name="style_features">
       <Position>2</Position>
       <StoredType>text|0s</StoredType>
     </column>
-    <column id="449" parent="311" name="style_constraints">
+    <column id="400" parent="307" name="style_constraints">
       <Position>3</Position>
       <StoredType>text|0s</StoredType>
     </column>
-    <index id="450" parent="311" name="PRIMARY">
+    <index id="401" parent="307" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="451" parent="311" name="PRIMARY">
+    <key id="402" parent="307" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="452" parent="312" name="id">
+    <column id="403" parent="308" name="id">
       <AutoIncrement>1</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="453" parent="312" name="constraint_id">
+    <column id="404" parent="308" name="constraint_id">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="454" parent="312" name="style_id">
+    <column id="405" parent="308" name="style_id">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <foreign-key id="455" parent="312" name="unary_constraint_ibfk_1">
+    <foreign-key id="406" parent="308" name="unary_constraint_ibfk_1">
       <ColNames>constraint_id</ColNames>
       <OnDelete>cascade</OnDelete>
       <RefColNames>id</RefColNames>
       <RefTableName>constraints</RefTableName>
     </foreign-key>
-    <foreign-key id="456" parent="312" name="unary_constraint_ibfk_2">
+    <foreign-key id="407" parent="308" name="unary_constraint_ibfk_2">
       <ColNames>style_id</ColNames>
       <OnDelete>cascade</OnDelete>
       <RefColNames>id</RefColNames>
       <RefTableName>style</RefTableName>
     </foreign-key>
-    <index id="457" parent="312" name="PRIMARY">
+    <index id="408" parent="308" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="458" parent="312" name="constraint_id">
+    <index id="409" parent="308" name="constraint_id">
       <ColNames>constraint_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="459" parent="312" name="style_id">
+    <index id="410" parent="308" name="style_id">
       <ColNames>style_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="460" parent="312" name="PRIMARY">
+    <key id="411" parent="308" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="461" parent="313" name="id">
+    <column id="412" parent="309" name="id">
       <AutoIncrement>1</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="462" parent="313" name="constraint_id">
+    <column id="413" parent="309" name="wardrobe_owner">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="463" parent="313" name="style_id">
-      <NotNull>1</NotNull>
-      <Position>3</Position>
-      <StoredType>int|0s</StoredType>
-    </column>
-    <foreign-key id="464" parent="313" name="unary_constraints_ibfk_1">
-      <ColNames>constraint_id</ColNames>
-      <OnDelete>cascade</OnDelete>
-      <RefColNames>id</RefColNames>
-      <RefTableName>constraints</RefTableName>
-    </foreign-key>
-    <foreign-key id="465" parent="313" name="unary_constraints_ibfk_2">
-      <ColNames>style_id</ColNames>
-      <OnDelete>cascade</OnDelete>
-      <RefColNames>id</RefColNames>
-      <RefTableName>style</RefTableName>
-    </foreign-key>
-    <index id="466" parent="313" name="PRIMARY">
-      <ColNames>id</ColNames>
-      <Type>btree</Type>
-      <Unique>1</Unique>
-    </index>
-    <index id="467" parent="313" name="constraint_id">
-      <ColNames>constraint_id</ColNames>
-      <Type>btree</Type>
-    </index>
-    <index id="468" parent="313" name="style_id">
-      <ColNames>style_id</ColNames>
-      <Type>btree</Type>
-    </index>
-    <key id="469" parent="313" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <Primary>1</Primary>
-      <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
-    </key>
-    <column id="470" parent="314" name="id">
-      <AutoIncrement>1</AutoIncrement>
-      <NotNull>1</NotNull>
-      <Position>1</Position>
-      <StoredType>int|0s</StoredType>
-    </column>
-    <column id="471" parent="314" name="wardrobe_owner">
-      <NotNull>1</NotNull>
-      <Position>2</Position>
-      <StoredType>int|0s</StoredType>
-    </column>
-    <foreign-key id="472" parent="314" name="wardrobe_ibfk_1">
+    <foreign-key id="414" parent="309" name="wardrobe_ibfk_1">
       <ColNames>wardrobe_owner</ColNames>
       <OnDelete>cascade</OnDelete>
       <RefColNames>id</RefColNames>
       <RefTableName>person</RefTableName>
     </foreign-key>
-    <index id="473" parent="314" name="PRIMARY">
+    <index id="415" parent="309" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="474" parent="314" name="wardrobe_owner">
+    <index id="416" parent="309" name="wardrobe_owner">
       <ColNames>wardrobe_owner</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="475" parent="314" name="PRIMARY">
+    <key id="417" parent="309" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>

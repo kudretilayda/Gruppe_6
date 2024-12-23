@@ -25,7 +25,7 @@ app = Flask(__name__)
 CORS(app, resources=r'/wardrobe/*')
 
 # API für Datenstruktur
-api = Api(app, version='1.0', title='Digital Wardrobe API',
+api = Api(app, version='1.0', title='Digital Wardrobe',
           description='API für den digitalen Kleiderschrank')
 
 # Namespace
