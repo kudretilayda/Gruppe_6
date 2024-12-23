@@ -94,6 +94,6 @@ outfit1.set_items(Rollkragenpulli)
 
 outfit2.set_items(Jeans)
 outfit2.set_items(jogginghose)
-mutex_constraint = MutexConstraint(excluded_pairs=[(Jeans, jogginghose)])
+mutex_constraint = MutexConstraint(mutex=[(Jeans, jogginghose)])
 print(mutex_constraint.validate(outfit1))
 print(mutex_constraint.validate(outfit2))

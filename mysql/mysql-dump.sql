@@ -49,37 +49,6 @@ LOCK TABLES `binary_constraint` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `binary_constraints`
---
-
-DROP TABLE IF EXISTS `binary_constraints`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `binary_constraints` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `constraint_id` int NOT NULL,
-  `item_1_id` int NOT NULL,
-  `item_2_id` int NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `constraint_id` (`constraint_id`),
-  KEY `item_1_id` (`item_1_id`),
-  KEY `item_2_id` (`item_2_id`),
-  CONSTRAINT `binary_constraints_ibfk_1` FOREIGN KEY (`constraint_id`) REFERENCES `constraints` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `binary_constraints_ibfk_2` FOREIGN KEY (`item_1_id`) REFERENCES `clothing_item` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `binary_constraints_ibfk_3` FOREIGN KEY (`item_2_id`) REFERENCES `clothing_item` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `binary_constraints`
---
-
-LOCK TABLES `binary_constraints` WRITE;
-/*!40000 ALTER TABLE `binary_constraints` DISABLE KEYS */;
-/*!40000 ALTER TABLE `binary_constraints` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `cardinality_constraint`
 --
 
@@ -104,33 +73,6 @@ CREATE TABLE `cardinality_constraint` (
 LOCK TABLES `cardinality_constraint` WRITE;
 /*!40000 ALTER TABLE `cardinality_constraint` DISABLE KEYS */;
 /*!40000 ALTER TABLE `cardinality_constraint` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cardinality_constraints`
---
-
-DROP TABLE IF EXISTS `cardinality_constraints`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `cardinality_constraints` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `constraint_id` int NOT NULL,
-  `min_count` int NOT NULL,
-  `max_count` int NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `constraint_id` (`constraint_id`),
-  CONSTRAINT `cardinality_constraints_ibfk_1` FOREIGN KEY (`constraint_id`) REFERENCES `constraints` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cardinality_constraints`
---
-
-LOCK TABLES `cardinality_constraints` WRITE;
-/*!40000 ALTER TABLE `cardinality_constraints` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cardinality_constraints` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -242,37 +184,6 @@ LOCK TABLES `implication_constraint` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `implication_constraints`
---
-
-DROP TABLE IF EXISTS `implication_constraints`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `implication_constraints` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `constraint_id` int NOT NULL,
-  `if_type_id` int NOT NULL,
-  `then_type_id` int NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `constraint_id` (`constraint_id`),
-  KEY `if_type_id` (`if_type_id`),
-  KEY `then_type_id` (`then_type_id`),
-  CONSTRAINT `implication_constraints_ibfk_1` FOREIGN KEY (`constraint_id`) REFERENCES `constraints` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `implication_constraints_ibfk_2` FOREIGN KEY (`if_type_id`) REFERENCES `clothing_type` (`id`),
-  CONSTRAINT `implication_constraints_ibfk_3` FOREIGN KEY (`then_type_id`) REFERENCES `clothing_type` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `implication_constraints`
---
-
-LOCK TABLES `implication_constraints` WRITE;
-/*!40000 ALTER TABLE `implication_constraints` DISABLE KEYS */;
-/*!40000 ALTER TABLE `implication_constraints` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `mutex_constraint`
 --
 
@@ -301,37 +212,6 @@ CREATE TABLE `mutex_constraint` (
 LOCK TABLES `mutex_constraint` WRITE;
 /*!40000 ALTER TABLE `mutex_constraint` DISABLE KEYS */;
 /*!40000 ALTER TABLE `mutex_constraint` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `mutex_constraints`
---
-
-DROP TABLE IF EXISTS `mutex_constraints`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `mutex_constraints` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `constraint_id` int NOT NULL,
-  `item_1_id` int NOT NULL,
-  `item_2_id` int NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `constraint_id` (`constraint_id`),
-  KEY `item_1_id` (`item_1_id`),
-  KEY `item_2_id` (`item_2_id`),
-  CONSTRAINT `mutex_constraints_ibfk_1` FOREIGN KEY (`constraint_id`) REFERENCES `constraints` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `mutex_constraints_ibfk_2` FOREIGN KEY (`item_1_id`) REFERENCES `clothing_item` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `mutex_constraints_ibfk_3` FOREIGN KEY (`item_2_id`) REFERENCES `clothing_item` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `mutex_constraints`
---
-
-LOCK TABLES `mutex_constraints` WRITE;
-/*!40000 ALTER TABLE `mutex_constraints` DISABLE KEYS */;
-/*!40000 ALTER TABLE `mutex_constraints` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -467,34 +347,6 @@ LOCK TABLES `unary_constraint` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `unary_constraints`
---
-
-DROP TABLE IF EXISTS `unary_constraints`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `unary_constraints` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `constraint_id` int NOT NULL,
-  `style_id` int NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `constraint_id` (`constraint_id`),
-  KEY `style_id` (`style_id`),
-  CONSTRAINT `unary_constraints_ibfk_1` FOREIGN KEY (`constraint_id`) REFERENCES `constraints` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `unary_constraints_ibfk_2` FOREIGN KEY (`style_id`) REFERENCES `style` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `unary_constraints`
---
-
-LOCK TABLES `unary_constraints` WRITE;
-/*!40000 ALTER TABLE `unary_constraints` DISABLE KEYS */;
-/*!40000 ALTER TABLE `unary_constraints` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `wardrobe`
 --
 
@@ -528,4 +380,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-20  1:13:29
+-- Dump completed on 2024-12-23  2:24:17

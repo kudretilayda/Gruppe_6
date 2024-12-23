@@ -14,17 +14,17 @@ class Wardrobe(BusinessObject):
     def set_wardrobe_owner(self, user):
         self._wardrobe_owner = user
 
-    def get_inhalt(self):
+    def get_items(self):
         return self._items
 
-    def set_inhalt(self, values):
-        self._items = values
+    def set_items(self, item):
+        self._items.append(item)
 
     def get_outfits(self):
         return self._outfits
 
-    def set_outfits(self, values):
-        self._outfits = values
+    def set_outfits(self, outfit):
+        self._outfits.append(outfit)
 
     @classmethod
     def from_dict(cls, payload):
