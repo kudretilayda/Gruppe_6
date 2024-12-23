@@ -48,3 +48,30 @@
   color: white;
 }
 
+.main-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.content-container {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.welcome-message {
+  max-width: 600px;
+}
+
+.welcome-message h2 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.welcome-message p {
+  color: #666;
+  line-height: 1.5;
+}
