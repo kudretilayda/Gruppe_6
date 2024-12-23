@@ -409,6 +409,26 @@ class Admin(object):
 
         return constraints
 
+    def get_all_constraints(self):
+        constraints = []
+
+        with UnaryConstraintMapper() as unary_mapper:
+            constraints.extend(unary_mapper.find_all())
+
+        with BinaryConstraintMapper() as binary_mapper:
+            constraints.extend(binary_mapper.find_all())
+
+        with ImplicationConstraintMapper() as implication_mapper:
+            constraints.extend(implication_mapper.find_all())
+
+        with CardinalityConstraintMapper() as cardinality_mapper:
+            constraints.extend(cardinality_mapper.find_all())
+
+        with MutexConstraintMapper() as mutex_mapper:
+            constraints.extend(mutex_mapper.find_all())
+
+        return constraints
+
     # Validieren der Constraints (2 Varianten)
 
     def validate_outfit(self, outfit):
