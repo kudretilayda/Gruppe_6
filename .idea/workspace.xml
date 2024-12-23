@@ -5,44 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0b36f84f-6ad4-4404-a25a-055e1c7ce6fe" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/src/api/UserAPI.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/api/WardrobeAPI.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/layout/Footer.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/layout/Header.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/layout/Layout.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/layout/Navigation.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/outfits/OutfitCreator.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/outfits/OutfitList.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/outfits/OutfitPreview.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/pages/Home.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/pages/Outfits.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/pages/Profile.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/pages/Styles.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/pages/Wardrobe.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/shared/ConfirmDialog.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/shared/ErrorMessage.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/shared/LoadingSpinner.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/styles/StyleConstraints.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/styles/StyleForm.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/styles/StyleList.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/utils/constants.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/wardrobe/ClothingItemForm.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/wardrobe/ClothingItemList.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/wardrobe/WardrobeView.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/theme.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/logo192.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/logo512.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/manifest.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/robots.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/Header.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/KleiderschrankBO.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/ClothingItemAPI.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Login_Register/Login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/OutfitAPI.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Login_Register/Register.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/StyleAPI.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Oufit_Builder/Hosen.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Oufit_Builder/OB.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/outfits/OB.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Oufit_Builder/Oberteile.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Oufit_Builder/Schuhe.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -137,10 +109,11 @@
       <recent name="C:\Users\serta\Documents\GitHub\Gruppe_6\src\server\bo" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/frontend" />
+      <recent name="$PROJECT_DIR$/frontend/backup" />
       <recent name="C:\Users\serta\Documents\GitHub\Gruppe_6\src\server\db\ConstraintMapper" />
       <recent name="C:\Users\serta\Documents\GitHub\Gruppe_6\src\server\bo\Constraints" />
       <recent name="C:\Users\serta\Documents\GitHub\Gruppe_6\src\server\bo" />
-      <recent name="C:\Users\serta\Documents\GitHub\Gruppe_6\src\server" />
     </key>
   </component>
   <component name="RunManager" selected="Python.Admin2">
@@ -285,7 +258,7 @@
       <workItem from="1734706299367" duration="1550000" />
       <workItem from="1734887219716" duration="17560000" />
       <workItem from="1734908413502" duration="3454000" />
-      <workItem from="1734963687584" duration="2875000" />
+      <workItem from="1734963687584" duration="8365000" />
     </task>
     <servers />
   </component>

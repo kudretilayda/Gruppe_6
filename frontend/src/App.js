@@ -1,85 +1,41 @@
-import React from "react";
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Link,
-  useNavigate,
-} from "react-router-dom";
-import {
-  Typography,
-  AppBar,
-  Button,
-  CssBaseline,
-  Grid,
-  Toolbar,
-  Container,
-} from "@mui/material";
-import CheckroomIcon from "@mui/icons-material/Checkroom";
-import Register from "./components/Login_Register/Register";
-import Login from "./components/Login_Register/Login";
-import Header from "./Header";
-import OutfitBuilder from "./components/outfits/OB";
+import React, { useState } from 'react';
+import './App.css';
 
 const App = () => {
-  const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState('home');
 
-  const handleLogin = (username, password) => {
-    if (username === "admin" && password === "admin") {
-      navigate("/outfitbuilder");
+  const renderContent = () => {
+    switch(currentPage) {
+      case 'wardrobe':
+        return (
+          <div className="content-container">
+            <h2>Mein Kleiderschrank</h2>
+          </div>
+        );
+      case 'styles':
+        return (
+          <div className="content-container">
+            <h2>Styles</h2>
+          </div>
+        );
+      case 'outfits':
+        return (
+          <div className="content-container">
+            <h2>Outfits</h2>
+          </div>
+        );
+      default:
+        return (
+          <div className="content-container">
+            <div className="welcome-message">
+              <h2>Willkommen im Digitalen Kleiderschrank</h2>
+              <p>
+                Verwalten Sie Ihre Kleidung, erstellen Sie Styles und lassen Sie sich
+                passende Outfits vorschlagen.
+              </p>
+            </div>
+          </div>
+        );
     }
   };
 
-  return (
-    <BrowserRouter>
-      <CssBaseline />
-      <Header />
-      <Routes>
-        <Route
-          path="/"
-          element={<main>{
-            <div>
-                            <Container maxWidth="sm">
-                                <Typography variant='h2' align='center' color='textPrimary' gutterBottom>
-                                    Kleiderschrank-Projekt
-                                </Typography>
-                                <Typography variant='h5' align='center' color='textSecondary' paragraph>
-                                    Das ist eine Probe Seite für das Projekt in SOPRA im WS 24/25
-                                </Typography>
-                                <div>
-                                    <Grid container spacing={2} justifyContent="center">
-                                        <Grid item>
-                                            <Button 
-                                                component={Link} 
-                                                to="/login" 
-                                                variant="contained" 
-                                                color='primary'
-                                            >
-                                                Sign-In
-                                            </Button>
-                                        </Grid>
-                                        <Grid item>
-                                            <Button 
-                                                component={Link} 
-                                                to="/register" 
-                                                variant="outlined" 
-                                                color='primary'
-                                            >
-                                                Sign-Up
-                                            </Button>
-                                        </Grid>
-                                    </Grid>
-                                </div>
-                            </Container>
-                        </div>
-          }</main>}
-        />
-        <Route path="/login" element={<Login onLogin={handleLogin} />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/outfitbuilder" element={<OutfitBuilder />} />
-      </Routes>
-    </BrowserRouter>
-  );
-};
-
-export default App;
