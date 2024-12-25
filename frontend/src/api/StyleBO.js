@@ -1,4 +1,4 @@
-import BusinessObject from "./BusinessObject";
+import BusinessObject from "./BusinessObject.js";
 
 /**
  * Represents a Style object.
@@ -34,8 +34,8 @@ export default class StyleBO extends BusinessObject {
     return this.features;
   }
 
-  setFeatures(value) {
-    this.features = value;
+  setFeatures(features) {
+    this.features = features;
   }
 
   // Getter and setter for constraints
@@ -43,8 +43,8 @@ export default class StyleBO extends BusinessObject {
     return this.constraints;
   }
 
-  setConstraints(value) {
-    this.constraints = value;
+  setConstraints(constraint) {
+    this.constraints.push(constraint);
   }
 
   // Getter and setter for clothingTypes
@@ -52,13 +52,14 @@ export default class StyleBO extends BusinessObject {
     return this.clothingTypes;
   }
 
-  setClothingTypes(value) {
-    this.clothingTypes = value;
+  setClothingTypes(ctype) {
+    this.clothingTypes.push(ctype);
   }
 
   // String representation of the object
   toString() {
-    return `Style: ${this.getStyleId()}, ${this.getFeatures()}, ${JSON.stringify(this.getConstraints())}, ${JSON.stringify(this.getClothingTypes())}`;
+    return `Style: ${this.getStyleId()}, ${this.getFeatures()}, ${JSON.stringify(this.getConstraints())}, 
+    ${JSON.stringify(this.getClothingTypes())}`;
   }
 
   /**
@@ -66,6 +67,7 @@ export default class StyleBO extends BusinessObject {
    * @param {Object} dictionary - The JSON data describing the StyleBO.
    * @returns {StyleBO} - A new StyleBO object.
    */
+
   static fromJSON(dictionary = {}) {
     const style = new StyleBO();
     style.setStyleId(dictionary.styleId || 0);

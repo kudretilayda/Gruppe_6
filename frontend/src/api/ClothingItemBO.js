@@ -1,31 +1,26 @@
-import BusinessObject from "./BusinessObject";
+import BusinessObject from "BusinessObject.js";
 
-/**
- * Represents a clothing item object.
- */
 export default class ClothingItemBO extends BusinessObject {
+
   /**
    * Constructs a ClothingItemBO object.
    *
    * @param {Number} aClothingItemId - The ID of the clothing item.
    * @param {Object|null} aClothingType - The type of the clothing item (e.g., shirt, pants).
    * @param {String} aClothingItemName - The name of the clothing item.
-   * @param {Number} aClothingItemSize - The size of the clothing item.
-   * @param {String} aClothingItemColor - The color of the clothing item.
+   * @param {Number} aWardrobeId - Associated Wardrobe
    */
   constructor(
     aClothingItemId = 0,
+    aWardrobeId = 0,
     aClothingType = null,
-    aClothingItemName = "",
-    aClothingItemSize = 0,
-    aClothingItemColor = ""
+    aClothingItemName = ""
   ) {
     super();
     this.clothingItemId = aClothingItemId;
     this.clothingType = aClothingType;
     this.clothingItemName = aClothingItemName;
-    this.clothingItemSize = aClothingItemSize;
-    this.clothingItemColor = aClothingItemColor;
+    this.wardrobeId = aWardrobeId
   }
 
   // Getter and setter for clothingItemId
@@ -33,8 +28,16 @@ export default class ClothingItemBO extends BusinessObject {
     return this.clothingItemId;
   }
 
-  setClothingItemId(value) {
-    this.clothingItemId = value;
+  setClothingItemId(itemId) {
+    this.clothingItemId = itemId;
+  }
+
+  getWardrobeId() {
+    return this.wardrobeId
+  }
+
+  setWardrobeId(wardrobeId) {
+    this.wardrobeId = wardrobeId
   }
 
   // Getter and setter for clothingType
@@ -42,8 +45,8 @@ export default class ClothingItemBO extends BusinessObject {
     return this.clothingType;
   }
 
-  setClothingType(value) {
-    this.clothingType = value;
+  setClothingType(ctype) {
+    this.clothingType = ctype;
   }
 
   // Getter and setter for clothingItemName
@@ -51,31 +54,17 @@ export default class ClothingItemBO extends BusinessObject {
     return this.clothingItemName;
   }
 
-  setClothingItemName(value) {
-    this.clothingItemName = value;
-  }
-
-  // Getter and setter for clothingItemSize
-  getClothingItemSize() {
-    return this.clothingItemSize;
-  }
-
-  setClothingItemSize(value) {
-    this.clothingItemSize = value;
-  }
-
-  // Getter and setter for clothingItemColor
-  getClothingItemColor() {
-    return this.clothingItemColor;
-  }
-
-  setClothingItemColor(value) {
-    this.clothingItemColor = value;
+  setClothingItemName(name) {
+    this.clothingItemName = name;
   }
 
   // String representation of the object
   toString() {
-    return `Clothing Item ID: ${this.getClothingItemId()}, Type: ${this.getClothingType()}, Name: ${this.getClothingItemName()}, Size: ${this.getClothingItemSize()}, Color: ${this.getClothingItemColor()}`;
+    return `Clothing Item ID: ${this.getClothingItemId()}, 
+    Name: ${this.getClothingItemName()},
+    Type: ${this.getClothingType()}, 
+    Wardrobe: ${this.getWardrobeId()}
+    }`;
   }
 
   /**
@@ -88,8 +77,7 @@ export default class ClothingItemBO extends BusinessObject {
     clothingItem.setClothingItemId(dictionary.clothingItemId || 0);
     clothingItem.setClothingType(dictionary.clothingType || null);
     clothingItem.setClothingItemName(dictionary.clothingItemName || "");
-    clothingItem.setClothingItemSize(dictionary.clothingItemSize || 0);
-    clothingItem.setClothingItemColor(dictionary.clothingItemColor || "");
+    clothingItem.setWardrobeId(dictionary.wardrobeId || 0);
     return clothingItem;
   }
 }

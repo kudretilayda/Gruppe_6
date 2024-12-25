@@ -1,4 +1,4 @@
-import BusinessObject from "./BusinessObject";
+import BusinessObject from "./BusinessObject.js";
 
 /**
  * Represents an Outfit object.
@@ -8,12 +8,14 @@ export default class OutfitBO extends BusinessObject {
    * Constructs an OutfitBO object.
    *
    * @param {Number} aOutfitId - ID of the outfit.
+   * @param {String} aName - Name of the Outfit
    * @param {Array} aClothingItems - Clothing items of the outfit.
    * @param {Object} aStyle - Style of the outfit.
    */
-  constructor(aOutfitId = 0, aClothingItems = [], aStyle = null) {
+  constructor(aOutfitId = 0, aName = '', aClothingItems = [], aStyle = null) {
     super();
     this.outfitId = aOutfitId;
+    this.name = aName
     this.clothingItems = aClothingItems;
     this.style = aStyle;
   }
@@ -27,13 +29,21 @@ export default class OutfitBO extends BusinessObject {
     this.outfitId = value;
   }
 
+  getOutfitName() {
+  return this.name
+  }
+
+  setName(name) {
+    this.name = name
+  }
+
   // Getter and setter for clothingItems
   getClothingItems() {
     return this.clothingItems;
   }
 
-  setClothingItems(value) {
-    this.clothingItems = value;
+  setClothingItems(item) {
+    this.clothingItems.push(item);
   }
 
   // Getter and setter for style
@@ -41,13 +51,14 @@ export default class OutfitBO extends BusinessObject {
     return this.style;
   }
 
-  setStyle(value) {
-    this.style = value;
+  setStyle(style) {
+    this.style = style;
   }
 
   // String representation of the object
   toString() {
-    return `Outfit: ${this.getOutfitId()}, ${JSON.stringify(this.getClothingItems())}, ${this.getStyle()}`;
+    return `Outfit: ${this.getOutfitId()}, ${this.getOutfitName()}, ${JSON.stringify(this.getClothingItems())}, 
+    ${this.getStyle()}`;
   }
 
   /**
@@ -59,6 +70,7 @@ export default class OutfitBO extends BusinessObject {
   static fromJSON(dictionary = {}, styleInstance = null) {
     const outfit = new OutfitBO();
     outfit.setOutfitId(dictionary.outfitId || 0);
+    outfit.setName(dictionary.name || '')
     outfit.setClothingItems(dictionary.clothingItems || []);
     outfit.setStyle(styleInstance);
     return outfit;

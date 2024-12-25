@@ -4,12 +4,12 @@ import OutfitBO from './OutfitBO';
 import ClothingTypeBO from './ClothingTypeBO';
 import ClothingItemBO from './ClothingItemBO';
 import WardrobeBO from './WardrobeBO';
-import BinaryConstraintBO from './BinaryConstraintBO';
-import UnaryConstraintBO from './UnaryConstraintBO';
-import ImplicationConstraintBO from './ImplicationConstraintBO';
-import MutexConstraintBO from './MutexConstraintBO';
-import CardinalityConstraintBO from './CardinalityConstraintBO';
-import ConstraintBO from './ConstraintBO';
+import BinaryConstraintBO from './ConstraintAPI/BinaryConstraintBO';
+import UnaryConstraintBO from './ConstraintAPI/UnaryConstraintBO';
+import ImplicationConstraintBO from './ConstraintAPI/ImplicationConstraintBO';
+import MutexConstraintBO from './ConstraintAPI/MutexConstraintBO';
+import CardinalityConstraintBO from './ConstraintAPI/CardinalityConstraintBO';
+import ConstraintBO from './ConstraintAPI/ConstraintBO';
 
 export default class WardrobeAPI {
   static #api = null;

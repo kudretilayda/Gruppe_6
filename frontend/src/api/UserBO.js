@@ -1,4 +1,4 @@
-import BusinessObject from "./BusinessObject";
+import BusinessObject from "./BusinessObject.js";
 
 /**
  * Represents a User object
@@ -14,7 +14,8 @@ export default class UserBO extends BusinessObject {
    * @param {String} aGoogleId - Google ID of the user.
    * @param {String} anEmail - Email address of the user.
    */
-  constructor(aUserId = "", aLastName = "", aFirstName = "", aNickname = "", aGoogleId = "", anEmail = "") {
+  constructor(aUserId = "", aLastName = "", aFirstName = "",
+              aNickname = "", aGoogleId = "", anEmail = "") {
     super();
     this.userId = aUserId;
     this.lastName = aLastName;
@@ -80,7 +81,8 @@ export default class UserBO extends BusinessObject {
 
   // String representation of the object
   toString() {
-    return `User: ${this.getUserId()}, ${this.getLastName()}, ${this.getEmail()}, ${this.getFirstName()}`;
+    return `User: ${this.getUserId()},${this.getFirstName()} ,${this.getLastName()}, ${this.getNickname()}, 
+    ${this.getEmail()}, ${this.getGoogleId()}`;
   }
 
   /**

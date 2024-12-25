@@ -1,4 +1,4 @@
-import BusinessObject from "./BusinessObject";
+import BusinessObject from "./BusinessObject.js";
 
 /**
  * Represents a wardrobe with clothing items and outfits.

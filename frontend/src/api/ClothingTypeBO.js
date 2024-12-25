@@ -1,4 +1,4 @@
-import BusinessObject from "./BusinessObject";
+import BusinessObject from "./BusinessObject.js";
 
 /**
  * Represents a clothing type (e.g., shirt, pants, dress).
@@ -23,8 +23,8 @@ export default class ClothingTypeBO extends BusinessObject {
     return this.name;
   }
 
-  setName(value) {
-    this.name = value;
+  setName(name) {
+    this.name = name;
   }
 
   // Getter and setter for usage
@@ -32,13 +32,13 @@ export default class ClothingTypeBO extends BusinessObject {
     return this.usage;
   }
 
-  setUsage(value) {
-    this.usage = value;
+  setUsage(usage) {
+    this.usage = usage;
   }
 
   // String representation of the object
   toString() {
-    return `Clothing Type: ${this.getId()}, Name: ${this.getName()}, Usage: ${this.getUsage()}`;
+    return `Clothing Type: ${this.getID()}, Name: ${this.getName()}, Usage: ${this.getUsage()}`;
   }
 
   /**
@@ -48,7 +48,7 @@ export default class ClothingTypeBO extends BusinessObject {
    */
   static fromJSON(dictionary = {}) {
     const clothingType = new ClothingTypeBO();
-    clothingType.setId(dictionary.id || 0); // Inherited from BusinessObject.
+    clothingType.setID(dictionary.id || 0); // Inherited from BusinessObject.
     clothingType.setName(dictionary.name || "");
     clothingType.setUsage(dictionary.usage || "");
     return clothingType;
