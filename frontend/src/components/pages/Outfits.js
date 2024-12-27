@@ -67,4 +67,29 @@ const OutfitsPage = () => {
         ))}
       </Grid>
 
-      
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+        <DialogTitle>Neues Outfit erstellen</DialogTitle>
+        <DialogContent>
+          <FormControl fullWidth margin="normal">
+            <InputLabel>Style auswählen</InputLabel>
+            <Select
+              value={selectedStyle}
+              onChange={(e) => setSelectedStyle(e.target.value)}
+            >
+              <MenuItem value="Casual">Casual</MenuItem>
+              <MenuItem value="Business">Business</MenuItem>
+              <MenuItem value="Sport">Sport</MenuItem>
+              <MenuItem value="Elegant">Elegant</MenuItem>
+            </Select>
+          </FormControl>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)}>Abbrechen</Button>
+          <Button onClick={handleCreateOutfit} color="primary">Erstellen</Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
+};
+
+export default OutfitsPage;
