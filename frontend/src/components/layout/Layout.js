@@ -1,19 +1,29 @@
 import React from 'react';
-import { List, ListItem, ListItemText } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { AppBar, Toolbar, Button } from '@mui/material';
 
-const WardrobeList = ({ items }) => {
+const Layout = ({ children }) => {
   return (
-    <List>
-      {items.map((item, index) => (
-        <ListItem key={index}>
-          <ListItemText
-            primary={item.type}
-            secondary={`Verwendung: ${item.usage}`}
-          />
-        </ListItem>
-      ))}
-    </List>
+    <>
+      <AppBar position="static">
+        <Toolbar>
+          <Button component={Link} to="/" color="inherit">
+            Home
+          </Button>
+          <Button component={Link} to="/wardrobe" color="inherit">
+            Kleiderschrank
+          </Button>
+          <Button component={Link} to="/styles" color="inherit">
+            Styles
+          </Button>
+          <Button component={Link} to="/outfits" color="inherit">
+            Outfits
+          </Button>
+        </Toolbar>
+      </AppBar>
+      <div>{children}</div> {/* This renders the page content inside Layout */}
+    </>
   );
 };
 
-export default WardrobeList;
+export default Layout;
