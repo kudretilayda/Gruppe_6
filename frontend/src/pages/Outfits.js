@@ -14,7 +14,7 @@ import {
   MenuItem,
   FormControl,
   InputLabel
-} from '@material-ui/core';
+} from '@mui/material';
 
 const OutfitsPage = () => {
   const [outfits, setOutfits] = useState([]);
