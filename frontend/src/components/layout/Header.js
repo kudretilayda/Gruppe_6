@@ -1,10 +1,6 @@
-// Importiert die React-Bibliothek
 import React from 'react';
-// Importiert benötigte Material-UI Komponenten für das Layout
 import { AppBar, Toolbar, Typography } from '@mui/material';
-// Importiert die Link-Komponente für Navigation
 import { Link } from 'react-router-dom';
-// Importiert das Kleiderbügel-Icon aus der Material Icons Bibliothek
 import CheckroomIcon from '@mui/icons-material/Checkroom';
 
 // Definiert die Header-Komponente als Funktion
