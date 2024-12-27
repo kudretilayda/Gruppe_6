@@ -1,23 +1,24 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
-const AuthContext = createContext(null);
+// Erstelle den AuthContext
+const AuthContext = createContext();
 
+// AuthProvider-Komponente, die den Authentifizierungsstatus bereitstellt
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const login = (userData) => {
-    setUser(userData);
-  };
+  // Funktion, um den Benutzer als authentifiziert zu markieren
+  const login = () => setIsAuthenticated(true);
 
-  const logout = () => {
-    setUser(null);
-  };
+  // Funktion, um den Benutzer abzumelden
+  const logout = () => setIsAuthenticated(false);
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
+// Hook, um den AuthContext zu nutzen
 export const useAuth = () => useContext(AuthContext);
