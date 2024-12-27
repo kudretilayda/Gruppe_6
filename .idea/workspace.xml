@@ -5,14 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0b36f84f-6ad4-4404-a25a-055e1c7ce6fe" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/layout/Layout.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/layout/Layout.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/context/AuthContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/wardrobe/wardrobe.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/context/ThemeContext.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/hooks/useAuth.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/hooks/useWardrobe.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/api/ClothingItemAPI.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/ClothingItemAPI.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/postman/postman.json" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -258,7 +257,7 @@
       <workItem from="1734887219716" duration="17560000" />
       <workItem from="1734908413502" duration="3454000" />
       <workItem from="1734963687584" duration="8694000" />
-      <workItem from="1735309562807" duration="756000" />
+      <workItem from="1735309562807" duration="4786000" />
     </task>
     <servers />
   </component>
