@@ -48,7 +48,7 @@ const RegisterForm = () => {
                            color='secondary'
                            label="Last Name"
                            onChange={e => setLastName(e.target.value)} // Aktualisiert den Nachnamen bei Änderung
-                           value={firstName}
+                           value={lastName}
                            fullWidth
                            required
                        />
@@ -90,8 +90,10 @@ const RegisterForm = () => {
                        value={dateOfBirth}
                        fullWidth
                        required
+                       InputLabelProps={{ shrink: true }}
                        sx={{mb: 4}}
                    />
+
                    {/* Register Button */}
                    <Button variant='outlined' color='secondary' type='submit'>Register</Button>
                    
