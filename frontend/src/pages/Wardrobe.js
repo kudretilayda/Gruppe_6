@@ -1,105 +1,82 @@
-// src/pages/WardrobePage.js
 import React, { useState, useEffect } from 'react';
 import {
   Typography,
-  Button,
   Grid,
   Card,
   CardContent,
+  Button,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
   TextField,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel
+  IconButton,
+  Box
 } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
-const WardrobePage = () => {
-  const [items, setItems] = useState([]);
+const Wardrobe = () => {
+  const [wardrobe, setWardrobe] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
-  const [newItem, setNewItem] = useState({
+  const [isEditing, setIsEditing] = useState(false); // Track if we're editing or adding
+  const [currentClothingIndex, setCurrentClothingIndex] = useState(null); // Track the index of the clothing being edited
+  const [newClothing, setNewClothing] = useState({
     type: '',
-    description: '',
-    usage: ''
+    color: '',
+    size: '',
+    material: '',
+    season: ''
   });
 
-  const handleAddItem = () => {
-    setItems([...items, newItem]);
+  // Lädt gespeicherte Kleiderschrank-Daten beim Start der Seite
+  useEffect(() => {
+    const savedWardrobe = localStorage.getItem('wardrobe');
+    if (savedWardrobe) {
+      setWardrobe(JSON.parse(savedWardrobe));
+    }
+  }, []);
+
+  const handleAddClothing = () => {
+    const updatedWardrobe = [...wardrobe, newClothing];
+    setWardrobe(updatedWardrobe);
+
+    // Speichern des aktualisierten Kleiderschranks in localStorage
+    localStorage.setItem('wardrobe', JSON.stringify(updatedWardrobe));
+
+    // Reset des Dialogs
     setOpenDialog(false);
-    setNewItem({ type: '', description: '', usage: '' });
+    setNewClothing({ type: '', color: '', size: '', material: '', season: '' });
   };
 
-  return (
-    <div className="p-4">
-      <Grid container spacing={3} alignItems="center" className="mb-4">
-        <Grid item xs>
-          <Typography variant="h4">Mein Kleiderschrank</Typography>
-        </Grid>
-        <Grid item>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => setOpenDialog(true)}
-          >
-            Kleidungsstück hinzufügen
-          </Button>
-        </Grid>
-      </Grid>
+  const handleEditClothing = () => {
+    const updatedWardrobe = [...wardrobe];
+    updatedWardrobe[currentClothingIndex] = newClothing;
+    setWardrobe(updatedWardrobe);
 
-      <Grid container spacing={3}>
-        {items.map((item, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index}>
-            <Card>
-              <CardContent>
-                <Typography variant="h6">{item.type}</Typography>
-                <Typography color="textSecondary">{item.description}</Typography>
-                <Typography>Verwendung: {item.usage}</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+    // Speichern der aktualisierten Liste in localStorage
+    localStorage.setItem('wardrobe', JSON.stringify(updatedWardrobe));
 
-      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-        <DialogTitle>Neues Kleidungsstück hinzufügen</DialogTitle>
-        <DialogContent>
-          <FormControl fullWidth margin="normal">
-            <InputLabel>Typ</InputLabel>
-            <Select
-              value={newItem.type}
-              onChange={(e) => setNewItem({...newItem, type: e.target.value})}
-            >
-              <MenuItem value="Hose">Hose</MenuItem>
-              <MenuItem value="Shirt">Shirt</MenuItem>
-              <MenuItem value="Jacke">Jacke</MenuItem>
-              <MenuItem value="Schuhe">Schuhe</MenuItem>
-            </Select>
-          </FormControl>
-          <TextField
-            fullWidth
-            margin="normal"
-            label="Beschreibung"
-            value={newItem.description}
-            onChange={(e) => setNewItem({...newItem, description: e.target.value})}
-          />
-          <TextField
-            fullWidth
-            margin="normal"
-            label="Verwendung"
-            value={newItem.usage}
-            onChange={(e) => setNewItem({...newItem, usage: e.target.value})}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenDialog(false)}>Abbrechen</Button>
-          <Button onClick={handleAddItem} color="primary">Hinzufügen</Button>
-        </DialogActions>
-      </Dialog>
-    </div>
-  );
-};
+    // Reset des Dialogs
+    setOpenDialog(false);
+    setIsEditing(false);
+    setNewClothing({ type: '', color: '', size: '', material: '', season: '' });
+    setCurrentClothingIndex(null);
+  };
 
-export default WardrobePage;
+  const handleDeleteClothing = (index) => {
+    const updatedWardrobe = wardrobe.filter((_, i) => i !== index);
+    setWardrobe(updatedWardrobe);
+
+    // Speichern der aktualisierten Liste in localStorage
+    localStorage.setItem('wardrobe', JSON.stringify(updatedWardrobe));
+  };
+
+  const handleOpenEditDialog = (index) => {
+    setIsEditing(true);
+    setCurrentClothingIndex(index);
+    setNewClothing(wardrobe[index]);
+    setOpenDialog(true);
+  };
+
+  

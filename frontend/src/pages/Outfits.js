@@ -129,4 +129,55 @@ const Outfits = () => {
         ))}
       </Grid>
 
-      
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+        <DialogTitle>{isEditing ? 'Outfit bearbeiten' : 'Neues Outfit erstellen'}</DialogTitle>
+        <DialogContent>
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Name"
+            value={newOutfit.name}
+            onChange={(e) => setNewOutfit({ ...newOutfit, name: e.target.value })}
+            required
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Beschreibung"
+            multiline
+            rows={3}
+            value={newOutfit.description}
+            onChange={(e) =>
+              setNewOutfit({ ...newOutfit, description: e.target.value })
+            }
+            required
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Items (kommagetrennt)"
+            value={newOutfit.items.join(', ')}
+            onChange={(e) =>
+              setNewOutfit({
+                ...newOutfit,
+                items: e.target.value.split(',').map((f) => f.trim())
+              })
+            }
+            helperText="z.B.: T-Shirt, Jeans, Schuhe"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)}>Abbrechen</Button>
+          <Button
+            onClick={isEditing ? handleEditOutfit : handleAddOutfit}
+            color="primary"
+          >
+            {isEditing ? 'Ändern' : 'Erstellen'}
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
+};
+
+export default Outfits;
