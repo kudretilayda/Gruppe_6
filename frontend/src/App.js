@@ -5,12 +5,13 @@ import { ThemeProvider, CssBaseline } from '@mui/material'; // Updated to Materi
 import theme from './theme'; // Assuming you have a custom theme defined
 import { AuthProvider } from './context/AuthContext'; // If you're using context for authentication
 
+
 // Import your page components
 import Layout from './components/layout/Layout'; // Layout component if you have a consistent layout
-import HomePage from './pages/Home';
-import WardrobePage from './pages/Wardrobe';
-import StylesPage from './pages/Styles';
-import OutfitsPage from './pages/Outfits';
+import Home from './pages/Home';
+import Wardrobe from './pages/Wardrobe';
+import Styles from './pages/Styles';
+import Outfits from './pages/Outfits';
 
 const App = () => {
   return (
@@ -20,10 +21,10 @@ const App = () => {
         <Router>
           <Layout>
             <Routes> {/* Routes is used in React Router v6 instead of Switch */}
-              <Route path="/" element={<HomePage />} />
-              <Route path="/wardrobe" element={<WardrobePage />} />
-              <Route path="/styles" element={<StylesPage />} />
-              <Route path="/outfits" element={<OutfitsPage />} />
+              <Route path="/" element={<Home />} />
+              <Route path="/wardrobe" element={<Wardrobe />} />
+              <Route path="/styles" element={<Styles />} />
+              <Route path="/outfits" element={<Outfits />} />
             </Routes>
           </Layout>
         </Router>
