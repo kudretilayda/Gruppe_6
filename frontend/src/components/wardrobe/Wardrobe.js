@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
+import { Box, Typography } from '@mui/material';
 import WardrobeList from './WardrobeList'; // Komponente für die Liste der Kleidungsstücke
 import ClothingItemForm from './ClothingItemForm'; // Formular für das Hinzufügen neuer Kleidungsstücke
+import StyleList from "../styles/StyleList";
+import OutfitList from "../outfits/OutfitList";
+import OutfitCreator from "../outfits/OutfitCreator";
 
 const Wardrobe = () => {
   // Zustand, der die Liste der Kleidungsstücke speichert
@@ -12,19 +16,17 @@ const Wardrobe = () => {
 
   // Funktion zum Hinzufügen eines neuen Kleidungsstücks
   const handleAddItem = (newItem) => {
-    setItems([...items, newItem]);
+    setItems ((prevItems) => [...prevItems, item]);
   };
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <h1>Meine Garderobe</h1>
-
-      {/* Formular zum Hinzufügen eines neuen Kleidungsstücks */}
+    <Box p={3}>
+      <Typography variant="h4" gutterBottom>
+        Mein Kleiderschrank
+      </Typography>
       <ClothingItemForm onAddItem={handleAddItem} />
-
-      {/* Liste der Kleidungsstücke */}
       <WardrobeList items={items} />
-    </div>
+    </Box>
   );
 };
 
