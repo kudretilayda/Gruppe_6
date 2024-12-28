@@ -10,6 +10,10 @@ import {
   DialogContent,
   DialogActions,
   TextField,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
   IconButton,
   Box
 } from '@mui/material';
@@ -17,17 +21,36 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 const Wardrobe = () => {
-  const [wardrobe, setWardrobe] = useState([]);
+  const [wardrobe, setWardrobe] = useState([
+    { id: 1, type: 'Shirt', color: 'blue', size: 'M' },
+    { id: 2, type: 'Pants', color: 'black', size: 'M' },
+    { id: 3, type: 'Jacket', color: 'green', size: 'L' }
+  ]);
+  const [styles, setStyles] = useState([
+    { id: 1, name: 'Casual Look', requiredItems: ['Shirt', 'Pants'] },
+    { id: 2, name: 'Business Look', requiredItems: ['Shirt', 'Pants', 'Jacket'] }
+  ]);
+
   const [openDialog, setOpenDialog] = useState(false);
-  const [isEditing, setIsEditing] = useState(false); // Track if we're editing or adding
-  const [currentClothingIndex, setCurrentClothingIndex] = useState(null); // Track the index of the clothing being edited
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentClothingIndex, setCurrentClothingIndex] = useState(null);
   const [newClothing, setNewClothing] = useState({
     type: '',
     color: '',
     size: '',
     material: '',
-    season: ''
+    season: '',
+    shoeSize: '',
+    cupSize: '',
+    bandSize: '',
+    otherColor: ''
   });
+
+  const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+  const shoeSizes = Array.from({ length: 14 }, (_, i) => 35 + i); // Schuhgrößen von 35 bis 48
+  const cupSizes = ['A', 'B', 'C', 'D'];
+  const bandSizes = ['60', '65', '70', '75', '80', '85', '90', '95'];
+  const colors = ['Red', 'Blue', 'Green', 'Black', 'White', 'Yellow', 'Pink', 'Purple', 'Gray', 'Orange'];
 
   // Lädt gespeicherte Kleiderschrank-Daten beim Start der Seite
   useEffect(() => {
@@ -46,7 +69,7 @@ const Wardrobe = () => {
 
     // Reset des Dialogs
     setOpenDialog(false);
-    setNewClothing({ type: '', color: '', size: '', material: '', season: '' });
+    setNewClothing({ type: '', color: '', size: '', material: '', season: '', shoeSize: '', cupSize: '', bandSize: '', otherColor: '' });
   };
 
   const handleEditClothing = () => {
@@ -60,7 +83,7 @@ const Wardrobe = () => {
     // Reset des Dialogs
     setOpenDialog(false);
     setIsEditing(false);
-    setNewClothing({ type: '', color: '', size: '', material: '', season: '' });
+    setNewClothing({ type: '', color: '', size: '', material: '', season: '', shoeSize: '', cupSize: '', bandSize: '', otherColor: '' });
     setCurrentClothingIndex(null);
   };
 
@@ -125,4 +148,117 @@ const Wardrobe = () => {
         ))}
       </Grid>
 
-      
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+        <DialogTitle>{isEditing ? 'Kleidungsstück bearbeiten' : 'Neues Kleidungsstück hinzufügen'}</DialogTitle>
+        <DialogContent>
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Kleidungsstück-Typ"
+            value={newClothing.type}
+            onChange={(e) => setNewClothing({ ...newClothing, type: e.target.value })}
+            required
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Farbe"
+            value={newClothing.color}
+            onChange={(e) => setNewClothing({ ...newClothing, color: e.target.value })}
+            required
+          />
+
+          <FormControl fullWidth margin="normal">
+            <InputLabel>Größe</InputLabel>
+            <Select
+              label="Größe"
+              value={newClothing.size}
+              onChange={(e) => setNewClothing({ ...newClothing, size: e.target.value })}
+              required
+            >
+              {sizes.map((size) => (
+                <MenuItem key={size} value={size}>
+                  {size}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          {/* Zusätzliche Optionen für Unterwäsche (Körbchen- und Bandgröße) */}
+          {newClothing.type.toLowerCase().includes('unterwäsche') && (
+            <>
+              <FormControl fullWidth margin="normal">
+                <InputLabel>Körbchengröße</InputLabel>
+                <Select
+                  label="Körbchengröße"
+                  value={newClothing.cupSize}
+                  onChange={(e) => setNewClothing({ ...newClothing, cupSize: e.target.value })}
+                >
+                  {cupSizes.map((cup) => (
+                    <MenuItem key={cup} value={cup}>
+                      {cup}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+
+              <FormControl fullWidth margin="normal">
+                <InputLabel>Bandgröße</InputLabel>
+                <Select
+                  label="Bandgröße"
+                  value={newClothing.bandSize}
+                  onChange={(e) => setNewClothing({ ...newClothing, bandSize: e.target.value })}
+                >
+                  {bandSizes.map((size) => (
+                    <MenuItem key={size} value={size}>
+                      {size}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </>
+          )}
+
+          {/* Schuhgrößen Auswahl */}
+          {newClothing.type.toLowerCase().includes('schuhe') && (
+            <FormControl fullWidth margin="normal">
+              <InputLabel>Schuhgröße</InputLabel>
+              <Select
+                label="Schuhgröße"
+                value={newClothing.shoeSize}
+                onChange={(e) => setNewClothing({ ...newClothing, shoeSize: e.target.value })}
+              >
+                {shoeSizes.map((size) => (
+                  <MenuItem key={size} value={size}>
+                    {size}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          )}
+
+          {/* Weitere Farben über Textfeld */}
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Weitere Farbe"
+            value={newClothing.otherColor}
+            onChange={(e) => setNewClothing({ ...newClothing, otherColor: e.target.value })}
+            helperText="Füge bei Bedarf eine andere Farbe hinzu"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)}>Abbrechen</Button>
+          <Button
+            onClick={isEditing ? handleEditClothing : handleAddClothing}
+            color="primary"
+          >
+            {isEditing ? 'Ändern' : 'Hinzufügen'}
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
+};
+
+export default Wardrobe;
