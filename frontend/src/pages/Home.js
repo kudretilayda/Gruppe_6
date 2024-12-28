@@ -1,51 +1,21 @@
-// src/pages/HomePage.js
+// src/pages/Home.js
 import React from 'react';
-import { Card, CardContent, Typography, Grid } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-const HomePage = () => {
+const Home = () => {
   return (
-    <div className="p-4">
-      <Typography variant="h4" className="mb-4">
-        Willkommen in deinem digitalen Kleiderschrank
-      </Typography>
-
-      <Grid container spacing={3}>
-        <Grid item xs={12} sm={6} md={4}>
-          <Card component={Link} to="/wardrobe" style={{ textDecoration: 'none' }}>
-            <CardContent>
-              <Typography variant="h5">Kleiderschrank</Typography>
-              <Typography color="textSecondary">
-                Verwalte deine Kleidungsstücke
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        <Grid item xs={12} sm={6} md={4}>
-          <Card component={Link} to="/styles" style={{ textDecoration: 'none' }}>
-            <CardContent>
-              <Typography variant="h5">Styles</Typography>
-              <Typography color="textSecondary">
-                Entdecke und erstelle neue Styles
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        <Grid item xs={12} sm={6} md={4}>
-          <Card component={Link} to="/outfits" style={{ textDecoration: 'none' }}>
-            <CardContent>
-              <Typography variant="h5">Outfits</Typography>
-              <Typography color="textSecondary">
-                Erstelle neue Outfits
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
+    <div>
+      <h1>Willkommen zu deinem digitalen Kleiderschrank</h1>
+      <p>Verwalte deine Kleidung, Styles und Outfits einfach und effizient.</p>
+      <nav>
+        <ul>
+          <li><Link to="/kleiderschrank">Kleiderschrank</Link></li>
+          <li><Link to="/styles">Styles</Link></li>
+          <li><Link to="/outfits">Outfits</Link></li>
+        </ul>
+      </nav>
     </div>
   );
 };
 
-export default HomePage;
+export default Home;
