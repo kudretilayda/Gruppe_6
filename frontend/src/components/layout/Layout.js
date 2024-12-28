@@ -8,14 +8,14 @@ const Layout = ({ children }) => {
       <AppBar position="sticky">
         <Toolbar>
           {/* Andere Navigationselemente */}
+          <Button color="inherit" component={Link} to="/wardrobe">
+            Wardrobe
+          </Button>
           <Button color="inherit" component={Link} to="/styles">
             Styles
           </Button>
           <Button color="inherit" component={Link} to="/outfits">
             Outfits
-          </Button>
-          <Button color="inherit" component={Link} to="/wardrobe">
-            Wardrobe
           </Button>
           <Button color="inherit" component={Link} to="/settings"> {/* Hier der Menüpunkt für Einstellungen */}
             Einstellungen
