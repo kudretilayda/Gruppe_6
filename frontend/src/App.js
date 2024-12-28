@@ -13,6 +13,10 @@ import Wardrobe from './pages/Wardrobe';
 import Styles from './pages/Styles';
 import Outfits from './pages/Outfits';
 import Settings from './pages/Settings'; // Neue Seite hinzufügen
+import OutfitCreator from "./components/outfits/OutfitCreator";
+import ClothingItemForm from "./components/wardrobe/ClothingItemForm";
+import OutfitList from "./components/outfits/OutfitList";
+import wardrobe from "./components/wardrobe/Wardrobe";
 
 
 const App = () => {

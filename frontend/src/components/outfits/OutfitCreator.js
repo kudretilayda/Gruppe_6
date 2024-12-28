@@ -1,135 +1,91 @@
 import React, { useState } from 'react';
-import { FormControl, InputLabel, Select, MenuItem, TextField, Button } from '@mui/material';
-
-const sizes = ['XS', 'S', 'M', 'L', 'XL'];
-const shoeSizes = ['36', '37', '38', '39', '40'];
-const cupSizes = ['A', 'B', 'C', 'D'];
-const bandSizes = ['70', '75', '80', '85'];
-const colors = ['Red', 'Blue', 'Green', 'Black', 'White'];
+import { TextField, MenuItem, Select, InputLabel, FormControl, Button, Grid } from '@mui/material';
 
 const OutfitCreator = () => {
-  const [newClothing, setNewClothing] = useState({
-    type: '',
-    color: '',
-    size: '',
-    shoeSize: '',
-    cupSize: '',
-    bandSize: ''
-  });
+  const [outfitName, setOutfitName] = useState('');
+  const [outfitSize, setOutfitSize] = useState('');
+  const [outfitColor, setOutfitColor] = useState('');
+  const [outfitType, setOutfitType] = useState('');
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Logik zum Absenden des Outfits
-    console.log(newClothing);
+  const handleOutfitSubmit = () => {
+    const newOutfit = {
+      outfitName,
+      outfitSize,
+      outfitColor,
+      outfitType,
+    };
+
+    console.log('Neues Outfit:', newOutfit);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      {/* Kleidungsstück-Typ */}
-      <FormControl fullWidth margin="normal">
-        <InputLabel>Kleidungsstück-Typ</InputLabel>
-        <Select
-          label="Kleidungsstück-Typ"
-          value={newClothing.type}
-          onChange={(e) => setNewClothing({ ...newClothing, type: e.target.value })}
-          required
-        >
-          <MenuItem value="Shirt">Shirt</MenuItem>
-          <MenuItem value="Pants">Pants</MenuItem>
-          <MenuItem value="Jacket">Jacket</MenuItem>
-          <MenuItem value="Shoes">Shoes</MenuItem>
-          <MenuItem value="Underwear">Underwear</MenuItem>
-        </Select>
-      </FormControl>
+    <form>
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <TextField
+            fullWidth
+            label="Outfit Name"
+            value={outfitName}
+            onChange={(e) => setOutfitName(e.target.value)}
+            variant="outlined"
+          />
+        </Grid>
 
-      {/* Größe */}
-      <FormControl fullWidth margin="normal">
-        <InputLabel>Größe</InputLabel>
-        <Select
-          label="Größe"
-          value={newClothing.size}
-          onChange={(e) => setNewClothing({ ...newClothing, size: e.target.value })}
-        >
-          {sizes.map((size) => (
-            <MenuItem key={size} value={size}>
-              {size}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-
-      {/* Schuhgröße - Nur für Schuhe */}
-      {newClothing.type.toLowerCase().includes('shoes') && (
-        <FormControl fullWidth margin="normal">
-          <InputLabel>Schuhgröße</InputLabel>
-          <Select
-            label="Schuhgröße"
-            value={newClothing.shoeSize}
-            onChange={(e) => setNewClothing({ ...newClothing, shoeSize: e.target.value })}
-          >
-            {shoeSizes.map((size) => (
-              <MenuItem key={size} value={size}>
-                {size}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      )}
-
-      {/* BH-Größe - Nur für Unterwäsche */}
-      {newClothing.type.toLowerCase().includes('underwear') && (
-        <>
-          <FormControl fullWidth margin="normal">
-            <InputLabel>Körbchengröße</InputLabel>
+        {/* Outfit-Größe Dropdown */}
+        <Grid item xs={12}>
+          <FormControl fullWidth variant="outlined">
+            <InputLabel>Outfit Größe</InputLabel>
             <Select
-              label="Körbchengröße"
-              value={newClothing.cupSize}
-              onChange={(e) => setNewClothing({ ...newClothing, cupSize: e.target.value })}
+              value={outfitSize}
+              onChange={(e) => setOutfitSize(e.target.value)}
+              label="Outfit Größe"
             >
-              {cupSizes.map((cup) => (
-                <MenuItem key={cup} value={cup}>
-                  {cup}
-                </MenuItem>
-              ))}
+              <MenuItem value="S">S</MenuItem>
+              <MenuItem value="M">M</MenuItem>
+              <MenuItem value="L">L</MenuItem>
+              <MenuItem value="XL">XL</MenuItem>
             </Select>
           </FormControl>
+        </Grid>
 
-          <FormControl fullWidth margin="normal">
-            <InputLabel>Bandgröße</InputLabel>
+        {/* Outfit-Farbe Dropdown */}
+        <Grid item xs={12}>
+          <FormControl fullWidth variant="outlined">
+            <InputLabel>Outfit Farbe</InputLabel>
             <Select
-              label="Bandgröße"
-              value={newClothing.bandSize}
-              onChange={(e) => setNewClothing({ ...newClothing, bandSize: e.target.value })}
+              value={outfitColor}
+              onChange={(e) => setOutfitColor(e.target.value)}
+              label="Outfit Farbe"
             >
-              {bandSizes.map((size) => (
-                <MenuItem key={size} value={size}>
-                  {size}
-                </MenuItem>
-              ))}
+              <MenuItem value="Rot">Rot</MenuItem>
+              <MenuItem value="Blau">Blau</MenuItem>
+              <MenuItem value="Grün">Grün</MenuItem>
             </Select>
           </FormControl>
-        </>
-      )}
+        </Grid>
 
-      {/* Farbe */}
-      <FormControl fullWidth margin="normal">
-        <InputLabel>Farbe</InputLabel>
-        <Select
-          label="Farbe"
-          value={newClothing.color}
-          onChange={(e) => setNewClothing({ ...newClothing, color: e.target.value })}
-        >
-          {colors.map((color) => (
-            <MenuItem key={color} value={color}>
-              {color}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+        {/* Outfit-Typ Dropdown */}
+        <Grid item xs={12}>
+          <FormControl fullWidth variant="outlined">
+            <InputLabel>Outfit-Typ</InputLabel>
+            <Select
+              value={outfitType}
+              onChange={(e) => setOutfitType(e.target.value)}
+              label="Outfit-Typ"
+            >
+              <MenuItem value="Casual">Casual</MenuItem>
+              <MenuItem value="Sportlich">Sportlich</MenuItem>
+              <MenuItem value="Business">Business</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
 
-      <Button type="submit" variant="contained" color="primary">
-        Outfit erstellen
-      </Button>
+        <Grid item xs={12}>
+          <Button variant="contained" color="primary" onClick={handleOutfitSubmit}>
+            Outfit erstellen
+          </Button>
+        </Grid>
+      </Grid>
     </form>
   );
 };

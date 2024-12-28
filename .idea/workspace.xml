@@ -5,11 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0b36f84f-6ad4-4404-a25a-055e1c7ce6fe" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/layout/Layout.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/layout/Layout.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/outfits/OutfitPreview.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/styles/StyleForm.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/outfits/OutfitCreator.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/outfits/OutfitCreator.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/wardrobe/ClothingItemForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/wardrobe/ClothingItemForm.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/wardrobe/WardrobeView.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/wardrobe/wardrobe.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/wardrobe/wardrobe.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
