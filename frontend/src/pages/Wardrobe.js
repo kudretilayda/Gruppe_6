@@ -50,7 +50,7 @@ const Wardrobe = () => {
   const shoeSizes = Array.from({ length: 14 }, (_, i) => 35 + i); // Schuhgrößen von 35 bis 48
   const cupSizes = ['A', 'B', 'C', 'D'];
   const bandSizes = ['60', '65', '70', '75', '80', '85', '90', '95'];
-  const colors = ['Red', 'Blue', 'Green', 'Black', 'White', 'Yellow', 'Pink', 'Purple', 'Gray', 'Orange'];
+  const colors = ['Rot', 'Blau', 'Grün', 'Schwarz', 'Weiß', 'Gelb', 'Pink', 'Lila', 'Grau', 'Orange'];
 
   // Lädt gespeicherte Kleiderschrank-Daten beim Start der Seite
   useEffect(() => {
@@ -159,14 +159,22 @@ const Wardrobe = () => {
             onChange={(e) => setNewClothing({ ...newClothing, type: e.target.value })}
             required
           />
-          <TextField
-            fullWidth
-            margin="normal"
-            label="Farbe"
-            value={newClothing.color}
-            onChange={(e) => setNewClothing({ ...newClothing, color: e.target.value })}
-            required
-          />
+          {/* Dropdown für Farbe */}
+          <FormControl fullWidth margin="normal">
+            <InputLabel>Farbe</InputLabel>
+            <Select
+              label="Farbe"
+              value={newClothing.color}
+              onChange={(e) => setNewClothing({ ...newClothing, color: e.target.value })}
+              required
+            >
+              {colors.map((color) => (
+                <MenuItem key={color} value={color}>
+                  {color}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
           <FormControl fullWidth margin="normal">
             <InputLabel>Größe</InputLabel>
