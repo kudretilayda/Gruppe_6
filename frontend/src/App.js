@@ -12,6 +12,8 @@ import Home from './pages/Home';
 import Wardrobe from './pages/Wardrobe';
 import Styles from './pages/Styles';
 import Outfits from './pages/Outfits';
+import Settings from './pages/Settings'; // Neue Seite hinzufügen
+
 
 const App = () => {
   return (
@@ -25,6 +27,7 @@ const App = () => {
               <Route path="/wardrobe" element={<Wardrobe />} />
               <Route path="/styles" element={<Styles />} />
               <Route path="/outfits" element={<Outfits />} />
+              <Route path="/settings" element={<Settings />} /> {/* Neue Route */}
             </Routes>
           </Layout>
         </Router>

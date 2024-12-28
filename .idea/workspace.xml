@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0b36f84f-6ad4-4404-a25a-055e1c7ce6fe" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/outfits/OB.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Wardrobe.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Wardrobe.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/Settings.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
