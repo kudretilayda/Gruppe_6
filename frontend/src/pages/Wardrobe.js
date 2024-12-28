@@ -79,4 +79,50 @@ const Wardrobe = () => {
     setOpenDialog(true);
   };
 
-  
+  return (
+    <div className="p-4">
+      <Grid container spacing={3} alignItems="center" className="mb-4">
+        <Grid item xs>
+          <Typography variant="h4">Mein Kleiderschrank</Typography>
+        </Grid>
+        <Grid item>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => setOpenDialog(true)}
+          >
+            Kleidungsstück hinzufügen
+          </Button>
+        </Grid>
+      </Grid>
+
+      <Grid container spacing={3}>
+        {wardrobe.map((clothing, index) => (
+          <Grid item xs={12} sm={6} md={4} key={index}>
+            <Card elevation={3}>
+              <CardContent>
+                <Typography variant="h6">{clothing.type}</Typography>
+                <Typography color="textSecondary" paragraph>
+                  {clothing.color} | {clothing.size} | {clothing.material} | {clothing.season}
+                </Typography>
+              </CardContent>
+              <Box display="flex" justifyContent="flex-end">
+                <IconButton
+                  color="primary"
+                  onClick={() => handleOpenEditDialog(index)}
+                >
+                  <EditIcon />
+                </IconButton>
+                <IconButton
+                  color="secondary"
+                  onClick={() => handleDeleteClothing(index)}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </Box>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+
+      
