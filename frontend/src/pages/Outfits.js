@@ -1,5 +1,4 @@
-// src/pages/OutfitsPage.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Typography,
   Grid,
@@ -10,86 +9,64 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel
+  TextField,
+  Chip,
+  CardActions,
+  IconButton,
+  Box
 } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
-const OutfitsPage = () => {
+const Outfits = () => {
   const [outfits, setOutfits] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
-  const [selectedStyle, setSelectedStyle] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentOutfitIndex, setCurrentOutfitIndex] = useState(null);
+  const [newOutfit, setNewOutfit] = useState({
+    name: '',
+    description: '',
+    items: [] // Kleidung, die zu diesem Outfit gehört
+  });
 
-  const handleCreateOutfit = () => {
-    // Hier würde normalerweise die Logik zur Outfit-Generierung basierend auf dem Style kommen
-    const newOutfit = {
-      style: selectedStyle,
-      items: ['Blaue Jeans', 'Weißes T-Shirt', 'Schwarze Sneaker'] // Beispielitems
-    };
+  // Lädt gespeicherte Outfits beim Start der Seite
+  useEffect(() => {
+    const saved = localStorage.getItem('outfits');
+    if (saved) {
+      setOutfits(JSON.parse(saved));
+    }
+  }, []);
 
-    setOutfits([...outfits, newOutfit]);
+  const handleAddOutfit = () => {
+    const updated = [...outfits, newOutfit];
+    setOutfits(updated);
+    localStorage.setItem('outfits', JSON.stringify(updated));
     setOpenDialog(false);
-    setSelectedStyle('');
+    setNewOutfit({ name: '', description: '', items: [] });
   };
 
-  return (
-    <div className="p-4">
-      <Grid container spacing={3} alignItems="center" className="mb-4">
-        <Grid item xs>
-          <Typography variant="h4">Meine Outfits</Typography>
-        </Grid>
-        <Grid item>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => setOpenDialog(true)}
-          >
-            Outfit erstellen
-          </Button>
-        </Grid>
-      </Grid>
+  const handleEditOutfit = () => {
+    const updated = [...outfits];
+    updated[currentOutfitIndex] = newOutfit;
+    setOutfits(updated);
+    localStorage.setItem('outfits', JSON.stringify(updated));
+    setOpenDialog(false);
+    setIsEditing(false);
+    setNewOutfit({ name: '', description: '', items: [] });
+    setCurrentOutfitIndex(null);
+  };
 
-      <Grid container spacing={3}>
-        {outfits.map((outfit, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index}>
-            <Card>
-              <CardContent>
-                <Typography variant="h6">Outfit {index + 1}</Typography>
-                <Typography color="textSecondary">Style: {outfit.style}</Typography>
-                <Typography variant="subtitle2" className="mt-2">Enthaltene Items:</Typography>
-                {outfit.items.map((item, i) => (
-                  <Typography key={i}>• {item}</Typography>
-                ))}
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+  const handleDeleteOutfit = (index) => {
+    const updated = outfits.filter((_, i) => i !== index);
+    setOutfits(updated);
+    localStorage.setItem('outfits', JSON.stringify(updated));
+  };
 
-      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-        <DialogTitle>Neues Outfit erstellen</DialogTitle>
-        <DialogContent>
-          <FormControl fullWidth margin="normal">
-            <InputLabel>Style auswählen</InputLabel>
-            <Select
-              value={selectedStyle}
-              onChange={(e) => setSelectedStyle(e.target.value)}
-            >
-              <MenuItem value="Casual">Casual</MenuItem>
-              <MenuItem value="Business">Business</MenuItem>
-              <MenuItem value="Sport">Sport</MenuItem>
-              <MenuItem value="Elegant">Elegant</MenuItem>
-            </Select>
-          </FormControl>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenDialog(false)}>Abbrechen</Button>
-          <Button onClick={handleCreateOutfit} color="primary">Erstellen</Button>
-        </DialogActions>
-      </Dialog>
-    </div>
-  );
-};
+  const handleOpenEditDialog = (index) => {
+    setIsEditing(true);
+    setCurrentOutfitIndex(index);
+    setNewOutfit(outfits[index]);
+    setOpenDialog(true);
+  };
 
-export default OutfitsPage;
+  
