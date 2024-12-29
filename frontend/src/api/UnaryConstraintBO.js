@@ -1,55 +1,53 @@
 import ConstraintBO from "./ConstraintBO";
 
 /**
- * Repräsentiert eine einstellige Einschränkung (Unary Constraint).
+ * Represents a unary constraint.
  */
 export default class UnaryConstraintBO extends ConstraintBO {
   /**
-   * Konstruiert ein UnaryConstraintBO-Objekt.
+   * Constructs a UnaryConstraintBO object.
    *
-   * @param {any} bezugsobjekt - Das Bezugsobjekt, auf das sich die Einschränkung bezieht.
-   * @param {String} bedingung - Die Bedingung der Einschränkung.
+   * @param {any} referenceObject - The reference object the constraint refers to.
+   * @param {String} condition - The condition of the constraint.
    */
-  constructor(bezugsobjekt = null, bedingung = "", name = "", beschreibung = "",) {
-    super(name, beschreibung);
-    this.bezugsobjekt = bezugsobjekt;
-    this.bedingung = bedingung;
+  constructor(referenceObject = null, condition = "", name = "", description = "") {
+    super(name, description);
+    this.referenceObject = referenceObject;
+    this.condition = condition;
   }
 
-  // Getter und Setter für bezugsobjekt
-  getBezugsobjekt() {
-    return this.bezugsobjekt;
+  // Getter and setter for referenceObject
+  getReferenceObject() {
+    return this.referenceObject;
   }
 
-  setBezugsobjekt(value) {
-    this.bezugsobjekt = value;
+  setReferenceObject(value) {
+    this.referenceObject = value;
   }
 
-  // Getter und Setter für bedingung
-  getBedingung() {
-    return this.bedingung;
+  // Getter and setter for condition
+  getCondition() {
+    return this.condition;
   }
 
-  setBedingung(value) {
-    this.bedingung = value;
+  setCondition(value) {
+    this.condition = value;
   }
 
-  // String-Darstellung des Objekts
+  // String representation of the object
   toString() {
-    return `UnaryConstraint: ${JSON.stringify(
-      this.getBezugsobjekt()
-    )}, ${this.getBedingung()}`;
+    return `UnaryConstraint: ${JSON.stringify(this.getReferenceObject())}, ${this.getCondition()}`;
   }
 
   /**
-   * Wandelt eine JSON-Struktur in ein UnaryConstraintBO-Objekt um.
-   * @param {Object} dictionary - Die JSON-Daten, die das UnaryConstraintBO beschreiben.
-   * @returns {UnaryConstraintBO} - Ein neues UnaryConstraintBO-Objekt.
+   * Converts a JSON structure into a UnaryConstraintBO object.
+   * @param {Object} dictionary - The JSON data describing the UnaryConstraintBO.
+   * @returns {UnaryConstraintBO} - A new UnaryConstraintBO object.
    */
   static fromJSON(dictionary = {}) {
     const unaryConstraint = new UnaryConstraintBO();
-    unaryConstraint.setBezugsobjekt(dictionary.bezugsobjekt || null);
-    unaryConstraint.setBedingung(dictionary.bedingung || "");
+    unaryConstraint.setReferenceObject(dictionary.referenceObject || null);
+    unaryConstraint.setCondition(dictionary.condition || "");
     return unaryConstraint;
   }
 }

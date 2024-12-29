@@ -1,30 +1,32 @@
 import ConstraintBO from "./ConstraintBO";
 
 /**
- * Repräsentiert ein Objekt mit Bedingungen zwischen zwei Bezugsobjekten.
+ * Represents an object with conditions between two reference objects.
  */
 export default class BinaryConstraintBO extends ConstraintBO {
   /**
-   * Konstruiert ein BinaryConstraintBO-Objekt.
+   * Constructs a BinaryConstraintBO object.
    *
-   * @param {any} object1 - Bezugsobjekt 1.
-   * @param {any} object2 - Bezugsobjekt 2.
-   * @param {String} bedingung - Die Bedingung zwischen den beiden Objekten.
+   * @param {any} object1 - Reference object 1.
+   * @param {any} object2 - Reference object 2.
+   * @param {String} condition - The condition between the two objects.
+   * @param {String} name - The name of the constraint.
+   * @param {String} description - A description of the constraint.
    */
   constructor(
     object1 = null,
     object2 = null,
-    bedingung = "",
+    condition = "",
     name = "",
-    beschreibung = ""
+    description = ""
   ) {
-    super(name, beschreibung);
+    super(name, description);
     this.object1 = object1;
     this.object2 = object2;
-    this.bedingung = bedingung;
+    this.condition = condition;
   }
 
-  // Getter und Setter für object1
+  // Getter and setter for object1
   getObject1() {
     return this.object1;
   }
@@ -33,7 +35,7 @@ export default class BinaryConstraintBO extends ConstraintBO {
     this.object1 = value;
   }
 
-  // Getter und Setter für object2
+  // Getter and setter for object2
   getObject2() {
     return this.object2;
   }
@@ -42,33 +44,32 @@ export default class BinaryConstraintBO extends ConstraintBO {
     this.object2 = value;
   }
 
-  // Getter und Setter für bedingung
-  getBedingung() {
-    return this.bedingung;
+  // Getter and setter for condition
+  getCondition() {
+    return this.condition;
   }
 
-  setBedingung(value) {
-    this.bedingung = value;
+  setCondition(value) {
+    this.condition = value;
   }
 
-  // String-Darstellung des Objekts
+  // String representation of the object
   toString() {
     return `BinaryConstraint: ${JSON.stringify(
       this.getObject1()
-    )}, ${JSON.stringify(this.getObject2())}, ${this.getBedingung()}`;
+    )}, ${JSON.stringify(this.getObject2())}, ${this.getCondition()}`;
   }
 
   /**
-   * Wandelt eine JSON-Struktur in ein ConditionBO-Objekt um.
-   * @param {Object} dictionary - Die JSON-Daten, die das ConditionBO beschreiben.
-   * @returns {ConditionBO} - Ein neues ConditionBO-Objekt.
+   * Converts a JSON structure into a BinaryConstraintBO object.
+   * @param {Object} dictionary - The JSON data describing the BinaryConstraintBO.
+   * @returns {BinaryConstraintBO} - A new BinaryConstraintBO object.
    */
   static fromJSON(dictionary = {}) {
     const binaryconstraint = new BinaryConstraintBO();
     binaryconstraint.setObject1(dictionary.object1 || null);
     binaryconstraint.setObject2(dictionary.object2 || null);
-    binaryconstraint.setBedingung(dictionary.bedingung || "");
+    binaryconstraint.setCondition(dictionary.condition || "");
     return binaryconstraint;
   }
 }
-

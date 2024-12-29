@@ -1,36 +1,36 @@
 import ConstraintBO from "./ConstraintBO";
 
 /**
- * Repräsentiert eine Kardinalitätseinschränkung (Cardinality Constraint).
+ * Represents a Cardinality Constraint.
  *
- * Eine CardinalityConstraint besitzt:
- * - Ein Objekt (object),
- * - Eine Mindestanzahl (minCount) und eine Höchstanzahl (maxCount).
+ * A CardinalityConstraint has:
+ * - An object (object),
+ * - A minimum count (minCount) and a maximum count (maxCount).
  */
 export default class CardinalityConstraintBO extends ConstraintBO {
   /**
-   * Konstruiert ein CardinalityConstraintBO-Objekt.
+   * Constructs a CardinalityConstraintBO object.
    *
-   * @param {Number} minCount - Minimale Kardinalität.
-   * @param {Number} maxCount - Maximale Kardinalität.
-   * @param {Object} object - Das Objekt, auf das sich die Kardinalität bezieht.
-   * @param {String} name - Der Name der Einschränkung.
-   * @param {String} beschreibung - Die Beschreibung der Einschränkung.
+   * @param {Number} minCount - The minimum cardinality.
+   * @param {Number} maxCount - The maximum cardinality.
+   * @param {Object} object - The object the cardinality applies to.
+   * @param {String} name - The name of the constraint.
+   * @param {String} description - The description of the constraint.
    */
   constructor(
     minCount = 0,
     maxCount = 0,
     object = null,
     name = "",
-    beschreibung = ""
+    description = ""
   ) {
-    super(name, beschreibung);
+    super(name, description);
     this.minCount = minCount;
     this.maxCount = maxCount;
     this.object = object;
   }
 
-  // Getter und Setter für minCount
+  // Getter and setter for minCount
   getMinCount() {
     return this.minCount;
   }
@@ -39,7 +39,7 @@ export default class CardinalityConstraintBO extends ConstraintBO {
     this.minCount = value;
   }
 
-  // Getter und Setter für maxCount
+  // Getter and setter for maxCount
   getMaxCount() {
     return this.maxCount;
   }
@@ -48,7 +48,7 @@ export default class CardinalityConstraintBO extends ConstraintBO {
     this.maxCount = value;
   }
 
-  // Getter und Setter für object
+  // Getter and setter for object
   getObject() {
     return this.object;
   }
@@ -57,7 +57,7 @@ export default class CardinalityConstraintBO extends ConstraintBO {
     this.object = value;
   }
 
-  // String-Darstellung des Objekts
+  // String representation of the object
   toString() {
     return `CardinalityConstraint: min=${this.getMinCount()}, max=${this.getMaxCount()}, object=${JSON.stringify(
       this.getObject()
@@ -65,9 +65,9 @@ export default class CardinalityConstraintBO extends ConstraintBO {
   }
 
   /**
-   * Wandelt eine JSON-Struktur in ein CardinalityConstraintBO-Objekt um.
-   * @param {Object} dictionary - Die JSON-Daten, die das CardinalityConstraintBO beschreiben.
-   * @returns {CardinalityConstraintBO} - Ein neues CardinalityConstraintBO-Objekt.
+   * Converts a JSON structure into a CardinalityConstraintBO object.
+   * @param {Object} dictionary - The JSON data describing the CardinalityConstraintBO.
+   * @returns {CardinalityConstraintBO} - A new CardinalityConstraintBO object.
    */
   static fromJSON(dictionary = {}) {
     const cardinalityConstraint = new CardinalityConstraintBO();
@@ -77,4 +77,3 @@ export default class CardinalityConstraintBO extends ConstraintBO {
     return cardinalityConstraint;
   }
 }
-

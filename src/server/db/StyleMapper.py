@@ -71,11 +71,3 @@ class StyleMapper(Mapper):
 
         self._cnx.commit()
         cursor.close()
-
-
-
-if __name__ == "__main__":
-    with StyleMapper() as mapper:
-        result = mapper.find_all()
-        for s in result:
-            print(s)

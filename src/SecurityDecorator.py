@@ -1,8 +1,7 @@
 from flask import request
 from google.auth.transport import requests
 import google.oauth2.id_token
-
-from server.Admin import Administration
+from server.Admin import Admin
 
 def secured(function):
     firebase_request_adapter = requests.Request()
@@ -15,7 +14,7 @@ def secured(function):
 
         if id_token:
             try:
-                
+
                 claims = google.oauth2.id_token.verify_firebase_token(
                     id_token, firebase_request_adapter, clock_skew_in_seconds=2)
 
@@ -27,23 +26,23 @@ def secured(function):
                     last_name = claims.get("family_name", "")
                     nick_name = claims.get("name", "")
 
-                    
-                    user = adm.get_user_by_google_user_id(google_user_id)
+
+                    user = adm.get_user_by_google_id(google_user_id)
                     if user:
-                        
+
                         user.first_name = first_name
                         user.last_name = last_name
                         user.nick_name = nick_name
                         adm.save_user(user)
                     else:
-                        
+
                         print("User Created")
 
                     return function(*args, **kwargs)
                 else:
                     return 'Unauthorized', 401
             except ValueError as exc:
-                
+
                 print("Token verification error:", str(exc))
                 return 'Unauthorized', 401
 

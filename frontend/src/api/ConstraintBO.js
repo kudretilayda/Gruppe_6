@@ -1,24 +1,24 @@
 import BusinessObject from "./BusinessObject";
 
 /**
- * Repräsentiert eine generische Einschränkung (Constraint).
+ * Represents a generic constraint.
  *
- * Eine Constraint besitzt einen Namen und eine Beschreibung.
+ * A Constraint has a name and a description.
  */
 export default class ConstraintBO extends BusinessObject {
   /**
-   * Konstruiert ein ConstraintBO-Objekt.
+   * Constructs a ConstraintBO object.
    *
-   * @param {String} name - Der Name der Einschränkung.
-   * @param {String} beschreibung - Die Beschreibung der Einschränkung.
+   * @param {String} name - The name of the constraint.
+   * @param {String} description - The description of the constraint.
    */
-  constructor(name = "", beschreibung = "") {
+  constructor(name = "", description = "") {
     super();
     this.name = name;
-    this.beschreibung = beschreibung;
+    this.description = description;
   }
 
-  // Getter und Setter für name
+  // Getter and setter for name
   getName() {
     return this.name;
   }
@@ -27,29 +27,29 @@ export default class ConstraintBO extends BusinessObject {
     this.name = value;
   }
 
-  // Getter und Setter für beschreibung
-  getBeschreibung() {
-    return this.beschreibung;
+  // Getter and setter for description
+  getDescription() {
+    return this.description;
   }
 
-  setBeschreibung(value) {
-    this.beschreibung = value;
+  setDescription(value) {
+    this.description = value;
   }
 
-  // String-Darstellung des Objekts
+  // String representation of the object
   toString() {
-    return `Constraint: ${this.getName()}, Beschreibung: ${this.getBeschreibung()}`;
+    return `Constraint: ${this.getName()}, Description: ${this.getDescription()}`;
   }
 
   /**
-   * Wandelt eine JSON-Struktur in ein ConstraintBO-Objekt um.
-   * @param {Object} dictionary - Die JSON-Daten, die das ConstraintBO beschreiben.
-   * @returns {ConstraintBO} - Ein neues ConstraintBO-Objekt.
+   * Converts a JSON structure into a ConstraintBO object.
+   * @param {Object} dictionary - The JSON data describing the ConstraintBO.
+   * @returns {ConstraintBO} - A new ConstraintBO object.
    */
   static fromJSON(dictionary = {}) {
     const constraint = new ConstraintBO();
     constraint.setName(dictionary.name || "");
-    constraint.setBeschreibung(dictionary.beschreibung || "");
+    constraint.setDescription(dictionary.description || "");
     return constraint;
   }
 }
