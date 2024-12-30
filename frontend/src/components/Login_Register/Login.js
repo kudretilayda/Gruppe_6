@@ -1,17 +1,22 @@
 // Importiere die benötigten React Komponenten und Hooks
 import React, {useState} from "react";
 // Importiere die Material-UI Komponenten für das Design
-import { TextField, FormControl, Button, Container, Box } from "@mui/material";
+import { TextField, Button, Container, Box } from "@mui/material";
 // Importiere die Link-Komponente für Navigation
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../AuthContext";
 
 
 const Login = () => {
-   // State Variablen für Email und Passwort
-   const [email, setEmail] = useState(""); // Speichert die eingegebene Email
+
+    const Navigate = useNavigate();
+    const { Login } = useAuth();
+
+   // State Variablen für User und Passwort
+   const [User, setUser] = useState(""); // Speichert die eingegebene User
    const [password, setPassword] = useState(""); // Speichert das eingegebene Passwort
    // State Variablen für Fehleranzeige
-   const [emailError, setEmailError] = useState(false); // Zeigt Fehler bei Email-Eingabe
+   const [UserError, setUserError] = useState(false); // Zeigt Fehler bei User-Eingabe
    const [passwordError, setPasswordError] = useState(false); // Zeigt Fehler bei Passwort-Eingabe
 
    // Funktion wird beim Absenden des Formulars ausgeführt
@@ -19,12 +24,12 @@ const Login = () => {
        Event.preventDefault(); // Verhindert Standard-Formularverhalten
 
        // Setzt Fehleranzeigen zurück
-       setEmailError(false);
+       setUserError(false);
        setPasswordError(false);
 
-       // Prüft ob Email-Feld leer ist
-       if (email === '') {
-           setEmailError(true);
+       // Prüft ob User-Feld leer ist
+       if (User === '') {
+           setUserError(true);
        }
 
        // Prüft ob Passwort-Feld leer ist
@@ -33,11 +38,17 @@ const Login = () => {
        }
 
        // Wenn beide Felder ausgefüllt sind
-       if (email && password) {
-           console.log("Email:", email, "Password:", password)
+       if (User === 'admin' && password === 'admin') {
+            Login({ username: User });
+            Navigate('frontend/src/components/pages/Home.js');
+       } else {
+            setUserError(true);
+            setPasswordError(true);
+            alert('Falsche Angaben bei der Anmeldung!!')
+       }
            // Hier kann später die Authentifizierung eingebaut werden
        }
-   }
+   
 
    return (
        // Container für zentrierte Darstellung
@@ -48,18 +59,18 @@ const Login = () => {
                <form autoComplete="off" onSubmit={handleSubmit}>
                    <h2>Login Form</h2>
 
-                   {/* Email Eingabefeld */}
+                   {/* User Eingabefeld */}
                    <TextField
-                       label="Email"
-                       onChange={(e) => setEmail(e.target.value)} // Aktualisiert Email bei Änderung
+                       label="User"
+                       onChange={(e) => setUser(e.target.value)} // Aktualisiert User bei Änderung
                        required
                        variant="outlined"
                        color="secondary"
-                       type="email"
+                       type="User"
                        sx={{ mb: 3 }}
                        fullWidth
-                       value={email}
-                       error={emailError} // Zeigt Fehler an wenn emailError true ist
+                       value={User}
+                       error={UserError} // Zeigt Fehler an wenn UserError true ist
                    />
 
                    {/* Passwort Eingabefeld */}

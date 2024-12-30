@@ -1,39 +1,49 @@
 // src/App.js
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; // React Router v6
-import { ThemeProvider, CssBaseline } from '@mui/material'; // Updated to Material UI v5
-import theme from './theme'; // Assuming you have a custom theme defined
-import { AuthProvider } from './AuthContext'; // If you're using context for authentication
-
-
-// Import your page components
-import Layout from './components/layout/Layout'; // Layout component if you have a consistent layout
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { ThemeProvider, CssBaseline } from '@mui/material';
+import { AuthProvider } from './AuthContext';
+import ProtectedRoute from './components/ProtectedRoutes';
+import Login from './components/Login_Register/Login';
+import Register from './components/Login_Register/Register';
+import Layout from './components/layout/Layout';
 import Home from './components/pages/Home';
 import Wardrobe from './components/pages/Wardrobe';
 import Styles from './components/pages/Styles';
 import Outfits from './components/pages/Outfits';
-import Settings from './components/pages/Settings'; // Neue Seite hinzufügen
-
+import Settings from './components/pages/Settings';
+import theme from './theme';
 
 const App = () => {
-  return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <AuthProvider>
-        <Router>
-          <Layout>
-            <Routes> {/* Routes is used in React Router v6 instead of Switch */}
-              <Route path="/" element={<Home />} />
-              <Route path="/wardrobe" element={<Wardrobe />} />
-              <Route path="/styles" element={<Styles />} />
-              <Route path="/outfits" element={<Outfits />} />
-              <Route path="/settings" element={<Settings />} /> {/* Neue Route */}
-            </Routes>
-          </Layout>
-        </Router>
-      </AuthProvider>
-    </ThemeProvider>
-  );
+    return (
+        <AuthProvider>
+            <ThemeProvider theme={theme}>
+                <CssBaseline />
+                <BrowserRouter>
+                    <Routes>
+                        {/* Public routes */}
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
+
+                        {/* Protected routes */}
+                        <Route path="/" element={
+                            <ProtectedRoute>
+                                <Layout>
+                                    <Routes>
+                                        <Route path="/" element={<Home />} />
+                                        <Route path="/wardrobe" element={<Wardrobe />} />
+                                        <Route path="/styles" element={<Styles />} />
+                                        <Route path="/outfits" element={<Outfits />} />
+                                        <Route path="/settings" element={<Settings />} />
+                                    </Routes>
+                                </Layout>
+                            </ProtectedRoute>
+                        } />
+                    </Routes>
+                </BrowserRouter>
+            </ThemeProvider>
+        </AuthProvider>
+    );
 };
 
 export default App;
