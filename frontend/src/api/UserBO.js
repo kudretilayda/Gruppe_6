@@ -1,4 +1,4 @@
-import BusinessObject from "./BusinessObject";
+import BusinessObject from "./BusinessObjects";
 
 /**
  * Represents a User object
@@ -85,17 +85,24 @@ export default class UserBO extends BusinessObject {
 
   /**
    * Converts a JSON structure into a UserBO object.
-   * @param {Object} dictionary - The JSON data describing the UserBO.
-   * @returns {UserBO} - A new UserBO object.
+   * @returns {*[]} - A new UserBO object.
+   * @param users
    */
-  static fromJSON(dictionary = {}) {
-    const user = new UserBO();
-    user.setUserId(dictionary.userId || "");
-    user.setLastName(dictionary.lastName || "");
-    user.setFirstName(dictionary.firstName || "");
-    user.setNickname(dictionary.nickname || "");
-    user.setGoogleId(dictionary.googleId || "");
-    user.setEmail(dictionary.email || "");
-    return user;
+  static fromJSON(users) {
+    let result = [];
+
+    if (Array.isArray(users)) {
+      users.forEach((c) => {
+        Object.setPrototypeOf(c, UserBO.prototype);
+        result.push(c);
+      })
+    } else {
+      // Es handelt sich offenbar um ein singuläres Objekt
+      let c = users;
+      Object.setPrototypeOf(c, UserBO.prototype);
+      result.push(c);
+    }
+
+    return result;
   }
 }

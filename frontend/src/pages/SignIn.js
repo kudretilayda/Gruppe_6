@@ -1,92 +1,90 @@
-import React, {useState} from "react";
-import { TextField, FormControl, Button, Container, Box } from "@mui/material";
-import { Link } from "react-router-dom";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Button, Grid, Typography, Box } from '@mui/material';
+/**Anmeldung über Google Firebase Authentifikator wird hier erstellt */
 
 
-const Login = () => {
-   // State Variablen für Email und Passwort
-   const [email, setEmail] = useState(""); // Speichert die eingegebene Email
-   const [password, setPassword] = useState(""); // Speichert das eingegebene Passwort
-   // State Variablen für Fehleranzeige
-   const [emailError, setEmailError] = useState(false); // Zeigt Fehler bei Email-Eingabe
-   const [passwordError, setPasswordError] = useState(false); // Zeigt Fehler bei Passwort-Eingabe
+const SignIn = ({ onSignIn }) => {
+    const handleSignInButtonClicked = () => {
+        onSignIn();
+    };
 
-   // Funktion wird beim Absenden des Formulars ausgeführt
-   const handleSubmit = (Event) => {
-       Event.preventDefault(); // Verhindert Standard-Formularverhalten
-
-       // Setzt Fehleranzeigen zurück
-       setEmailError(false);
-       setPasswordError(false);
-
-       // Prüft ob Email-Feld leer ist
-       if (email === '') {
-           setEmailError(true);
-       }
-
-       // Prüft ob Passwort-Feld leer ist
-       if (password === '') {
-           setPasswordError(true);
-       }
-
-       // Wenn beide Felder ausgefüllt sind
-       if (email && password) {
-           console.log("Email:", email, "Password:", password)
-           // Hier kann später die Authentifizierung eingebaut werden
-       }
-   }
-
-   return (
-       // Container für zentrierte Darstellung
-       <Container maxWidth="sm">
-           {/* Box für Abstände oben und an den Seiten */}
-           <Box sx={{ mt: 8, mx: 4 }}>
-               {/* Formular mit automatischer Vervollständigung aus */}
-               <form autoComplete="off" onSubmit={handleSubmit}>
-                   <h2>Login Form</h2>
-
-                   {/* Email Eingabefeld */}
-                   <TextField
-                       label="Email"
-                       onChange={(e) => setEmail(e.target.value)} // Aktualisiert Email bei Änderung
-                       required
-                       variant="outlined"
-                       color="secondary"
-                       type="email"
-                       sx={{ mb: 3 }}
-                       fullWidth
-                       value={email}
-                       error={emailError} // Zeigt Fehler an wenn emailError true ist
-                   />
-
-                   {/* Passwort Eingabefeld */}
-                   <TextField
-                       label="Password"
-                       onChange={(e) => setPassword(e.target.value)} // Aktualisiert Passwort bei Änderung
-                       required
-                       variant="outlined"
-                       color="secondary"
-                       type="password"
-                       value={password}
-                       error={passwordError} // Zeigt Fehler an wenn passwordError true ist
-                       fullWidth
-                       sx={{ mb: 3}}
-                   />
-
-                   {/* Login Button */}
-                   <Button variant="outlined" color="secondary" type="submit">
-                       Login
-                   </Button>
-
-                   {/* Link zur Registrierung mit Abstand nach oben */}
-                   <Box sx={{ mt: 2 }}>
-                       <small>Need an account? <Link to="/register"> Register here </Link></small>
-                   </Box>
-               </form>
-           </Box>
-       </Container>
-   );
+    return (
+        <Box sx={styles.container}>
+            <img src={`${process.env.PUBLIC_URL}/LogoIcon.png`} alt="Background" style={styles.backgroundImage} />
+            <Box sx={styles.overlay}>
+                <Box sx={styles.box}>
+                    <Typography sx={{ margin: 2 }} variant='h5' align='center' fontWeight="bold">
+                        Welcome to Digital Wardrobe
+                    </Typography>
+                    <Typography sx={{ margin: 2 }} align='center'>
+                        It appears that you are not signed in.
+                    </Typography>
+                    <Typography sx={{ margin: 2 }} align='center'>
+                        Sign in to your FridgeFinder
+                    </Typography>
+                    <Grid container justifyContent='center'>
+                        <Button variant='contained' color='primary' sx={{ mt: 2 }} onClick={handleSignInButtonClicked}>
+                            Sign in with Google
+                        </Button>
+                    </Grid>
+                    <Grid container justifyContent='center' sx={{ mt: 1 }}>
+                        <Typography variant="body2">
+                            Don't have an account? <a href="https://www.google.com" target='_blank' rel='noopener noreferrer'>Sign up!</a>
+                        </Typography>
+                    </Grid>
+                </Box>
+            </Box>
+        </Box>
+    );
 };
 
-// Exportiert die Login Komponente für die Verwendung in anderen Dateien
-export default Login;
+SignIn.propTypes = {
+    onSignIn: PropTypes.func.isRequired,
+};
+
+const styles = {
+    container: {
+        width: '100%',
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center', //Zentriert den Inhalt vertikal
+        alignItems: 'center',
+        position: 'relative',
+        overflow: 'hidden', //Verhindert Überlauf
+    },
+    overlay: {
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        zIndex: 1, //Über das Bild legen
+        backgroundColor: 'rgba(255, 255, 255, 0.8)', //Transparenter weißer Hintergrund
+    },
+    box: {
+        width: 'auto',
+        maxWidth: 360,
+        padding: 3,
+        borderRadius: 2,
+        boxShadow: 3,
+        backgroundColor: 'background.paper',
+    },
+    backgroundImage: {
+        width: '40%',
+        height: '40%',
+        objectFit: 'cover', //Das Bild wird skalieren, um Container auszufüllen
+        position: 'center',
+        top: 0,
+        left: 0,
+        zIndex: 0, //Hinter den Inhalt legen
+        opacity: 0.5,
+    },
+};
+
+export default SignIn;

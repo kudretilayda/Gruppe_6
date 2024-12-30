@@ -1,6 +1,6 @@
 // src/components/ErrorMessage.js
 import React from 'react';
-import { Alert } from '@material-ui/lab';
+import { Alert } from '@mui/material';
 
 const ErrorMessage = ({ message }) => {
   if (!message) return null;
