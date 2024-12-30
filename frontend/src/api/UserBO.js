@@ -1,30 +1,30 @@
-import BusinessObject from "./BusinessObject";
+import BusinessObject from './BusinessObject.js';
 
 /**
- * Represents a User object
+ * Repräsentiert ein Benutzer-Objekt
  */
 export default class UserBO extends BusinessObject {
-   /**
-   * Constructs a UserBO object.
-   *
-   * @param {String} aUserId - User ID.
-   * @param {String} aLastName - Last name of the user.
-   * @param {String} aFirstName - First name of the user.
-   * @param {String} aNickname - Nickname of the user.
-   * @param {String} aGoogleId - Google ID of the user.
-   * @param {String} anEmail - Email address of the user.
+  /**
+   * Erstellt ein neues UserBO Objekt.
+   * 
+   * @param {String} aUserId - Benutzer ID
+   * @param {String} aGoogleId - Google ID des Benutzers
+   * @param {String} aFirstName - Vorname des Benutzers
+   * @param {String} aLastName - Nachname des Benutzers
+   * @param {String} aNickname - Spitzname des Benutzers
+   * @param {String} anEmail - E-Mail-Adresse des Benutzers
    */
-  constructor(aUserId = "", aLastName = "", aFirstName = "", aNickname = "", aGoogleId = "", anEmail = "") {
+  constructor(aUserId = "", aGoogleId = "", aFirstName = "", aLastName = "", aNickname = "", anEmail = "") {
     super();
     this.userId = aUserId;
-    this.lastName = aLastName;
-    this.firstName = aFirstName;
-    this.nickname = aNickname;
     this.googleId = aGoogleId;
+    this.firstName = aFirstName;
+    this.lastName = aLastName;
+    this.nickname = aNickname;
     this.email = anEmail;
   }
 
-  // Getter and Setter for userId
+  // Getter und Setter für userId
   getUserId() {
     return this.userId;
   }
@@ -33,34 +33,7 @@ export default class UserBO extends BusinessObject {
     this.userId = value;
   }
 
-  // Getter and Setter for lastName
-  getLastName() {
-    return this.lastName;
-  }
-
-  setLastName(value) {
-    this.lastName = value;
-  }
-
-  // Getter and Setter for firstName
-  getFirstName() {
-    return this.firstName;
-  }
-
-  setFirstName(value) {
-    this.firstName = value;
-  }
-
-  // Getter and Setter for nickname
-  getNickname() {
-    return this.nickname;
-  }
-
-  setNickname(value) {
-    this.nickname = value;
-  }
-
-  // Getter and Setter for googleId
+  // Getter und Setter für googleId
   getGoogleId() {
     return this.googleId;
   }
@@ -69,7 +42,34 @@ export default class UserBO extends BusinessObject {
     this.googleId = value;
   }
 
-  // Getter and Setter for email
+  // Getter und Setter für firstName
+  getFirstName() {
+    return this.firstName;
+  }
+
+  setFirstName(value) {
+    this.firstName = value;
+  }
+
+  // Getter und Setter für lastName
+  getLastName() {
+    return this.lastName;
+  }
+
+  setLastName(value) {
+    this.lastName = value;
+  }
+
+  // Getter und Setter für nickname
+  getNickname() {
+    return this.nickname;
+  }
+
+  setNickname(value) {
+    this.nickname = value;
+  }
+
+  // Getter und Setter für email
   getEmail() {
     return this.email;
   }
@@ -78,24 +78,44 @@ export default class UserBO extends BusinessObject {
     this.email = value;
   }
 
-  // String representation of the object
+  // String-Darstellung des Objekts
   toString() {
-    return `User: ${this.getUserId()}, ${this.getLastName()}, ${this.getEmail()}, ${this.getFirstName()}`;
+    return `Benutzer: ${this.getUserId()}, ${this.getLastName()}, ${this.getEmail()}, ${this.getFirstName()}`;
   }
 
   /**
-   * Converts a JSON structure into a UserBO object.
-   * @param {Object} dictionary - The JSON data describing the UserBO.
-   * @returns {UserBO} - A new UserBO object.
+   * Erstellt ein Array von UserBO Objekten aus einer JSON-Struktur.
+   * 
+   * @param {Object|Array} users - JSON-Daten von einem oder mehreren Benutzern
+   * @returns {Array} Array von UserBO Objekten
    */
-  static fromJSON(dictionary = {}) {
-    const user = new UserBO();
-    user.setUserId(dictionary.userId || "");
-    user.setLastName(dictionary.lastName || "");
-    user.setFirstName(dictionary.firstName || "");
-    user.setNickname(dictionary.nickname || "");
-    user.setGoogleId(dictionary.googleId || "");
-    user.setEmail(dictionary.email || "");
-    return user;
+  static fromJSON(users) {
+    let result = [];
+
+    if (Array.isArray(users)) {
+      users.forEach((u) => {
+        let user = new UserBO(
+          u.userId,
+          u.googleId,
+          u.firstName,
+          u.lastName,
+          u.nickname,
+          u.email
+        );
+        result.push(user);
+      });
+    } else {
+      let user = new UserBO(
+        users.userId,
+        users.googleId,
+        users.firstName,
+        users.lastName,
+        users.nickname,
+        users.email
+      );
+      result.push(user);
+    }
+
+    return result;
   }
 }
