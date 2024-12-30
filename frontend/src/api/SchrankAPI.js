@@ -160,7 +160,16 @@ export default class WardrobeAPI {
       return new Promise(resolve => resolve(responseOutfitBO));
     })
   }
-
+  updateOutfit(userId, outfitBO) {
+    return this.#fetchAdvanced(this.#updateOutfitURL(userId, outfitBO.getId()), {
+        method: 'PUT',
+        headers: {
+            'Accept': 'application/json, text/plain',
+            'Content-type': 'application/json',
+        },
+        body: JSON.stringify(outfitBO)
+    }).then(responseJSON => OutfitBO.fromJSON(responseJSON)[0]);
+  }
   deleteOutfit(userId, outfitId) {
     return this.#fetchAdvanced(this.#deleteOutfitURL(userId, outfitId), {
       method: 'DELETE'
