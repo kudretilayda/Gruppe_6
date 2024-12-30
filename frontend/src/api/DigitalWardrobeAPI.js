@@ -14,9 +14,10 @@ import ConstraintBO from './ConstraintBO';
 export default class WardrobeAPI {
   static #api = null;
   #serverBaseURL = '/api';
-
+  //Schrank API 
   // User endpoints
   #getUserURL = (id) => `${this.#serverBaseURL}/users/${id}`;
+  #deleteUserURL = (id) => `${this.#serverBaseURL}/users/${id}`;
   #getUserByGoogleIdURL = (google_id) => `${this.#serverBaseURL}/user-by-google-id/${google_id}`;
   #updateUserURL = (id) => `${this.#serverBaseURL}/users/${id}`;
   #addUserURL = () => `${this.#serverBaseURL}/users`;
@@ -25,13 +26,12 @@ export default class WardrobeAPI {
   #getWardrobeURL = (userId) => `${this.#serverBaseURL}/users/${userId}/wardrobe`;
   #addClothingItemURL = (userId) => `${this.#serverBaseURL}/users/${userId}/wardrobe/clothingitems`;
   #deleteClothingItemURL = (userId, clothingItemId) => `${this.#serverBaseURL}/users/${userId}/wardrobe/clothingitems/${clothingItemId}`;
-
+  #updateClothingItemURL = (userId, clothingItemId) => `${this.#serverBaseURL}/users/${userId}/wardrobe/clothingitems/${clothingItemId}`;
   // Outfit endpoints
   #getOutfitsURL = (userId) => `${this.#serverBaseURL}/users/${userId}/outfits`;
   #addOutfitURL = (userId) => `${this.#serverBaseURL}/users/${userId}/outfits`;
   #deleteOutfitURL = (userId, outfitId) => `${this.#serverBaseURL}/users/${userId}/outfits/${outfitId}`;
   #updateOutfitURL = (userId, outfitId) => `${this.#serverBaseURL}/users/${userId}/outfits/${outfitId}`;
-
   // Style endpoints
   #getStylesURL = () => `${this.#serverBaseURL}/styles`;
   #addStyleURL = () => `${this.#serverBaseURL}/styles`;
@@ -86,6 +86,11 @@ export default class WardrobeAPI {
       return new Promise(resolve => resolve(responseUserBO));
     })
   }
+  deleteUser(userId) {
+    return this.#fetchAdvanced(this.#deleteUserURL(userId), {
+        method: 'DELETE'
+    }).then(responseJSON => UserBO.fromJSON(responseJSON)[0]);
+  }
 
   addUser(userBO) {
     return this.#fetchAdvanced(this.#addUserURL(), {
@@ -100,6 +105,7 @@ export default class WardrobeAPI {
       return new Promise(resolve => resolve(responseUserBO));
     })
   }
+  
 
   getUserByGoogleId(googleId) {
     return this.#fetchAdvanced(this.#getUserByGoogleIdURL(googleId))
@@ -127,6 +133,16 @@ export default class WardrobeAPI {
       let responseClothingItemBO = ClothingItemBO.fromJSON(responseJSON)[0];
       return new Promise(resolve => resolve(responseClothingItemBO));
     })
+  }
+  updateClothingItem(userId, clothingItemBO) {
+    return this.#fetchAdvanced(this.#updateClothingItemURL(userId, clothingItemBO.getId()), {
+        method: 'PUT',
+        headers: {
+            'Accept': 'application/json, text/plain',
+            'Content-type': 'application/json',
+        },
+        body: JSON.stringify(clothingItemBO)
+    }).then(responseJSON => ClothingItemBO.fromJSON(responseJSON)[0]);
   }
 
   deleteClothingItem(userId, clothingItemId) {
@@ -160,7 +176,16 @@ export default class WardrobeAPI {
       return new Promise(resolve => resolve(responseOutfitBO));
     })
   }
-
+  updateOutfit(userId, outfitBO) {
+    return this.#fetchAdvanced(this.#updateOutfitURL(userId, outfitBO.getId()), {
+        method: 'PUT',
+        headers: {
+            'Accept': 'application/json, text/plain',
+            'Content-type': 'application/json',
+        },
+        body: JSON.stringify(outfitBO)
+    }).then(responseJSON => OutfitBO.fromJSON(responseJSON)[0]);
+  }
   deleteOutfit(userId, outfitId) {
     return this.#fetchAdvanced(this.#deleteOutfitURL(userId, outfitId), {
       method: 'DELETE'
