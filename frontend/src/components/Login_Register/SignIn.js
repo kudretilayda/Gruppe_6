@@ -1,9 +1,10 @@
 import React, {useState} from "react";
-import { TextField, FormControl, Button, Container, Box } from "@mui/material";
+import propTypes from 'prop-types';
+import { Button, Grid, Typography, Box } from '@mui/material';
 import { Link } from "react-router-dom";
 
 
-const Login = () => {
+const SignIn = () => {
    // State Variablen für Email und Passwort
    const [email, setEmail] = useState(""); // Speichert die eingegebene Email
    const [password, setPassword] = useState(""); // Speichert das eingegebene Passwort
@@ -89,4 +90,4 @@ const Login = () => {
 };
 
 // Exportiert die Login Komponente für die Verwendung in anderen Dateien
-export default Login;
+export default SignIn;

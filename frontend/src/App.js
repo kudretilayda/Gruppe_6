@@ -3,16 +3,16 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; // React Router v6
 import { ThemeProvider, CssBaseline } from '@mui/material'; // Updated to Material UI v5
 import theme from './theme'; // Assuming you have a custom theme defined
-import { AuthProvider } from './context/AuthContext'; // If you're using context for authentication
+import { AuthProvider } from './AuthContext'; // If you're using context for authentication
 
 
 // Import your page components
 import Layout from './components/layout/Layout'; // Layout component if you have a consistent layout
-import Home from './pages/Home';
-import Wardrobe from './pages/Wardrobe';
-import Styles from './pages/Styles';
-import Outfits from './pages/Outfits';
-import Settings from './pages/Settings'; // Neue Seite hinzufügen
+import Home from './components/pages/Home';
+import Wardrobe from './components/pages/Wardrobe';
+import Styles from './components/pages/Styles';
+import Outfits from './components/pages/Outfits';
+import Settings from './components/pages/Settings'; // Neue Seite hinzufügen
 
 
 const App = () => {

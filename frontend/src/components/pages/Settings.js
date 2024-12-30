@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, TextField, Grid, Typography, Box, MenuItem, Select, FormControl, InputLabel } from '@mui/material';
-import { useAuth } from '../context/AuthContext'; // Falls du ein AuthContext verwendest
+import { useAuth } from '../../AuthContext'; // Falls du ein AuthContext verwendest
 import { useNavigate } from 'react-router-dom'; // Für das Weiterleiten nach dem Logout
 
 const Settings = () => {
