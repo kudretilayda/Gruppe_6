@@ -14,7 +14,7 @@ import ConstraintBO from './ConstraintBO';
 export default class WardrobeAPI {
   static #api = null;
   #serverBaseURL = '/api';
-  //Schrank Api
+  //Schrank API 
   // User endpoints
   #getUserURL = (id) => `${this.#serverBaseURL}/users/${id}`;
   #getUserByGoogleIdURL = (google_id) => `${this.#serverBaseURL}/user-by-google-id/${google_id}`;
