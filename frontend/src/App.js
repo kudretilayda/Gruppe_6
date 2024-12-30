@@ -42,12 +42,14 @@ const App = () => {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (user) {
+                console.log('User authenticated:', user);  // Logge den Benutzer
                 setAuthLoading(true);
                 setCurrentUser(user);
                 const token = await user.getIdToken();
                 document.cookie = `token=${token};path=/;`;
                 setAuthLoading(false);
             } else {
+                console.log('No user authenticated');
                 setCurrentUser(null);
                 setAuthLoading(false);
             }

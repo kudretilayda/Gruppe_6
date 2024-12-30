@@ -1,4 +1,4 @@
-import BusinessObject from "./BusinessObjects";
+import BusinessObject from "./BusinessObject";
 
 /**
  * Represents a User object
