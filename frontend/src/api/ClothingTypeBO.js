@@ -1,56 +1,62 @@
-import BusinessObject from "./BusinessObject";
+import BusinessObject from './BusinessObject.js'
 
 /**
- * Represents a clothing type (e.g., shirt, pants, dress).
+ * Repräsentiert einen Kleidungstyp
  */
 export default class ClothingTypeBO extends BusinessObject {
-  /**
-   * Constructs a ClothingTypeBO object.
-   *
-   * @param {Number} aId - The ID of the clothing type.
-   * @param {String} aName - The name of the clothing type.
-   * @param {String} aUsage - Occasions or purposes for this clothing type.
-   */
-  constructor(aId = 0, aName = "", aUsage = "") {
-    super();
-    this.id = aId;
-    this.name = aName;
-    this.usage = aUsage;
-  }
+    
+    /** 
+     * Konstruktor für einen Kleidungstyp
+     * 
+     * @param {String} atype_name - Name des Kleidungstyps
+     * @param {String} atype_description - Beschreibung des Kleidungstyps
+     * @param {String} acategory - Kategorie des Kleidungstyps
+     */
+    constructor(atype_name, atype_description, acategory) {
+        super();
+        this.type_name = atype_name;
+        this.type_description = atype_description;
+        this.category = acategory;
+    }
 
-  // Getter and setter for name
-  getName() {
-    return this.name;
-  }
+    setTypeName(atype_name) {
+        this.type_name = atype_name;
+    }
 
-  setName(value) {
-    this.name = value;
-  }
+    getTypeName() {
+        return this.type_name;
+    }
 
-  // Getter and setter for usage
-  getUsage() {
-    return this.usage;
-  }
+    setTypeDescription(atype_description) {
+        this.type_description = atype_description;
+    }
 
-  setUsage(value) {
-    this.usage = value;
-  }
+    getTypeDescription() {
+        return this.type_description;
+    }
 
-  // String representation of the object
-  toString() {
-    return `Clothing Type: ${this.getId()}, Name: ${this.getName()}, Usage: ${this.getUsage()}`;
-  }
+    setCategory(acategory) {
+        this.category = acategory;
+    }
 
-  /**
-   * Converts a JSON structure into a ClothingTypeBO object.
-   * @param {Object} dictionary - The JSON data describing the ClothingTypeBO.
-   * @returns {ClothingTypeBO} - A new ClothingTypeBO object.
-   */
-  static fromJSON(dictionary = {}) {
-    const clothingType = new ClothingTypeBO();
-    clothingType.setId(dictionary.id || 0); // Inherited from BusinessObject.
-    clothingType.setName(dictionary.name || "");
-    clothingType.setUsage(dictionary.usage || "");
-    return clothingType;
-  }
+    getCategory() {
+        return this.category;
+    }
+
+    static fromJSON(types) {
+        let result = [];
+
+        if (Array.isArray(types)) {
+            types.forEach((t) => {
+                Object.setPrototypeOf(t, ClothingTypeBO.prototype);
+                result.push(t);
+            })
+        } else {
+            let t = types;
+            Object.setPrototypeOf(t, ClothingTypeBO.prototype);
+            result.push(t);
+        }
+
+        return result;
+    }
 }
