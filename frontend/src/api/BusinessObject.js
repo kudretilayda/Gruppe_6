@@ -18,7 +18,7 @@ export default class BusinessObject {
 
     toString() {
         let result = '';
-        for (var prop in this) {
+        for (let prop in this) {
             result += prop + ': ' + this[prop] + ' ';
         }
         return result;
