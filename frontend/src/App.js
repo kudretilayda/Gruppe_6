@@ -47,3 +47,11 @@ const App = () => {
 };
 
 export default App;
+
+
+
+//To-Do's:
+// - Login to Homepage Connect mit Admin Cred erstellen
+//      - AuthContext.js überprüfen
+//      - Login.js überprüfen
+//      - App.js überprüfen und zum laufen bekommen
