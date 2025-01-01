@@ -1,77 +1,62 @@
-import BusinessObject from "./BusinessObject";
+import BusinessObject from './BusinessObject.js'
 
 /**
- * Represents a Style object.
+ * Repräsentiert ein Style-Objekt
  */
 export default class StyleBO extends BusinessObject {
-  /**
-   * Constructs a StyleBO object.
-   *
-   * @param {Number} aStyleId - ID of the style.
-   * @param {String} aFeatures - Features of the style.
-   * @param {Array} aConstraints - Constraints of the style.
-   * @param {Array} aClothingTypes - Clothing types of the style.
-   */
-  constructor(aStyleId = 0, aFeatures = "", aConstraints = [], aClothingTypes = []) {
-    super();
-    this.styleId = aStyleId;
-    this.features = aFeatures;
-    this.constraints = aConstraints;
-    this.clothingTypes = aClothingTypes;
-  }
+    
+    /** 
+     * Konstruktor für ein Style-Objekt
+     * 
+     * @param {String} astyle_name - Name des Styles
+     * @param {String} adescription - Beschreibung des Styles 
+     * @param {Array} aConstraints - Array von Constraint-Objekten
+     */
+    constructor(astyle_name, adescription, aConstraints) {
+        super();
+        this.style_name = astyle_name;
+        this.description = adescription;
+        this.constraints = aConstraints;
+    }
 
-  // Getter and setter for styleId
-  getStyleId() {
-    return this.styleId;
-  }
+    setStyleName(astyle_name) {
+        this.style_name = astyle_name;
+    }
 
-  setStyleId(value) {
-    this.styleId = value;
-  }
+    getStyleName() {
+        return this.style_name;
+    }
 
-  // Getter and setter for features
-  getFeatures() {
-    return this.features;
-  }
+    setDescription(adescription) {
+        this.description = adescription;
+    }
 
-  setFeatures(value) {
-    this.features = value;
-  }
+    getDescription() {
+        return this.description;
+    }
 
-  // Getter and setter for constraints
-  getConstraints() {
-    return this.constraints;
-  }
+    setConstraints(aConstraints) {
+        this.constraints = aConstraints;
+    }
 
-  setConstraints(value) {
-    this.constraints = value;
-  }
+    getConstraints() {
+        return this.constraints;
+    }
 
-  // Getter and setter for clothingTypes
-  getClothingTypes() {
-    return this.clothingTypes;
-  }
+    static fromJSON(styles) {
+        let result = [];
 
-  setClothingTypes(value) {
-    this.clothingTypes = value;
-  }
+        if (Array.isArray(styles)) {
+            styles.forEach((s) => {
+                Object.setPrototypeOf(s, StyleBO.prototype);
+                result.push(s);
+            })
+        } else {
+            let s = styles;
+            Object.setPrototypeOf(s, StyleBO.prototype);
+            result.push(s);
+        }
 
-  // String representation of the object
-  toString() {
-    return `Style: ${this.getStyleId()}, ${this.getFeatures()}, ${JSON.stringify(this.getConstraints())}, ${JSON.stringify(this.getClothingTypes())}`;
-  }
-
-  /**
-   * Converts a JSON structure into a StyleBO object.
-   * @param {Object} dictionary - The JSON data describing the StyleBO.
-   * @returns {StyleBO} - A new StyleBO object.
-   */
-  static fromJSON(dictionary = {}) {
-    const style = new StyleBO();
-    style.setStyleId(dictionary.styleId || 0);
-    style.setFeatures(dictionary.features || "");
-    style.setConstraints(dictionary.constraints || []);
-    style.setClothingTypes(dictionary.clothingTypes || []);
-    return style;
-  }
+        return result;
+    }
 }

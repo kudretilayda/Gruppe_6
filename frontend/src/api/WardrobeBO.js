@@ -1,53 +1,52 @@
-import BusinessObject from "./BusinessObject";
+import BusinessObject from './BusinessObject.js'
 
 /**
- * Represents a wardrobe with clothing items and outfits.
+ * Repräsentiert einen Kleiderschrank
  */
 export default class WardrobeBO extends BusinessObject {
-  /**
-   * Constructs a WardrobeBO object.
-   *
-   * @param {Array} aContents - The list of clothing items in the wardrobe.
-   * @param {Array} aOutfits - The list of outfits in the wardrobe.
-   */
-  constructor(aContents = [], aOutfits = []) {
-    super();
-    this.contents = aContents; // List of clothing items.
-    this.outfits = aOutfits; // List of outfits.
-  }
+    
+    /** 
+     * Konstruktor für einen Kleiderschrank
+     * 
+     * @param {String} awardrobe_name - Name des Kleiderschranks
+     * @param {Number} aperson_id - ID des Besitzers
+     */
+    constructor(awardrobe_name, aperson_id) {
+        super();
+        this.wardrobe_name = awardrobe_name;
+        this.person_id = aperson_id;
+    }
 
-  // Getter and setter for contents
-  getContents() {
-    return this.contents;
-  }
+    setWardrobeName(awardrobe_name) {
+        this.wardrobe_name = awardrobe_name;
+    }
 
-  setContents(value) {
-    this.contents = value;
-  }
+    getWardrobeName() {
+        return this.wardrobe_name;
+    }
 
-  // Getter and setter for outfits
-  getOutfits() {
-    return this.outfits;
-  }
+    setPersonId(aperson_id) {
+        this.person_id = aperson_id;
+    }
 
-  setOutfits(value) {
-    this.outfits = value;
-  }
+    getPersonId() {
+        return this.person_id;
+    }
 
-  // String representation of the object
-  toString() {
-    return `Wardrobe: Contents = ${JSON.stringify(this.getContents())}, Outfits = ${JSON.stringify(this.getOutfits())}`;
-  }
+    static fromJSON(wardrobes) {
+        let result = [];
 
-  /**
-   * Converts a JSON structure into a WardrobeBO object.
-   * @param {Object} dictionary - The JSON data describing the WardrobeBO.
-   * @returns {WardrobeBO} - A new WardrobeBO object.
-   */
-  static fromJSON(dictionary = {}) {
-    const wardrobe = new WardrobeBO();
-    wardrobe.setContents(dictionary.contents || []);
-    wardrobe.setOutfits(dictionary.outfits || []);
-    return wardrobe;
-  }
+        if (Array.isArray(wardrobes)) {
+            wardrobes.forEach((w) => {
+                Object.setPrototypeOf(w, WardrobeBO.prototype);
+                result.push(w);
+            })
+        } else {
+            let w = wardrobes;
+            Object.setPrototypeOf(w, WardrobeBO.prototype);
+            result.push(w);
+        }
+
+        return result;
+    }
 }
