@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import ClosetAPI from '../API/DigitalClosetAPI';
+import WardrobeAPI from '../API/DigitalWardrobeAPI';
 import SizeBO from '../API/Size';
 import { getAuth } from 'firebase/auth';
 import {
@@ -19,9 +19,9 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 
 // Liste der erlaubten Größen für Kleidungsstücke
-const realSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
+const realSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL'];
 
-const SizeList = ({ closetId }) => {
+const SizeList = ({ wardrobeId }) => {
   const [sizes, setSizes] = useState([]);
   const [newSize, setNewSize] = useState('');
   const [error, setError] = useState('');
@@ -36,9 +36,9 @@ const SizeList = ({ closetId }) => {
     setLoading(true);
     const auth = getAuth();
     const currentUser = auth.currentUser;
-    const closet_id = await ClosetAPI.getAPI().getClosetIdByGoogleUserId(currentUser.uid);
+    const wardrobe_id = await WardrobeAPI.getAPI().getWardrobeIdByGoogleUserId(currentUser.uid);
     try {
-      const fetchedSizes = await ClosetAPI.getAPI().getSizeByClosetId(closet_id.closet_id);
+      const fetchedSizes = await WardrobeAPI.getAPI().getSizeByWardrobeId(wardrobe_id.wardrobe_id);
       setSizes(fetchedSizes || []);
     } catch (error) {
       console.error('Failed to fetch sizes:', error);
@@ -56,10 +56,10 @@ const SizeList = ({ closetId }) => {
     const auth = getAuth();
     const currentUser = auth.currentUser;
     try {
-      const closet_id = await ClosetAPI.getAPI().getClosetIdByGoogleUserId(currentUser.uid);
-      const sizeBO = new SizeBO(newSize, closet_id.closet_id);
+      const wardrobe_id = await WardrobeAPI.getAPI().getWardrobeIdByGoogleUserId(currentUser.uid);
+      const sizeBO = new SizeBO(newSize, wardrobe_id.wardrobe_id);
 
-      await ClosetAPI.getAPI().addSize(sizeBO);
+      await WardrobeAPI.getAPI().addSize(sizeBO);
       fetchSizes();
       setNewSize('');
       setError('');
@@ -72,7 +72,7 @@ const SizeList = ({ closetId }) => {
 
   const handleDeleteSize = async (sizeId) => {
     try {
-      await ClosetAPI.getAPI().deleteSize(sizeId);
+      await WardrobeAPI.getAPI().deleteSize(sizeId);
       fetchSizes();
     } catch (error) {
       console.error('Failed to delete size:', error);
