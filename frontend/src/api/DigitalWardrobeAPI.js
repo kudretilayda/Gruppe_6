@@ -11,7 +11,7 @@ import MutexConstraintBO from './MutexConstraintBO';
 import CardinalityConstraintBO from './CardinalityConstraintBO';
 import ConstraintBO from './ConstraintBO';
 
-export default class WardrobeAPI {
+export default class DigitalWardrobeAPI {
   static #api = null;
   #serverBaseURL = '/api';
   //Schrank API 
@@ -24,9 +24,9 @@ export default class WardrobeAPI {
 
   // Wardrobe endpoints
   #getWardrobeURL = (userId) => `${this.#serverBaseURL}/users/${userId}/wardrobe`;
-  #addClothingItemURL = (userId) => `${this.#serverBaseURL}/users/${userId}/wardrobe/clothingitems`;
-  #deleteClothingItemURL = (userId, clothingItemId) => `${this.#serverBaseURL}/users/${userId}/wardrobe/clothingitems/${clothingItemId}`;
-  #updateClothingItemURL = (userId, clothingItemId) => `${this.#serverBaseURL}/users/${userId}/wardrobe/clothingitems/${clothingItemId}`;
+  #addClothingItemURL = (userId) => `${this.#serverBaseURL}/users/${userId}/wardrobe/ClothingItems`;
+  #deleteClothingItemURL = (userId, clothingItemId) => `${this.#serverBaseURL}/users/${userId}/wardrobe/ClothingItems/${clothingItemId}`;
+  #updateClothingItemURL = (userId, clothingItemId) => `${this.#serverBaseURL}/users/${userId}/wardrobe/ClothingItems/${clothingItemId}`;
   // Outfit endpoints
   #getOutfitsURL = (userId) => `${this.#serverBaseURL}/users/${userId}/outfits`;
   #addOutfitURL = (userId) => `${this.#serverBaseURL}/users/${userId}/outfits`;
@@ -40,8 +40,8 @@ export default class WardrobeAPI {
   #getStyleByIdURL = (styleId) => `${this.#serverBaseURL}/styles/${styleId}`;
 
   // ClothingType endpoints
-  #getClothingTypesURL = () => `${this.#serverBaseURL}/clothingtypes`;
-  #addClothingTypeURL = () => `${this.#serverBaseURL}/clothingtypes`;
+  #getClothingTypesURL = () => `${this.#serverBaseURL}/ClothingTypes`;
+  #addClothingTypeURL = () => `${this.#serverBaseURL}/ClothingTypes`;
 
   // Constraint endpoints
   #getConstraintsURL = (styleId) => `${this.#serverBaseURL}/styles/${styleId}/constraints`;
@@ -51,7 +51,7 @@ export default class WardrobeAPI {
 
   static getAPI() {
     if (this.#api == null) {
-      this.#api = new WardrobeAPI();
+      this.#api = new DigitalWardrobeAPI();
     }
     return this.#api;
   }
