@@ -1,20 +1,30 @@
-import ConstraintBO from './ConstraintBO.js'
+import BusinessObject from "./BusinessObject.js";
 
-export default class BinaryConstraintBO extends ConstraintBO {
-  constructor(refObject1, refObject2) {
-    super();
-    this.refObject1 = refObject1;  // Erstes Kleidungsstück
-    this.refObject2 = refObject2;  // Zweites Kleidungsstück
-  }
+export default class BinaryConstraintBO extends BusinessObject {
+    constructor(itemA, itemB, condition) {
+        super();
+        this.type = 'binary'; // Typ des Constraints
+        this.itemA = itemA;   // Erstes Kleidungsstück oder Element
+        this.itemB = itemB;   // Zweites Kleidungsstück oder Element
+        this.condition = condition; // Bedingung für das Constraint
+    }
 
-  // Überprüft, ob der Binary-Constraint gültig ist
-  isValid() {
-    // Beispiel-Logik: Überprüft, ob die beiden Kleidungsstücke miteinander kombiniert werden können.
-    return !(this.refObject1.type === "Hose" && this.refObject2.type === "Rock");
-  }
+    // Beispiel einer Methode, die überprüft, ob das Constraint erfüllt ist
+    isValid() {
+        // Hier könnten spezifische Logik zum Überprüfen der Bedingung implementiert werden
+        // Beispiel: Wenn die Bedingung erfüllt ist, gibt die Methode 'true' zurück
+        return this.condition(this.itemA, this.itemB);
+    }
 
-  static fromJSON(constraint) {
-    let result = super.fromJSON(constraint);
-    return result;
-  }
+    // Beispiel für eine Methode zum Setzen oder Ändern der Bedingung
+    setCondition(newCondition) {
+        this.condition = newCondition;
+    }
+
+    // Eine Methode, die Informationen über das Constraint zurückgibt
+    getInfo() {
+        return `Binary constraint between ${this.itemA.name} and ${this.itemB.name} with condition: ${this.condition.toString()}`;
+    }
+
+    // Weitere spezifische Methoden, die in diesem Fall je nach Logik implementiert werden könnten
 }
