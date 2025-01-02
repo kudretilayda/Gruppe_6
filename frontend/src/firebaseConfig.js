@@ -1,6 +1,3 @@
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-
 const firebaseConfig = {
   apiKey: "AIzaSyCN5yEcyPtsbObW-Pa-i9gTG61JgxqiIH8",
   authDomain: "digital-wardrobe-442615.firebaseapp.com",
@@ -11,6 +8,5 @@ const firebaseConfig = {
   measurementId: "G-DLV0BPVGMV"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+
+export default firebaseConfig

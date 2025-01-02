@@ -1,16 +1,20 @@
 import React from "react";
 import { Button, Container, Typography } from "@mui/material";
+import { auth } from "../firebaseConfig"; // Firebase-Setup importieren
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
-const LoginPage = () => {
+const LoginPage = ({ onLoginSuccess }) => {
   const handleGoogleSignIn = () => {
-    const auth = getAuth();
     const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider)
-      .then((result) => console.log("User signed in:", result.user))
-      .catch((error) => console.error("Error signing in:", error));
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      console.log("User signed in:", user);
+      onLoginSuccess(user); // Benachrichtige die App über den erfolgreichen Login
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
   };
-
   return (
     <Container
       style={{
