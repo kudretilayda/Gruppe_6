@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="0b36f84f-6ad4-4404-a25a-055e1c7ce6fe" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+        <option value="package.json" />
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="Draft_Backend_Kudi" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="2p4Vjp6kw0tAZL5DMGaxSivmh98" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Database Script.mysql-dump.sql.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Admin.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Admin2.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Binary.executor&quot;: &quot;Run&quot;,
+    &quot;Python.BinaryConstraint.executor&quot;: &quot;Run&quot;,
+    &quot;Python.BusinessObject.executor&quot;: &quot;Run&quot;,
+    &quot;Python.CardinalityConstraint.executor&quot;: &quot;Run&quot;,
+    &quot;Python.ClothingItem.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Constraint Tests.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Constraint.executor&quot;: &quot;Run&quot;,
+    &quot;Python.ConstraintMapper.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Constraint_Test.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Dummy.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.ImplicationConstraint.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Kleiderschrank.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Kleidungsstueck.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Kleidungsstück(prüfen,  ggf Mapper).executor&quot;: &quot;Run&quot;,
+    &quot;Python.Kleidungstyp.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Mapper.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Mutex.executor&quot;: &quot;Run&quot;,
+    &quot;Python.MutexConstraint.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Outfit.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Style.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Unary.executor&quot;: &quot;Run&quot;,
+    &quot;Python.UnaryConstraint.executor&quot;: &quot;Run&quot;,
+    &quot;Python.User.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;draft__be__fe__kudi&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/serta/Documents/GitHub/Gruppe_6/src/server&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Applications/PyCharm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
+    ],
+    &quot;RunConfigurationTargetLRU&quot;: [
+      &quot;0ba7c31d-66a9-426f-a9cb-112c76a75293&quot;
+    ]
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\serta\Documents\GitHub\Gruppe_6\src\server" />
+      <recent name="C:\Users\serta\Documents\GitHub\Gruppe_6\src\server\db" />
+      <recent name="C:\Users\serta\Documents\GitHub\Gruppe_6\src\server\bo" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/frontend/src" />
+      <recent name="$PROJECT_DIR$/frontend" />
+      <recent name="$PROJECT_DIR$/frontend/backup" />
+      <recent name="C:\Users\serta\Documents\GitHub\Gruppe_6\src\server\db\ConstraintMapper" />
+      <recent name="C:\Users\serta\Documents\GitHub\Gruppe_6\src\server\bo\Constraints" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.Admin2">
+    <configuration name="mysql-dump.sql" type="DatabaseScript" editBeforeRun="true" temporary="true" nameIsGenerated="true">
+      <script-file value="$PROJECT_DIR$/mysql/mysql-dump.sql" />
+      <script-mode>FILE</script-mode>
+      <method v="2" />
+    </configuration>
+    <configuration name="Admin" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Gruppe_6" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/server" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/server/Admin.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Admin2" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Gruppe_6" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/server" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/server/Admin2.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Constraint_Test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Gruppe_6" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/server/bo/Constraints" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/server/bo/Constraints/Constraint_Test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Mutex" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Gruppe_6" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/server/bo/Constraints" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/server/bo/Constraints/Mutex.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.Admin2" />
+        <item itemvalue="Python.Constraint_Test" />
+        <item itemvalue="Database Script.mysql-dump.sql" />
+        <item itemvalue="Python.Admin" />
+        <item itemvalue="Python.Mutex" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-e768b9ed790e-JavaScript-PY-243.21565.199" />
+        <option value="bundled-python-sdk-cab1f2013843-4ae2d6a61b08-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-243.21565.199" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0b36f84f-6ad4-4404-a25a-055e1c7ce6fe" name="Changes" comment="" />
+      <created>1732025472787</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1732025472787</updated>
+      <workItem from="1732025474444" duration="511000" />
+      <workItem from="1732030058628" duration="2913000" />
+      <workItem from="1732191473777" duration="3957000" />
+      <workItem from="1732390357987" duration="3432000" />
+      <workItem from="1732646337684" duration="5374000" />
+      <workItem from="1733083957998" duration="4190000" />
+      <workItem from="1733146625299" duration="1424000" />
+      <workItem from="1733150931754" duration="1737000" />
+      <workItem from="1733240463823" duration="1190000" />
+      <workItem from="1733687161187" duration="923000" />
+      <workItem from="1733787021370" duration="4020000" />
+      <workItem from="1733841540601" duration="2964000" />
+      <workItem from="1733875943057" duration="4030000" />
+      <workItem from="1733923149189" duration="314000" />
+      <workItem from="1734393517082" duration="819000" />
+      <workItem from="1734706299367" duration="1550000" />
+      <workItem from="1734887219716" duration="17560000" />
+      <workItem from="1734908413502" duration="3454000" />
+      <workItem from="1734963687584" duration="8694000" />
+      <workItem from="1735309562807" duration="8015000" />
+      <workItem from="1735393139527" duration="1367000" />
+      <workItem from="1735564845751" duration="4359000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Gruppe_6$Style.coverage" NAME="Style Coverage Results" MODIFIED="1733923771579" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$ClothingItemMapper.coverage" NAME="ClothingItemMapper Coverage Results" MODIFIED="1733923811137" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/db" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$Constraint_Test.coverage" NAME="Constraint_Test Coverage Results" MODIFIED="1734896999139" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo/Constraints" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$Constraints.coverage" NAME="Constraints Coverage Results" MODIFIED="1733923763205" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$Kleidungstyp.coverage" NAME="Kleidungstyp Coverage Results" MODIFIED="1732397323955" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$UserMapper.coverage" NAME="UserMapper Coverage Results" MODIFIED="1733923848655" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/db" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$OutfitMapper.coverage" NAME="OutfitMapper Coverage Results" MODIFIED="1733923845866" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/db" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$StyleMapper.coverage" NAME="StyleMapper Coverage Results" MODIFIED="1733923860139" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/db" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$BusinessObject.coverage" NAME="BusinessObject Coverage Results" MODIFIED="1733923751720" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$ClothingTypeMapper.coverage" NAME="ClothingTypeMapper Coverage Results" MODIFIED="1733930379872" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/db" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$Admin2.coverage" NAME="Admin2 Coverage Results" MODIFIED="1734910333539" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$BinaryConstraint.coverage" NAME="BinaryConstraint Coverage Results" MODIFIED="1732396868692" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$ImplicationConstraint.coverage" NAME="ImplicationConstraint Coverage Results" MODIFIED="1732648368934" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$UnaryConstraint.coverage" NAME="UnaryConstraint Coverage Results" MODIFIED="1732397390640" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$RuleEngine.coverage" NAME="RuleEngine Coverage Results" MODIFIED="1733923877996" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$MutexConstraint.coverage" NAME="MutexConstraint Coverage Results" MODIFIED="1732648377912" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$ConstraintMapper.coverage" NAME="ConstraintMapper Coverage Results" MODIFIED="1733923836488" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/db" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$Admin.coverage" NAME="Admin Coverage Results" MODIFIED="1734648832775" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$Outfit.coverage" NAME="Outfit Coverage Results" MODIFIED="1733923766624" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$Kleidungsstück_prüfen___ggf_Mapper_.coverage" NAME="Kleidungsstück(prüfen,  ggf Mapper) Coverage Results" MODIFIED="1732397227386" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$Constraint.coverage" NAME="Constraint Coverage Results" MODIFIED="1732396178032" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$WardrobeMapper.coverage" NAME="WardrobeMapper Coverage Results" MODIFIED="1733923853227" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/db" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$Kleidungsstueck.coverage" NAME="Kleidungsstueck Coverage Results" MODIFIED="1732397207063" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$CardinalityConstraint.coverage" NAME="CardinalityConstraint Coverage Results" MODIFIED="1732648363628" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$Constraint_Tests.coverage" NAME="Constraint Tests Coverage Results" MODIFIED="1733794068113" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/constraints" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$Mapper.coverage" NAME="Mapper Coverage Results" MODIFIED="1733923843117" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/db" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$User.coverage" NAME="User Coverage Results" MODIFIED="1733923774806" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$Mutex.coverage" NAME="Mutex Coverage Results" MODIFIED="1734643103817" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo/Constraints" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$Unary.coverage" NAME="Unary Coverage Results" MODIFIED="1734569787941" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo/Constraints" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$ClothingType.coverage" NAME="ClothingType Coverage Results" MODIFIED="1733923759434" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$Dummy.coverage" NAME="Dummy Coverage Results" MODIFIED="1733933449328" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$Kleiderschrank.coverage" NAME="Kleiderschrank Coverage Results" MODIFIED="1732648373453" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$ClothingItem.coverage" NAME="ClothingItem Coverage Results" MODIFIED="1734575026880" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$main.coverage" NAME="main Coverage Results" MODIFIED="1734565825893" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$Binary.coverage" NAME="Binary Coverage Results" MODIFIED="1734574862745" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo/Constraints" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$Wardrobe.coverage" NAME="Wardrobe Coverage Results" MODIFIED="1733923779176" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
+  </component>
+</project>
