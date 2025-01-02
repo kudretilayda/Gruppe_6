@@ -13,6 +13,7 @@ import Styles from './components/pages/Styles';
 import Outfits from './components/pages/Outfits';
 import Settings from './components/pages/Settings';
 import theme from './theme';
+import './firebaseconfig';
 
 const App = () => {
     return (
@@ -24,21 +25,20 @@ const App = () => {
                         {/* Public routes */}
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
-
-                        {/* Protected routes */}
                         <Route path="/" element={
                             <ProtectedRoute>
                                 <Layout>
                                     <Routes>
                                         <Route path="/" element={<Home />} />
-                                        <Route path="/wardrobe" element={<Wardrobe />} />
-                                        <Route path="/styles" element={<Styles />} />
-                                        <Route path="/outfits" element={<Outfits />} />
-                                        <Route path="/settings" element={<Settings />} />
+                                        <Route path="/Wardrobe" element={<Wardrobe />} />
+                                        <Route path="/Styles" element={<Styles />} />
+                                        <Route path="/Outfits" element={<Outfits />} />
+                                        <Route path="/Settings" element={<Settings />} />
                                     </Routes>
                                 </Layout>
                             </ProtectedRoute>
                         } />
+                        
                     </Routes>
                 </BrowserRouter>
             </ThemeProvider>

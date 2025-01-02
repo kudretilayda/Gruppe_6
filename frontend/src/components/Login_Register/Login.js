@@ -9,45 +9,51 @@ import { useAuth } from "../../AuthContext";
 
 const Login = () => {
 
-    const Navigate = useNavigate();
-    const { Login } = useAuth();
+    const navigate = useNavigate();
+    const { login } = useAuth();
 
    // State Variablen für User und Passwort
-   const [User, setUser] = useState(""); // Speichert die eingegebene User
+   const [username, setUsername] = useState(""); // Speichert die eingegebene User
    const [password, setPassword] = useState(""); // Speichert das eingegebene Passwort
    // State Variablen für Fehleranzeige
-   const [UserError, setUserError] = useState(false); // Zeigt Fehler bei User-Eingabe
+   const [usernameError, setUsernameError] = useState(false); // Zeigt Fehler bei User-Eingabe
    const [passwordError, setPasswordError] = useState(false); // Zeigt Fehler bei Passwort-Eingabe
 
+    console.log('Auth Context Werte:', useAuth());
+
    // Funktion wird beim Absenden des Formulars ausgeführt
-   const handleSubmit = (Event) => {
-       Event.preventDefault(); // Verhindert Standard-Formularverhalten
+   const handleSubmit = async (event) => {
+       event.preventDefault(); // Verhindert Standard-Formularverhalten
+       console.log('Login-Versuch mit:', username, password);
 
-       // Setzt Fehleranzeigen zurück
-       setUserError(false);
-       setPasswordError(false);
-
-       // Prüft ob User-Feld leer ist
-       if (User === '') {
-           setUserError(true);
+       if (!username || !password) {
+        setUsernameError(!username);
+        setPasswordError(!password);
+        return;
        }
 
-       // Prüft ob Passwort-Feld leer ist
-       if (password === '') {
-           setPasswordError(true);
-       }
 
-       // Wenn beide Felder ausgefüllt sind
-       if (User === 'admin' && password === 'admin') {
-            Login({ username: User });
-            Navigate('frontend/src/components/pages/Home.js');
-       } else {
-            setUserError(true);
+
+       if (username === 'admin' && password === 'admin') {
+        console.log('Korrekte Anmeldedaten, versuche Login...');
+        try {
+            await login({ username: 'admin'});
+            console.log('Login erfolgreich, navigiere zur Hauptseite');
+            navigate('/');
+        } catch (error) {
+            console.error('Login-Fehler', error);
+            setUsernameError(true);
             setPasswordError(true);
-            alert('Falsche Angaben bei der Anmeldung!!')
+        } 
+
+       } else {
+        console.log('Falsche Anmeldedaten');
+        setUsernameError(true);
+        setPasswordError(true);
+        alert('Bitte verwenden Sie admin/admin');
        }
-           // Hier kann später die Authentifizierung eingebaut werden
-       }
+   };
+
    
 
    return (
@@ -62,15 +68,15 @@ const Login = () => {
                    {/* User Eingabefeld */}
                    <TextField
                        label="User"
-                       onChange={(e) => setUser(e.target.value)} // Aktualisiert User bei Änderung
+                       onChange={(e) => setUsername(e.target.value)} // Aktualisiert User bei Änderung
                        required
                        variant="outlined"
                        color="secondary"
-                       type="User"
+                       type="text"
                        sx={{ mb: 3 }}
                        fullWidth
-                       value={User}
-                       error={UserError} // Zeigt Fehler an wenn UserError true ist
+                       value={username}
+                       error={usernameError} // Zeigt Fehler an wenn UserError true ist
                    />
 
                    {/* Passwort Eingabefeld */}
@@ -101,6 +107,7 @@ const Login = () => {
        </Container>
    );
 };
+
 
 // Exportiert die Login Komponente für die Verwendung in anderen Dateien
 export default Login;
