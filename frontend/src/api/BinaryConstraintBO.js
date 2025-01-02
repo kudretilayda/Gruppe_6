@@ -1,30 +1,41 @@
-import BusinessObject from "./BusinessObject.js";
+import ConstraintBO from "./ConstraintBO.js";
 
-export default class BinaryConstraintBO extends BusinessObject {
-    constructor(itemA, itemB, condition) {
+export default class BinaryConstraintBO extends ConstraintBO {
+    constructor(referenceObject1, referenceObject2) {
         super();
-        this.type = 'binary'; // Typ des Constraints
-        this.itemA = itemA;   // Erstes Kleidungsstück oder Element
-        this.itemB = itemB;   // Zweites Kleidungsstück oder Element
-        this.condition = condition; // Bedingung für das Constraint
+        this.referenceObject1 = referenceObject1; // Erstes Referenzobjekt
+        this.referenceObject2 = referenceObject2; // Zweites Referenzobjekt
     }
 
-    // Beispiel einer Methode, die überprüft, ob das Constraint erfüllt ist
-    isValid() {
-        // Hier könnten spezifische Logik zum Überprüfen der Bedingung implementiert werden
-        // Beispiel: Wenn die Bedingung erfüllt ist, gibt die Methode 'true' zurück
-        return this.condition(this.itemA, this.itemB);
+    // Getter und Setter für jedes Attribut
+    getReferenceObject1() {
+        return this.referenceObject1;
     }
 
-    // Beispiel für eine Methode zum Setzen oder Ändern der Bedingung
-    setCondition(newCondition) {
-        this.condition = newCondition;
+    setReferenceObject1(referenceObject1) {
+        this.referenceObject1 = referenceObject1;
     }
 
-    // Eine Methode, die Informationen über das Constraint zurückgibt
-    getInfo() {
-        return `Binary constraint between ${this.itemA.name} and ${this.itemB.name} with condition: ${this.condition.toString()}`;
+    getReferenceObject2() {
+        return this.referenceObject2;
     }
 
-    // Weitere spezifische Methoden, die in diesem Fall je nach Logik implementiert werden könnten
+    setReferenceObject2(referenceObject2) {
+        this.referenceObject2 = referenceObject2;
+    }
+
+    static fromJSON(binaryConstraints) {
+        let result = [];
+        if (Array.isArray(binaryConstraints)) {
+            binaryConstraints.forEach((bc) => {
+                Object.setPrototypeOf(bc, BinaryConstraintBO.prototype);
+                result.push(bc);
+            });
+        } else {
+            let bc = binaryConstraints;
+            Object.setPrototypeOf(bc, BinaryConstraintBO.prototype);
+            result.push(bc);
+        }
+        return result;
+    }
 }

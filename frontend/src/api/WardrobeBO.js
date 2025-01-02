@@ -5,26 +5,27 @@ import BusinessObject from "./BusinessObject.js";
 export default class WardrobeBO extends BusinessObject {
     constructor(ownerId, clothingItems = []) {
         super();
-        this.ownerId = ownerId; // Der Besitzer des Kleiderschranks
-        this.clothingItems = clothingItems; // Liste der Kleidungsstücke
+        this.owner = ownerId; // Der Besitzer des Kleiderschranks
+        this.content = content; // Inhalt des Kleiderschrankes (Kleidungsstücke)
+
     }
 
     // Getter und Setter für ownerId
     getOwnerId() {
-        return this.ownerId;
+        return this.owner;
     }
 
     setOwnerId(ownerId) {
-        this.ownerId = ownerId;
+        this.owner = ownerId;
     }
 
-    // Getter und Setter für clothingItems
-    getClothingItems() {
-        return this.clothingItems;
+    // Getter und Setter für Content
+    getContent() {
+        return this.content;
     }
 
-    setClothingItems(clothingItems) {
-        this.clothingItems = clothingItems;
+    setContent(clothingItems) {
+        this.clothingItems = content;
     }
 
     // Statische Methode zur Konvertierung von JSON-Daten in WardrobeBO-Objekte

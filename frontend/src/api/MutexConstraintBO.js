@@ -1,55 +1,41 @@
-import ConstraintBO from "./ConstraintBO";
+import ConstraintBO from "./ConstraintBO.js";
 
-/**
- * Represents a Mutex Constraint between two objects.
- */
 export default class MutexConstraintBO extends ConstraintBO {
-  /**
-   * Constructs a MutexConstraintBO object.
-   *
-   * @param {Object} object1 - The first object.
-   * @param {Object} object2 - The second object.
-   * @param {String} name - The name of the constraint.
-   * @param {String} description - The description of the constraint.
-   */
-  constructor(object1 = null, object2 = null, name = "", description = "") {
-    super(name, description);
-    this.object1 = object1;
-    this.object2 = object2;
-  }
+    constructor(referenceObject1, referenceObject2) {
+        super();
+        this.referenceObject1 = referenceObject1; // Erstes Referenzobjekt
+        this.referenceObject2 = referenceObject2; // Zweites Referenzobjekt
+    }
 
-  // Getter and setter for object1
-  getObject1() {
-    return this.object1;
-  }
+    // Getter und Setter für jedes Attribut
+    getReferenceObject1() {
+        return this.referenceObject1;
+    }
 
-  setObject1(value) {
-    this.object1 = value;
-  }
+    setReferenceObject1(referenceObject1) {
+        this.referenceObject1 = referenceObject1;
+    }
 
-  // Getter and setter for object2
-  getObject2() {
-    return this.object2;
-  }
+    getReferenceObject2() {
+        return this.referenceObject2;
+    }
 
-  setObject2(value) {
-    this.object2 = value;
-  }
+    setReferenceObject2(referenceObject2) {
+        this.referenceObject2 = referenceObject2;
+    }
 
-  // String representation of the object
-  toString() {
-    return `MutexConstraint: object1=${JSON.stringify(this.getObject1())}, object2=${JSON.stringify(this.getObject2())}`;
-  }
-
-  /**
-   * Converts a JSON structure into a MutexConstraintBO object.
-   * @param {Object} dictionary - The JSON data describing the MutexConstraintBO.
-   * @returns {MutexConstraintBO} - A new MutexConstraintBO object.
-   */
-  static fromJSON(dictionary = {}) {
-    const mutexConstraint = new MutexConstraintBO();
-    mutexConstraint.setObject1(dictionary.object1 || null);
-    mutexConstraint.setObject2(dictionary.object2 || null);
-    return mutexConstraint;
-  }
+    static fromJSON(mutexConstraints) {
+        let result = [];
+        if (Array.isArray(mutexConstraints)) {
+            mutexConstraints.forEach((mc) => {
+                Object.setPrototypeOf(mc, MutexConstraintBO.prototype);
+                result.push(mc);
+            });
+        } else {
+            let mc = mutexConstraints;
+            Object.setPrototypeOf(mc, MutexConstraintBO.prototype);
+            result.push(mc);
+        }
+        return result;
+    }
 }
