@@ -1,48 +1,45 @@
-import BusinessObject from "./BusinessObject.js"
+import BusinessObject from "./BusinessObject.js";
 
-// Die Klasse DigitalWardrobeBO erbt von der BusinessObject-Klasse.
-// Diese Klasse repräsentiert ein digitales Kleiderschrank-Objekt.
-export default class DigitalWardrobeBO extends BusinessObject {
-    // Konstruktor, der den Konstruktor der übergeordneten Klasse (BusinessObject) aufruft.
-    constructor() {
+// Die Klasse WardrobeBO erbt von der BusinessObject-Klasse.
+// Diese Klasse repräsentiert einen digitalen Kleiderschrank.
+export default class WardrobeBO extends BusinessObject {
+    constructor(ownerId, clothingItems = []) {
         super();
-        this.clothes = [];  // Ein Array, das die Kleidung im digitalen Kleiderschrank speichert.
+        this.ownerId = ownerId; // Der Besitzer des Kleiderschranks
+        this.clothingItems = clothingItems; // Liste der Kleidungsstücke
     }
 
-    // Methode, um Kleidungsstücke hinzuzufügen.
-    addClothing(clothingItem) {
-        this.clothes.push(clothingItem);
+    // Getter und Setter für ownerId
+    getOwnerId() {
+        return this.ownerId;
     }
 
-    // Methode, um ein Kleidungsstück zu entfernen.
-    removeClothing(clothingItem) {
-        this.clothes = this.clothes.filter(item => item !== clothingItem);
+    setOwnerId(ownerId) {
+        this.ownerId = ownerId;
     }
 
-    // Statische Methode zum Erzeugen von DigitalWardrobeBO-Instanzen aus JSON-Daten.
+    // Getter und Setter für clothingItems
+    getClothingItems() {
+        return this.clothingItems;
+    }
+
+    setClothingItems(clothingItems) {
+        this.clothingItems = clothingItems;
+    }
+
+    // Statische Methode zur Konvertierung von JSON-Daten in WardrobeBO-Objekte
     static fromJSON(wardrobes) {
         let result = [];
-        // Überprüft, ob wardrobes ein Array ist.
         if (Array.isArray(wardrobes)) {
-            // Wenn wardrobes ein Array ist, iteriert durch jedes Element.
             wardrobes.forEach((w) => {
-                // Setzt das Prototyp-Objekt des Elements auf DigitalWardrobeBO.
-                Object.setPrototypeOf(w, DigitalWardrobeBO.prototype);
-                result.push(w); // Fügt das Element zum Ergebnisarray hinzu.
-            })
+                Object.setPrototypeOf(w, WardrobeBO.prototype);
+                result.push(w);
+            });
         } else {
-            // Wenn wardrobes kein Array ist, behandelt es als singuläres Objekt.
             let w = wardrobes;
-            // Setzt das Prototyp-Objekt des Objekts auf DigitalWardrobeBO.
-            Object.setPrototypeOf(w, DigitalWardrobeBO.prototype);
-            result.push(w); // Fügt das Objekt zum Ergebnisarray hinzu.
+            Object.setPrototypeOf(w, WardrobeBO.prototype);
+            result.push(w);
         }
-        // Gibt das Ergebnisarray zurück.
         return result;
-    }
-
-    // Methode zum Filtern von Kleidung nach Kategorie (z.B. 'jackets', 'shirts').
-    filterByCategory(category) {
-        return this.clothes.filter(item => item.category === category);
     }
 }
