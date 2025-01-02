@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Grid } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import DigitalWardrobeAPI from '../API/DigitalWardrobeAPI'; // API für den Kleiderschrank
 import WardrobeEntryForm from './dialogs/WardrobeEntryForm'; // Form zum Hinzufügen/Bearbeiten von Kleidungsstücken
 import ErrorMessage from './dialogs/ErrorMessage'; // Fehlermeldung
 import LoadingSpinner from './dialogs/LoadingSpinner'; // Ladeindikator
