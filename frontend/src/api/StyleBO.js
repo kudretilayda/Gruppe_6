@@ -1,62 +1,45 @@
-import BusinessObject from './BusinessObject.js'
+import BusinessObject from './BusinessObject.js';
 
 /**
- * Repräsentiert ein Style-Objekt
+ * Repräsentiert einen Style
  */
 export default class StyleBO extends BusinessObject {
-    
-    /** 
-     * Konstruktor für ein Style-Objekt
-     * 
-     * @param {String} astyle_name - Name des Styles
-     * @param {String} adescription - Beschreibung des Styles 
-     * @param {Array} aConstraints - Array von Constraint-Objekten
-     */
-    constructor(astyle_name, adescription, aConstraints) {
+    constructor(features = [], constraints = []) {
         super();
-        this.style_name = astyle_name;
-        this.description = adescription;
-        this.constraints = aConstraints;
+        this.features = features; // Array von Merkmalen
+        this.constraints = constraints; // Array von Constraints
     }
 
-    setStyleName(astyle_name) {
-        this.style_name = astyle_name;
+    // Getter und Setter für Features
+    getFeatures() {
+        return this.features;
     }
 
-    getStyleName() {
-        return this.style_name;
+    setFeatures(features) {
+        this.features = features;
     }
 
-    setDescription(adescription) {
-        this.description = adescription;
-    }
-
-    getDescription() {
-        return this.description;
-    }
-
-    setConstraints(aConstraints) {
-        this.constraints = aConstraints;
-    }
-
+    // Getter und Setter für Constraints
     getConstraints() {
         return this.constraints;
     }
 
+    setConstraints(constraints) {
+        this.constraints = constraints;
+    }
+
     static fromJSON(styles) {
         let result = [];
-
         if (Array.isArray(styles)) {
             styles.forEach((s) => {
                 Object.setPrototypeOf(s, StyleBO.prototype);
                 result.push(s);
-            })
+            });
         } else {
             let s = styles;
             Object.setPrototypeOf(s, StyleBO.prototype);
             result.push(s);
         }
-
         return result;
     }
 }
