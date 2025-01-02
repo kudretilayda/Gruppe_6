@@ -1,79 +1,49 @@
-import ConstraintBO from "./ConstraintBO";
+import BusinessObject from "./BusinessObject.js";
 
-/**
- * Represents a Cardinality Constraint.
- *
- * A CardinalityConstraint has:
- * - An object (object),
- * - A minimum count (minCount) and a maximum count (maxCount).
- */
-export default class CardinalityConstraintBO extends ConstraintBO {
-  /**
-   * Constructs a CardinalityConstraintBO object.
-   *
-   * @param {Number} minCount - The minimum cardinality.
-   * @param {Number} maxCount - The maximum cardinality.
-   * @param {Object} object - The object the cardinality applies to.
-   * @param {String} name - The name of the constraint.
-   * @param {String} description - The description of the constraint.
-   */
-  constructor(
-    minCount = 0,
-    maxCount = 0,
-    object = null,
-    name = "",
-    description = ""
-  ) {
-    super(name, description);
-    this.minCount = minCount;
-    this.maxCount = maxCount;
-    this.object = object;
-  }
+export default class CardinalityConstraintBO extends BusinessObject {
+    constructor(min, max) {
+        super();
+        this.type = 'cardinality'; // Der Typ des Constraints
+        this.min = min || 1;  // Minimale Anzahl von Elementen, die enthalten sein müssen
+        this.max = max || Infinity; // Maximale Anzahl von Elementen, die enthalten sein können
+    }
 
-  // Getter and setter for minCount
-  getMinCount() {
-    return this.minCount;
-  }
+    // Methode, die überprüft, ob die Anzahl der Elemente im gegebenen Set mit den Kardinalitätsanforderungen übereinstimmt
+    isValidSet(itemSet) {
+        const itemCount = itemSet.length; // Anzahl der Elemente im Set
+        return itemCount >= this.min && itemCount <= this.max;
+    }
 
-  setMinCount(value) {
-    this.minCount = value;
-  }
+    // Methode, um zu prüfen, ob ein einzelnes Element im Set die Kardinalitätserfordernisse erfüllt
+    isValidItem(item, itemSet) {
+        // Hier könnte die Logik hinzukommen, wie ein einzelnes Item die Kardinalität beeinflusst
+        // z.B., ob es die Anzahl der erlaubten Items überschreitet oder unterschreitet
+        return this.isValidSet(itemSet);
+    }
 
-  // Getter and setter for maxCount
-  getMaxCount() {
-    return this.maxCount;
-  }
+    // Eine Methode, die überprüft, ob das Constraint auf eine bestimmte Menge von Items angewendet werden kann
+    checkCardinality(itemSet) {
+        return this.isValidSet(itemSet);
+    }
 
-  setMaxCount(value) {
-    this.maxCount = value;
-  }
+    // Eine Methode, um die Kardinalitätsanforderungen als String darzustellen
+    toString() {
+        return `Cardinality Constraint: Minimum ${this.min}, Maximum ${this.max}`;
+    }
 
-  // Getter and setter for object
-  getObject() {
-    return this.object;
-  }
+    // Eine Methode, um das Constraint in JSON zu serialisieren
+    toJSON() {
+        return {
+            type: this.type,
+            min: this.min,
+            max: this.max,
+        };
+    }
 
-  setObject(value) {
-    this.object = value;
-  }
-
-  // String representation of the object
-  toString() {
-    return `CardinalityConstraint: min=${this.getMinCount()}, max=${this.getMaxCount()}, object=${JSON.stringify(
-      this.getObject()
-    )}`;
-  }
-
-  /**
-   * Converts a JSON structure into a CardinalityConstraintBO object.
-   * @param {Object} dictionary - The JSON data describing the CardinalityConstraintBO.
-   * @returns {CardinalityConstraintBO} - A new CardinalityConstraintBO object.
-   */
-  static fromJSON(dictionary = {}) {
-    const cardinalityConstraint = new CardinalityConstraintBO();
-    cardinalityConstraint.setMinCount(dictionary.minCount || 0);
-    cardinalityConstraint.setMaxCount(dictionary.maxCount || 0);
-    cardinalityConstraint.setObject(dictionary.object || null);
-    return cardinalityConstraint;
-  }
+    // Eine statische Methode, um aus einem JSON-Objekt ein CardinalityConstraintBO zu erstellen
+    static fromJSON(json) {
+        const constraint = new CardinalityConstraintBO(json.min, json.max);
+        Object.setPrototypeOf(constraint, CardinalityConstraintBO.prototype);
+        return constraint;
+    }
 }
