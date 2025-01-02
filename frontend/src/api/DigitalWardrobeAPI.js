@@ -110,7 +110,7 @@ export default class DigitalWardrobeAPI {
   getUserByGoogleId(googleId) {
     return this.#fetchAdvanced(this.#getUserByGoogleIdURL(googleId))
         .then(responseJSON => UserBO.fromJSON(responseJSON)[0]);
-  }
+}
 
   // Wardrobe management
   getWardrobe(userId) {

@@ -1,33 +1,43 @@
-import React, { useState, useEffect} from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'react-router-dom'; // React Router v6
-import  { Container, ThemeProvider, CssBaseline} from "@mui/material";
-import { initializeApp } from './firebase/app'
-import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import theme from './theme'; // Assuming you have a custom theme defined
-import { AuthProvider } from './context/AuthContext'; // If you're using context for authentication
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'react-router-dom';
+import { Container, ThemeProvider, CssBaseline } from "@mui/material";
+import { onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import theme from './theme';
+import Navbar from "./components/layout/Navbar";
+import Footer from "./components/layout/Footer";
+import LoadingSpinner from "./components/dialogs/LoadingSpinner";
+import ErrorMessage from "./components/dialogs/ErrorMessage";
+import DigitalWardrobeAPI from "./api/DigitalWardrobeAPI";
 
-// Import your page components
-import Navbar from "./pages/Navbar";
+// Seiten importieren
 import SignIn from "./pages/SignIn";
 import Home from './pages/Home';
 import Wardrobe from './pages/Wardrobe';
-import Styles from './pages/Styles';
 import Outfits from './pages/Outfits';
-import Settings from './pages/Settings'; // Neue Seite hinzufügen
+import Styles from './pages/Styles';
+import Settings from './pages/Settings';
 import Profile from "./pages/Profile";
-import firebaseConfig from "./firebaseConfig";
-import DigitalWardrobeAPI from "./api/DigitalWardrobeAPI";
 
-initializeApp(firebaseConfig);
-const auth = getAuth();
-const provider = new GoogleAuthProvider
+// Importiere die notwendige Firebase-Funktion
+import { initializeApp } from 'firebase/app';
+import firebaseConfig from './firebaseConfig'; // Deine Konfiguration importieren
+
+// Initialisiere Firebase mit deiner Konfiguration
+const app = initializeApp(firebaseConfig);
+
+// Optional: Firebase-Dienste wie Auth und Firestore können hinzugefügt werden
+// Beispiel für Firebase Auth:
+import { getAuth } from 'firebase/auth';
+const auth = getAuth(app);
+
+// Beispiel für Firestore:
+import { getFirestore } from 'firebase/firestore';
+const firestore = getFirestore(app);
 
 const App = () => {
-    const [currentHouseholdId, setCurrentHouseholdId] = useState(null);
     const [currentUser, setCurrentUser] = useState(null);
-    const [appError, setAppError] = useState(null);
-    const [authError, setAuthError] = useState(null);
     const [authLoading, setAuthLoading] = useState(false);
+    const [authError, setAuthError] = useState(null);
 
     const handleSignIn = () => {
         setAuthLoading(true);
@@ -43,127 +53,45 @@ const App = () => {
         });
     };
 
-    const onHouseholdConfirmed = async (householdId) => {
-        if (!auth.currentUser) {
-            setAppError("No authenticated user found.");
-            return;
-        }
-
-        try {
-            let userBOArray = await DigitalWardrobeAPI.getAPI().getUserbyGoogleUserId(auth.currentUser.uid);
-            if (userBOArray && userBOArray.length > 0) {
-                let userBO = userBOArray[0];
-                userBO.household_id = householdId;
-
-                await DigitalWardrobeAPI.getAPI().updateUser(userBO);
-                setCurrentHouseholdId(householdId);
-            } else {
-                throw new Error("User profile not found.");
-            }
-        } catch (error) {
-            setAppError(error.message);
-            console.error("Failed to update user's household:", error);
-        }
-    };
-
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (user) {
-                setAuthLoading(true);
-                setCurrentUser(user);
                 const token = await user.getIdToken();
                 document.cookie = `token=${token};path=/;`;
-                const userBO = await DigitalWardrobeAPI.getAPI().getUserbyGoogleUserId(user.uid);
-                if (!userBO[0].google_user_id) {
-                    let newUser = {
-                        id: 0,
-                        first_name: user.displayName?.split(" ")[0] || "",
-                        last_name: user.displayName?.split(" ")[1] || "",
-                        nick_name: user.displayName?.split(" ")[0] || "User",
-                        google_user_id: user.uid,
-                        household_id: null
-                    };
-                    await DigitalWardrobeAPI.getAPI().addUser(newUser);
-                }
-                setAuthLoading(false);
+                setCurrentUser(user);
             } else {
                 setCurrentUser(null);
-                setAuthLoading(false);
             }
         });
-
         return () => unsubscribe();
     }, []);
 
     return (
-        <ThemeProvider theme={Theme}>
+        <ThemeProvider theme={theme}>
             <CssBaseline />
             <Router>
-                <div style={styles.app}>
-                    <Header user={currentUser} />
-                    <Container component="main" style={styles.main}>
-                        <Routes>
-                            <Route path="/" element={currentUser ? <Navigate replace to="/home" /> : <SignIn onSignIn={handleSignIn} />} />
-                            <Route path="/home" element={<Secured user={currentUser}>
-                                <CheckforexistingHousehold onHouseholdConfirmed={onHouseholdConfirmed} />
-                                <Home />
-                            </Secured>} />
-
-                            <Route path="/user" element={
-                                <Secured user={currentUser}>
-                                    <UserProfile />
-                                </Secured>
-                            } />
-
-                            <Route path="/fridge" element={
-                                <Secured user={currentUser}>
-                                    <FridgeEntryList />
-                                </Secured>
-                            } />
-
-                            <Route path="/household" element={
-                                <Secured user={currentUser}>
-                                    <Household />
-                                </Secured>
-                            } />
-
-                            <Route path="/recipe" element={
-                                <Secured user={currentUser}>
-                                    <RecipeList />
-                                </Secured>
-                            } />
-
-                            <Route path="/recipes/entries/:recipeId" element={
-                                <Secured user={currentUser}>
-                                    <RecipeEntryList />
-                                </Secured>}
-                            />
-
-                            <Route path="/unit" element={
-                                <Secured user={currentUser}>
-                                    <UnitList />
-                                </Secured>
-                            }/>
-
-
-                            <Route path="/about" element={<Secured user={currentUser}>
-                                    <About />
-                                </Secured>
-                            }/>
-                        </Routes>
-                    </Container>
-                    <Footer />
-                </div>
-                <LoadingProgress show={authLoading} />
-                <ContextErrorMessage error={authError} contextErrorMsg={`Something went wrong during sign in process.`} onReload={handleSignIn} />
-                <ContextErrorMessage error={appError} contextErrorMsg={`Something went wrong inside the app. Please reload the page.`} />
+                <Navbar user={currentUser} onSignOut={() => auth.signOut()} />
+                <Container component="main" style={styles.main}>
+                    <Routes>
+                        <Route path="/" element={currentUser ? <Navigate to="/home" /> : <SignIn onSignIn={handleSignIn} />} />
+                        <Route path="/home" element={<Secured user={currentUser}><Home /></Secured>} />
+                        <Route path="/wardrobe" element={<Secured user={currentUser}><Wardrobe /></Secured>} />
+                        <Route path="/outfits" element={<Secured user={currentUser}><Outfits /></Secured>} />
+                        <Route path="/styles" element={<Secured user={currentUser}><Styles /></Secured>} />
+                        <Route path="/settings" element={<Secured user={currentUser}><Settings /></Secured>} />
+                        <Route path="/profile" element={<Secured user={currentUser}><Profile /></Secured>} />
+                    </Routes>
+                </Container>
+                <Footer />
+                <LoadingSpinner show={authLoading} />
+                <ErrorMessage error={authError} contextErrorMsg={`Login fehlgeschlagen. Bitte versuchen Sie es erneut.`} onReload={handleSignIn} />
             </Router>
         </ThemeProvider>
     );
 };
 
 const Secured = ({ user, children }) => {
-    let location = useLocation();
+    const location = useLocation();
     if (!user) {
         return <Navigate to="/" state={{ from: location }} replace />;
     }
@@ -171,17 +99,10 @@ const Secured = ({ user, children }) => {
 };
 
 const styles = {
-  app: {
-    display: 'flex',
-    flexDirection: 'column',
-    minHeight: '100vh',
-  },
-  main: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-  },
+    main: {
+        marginTop: '64px',
+        flex: 1,
+    },
 };
 
 export default App;

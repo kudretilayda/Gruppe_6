@@ -1,43 +1,90 @@
-import React from "react";
-import { Button, Container, Typography } from "@mui/material";
-import { auth } from "../firebaseConfig"; // Firebase-Setup importieren
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Button, Grid, Typography, Box } from '@mui/material';
+/**Anmeldung über Google Firebase Authentifikator wird hier erstellt */
 
-const LoginPage = ({ onLoginSuccess }) => {
-  const handleGoogleSignIn = () => {
-    const provider = new GoogleAuthProvider();
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-      console.log("User signed in:", user);
-      onLoginSuccess(user); // Benachrichtige die App über den erfolgreichen Login
-    } catch (error) {
-      console.error("Login failed:", error);
-    }
-  };
-  return (
-    <Container
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        height: "100vh",
-      }}
-    >
-      <Typography variant="h4" gutterBottom>
-        Welcome to Digital Wardrobe
-      </Typography>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleGoogleSignIn}
-        style={{ marginTop: "20px" }}
-      >
-        Sign in with Google
-      </Button>
-    </Container>
-  );
+
+const SignIn = ({ onSignIn }) => {
+    const handleSignInButtonClicked = () => {
+        onSignIn();
+    };
+
+    return (
+        <Box sx={styles.container}>
+            <img src={`${process.env.PUBLIC_URL}/LogoIcon.png`} alt="Background" style={styles.backgroundImage} />
+            <Box sx={styles.overlay}>
+                <Box sx={styles.box}>
+                    <Typography sx={{ margin: 2 }} variant='h5' align='center' fontWeight="bold">
+                        Wilkommen in deinem Digital Wardrobe
+                    </Typography>
+                    <Typography sx={{ margin: 2 }} align='center'>
+                        Es scheint, dass Sie nicht angemeldet sind.
+                    </Typography>
+                    <Typography sx={{ margin: 2 }} align='center'>
+                        Melden Sie sich bei Ihrem Digital Wardrobe an
+                    </Typography>
+                    <Grid container justifyContent='center'>
+                        <Button variant='contained' color='primary' sx={{ mt: 2 }} onClick={handleSignInButtonClicked}>
+                            Mit Google anmelden
+                        </Button>
+                    </Grid>
+                    <Grid container justifyContent='center' sx={{ mt: 1 }}>
+                        <Typography variant="body2">
+                            Sie haben noch kein Konto? <a href="https://www.google.com" target='_blank' rel='noopener noreferrer'>Sign up!</a>
+                        </Typography>
+                    </Grid>
+                </Box>
+            </Box>
+        </Box>
+    );
 };
 
-export default LoginPage;
+SignIn.propTypes = {
+    onSignIn: PropTypes.func.isRequired,
+};
+
+const styles = {
+    container: {
+        width: '100%',
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center', //Zentriert den Inhalt vertikal
+        alignItems: 'center',
+        position: 'relative',
+        overflow: 'hidden', //Verhindert Überlauf
+    },
+    overlay: {
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        zIndex: 1, //Über das Bild legen
+        backgroundColor: 'rgba(255, 255, 255, 0.8)', //Transparenter weißer Hintergrund
+    },
+    box: {
+        width: 'auto',
+        maxWidth: 360,
+        padding: 3,
+        borderRadius: 2,
+        boxShadow: 3,
+        backgroundColor: 'background.paper',
+    },
+    backgroundImage: {
+        width: '40%',
+        height: '40%',
+        objectFit: 'cover', //Das Bild wird skalieren, um Container auszufüllen
+        position: 'center',
+        top: 0,
+        left: 0,
+        zIndex: 0, //Hinter den Inhalt legen
+        opacity: 0.5,
+    },
+};
+
+export default SignIn;

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import StyleConstraints from "../components/styles/StyleConstraints";
 import {
   Typography,
   Grid,
