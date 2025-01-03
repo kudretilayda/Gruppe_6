@@ -275,3 +275,78 @@ class DigitalWardrobeAPI {
             method: 'DELETE',
         });
     };
+
+    // ClothingType Endpoints
+    getClothingTypes = async () => {
+        const response = await fetch(this.#getClothingTypesURL());
+        return await response.json();
+    };
+
+    addClothingType = async (clothingTypeData) => {
+        const response = await fetch(this.#addClothingTypeURL(), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(clothingTypeData),
+        });
+        return await response.json();
+    };
+
+    // Constraint Endpoints
+    getConstraints = async (styleId) => {
+        const response = await fetch(this.#getConstraintsURL(styleId));
+        return await response.json();
+    };
+
+    addConstraint = async (styleId, constraintData) => {
+        const response = await fetch(this.#addConstraintURL(styleId), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(constraintData),
+        });
+        return await response.json();
+    };
+
+    updateConstraint = async (styleId, constraintId, constraintData) => {
+        const response = await fetch(this.#updateConstraintURL(styleId, constraintId), {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(constraintData),
+        });
+        return await response.json();
+    };
+
+    deleteConstraint = async (styleId, constraintId) => {
+        await fetch(this.#deleteConstraintURL(styleId, constraintId), {
+            method: 'DELETE',
+        });
+    };
+
+    // WardrobeEntry Endpoints
+    getWardrobeEntries = async (userId, wardrobeId) => {
+        const response = await fetch(this.#getWardrobeEntriesURL(userId, wardrobeId));
+        return await response.json();
+    };
+
+    addWardrobeEntry = async (userId, wardrobeId, wardrobeEntryData) => {
+        const response = await fetch(this.#addWardrobeEntryURL(userId, wardrobeId), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(wardrobeEntryData),
+        });
+        return await response.json();
+    };
+
+    updateWardrobeEntry = async (userId, wardrobeId, entryId, wardrobeEntryData) => {
+        const response = await fetch(this.#updateWardrobeEntryURL(userId, wardrobeId, entryId), {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(wardrobeEntryData),
+        });
+        return await response.json();
+    };
+
+    deleteWardrobeEntry = async (userId, wardrobeId, entryId) => {
+        await fetch(this.#deleteWardrobeEntryURL(userId, wardrobeId, entryId), {
+            method: 'DELETE',
+        });
+    };
