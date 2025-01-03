@@ -1,19 +1,32 @@
-import ConstraintBO from './ConstraintBO.js'
+import ConstraintBO from "./ConstraintBO.js";
 
 export default class UnaryConstraintBO extends ConstraintBO {
-  constructor(refObject) {
-    super();
-    this.refObject = refObject;  // Das Kleidungsstück, auf das die Einschränkung angewendet wird
-  }
+    constructor(referenceObject) {
+        super();
+        this.referenceObject = referenceObject; // Das referenzierte Objekt
+    }
 
-  // Überprüft, ob der Unary-Constraint gültig ist
-  isValid() {
-    // Beispiel-Logik: Ein T-Shirt kann nur einmal getragen werden
-    return this.refObject.type !== "T-Shirt" || !this.refObject.isWorn;
-  }
+    // Getter und Setter für jedes Attribut
+    getReferenceObject() {
+        return this.referenceObject;
+    }
 
-  static fromJSON(constraint) {
-    let result = super.fromJSON(constraint);
-    return result;
-  }
+    setReferenceObject(referenceObject) {
+        this.referenceObject = referenceObject;
+    }
+
+    static fromJSON(unaryConstraints) {
+        let result = [];
+        if (Array.isArray(unaryConstraints)) {
+            unaryConstraints.forEach((uc) => {
+                Object.setPrototypeOf(uc, UnaryConstraintBO.prototype);
+                result.push(uc);
+            });
+        } else {
+            let uc = unaryConstraints;
+            Object.setPrototypeOf(uc, UnaryConstraintBO.prototype);
+            result.push(uc);
+        }
+        return result;
+    }
 }

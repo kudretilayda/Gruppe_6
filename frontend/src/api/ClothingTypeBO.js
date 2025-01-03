@@ -1,62 +1,41 @@
-import BusinessObject from './BusinessObject.js'
+import BusinessObject from "./BusinessObject.js";
 
-/**
- * Repräsentiert einen Kleidungstyp
- */
 export default class ClothingTypeBO extends BusinessObject {
-    
-    /** 
-     * Konstruktor für einen Kleidungstyp
-     * 
-     * @param {String} atype_name - Name des Kleidungstyps
-     * @param {String} atype_description - Beschreibung des Kleidungstyps
-     * @param {String} acategory - Kategorie des Kleidungstyps
-     */
-    constructor(atype_name, atype_description, acategory) {
+    constructor(name, usage) {
         super();
-        this.type_name = atype_name;
-        this.type_description = atype_description;
-        this.category = acategory;
+        this.name = name; // Bezeichnung (z.B. Hemd, Hose)
+        this.usage = usage; // Verwendung (z.B. formal, casual)
     }
 
-    setTypeName(atype_name) {
-        this.type_name = atype_name;
+    // Getter und Setter für jedes Attribut
+    getName() {
+        return this.name;
     }
 
-    getTypeName() {
-        return this.type_name;
+    setName(name) {
+        this.name = name;
     }
 
-    setTypeDescription(atype_description) {
-        this.type_description = atype_description;
+    getUsage() {
+        return this.usage;
     }
 
-    getTypeDescription() {
-        return this.type_description;
+    setUsage(usage) {
+        this.usage = usage;
     }
 
-    setCategory(acategory) {
-        this.category = acategory;
-    }
-
-    getCategory() {
-        return this.category;
-    }
-
-    static fromJSON(types) {
+    static fromJSON(clothingTypes) {
         let result = [];
-
-        if (Array.isArray(types)) {
-            types.forEach((t) => {
-                Object.setPrototypeOf(t, ClothingTypeBO.prototype);
-                result.push(t);
-            })
+        if (Array.isArray(clothingTypes)) {
+            clothingTypes.forEach((ct) => {
+                Object.setPrototypeOf(ct, ClothingTypeBO.prototype);
+                result.push(ct);
+            });
         } else {
-            let t = types;
-            Object.setPrototypeOf(t, ClothingTypeBO.prototype);
-            result.push(t);
+            let ct = clothingTypes;
+            Object.setPrototypeOf(ct, ClothingTypeBO.prototype);
+            result.push(ct);
         }
-
         return result;
     }
 }

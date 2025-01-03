@@ -2,7 +2,7 @@ import BusinessObject from "./BusinessObject.js";
 
 // Die Klasse ClothingEntry erbt von der BusinessObject-Klasse.
 // Diese Klasse repräsentiert einen Eintrag für Kleidung mit Bezeichnung, Menge, Einheit, Farbe, Größe und Marke.
-export default class ClothingEntry extends BusinessObject {
+export default class ClothingEntryBO extends BusinessObject {
     // Der Konstruktor initialisiert eine neue Instanz der ClothingEntry-Klasse mit den übergebenen Parametern.
     constructor(designation, quantity, unit, color, size, brand) {
         super(); // Ruft den Konstruktor der übergeordneten Klasse (BusinessObject) auf.

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import WardrobeAPI from '../API/DigitalWardrobeAPI';
-import SizeBO from '../API/Size';
+import SizeBO from '../api/UnitBO';
 import { getAuth } from 'firebase/auth';
 import {
   Container,

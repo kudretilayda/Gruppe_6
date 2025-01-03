@@ -1,4 +1,4 @@
-import ClothingEntry from "./ClothingEntry";  // Falls es eine grundlegende Klasse für Kleidung gibt
+import ClothingEntry from "./ClothingEntryBO";  // Falls es eine grundlegende Klasse für Kleidung gibt
 
 // Die Klasse WardrobeEntryBO erbt von der ClothingEntry-Klasse.
 // Diese Klasse repräsentiert einen Eintrag im Kleiderschrank und erweitert ClothingEntry um die Eigenschaft wardrobeId.
