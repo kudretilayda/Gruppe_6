@@ -127,169 +127,230 @@ class DigitalWardrobeAPI {
         });
 
     // User Endpoints
-    getUser = async (id) => {
-        const response = await fetch(this.#getUserURL(id));
-        return await response.json();
-    };
+getUser = async (id) => {
+    const url = this.#getUserURL(id);
+    const response = await fetch(url);
+    return response.json();
+};
 
-    addUser = async (userData) => {
-        const response = await fetch(this.#addUserURL(), {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(userData),
-        });
-        return await response.json();
-    };
+addUser = async (userData) => {
+    const url = this.#addUserURL();
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+    });
+    return response.json();
+};
 
-    updateUser = async (id, userData) => {
-        const response = await fetch(this.#updateUserURL(id), {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(userData),
-        });
-        return await response.json();
-    };
+updateUser = async (id, userData) => {
+    const url = this.#updateUserURL(id);
+    const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+    });
+    return response.json();
+};
 
-    deleteUser = async (id) => {
-        await fetch(this.#deleteUserURL(id), {
-            method: 'DELETE',
-        });
-    };
+deleteUser = async (id) => {
+    const url = this.#deleteUserURL(id);
+    const response = await fetch(url, {
+        method: 'DELETE',
+    });
+    return response.ok;
+};
 
-    // Wardrobe Endpoints
-    getWardrobe = async (userId) => {
-        const response = await fetch(this.#getWardrobeURL(userId));
-        return await response.json();
-    };
+getUserByGoogleId = async (googleId) => {
+    const url = this.#getUserByGoogleIdURL(googleId);
+    const response = await fetch(url);
+    return response.json();
+};
 
-    addWardrobe = async (userId, wardrobeData) => {
-        const response = await fetch(this.#addWardrobeURL(userId), {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(wardrobeData),
-        });
-        return await response.json();
-    };
+// Wardrobe Endpoints
+getWardrobe = async (userId) => {
+    const url = this.#getWardrobeURL(userId);
+    const response = await fetch(url);
+    return response.json();
+};
 
-    updateWardrobe = async (userId, wardrobeId, wardrobeData) => {
-        const response = await fetch(this.#updateWardrobeURL(userId, wardrobeId), {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(wardrobeData),
-        });
-        return await response.json();
-    };
+addWardrobe = async (userId, wardrobeData) => {
+    const url = this.#addWardrobeURL(userId);
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(wardrobeData),
+    });
+    return response.json();
+};
 
-    deleteWardrobe = async (userId, wardrobeId) => {
-        await fetch(this.#deleteWardrobeURL(userId, wardrobeId), {
-            method: 'DELETE',
-        });
-    };
+updateWardrobe = async (userId, wardrobeId, wardrobeData) => {
+    const url = this.#updateWardrobeURL(userId, wardrobeId);
+    const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(wardrobeData),
+    });
+    return response.json();
+};
 
-    // ClothingItem Endpoints
-    getClothingItems = async (userId, wardrobeId) => {
-        const response = await fetch(this.#getClothingItemsURL(userId, wardrobeId));
-        return await response.json();
-    };
+deleteWardrobe = async (userId, wardrobeId) => {
+    const url = this.#deleteWardrobeURL(userId, wardrobeId);
+    const response = await fetch(url, {
+        method: 'DELETE',
+    });
+    return response.ok;
+};
 
-    addClothingItem = async (userId, wardrobeId, clothingItemData) => {
-        const response = await fetch(this.#addClothingItemURL(userId, wardrobeId), {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(clothingItemData),
-        });
-        return await response.json();
-    };
+// ClothingItem Endpoints
+getClothingItems = async (userId, wardrobeId) => {
+    const url = this.#getClothingItemsURL(userId, wardrobeId);
+    const response = await fetch(url);
+    return response.json();
+};
 
-    updateClothingItem = async (userId, wardrobeId, clothingItemId, clothingItemData) => {
-        const response = await fetch(this.#updateClothingItemURL(userId, wardrobeId, clothingItemId), {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(clothingItemData),
-        });
-        return await response.json();
-    };
+addClothingItem = async (userId, wardrobeId, clothingItemData) => {
+    const url = this.#addClothingItemURL(userId, wardrobeId);
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(clothingItemData),
+    });
+    return response.json();
+};
 
-    deleteClothingItem = async (userId, wardrobeId, clothingItemId) => {
-        await fetch(this.#deleteClothingItemURL(userId, wardrobeId, clothingItemId), {
-            method: 'DELETE',
-        });
-    };
+updateClothingItem = async (userId, wardrobeId, clothingItemId, clothingItemData) => {
+    const url = this.#updateClothingItemURL(userId, wardrobeId, clothingItemId);
+    const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(clothingItemData),
+    });
+    return response.json();
+};
 
-    // Outfit Endpoints
-    getOutfits = async (userId) => {
-        const response = await fetch(this.#getOutfitsURL(userId));
-        return await response.json();
-    };
+deleteClothingItem = async (userId, wardrobeId, clothingItemId) => {
+    const url = this.#deleteClothingItemURL(userId, wardrobeId, clothingItemId);
+    const response = await fetch(url, {
+        method: 'DELETE',
+    });
+    return response.ok;
+};
 
-    addOutfit = async (userId, outfitData) => {
-        const response = await fetch(this.#addOutfitURL(userId), {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(outfitData),
-        });
-        return await response.json();
-    };
+// Outfit Endpoints
+getOutfits = async (userId) => {
+    const url = this.#getOutfitsURL(userId);
+    const response = await fetch(url);
+    return response.json();
+};
 
-    updateOutfit = async (userId, outfitId, outfitData) => {
-        const response = await fetch(this.#updateOutfitURL(userId, outfitId), {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(outfitData),
-        });
-        return await response.json();
-    };
+addOutfit = async (userId, outfitData) => {
+    const url = this.#addOutfitURL(userId);
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(outfitData),
+    });
+    return response.json();
+};
 
-    deleteOutfit = async (userId, outfitId) => {
-        await fetch(this.#deleteOutfitURL(userId, outfitId), {
-            method: 'DELETE',
-        });
-    };
+updateOutfit = async (userId, outfitId, outfitData) => {
+    const url = this.#updateOutfitURL(userId, outfitId);
+    const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(outfitData),
+    });
+    return response.json();
+};
 
-    // Style Endpoints
-    getStyles = async () => {
-        const response = await fetch(this.#getStylesURL());
-        return await response.json();
-    };
+deleteOutfit = async (userId, outfitId) => {
+    const url = this.#deleteOutfitURL(userId, outfitId);
+    const response = await fetch(url, {
+        method: 'DELETE',
+    });
+    return response.ok;
+};
 
-    addStyle = async (styleData) => {
-        const response = await fetch(this.#addStyleURL(), {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(styleData),
-        });
-        return await response.json();
-    };
+// Style Endpoints
+getStyles = async () => {
+    const url = this.#getStylesURL();
+    const response = await fetch(url);
+    return response.json();
+};
 
-    updateStyle = async (styleId, styleData) => {
-        const response = await fetch(this.#updateStyleURL(styleId), {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(styleData),
-        });
-        return await response.json();
-    };
+addStyle = async (styleData) => {
+    const url = this.#addStyleURL();
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(styleData),
+    });
+    return response.json();
+};
 
-    deleteStyle = async (styleId) => {
-        await fetch(this.#deleteStyleURL(styleId), {
-            method: 'DELETE',
-        });
-    };
+updateStyle = async (styleId, styleData) => {
+    const url = this.#updateStyleURL(styleId);
+    const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(styleData),
+    });
+    return response.json();
+};
 
-    // ClothingType Endpoints
-    getClothingTypes = async () => {
-        const response = await fetch(this.#getClothingTypesURL());
-        return await response.json();
-    };
+deleteStyle = async (styleId) => {
+    const url = this.#deleteStyleURL(styleId);
+    const response = await fetch(url, {
+        method: 'DELETE',
+    });
+    return response.ok;
+};
 
-    addClothingType = async (clothingTypeData) => {
-        const response = await fetch(this.#addClothingTypeURL(), {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(clothingTypeData),
-        });
-        return await response.json();
-    };
+getStyleById = async (styleId) => {
+    const url = this.#getStyleByIdURL(styleId);
+    const response = await fetch(url);
+    return response.json();
+};
+
+// ClothingType Endpoints
+getClothingTypes = async () => {
+    const url = this.#getClothingTypesURL();
+    const response = await fetch(url);
+    return response.json();
+};
+
+addClothingType = async (clothingTypeData) => {
+    const url = this.#addClothingTypeURL();
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(clothingTypeData),
+    });
+    return response.json();
+};
 
    // Constraint Endpoints
 getConstraints = async (styleId) => {
@@ -324,6 +385,45 @@ updateConstraint = async (styleId, constraintId, constraintData) => {
 
 deleteConstraint = async (styleId, constraintId) => {
     const url = this.#deleteConstraintURL(styleId, constraintId);
+    const response = await fetch(url, {
+        method: 'DELETE',
+    });
+    return response.ok;
+};
+
+// WardrobeEntry Endpoints
+getWardrobeEntries = async (userId, wardrobeId) => {
+    const url = this.#getWardrobeEntriesURL(userId, wardrobeId);
+    const response = await fetch(url);
+    return response.json();
+};
+
+addWardrobeEntry = async (userId, wardrobeId, entryData) => {
+    const url = this.#addWardrobeEntryURL(userId, wardrobeId);
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(entryData),
+    });
+    return response.json();
+};
+
+updateWardrobeEntry = async (userId, wardrobeId, entryId, entryData) => {
+    const url = this.#updateWardrobeEntryURL(userId, wardrobeId, entryId);
+    const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(entryData),
+    });
+    return response.json();
+};
+
+deleteWardrobeEntry = async (userId, wardrobeId, entryId) => {
+    const url = this.#deleteWardrobeEntryURL(userId, wardrobeId, entryId);
     const response = await fetch(url, {
         method: 'DELETE',
     });
@@ -402,6 +502,123 @@ updateUnaryConstraint = async (styleId, constraintId, unaryConstraintData) => {
 
 deleteUnaryConstraint = async (styleId, constraintId) => {
     const url = this.#deleteUnaryConstraintURL(styleId, constraintId);
+    const response = await fetch(url, {
+        method: 'DELETE',
+    });
+    return response.ok;
+};
+
+// ImplicationConstraint Endpoints
+getImplicationConstraints = async (styleId) => {
+    const url = this.#getImplicationConstraintsURL(styleId);
+    const response = await fetch(url);
+    return response.json();
+};
+
+addImplicationConstraint = async (styleId, implicationConstraintData) => {
+    const url = this.#addImplicationConstraintURL(styleId);
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(implicationConstraintData),
+    });
+    return response.json();
+};
+
+updateImplicationConstraint = async (styleId, constraintId, implicationConstraintData) => {
+    const url = this.#updateImplicationConstraintURL(styleId, constraintId);
+    const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(implicationConstraintData),
+    });
+    return response.json();
+};
+
+deleteImplicationConstraint = async (styleId, constraintId) => {
+    const url = this.#deleteImplicationConstraintURL(styleId, constraintId);
+    const response = await fetch(url, {
+        method: 'DELETE',
+    });
+    return response.ok;
+};
+
+// MutexConstraint Endpoints
+getMutexConstraints = async (styleId) => {
+    const url = this.#getMutexConstraintsURL(styleId);
+    const response = await fetch(url);
+    return response.json();
+};
+
+addMutexConstraint = async (styleId, mutexConstraintData) => {
+    const url = this.#addMutexConstraintURL(styleId);
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(mutexConstraintData),
+    });
+    return response.json();
+};
+
+updateMutexConstraint = async (styleId, constraintId, mutexConstraintData) => {
+    const url = this.#updateMutexConstraintURL(styleId, constraintId);
+    const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(mutexConstraintData),
+    });
+    return response.json();
+};
+
+deleteMutexConstraint = async (styleId, constraintId) => {
+    const url = this.#deleteMutexConstraintURL(styleId, constraintId);
+    const response = await fetch(url, {
+        method: 'DELETE',
+    });
+    return response.ok;
+};
+
+// CardinalityConstraint Endpoints
+getCardinalityConstraints = async (styleId) => {
+    const url = this.#getCardinalityConstraintsURL(styleId);
+    const response = await fetch(url);
+    return response.json();
+};
+
+addCardinalityConstraint = async (styleId, cardinalityConstraintData) => {
+    const url = this.#addCardinalityConstraintURL(styleId);
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(cardinalityConstraintData),
+    });
+    return response.json();
+};
+
+updateCardinalityConstraint = async (styleId, constraintId, cardinalityConstraintData) => {
+    const url = this.#updateCardinalityConstraintURL(styleId, constraintId);
+    const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(cardinalityConstraintData),
+    });
+    return response.json();
+};
+
+deleteCardinalityConstraint = async (styleId, constraintId) => {
+    const url = this.#deleteCardinalityConstraintURL(styleId, constraintId);
     const response = await fetch(url, {
         method: 'DELETE',
     });
