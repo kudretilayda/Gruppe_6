@@ -266,4 +266,109 @@ deleteOutfit(userId, outfitId) {
     });
 }
 
+// Get all styles
+getStyles() {
+    return this.#fetchAdvanced(this.#getStylesURL()).then((responseJSON) => {
+        let styleBOs = StyleBO.fromJSON(responseJSON);
+        return Promise.resolve(styleBOs);
+    });
+}
 
+// Add a new style
+addStyle(styleData) {
+    return this.#fetchAdvanced(this.#addStyleURL(), 'POST', styleData).then((responseJSON) => {
+        let styleBO = StyleBO.fromJSON(responseJSON);
+        return Promise.resolve(styleBO);
+    });
+}
+
+// Update a style
+updateStyle(styleId, styleData) {
+    return this.#fetchAdvanced(this.#updateStyleURL(styleId), 'PUT', styleData).then((responseJSON) => {
+        let styleBO = StyleBO.fromJSON(responseJSON);
+        return Promise.resolve(styleBO);
+    });
+}
+
+// Delete a style
+deleteStyle(styleId) {
+    return this.#fetchAdvanced(this.#deleteStyleURL(styleId)).then((responseJSON) => {
+        // Rückgabe null, da DELETE keine Daten zurückgibt
+        return Promise.resolve(null);
+    });
+}
+
+// Get a style by ID
+getStyleById(styleId) {
+    return this.#fetchAdvanced(this.#getStyleByIdURL(styleId)).then((responseJSON) => {
+        let styleBO = StyleBO.fromJSON(responseJSON);
+        return Promise.resolve(styleBO);
+    });
+}
+
+// ClothingType endpoints
+getClothingTypes() {
+    return this.#fetchAdvanced(this.#getClothingTypesURL()).then((responseJSON) => {
+        let clothingTypes = ClothingTypeBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(clothingTypes);
+        });
+    });
+}
+
+addClothingType(clothingTypeData) {
+    return this.#fetchAdvanced(this.#addClothingTypeURL(), {
+        method: 'POST',
+        body: JSON.stringify(clothingTypeData),
+    }).then((responseJSON) => {
+        let clothingType = ClothingTypeBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(clothingType);
+        });
+    });
+}
+
+/ Constraint Endpoints
+getConstraints(styleId) {
+    return this.#fetchAdvanced(this.#getConstraintsURL(styleId)).then((responseJSON) => {
+        let constraints = ConstraintBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(constraints);
+        });
+    });
+}
+
+addConstraint(styleId, constraintData) {
+    return this.#fetchAdvanced(this.#addConstraintURL(styleId), {
+        method: 'POST',
+        body: JSON.stringify(constraintData),
+    }).then((responseJSON) => {
+        let constraint = ConstraintBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(constraint);
+        });
+    });
+}
+
+updateConstraint(styleId, constraintId, constraintData) {
+    return this.#fetchAdvanced(this.#updateConstraintURL(styleId, constraintId), {
+        method: 'PUT',
+        body: JSON.stringify(constraintData),
+    }).then((responseJSON) => {
+        let updatedConstraint = ConstraintBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(updatedConstraint);
+        });
+    });
+}
+
+deleteConstraint(styleId, constraintId) {
+    return this.#fetchAdvanced(this.#deleteConstraintURL(styleId, constraintId), {
+        method: 'DELETE',
+    }).then((responseJSON) => {
+        let deletedConstraint = ConstraintBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(deletedConstraint);
+        });
+    });
+}
