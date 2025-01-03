@@ -462,3 +462,138 @@ deleteBinaryConstraint(styleId, constraintId) {
         });
     });
 }
+
+// UnaryConstraint Endpoints
+getUnaryConstraints(styleId) {
+    return this.#fetchAdvanced(this.#getUnaryConstraintsURL(styleId)).then((responseJSON) => {
+        let unaryConstraints = UnaryConstraintBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(unaryConstraints);
+        });
+    });
+}
+
+addUnaryConstraint(styleId, unaryConstraintData) {
+    return this.#fetchAdvanced(this.#addUnaryConstraintURL(styleId), {
+        method: 'POST',
+        body: JSON.stringify(unaryConstraintData),
+    }).then((responseJSON) => {
+        let unaryConstraint = UnaryConstraintBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(unaryConstraint);
+        });
+    });
+}
+
+updateUnaryConstraint(styleId, constraintId, unaryConstraintData) {
+    return this.#fetchAdvanced(this.#updateUnaryConstraintURL(styleId, constraintId), {
+        method: 'PUT',
+        body: JSON.stringify(unaryConstraintData),
+    }).then((responseJSON) => {
+        let updatedUnaryConstraint = UnaryConstraintBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(updatedUnaryConstraint);
+        });
+    });
+}
+
+deleteUnaryConstraint(styleId, constraintId) {
+    return this.#fetchAdvanced(this.#deleteUnaryConstraintURL(styleId, constraintId), {
+        method: 'DELETE',
+    }).then((responseJSON) => {
+        let deletedUnaryConstraint = UnaryConstraintBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(deletedUnaryConstraint);
+        });
+    });
+}
+
+// ImplicationConstraint Endpoints
+getImplicationConstraints(styleId) {
+    return this.#fetchAdvanced(this.#getImplicationConstraintsURL(styleId)).then((responseJSON) => {
+        let implicationConstraints = ImplicationConstraintBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(implicationConstraints);
+        });
+    });
+}
+
+addImplicationConstraint(styleId, implicationConstraintData) {
+    return this.#fetchAdvanced(this.#addImplicationConstraintURL(styleId), {
+        method: 'POST',
+        body: JSON.stringify(implicationConstraintData),
+    }).then((responseJSON) => {
+        let implicationConstraint = ImplicationConstraintBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(implicationConstraint);
+        });
+    });
+}
+
+updateImplicationConstraint(styleId, constraintId, implicationConstraintData) {
+    return this.#fetchAdvanced(this.#updateImplicationConstraintURL(styleId, constraintId), {
+        method: 'PUT',
+        body: JSON.stringify(implicationConstraintData),
+    }).then((responseJSON) => {
+        let updatedImplicationConstraint = ImplicationConstraintBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(updatedImplicationConstraint);
+        });
+    });
+}
+
+deleteImplicationConstraint(styleId, constraintId) {
+    return this.#fetchAdvanced(this.#deleteImplicationConstraintURL(styleId, constraintId), {
+        method: 'DELETE',
+    }).then((responseJSON) => {
+        let deletedImplicationConstraint = ImplicationConstraintBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(deletedImplicationConstraint);
+        });
+    });
+}
+
+// MutexConstraint Endpoints
+getMutexConstraints(styleId) {
+    return this.#fetchAdvanced(this.#getMutexConstraintsURL(styleId)).then((responseJSON) => {
+        let mutexConstraints = MutexConstraintBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(mutexConstraints);
+        });
+    });
+}
+
+addMutexConstraint(styleId, mutexConstraintData) {
+    return this.#fetchAdvanced(this.#addMutexConstraintURL(styleId), {
+        method: 'POST',
+        body: JSON.stringify(mutexConstraintData),
+    }).then((responseJSON) => {
+        let mutexConstraint = MutexConstraintBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(mutexConstraint);
+        });
+    });
+}
+
+updateMutexConstraint(styleId, constraintId, mutexConstraintData) {
+    return this.#fetchAdvanced(this.#updateMutexConstraintURL(styleId, constraintId), {
+        method: 'PUT',
+        body: JSON.stringify(mutexConstraintData),
+    }).then((responseJSON) => {
+        let updatedMutexConstraint = MutexConstraintBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(updatedMutexConstraint);
+        });
+    });
+}
+
+deleteMutexConstraint(styleId, constraintId) {
+    return this.#fetchAdvanced(this.#deleteMutexConstraintURL(styleId, constraintId), {
+        method: 'DELETE',
+    }).then((responseJSON) => {
+        let deletedMutexConstraint = MutexConstraintBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(deletedMutexConstraint);
+        });
+    });
+}
