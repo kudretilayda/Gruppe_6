@@ -1,7 +1,7 @@
 import UserBO from './UserBO';
-import ClothingEntry from "./ClothingEntry";
+import ClothingEntryBO from "./ClothingEntryBO";
 import ClothingItemEntryBO from "./ClothingItemEntryBO";
-import Size from "../api/Size";
+import UnitBO from "./UnitBO";
 import StyleBO from './StyleBO';
 import OutfitBO from './OutfitBO';
 import ClothingTypeBO from './ClothingTypeBO';
@@ -99,22 +99,22 @@ class DigitalWardrobeAPI {
     #deleteCardinalityConstraintURL = (styleId, constraintId) => `${this.#serverBaseURL}/styles/${styleId}/CardinalityConstraints/${constraintId}`;
 
     // ClothingEntry Endpoints
-    #getClothingEntriesURL = (userId) => `${this.#serverBaseURL}/users/${userId}/Clothingentries`;
-    #addClothingEntryURL = (userId) => `${this.#serverBaseURL}/users/${userId}/clothingentries`;
-    #deleteClothingEntryURL = (userId, entryId) => `${this.#serverBaseURL}/users/${userId}/clothingentries/${entryId}`;
-    #updateClothingEntryURL = (userId, entryId) => `${this.#serverBaseURL}/users/${userId}/clothingentries/${entryId}`;
+    #getClothingEntriesURL = (userId) => `${this.#serverBaseURL}/users/${userId}/ClothingEntry`;
+    #addClothingEntryURL = (userId) => `${this.#serverBaseURL}/users/${userId}/ClothingEntry`;
+    #deleteClothingEntryURL = (userId, entryId) => `${this.#serverBaseURL}/users/${userId}/ClothingEntry/${entryId}`;
+    #updateClothingEntryURL = (userId, entryId) => `${this.#serverBaseURL}/users/${userId}/ClothingEntry/${entryId}`;
 
     // ClothingItemEntry Endpoints
-    #getClothingItemEntriesURL = (userId) => `${this.#serverBaseURL}/users/${userId}/clothingitementries`;
-    #addClothingItemEntryURL = (userId) => `${this.#serverBaseURL}/users/${userId}/clothingitementries`;
-    #deleteClothingItemEntryURL = (userId, entryId) => `${this.#serverBaseURL}/users/${userId}/clothingitementries/${entryId}`;
-    #updateClothingItemEntryURL = (userId, entryId) => `${this.#serverBaseURL}/users/${userId}/clothingitementries/${entryId}`;
+    #getClothingItemEntriesURL = (userId) => `${this.#serverBaseURL}/users/${userId}/ClothingItemEntry`;
+    #addClothingItemEntryURL = (userId) => `${this.#serverBaseURL}/users/${userId}/ClothingItemEntry`;
+    #deleteClothingItemEntryURL = (userId, entryId) => `${this.#serverBaseURL}/users/${userId}/ClothingItemEntry/${entryId}`;
+    #updateClothingItemEntryURL = (userId, entryId) => `${this.#serverBaseURL}/users/${userId}/ClothingItemEntry/${entryId}`;
 
     // Size Endpoints
-    #getSizesURL = () => `${this.#serverBaseURL}/sizes`;
-    #addSizeURL = () => `${this.#serverBaseURL}/sizes`;
-    #updateSizeURL = (sizeId) => `${this.#serverBaseURL}/sizes/${sizeId}`;
-    #deleteSizeURL = (sizeId) => `${this.#serverBaseURL}/sizes/${sizeId}`;
+    #getSizesURL = () => `${this.#serverBaseURL}/Unit`;
+    #addSizeURL = () => `${this.#serverBaseURL}/Unit`;
+    #updateSizeURL = (sizeId) => `${this.#serverBaseURL}/Unit/${sizeId}`;
+    #deleteSizeURL = (sizeId) => `${this.#serverBaseURL}/Unit/${sizeId}`;
 
 
   // Fetch-Helper-Methode
@@ -328,7 +328,7 @@ addClothingType(clothingTypeData) {
     });
 }
 
-/ Constraint Endpoints
+// Constraint Endpoints
 getConstraints(styleId) {
     return this.#fetchAdvanced(this.#getConstraintsURL(styleId)).then((responseJSON) => {
         let constraints = ConstraintBO.fromJSON(responseJSON);
@@ -736,7 +736,7 @@ updateClothingItemEntry(userId, entryId, clothingItemEntryData) {
 // Size Endpoints
 getSizes() {
     return this.#fetchAdvanced(this.#getSizesURL()).then((responseJSON) => {
-        let sizes = SizeBO.fromJSON(responseJSON);
+        let sizes = UnitBO.fromJSON(responseJSON);
         return new Promise(function(resolve) {
             resolve(sizes);
         });
@@ -748,7 +748,7 @@ addSize(sizeData) {
         method: 'POST',
         body: JSON.stringify(sizeData),
     }).then((responseJSON) => {
-        let size = SizeBO.fromJSON(responseJSON);
+        let size = UnitBO.fromJSON(responseJSON);
         return new Promise(function(resolve) {
             resolve(size);
         });
@@ -760,7 +760,7 @@ updateSize(sizeId, sizeData) {
         method: 'PUT',
         body: JSON.stringify(sizeData),
     }).then((responseJSON) => {
-        let updatedSize = SizeBO.fromJSON(responseJSON);
+        let updatedSize = UnitBO.fromJSON(responseJSON);
         return new Promise(function(resolve) {
             resolve(updatedSize);
         });
@@ -771,9 +771,13 @@ deleteSize(sizeId) {
     return this.#fetchAdvanced(this.#deleteSizeURL(sizeId), {
         method: 'DELETE',
     }).then((responseJSON) => {
-        let deletedSize = SizeBO.fromJSON(responseJSON);
+        let deletedSize = UnitBO.fromJSON(responseJSON);
         return new Promise(function(resolve) {
             resolve(deletedSize);
         });
     });
 }
+
+export default DigitalWardropeAPI;
+
+//API TESTEN

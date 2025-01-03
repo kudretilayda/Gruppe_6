@@ -20,65 +20,21 @@ export default class UserBO extends BusinessObject {
         this.google_user_id = agoogleuserid; // Google ID für die Authentifizierung
     }
 
-    /**
-     * Setzt den Vornamen des Benutzers.
-     * @param {String} afirstname - Neuer Vorname des Benutzers.
-     */
-    setFirstName(afirstname) {
-        this.first_name = afirstname;
-    }
+    // Getter und Setter für die Benutzerdaten
+    setFirstName(afirstname) { this.first_name = afirstname; }
+    getFirstName() { return this.first_name; }
 
-    getFirstName() {
-        return this.first_name;
-    }
+    setLastName(alastname) { this.last_name = alastname; }
+    getLastName() { return this.last_name; }
 
-    /**
-     * Setzt den Nachnamen des Benutzers.
-     * @param {String} alastname - Neuer Nachname des Benutzers.
-     */
-    setLastName(alastname) {
-        this.last_name = alastname;
-    }
+    setNickName(anickname) { this.nick_name = anickname; }
+    getNickName() { return this.nick_name; }
 
-    getLastName() {
-        return this.last_name;
-    }
+    setGoogleUserId(agoogleuserid) { this.google_user_id = agoogleuserid; }
+    getGoogleUserId() { return this.google_user_id; }
 
-    /**
-     * Setzt den Nicknamen des Benutzers.
-     * @param {String} anickname - Neuer Nickname des Benutzers.
-     */
-    setNickName(anickname) {
-        this.nick_name = anickname;
-    }
-
-    getNickName() {
-        return this.nick_name;
-    }
-
-    /**
-     * Setzt die Google User ID des Benutzers.
-     * @param {String} agoogleuserid - Neue Google User ID des Benutzers.
-     */
-    setGoogleUserId(agoogleuserid) {
-        this.google_user_id = agoogleuserid;
-    }
-
-    getGoogleUserId() {
-        return this.google_user_id;
-    }
-
-    /**
-     * Setzt die ID des Kleiderschranks des Benutzers.
-     * @param {String} awardrobeid - Neue Kleiderschrank-ID des Benutzers.
-     */
-    setWardrobeId(awardrobeid) {
-        this.wardrobe_id = awardrobeid;
-    }
-
-    getWardrobeId() {
-        return this.wardrobe_id;
-    }
+    setWardrobeId(awardrobeid) { this.wardrobe_id = awardrobeid; }
+    getWardrobeId() { return this.wardrobe_id; }
 
     /**
      * Erstellt ein Array von UserBO Objekten aus JSON.
