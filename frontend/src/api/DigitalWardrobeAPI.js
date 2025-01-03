@@ -185,3 +185,93 @@ class DigitalWardrobeAPI {
             method: 'DELETE',
         });
     };
+
+    // ClothingItem Endpoints
+    getClothingItems = async (userId, wardrobeId) => {
+        const response = await fetch(this.#getClothingItemsURL(userId, wardrobeId));
+        return await response.json();
+    };
+
+    addClothingItem = async (userId, wardrobeId, clothingItemData) => {
+        const response = await fetch(this.#addClothingItemURL(userId, wardrobeId), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(clothingItemData),
+        });
+        return await response.json();
+    };
+
+    updateClothingItem = async (userId, wardrobeId, clothingItemId, clothingItemData) => {
+        const response = await fetch(this.#updateClothingItemURL(userId, wardrobeId, clothingItemId), {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(clothingItemData),
+        });
+        return await response.json();
+    };
+
+    deleteClothingItem = async (userId, wardrobeId, clothingItemId) => {
+        await fetch(this.#deleteClothingItemURL(userId, wardrobeId, clothingItemId), {
+            method: 'DELETE',
+        });
+    };
+
+    // Outfit Endpoints
+    getOutfits = async (userId) => {
+        const response = await fetch(this.#getOutfitsURL(userId));
+        return await response.json();
+    };
+
+    addOutfit = async (userId, outfitData) => {
+        const response = await fetch(this.#addOutfitURL(userId), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(outfitData),
+        });
+        return await response.json();
+    };
+
+    updateOutfit = async (userId, outfitId, outfitData) => {
+        const response = await fetch(this.#updateOutfitURL(userId, outfitId), {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(outfitData),
+        });
+        return await response.json();
+    };
+
+    deleteOutfit = async (userId, outfitId) => {
+        await fetch(this.#deleteOutfitURL(userId, outfitId), {
+            method: 'DELETE',
+        });
+    };
+
+    // Style Endpoints
+    getStyles = async () => {
+        const response = await fetch(this.#getStylesURL());
+        return await response.json();
+    };
+
+    addStyle = async (styleData) => {
+        const response = await fetch(this.#addStyleURL(), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(styleData),
+        });
+        return await response.json();
+    };
+
+    updateStyle = async (styleId, styleData) => {
+        const response = await fetch(this.#updateStyleURL(styleId), {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(styleData),
+        });
+        return await response.json();
+    };
+
+    deleteStyle = async (styleId) => {
+        await fetch(this.#deleteStyleURL(styleId), {
+            method: 'DELETE',
+        });
+    };
