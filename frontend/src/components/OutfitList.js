@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Grid } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from 'react-router-dom';
-import ClosetAPI from '../API/ClosetAPI';
+import WardrobeAPI from '../API/DigitalWardrobeAPIAPI';
 import ContextErrorMessage from './dialogs/ContextErrorMessage';
 import LoadingProgress from './dialogs/LoadingProgress';
 import OutfitBO from '../API/OutfitBO';
@@ -27,8 +27,8 @@ function OutfitList() {
         const auth = getAuth();
         const currentUser = auth.currentUser;
         try {
-            const closet_id = await ClosetAPI.getAPI().getClosetIdByGoogleUserId(currentUser.uid);
-            const outfits = await ClosetAPI.getAPI().getOutfitsByClosetId(closet_id.closet_id);
+            const wardrobe_id = await WardrobeAPI.getAPI().getWardrobeIdByGoogleUserId(currentUser.uid);
+            const outfits = await WardrobeAPI.getAPI().getOutfitsByWardrobeId(wardrobe_id.wardrobe_id);
             const outfitBOs = OutfitBO.fromJSON(outfits);
             setOutfits(outfitBOs);
             setLoading(false);
@@ -72,7 +72,7 @@ function OutfitList() {
             return;
         } else {
             try {
-                await ClosetAPI.getAPI().deleteOutfit(outfit.getId());
+                await WardrobeAPI.getAPI().deleteOutfit(outfit.getId());
                 fetchOutfits();
             } catch (error) {
                 setError(error);
