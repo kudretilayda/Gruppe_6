@@ -372,3 +372,93 @@ deleteConstraint(styleId, constraintId) {
         });
     });
 }
+
+// WardrobeEntry Endpoints
+getWardrobeEntries(userId, wardrobeId) {
+    return this.#fetchAdvanced(this.#getWardrobeEntriesURL(userId, wardrobeId)).then((responseJSON) => {
+        let wardrobeEntries = WardrobeEntryBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(wardrobeEntries);
+        });
+    });
+}
+
+addWardrobeEntry(userId, wardrobeId, entryData) {
+    return this.#fetchAdvanced(this.#addWardrobeEntryURL(userId, wardrobeId), {
+        method: 'POST',
+        body: JSON.stringify(entryData),
+    }).then((responseJSON) => {
+        let wardrobeEntry = WardrobeEntryBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(wardrobeEntry);
+        });
+    });
+}
+
+deleteWardrobeEntry(userId, wardrobeId, entryId) {
+    return this.#fetchAdvanced(this.#deleteWardrobeEntryURL(userId, wardrobeId, entryId), {
+        method: 'DELETE',
+    }).then((responseJSON) => {
+        let deletedEntry = WardrobeEntryBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(deletedEntry);
+        });
+    });
+}
+
+updateWardrobeEntry(userId, wardrobeId, entryId, entryData) {
+    return this.#fetchAdvanced(this.#updateWardrobeEntryURL(userId, wardrobeId, entryId), {
+        method: 'PUT',
+        body: JSON.stringify(entryData),
+    }).then((responseJSON) => {
+        let updatedEntry = WardrobeEntryBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(updatedEntry);
+        });
+    });
+}
+
+// BinaryConstraint Endpoints
+getBinaryConstraints(styleId) {
+    return this.#fetchAdvanced(this.#getBinaryConstraintsURL(styleId)).then((responseJSON) => {
+        let binaryConstraints = BinaryConstraintBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(binaryConstraints);
+        });
+    });
+}
+
+addBinaryConstraint(styleId, binaryConstraintData) {
+    return this.#fetchAdvanced(this.#addBinaryConstraintURL(styleId), {
+        method: 'POST',
+        body: JSON.stringify(binaryConstraintData),
+    }).then((responseJSON) => {
+        let binaryConstraint = BinaryConstraintBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(binaryConstraint);
+        });
+    });
+}
+
+updateBinaryConstraint(styleId, constraintId, binaryConstraintData) {
+    return this.#fetchAdvanced(this.#updateBinaryConstraintURL(styleId, constraintId), {
+        method: 'PUT',
+        body: JSON.stringify(binaryConstraintData),
+    }).then((responseJSON) => {
+        let updatedBinaryConstraint = BinaryConstraintBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(updatedBinaryConstraint);
+        });
+    });
+}
+
+deleteBinaryConstraint(styleId, constraintId) {
+    return this.#fetchAdvanced(this.#deleteBinaryConstraintURL(styleId, constraintId), {
+        method: 'DELETE',
+    }).then((responseJSON) => {
+        let deletedBinaryConstraint = BinaryConstraintBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(deletedBinaryConstraint);
+        });
+    });
+}
