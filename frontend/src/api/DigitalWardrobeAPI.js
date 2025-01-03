@@ -597,3 +597,183 @@ deleteMutexConstraint(styleId, constraintId) {
         });
     });
 }
+
+// CardinalityConstraint Endpoints
+getCardinalityConstraints(styleId) {
+    return this.#fetchAdvanced(this.#getCardinalityConstraintsURL(styleId)).then((responseJSON) => {
+        let cardinalityConstraints = CardinalityConstraintBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(cardinalityConstraints);
+        });
+    });
+}
+
+addCardinalityConstraint(styleId, cardinalityConstraintData) {
+    return this.#fetchAdvanced(this.#addCardinalityConstraintURL(styleId), {
+        method: 'POST',
+        body: JSON.stringify(cardinalityConstraintData),
+    }).then((responseJSON) => {
+        let cardinalityConstraint = CardinalityConstraintBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(cardinalityConstraint);
+        });
+    });
+}
+
+updateCardinalityConstraint(styleId, constraintId, cardinalityConstraintData) {
+    return this.#fetchAdvanced(this.#updateCardinalityConstraintURL(styleId, constraintId), {
+        method: 'PUT',
+        body: JSON.stringify(cardinalityConstraintData),
+    }).then((responseJSON) => {
+        let updatedCardinalityConstraint = CardinalityConstraintBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(updatedCardinalityConstraint);
+        });
+    });
+}
+
+deleteCardinalityConstraint(styleId, constraintId) {
+    return this.#fetchAdvanced(this.#deleteCardinalityConstraintURL(styleId, constraintId), {
+        method: 'DELETE',
+    }).then((responseJSON) => {
+        let deletedCardinalityConstraint = CardinalityConstraintBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(deletedCardinalityConstraint);
+        });
+    });
+}
+
+// ClothingEntry Endpoints
+getClothingEntries(userId) {
+    return this.#fetchAdvanced(this.#getClothingEntriesURL(userId)).then((responseJSON) => {
+        let clothingEntries = ClothingEntryBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(clothingEntries);
+        });
+    });
+}
+
+addClothingEntry(userId, clothingEntryData) {
+    return this.#fetchAdvanced(this.#addClothingEntryURL(userId), {
+        method: 'POST',
+        body: JSON.stringify(clothingEntryData),
+    }).then((responseJSON) => {
+        let clothingEntry = ClothingEntryBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(clothingEntry);
+        });
+    });
+}
+
+deleteClothingEntry(userId, entryId) {
+    return this.#fetchAdvanced(this.#deleteClothingEntryURL(userId, entryId), {
+        method: 'DELETE',
+    }).then((responseJSON) => {
+        let deletedClothingEntry = ClothingEntryBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(deletedClothingEntry);
+        });
+    });
+}
+
+updateClothingEntry(userId, entryId, clothingEntryData) {
+    return this.#fetchAdvanced(this.#updateClothingEntryURL(userId, entryId), {
+        method: 'PUT',
+        body: JSON.stringify(clothingEntryData),
+    }).then((responseJSON) => {
+        let updatedClothingEntry = ClothingEntryBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(updatedClothingEntry);
+        });
+    });
+}
+
+// ClothingItemEntry Endpoints
+getClothingItemEntries(userId) {
+    return this.#fetchAdvanced(this.#getClothingItemEntriesURL(userId)).then((responseJSON) => {
+        let clothingItemEntries = ClothingItemEntryBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(clothingItemEntries);
+        });
+    });
+}
+
+addClothingItemEntry(userId, clothingItemEntryData) {
+    return this.#fetchAdvanced(this.#addClothingItemEntryURL(userId), {
+        method: 'POST',
+        body: JSON.stringify(clothingItemEntryData),
+    }).then((responseJSON) => {
+        let clothingItemEntry = ClothingItemEntryBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(clothingItemEntry);
+        });
+    });
+}
+
+deleteClothingItemEntry(userId, entryId) {
+    return this.#fetchAdvanced(this.#deleteClothingItemEntryURL(userId, entryId), {
+        method: 'DELETE',
+    }).then((responseJSON) => {
+        let deletedClothingItemEntry = ClothingItemEntryBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(deletedClothingItemEntry);
+        });
+    });
+}
+
+updateClothingItemEntry(userId, entryId, clothingItemEntryData) {
+    return this.#fetchAdvanced(this.#updateClothingItemEntryURL(userId, entryId), {
+        method: 'PUT',
+        body: JSON.stringify(clothingItemEntryData),
+    }).then((responseJSON) => {
+        let updatedClothingItemEntry = ClothingItemEntryBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(updatedClothingItemEntry);
+        });
+    });
+}
+
+// Size Endpoints
+getSizes() {
+    return this.#fetchAdvanced(this.#getSizesURL()).then((responseJSON) => {
+        let sizes = SizeBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(sizes);
+        });
+    });
+}
+
+addSize(sizeData) {
+    return this.#fetchAdvanced(this.#addSizeURL(), {
+        method: 'POST',
+        body: JSON.stringify(sizeData),
+    }).then((responseJSON) => {
+        let size = SizeBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(size);
+        });
+    });
+}
+
+updateSize(sizeId, sizeData) {
+    return this.#fetchAdvanced(this.#updateSizeURL(sizeId), {
+        method: 'PUT',
+        body: JSON.stringify(sizeData),
+    }).then((responseJSON) => {
+        let updatedSize = SizeBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(updatedSize);
+        });
+    });
+}
+
+deleteSize(sizeId) {
+    return this.#fetchAdvanced(this.#deleteSizeURL(sizeId), {
+        method: 'DELETE',
+    }).then((responseJSON) => {
+        let deletedSize = SizeBO.fromJSON(responseJSON);
+        return new Promise(function(resolve) {
+            resolve(deletedSize);
+        });
+    });
+}
