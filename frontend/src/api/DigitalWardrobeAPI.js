@@ -241,6 +241,14 @@ export default class DigitalWardrobeAPI {
     })
   }
 
+  getStyleById(styleId) {
+    return this.#fetchAdvanced(this.#getStyleByIdURL(styleId))
+      .then(responseJSON => {
+        let styleBO = StyleBO.fromJSON(responseJSON)[0];
+        return new Promise(resolve => resolve(styleBO));
+      });
+  }
+
   // ClothingType management
   getClothingTypes() {
     return this.#fetchAdvanced(this.#getClothingTypesURL())
