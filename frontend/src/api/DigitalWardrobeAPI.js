@@ -291,62 +291,119 @@ class DigitalWardrobeAPI {
         return await response.json();
     };
 
-    // Constraint Endpoints
-    getConstraints = async (styleId) => {
-        const response = await fetch(this.#getConstraintsURL(styleId));
-        return await response.json();
-    };
+   // Constraint Endpoints
+getConstraints = async (styleId) => {
+    const url = this.#getConstraintsURL(styleId);
+    const response = await fetch(url);
+    return response.json();
+};
 
-    addConstraint = async (styleId, constraintData) => {
-        const response = await fetch(this.#addConstraintURL(styleId), {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(constraintData),
-        });
-        return await response.json();
-    };
+addConstraint = async (styleId, constraintData) => {
+    const url = this.#addConstraintURL(styleId);
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(constraintData),
+    });
+    return response.json();
+};
 
-    updateConstraint = async (styleId, constraintId, constraintData) => {
-        const response = await fetch(this.#updateConstraintURL(styleId, constraintId), {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(constraintData),
-        });
-        return await response.json();
-    };
+updateConstraint = async (styleId, constraintId, constraintData) => {
+    const url = this.#updateConstraintURL(styleId, constraintId);
+    const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(constraintData),
+    });
+    return response.json();
+};
 
-    deleteConstraint = async (styleId, constraintId) => {
-        await fetch(this.#deleteConstraintURL(styleId, constraintId), {
-            method: 'DELETE',
-        });
-    };
+deleteConstraint = async (styleId, constraintId) => {
+    const url = this.#deleteConstraintURL(styleId, constraintId);
+    const response = await fetch(url, {
+        method: 'DELETE',
+    });
+    return response.ok;
+};
 
-    // WardrobeEntry Endpoints
-    getWardrobeEntries = async (userId, wardrobeId) => {
-        const response = await fetch(this.#getWardrobeEntriesURL(userId, wardrobeId));
-        return await response.json();
-    };
+// BinaryConstraint Endpoints
+getBinaryConstraints = async (styleId) => {
+    const url = this.#getBinaryConstraintsURL(styleId);
+    const response = await fetch(url);
+    return response.json();
+};
 
-    addWardrobeEntry = async (userId, wardrobeId, wardrobeEntryData) => {
-        const response = await fetch(this.#addWardrobeEntryURL(userId, wardrobeId), {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(wardrobeEntryData),
-        });
-        return await response.json();
-    };
+addBinaryConstraint = async (styleId, binaryConstraintData) => {
+    const url = this.#addBinaryConstraintURL(styleId);
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(binaryConstraintData),
+    });
+    return response.json();
+};
 
-    updateWardrobeEntry = async (userId, wardrobeId, entryId, wardrobeEntryData) => {
-        const response = await fetch(this.#updateWardrobeEntryURL(userId, wardrobeId, entryId), {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(wardrobeEntryData),
-        });
-        return await response.json();
-    };
+updateBinaryConstraint = async (styleId, constraintId, binaryConstraintData) => {
+    const url = this.#updateBinaryConstraintURL(styleId, constraintId);
+    const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(binaryConstraintData),
+    });
+    return response.json();
+};
 
-    deleteWardrobeEntry = async (userId, wardrobeId, entryId) => {
-        await fetch(this.#deleteWardrobeEntryURL(userId, wardrobeId, entryId), {
-            method: 'DELETE',
-        });
-    };
+deleteBinaryConstraint = async (styleId, constraintId) => {
+    const url = this.#deleteBinaryConstraintURL(styleId, constraintId);
+    const response = await fetch(url, {
+        method: 'DELETE',
+    });
+    return response.ok;
+};
+
+// UnaryConstraint Endpoints
+getUnaryConstraints = async (styleId) => {
+    const url = this.#getUnaryConstraintsURL(styleId);
+    const response = await fetch(url);
+    return response.json();
+};
+
+addUnaryConstraint = async (styleId, unaryConstraintData) => {
+    const url = this.#addUnaryConstraintURL(styleId);
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(unaryConstraintData),
+    });
+    return response.json();
+};
+
+updateUnaryConstraint = async (styleId, constraintId, unaryConstraintData) => {
+    const url = this.#updateUnaryConstraintURL(styleId, constraintId);
+    const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(unaryConstraintData),
+    });
+    return response.json();
+};
+
+deleteUnaryConstraint = async (styleId, constraintId) => {
+    const url = this.#deleteUnaryConstraintURL(styleId, constraintId);
+    const response = await fetch(url, {
+        method: 'DELETE',
+    });
+    return response.ok;
+};
