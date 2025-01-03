@@ -1,9 +1,13 @@
 import UserBO from './UserBO';
+import ClothingEntry from "./ClothingEntry";
+import ClothingItemEntryBO from "./ClothingItemEntryBO";
+import Size from "../api/Size";
 import StyleBO from './StyleBO';
 import OutfitBO from './OutfitBO';
 import ClothingTypeBO from './ClothingTypeBO';
 import ClothingItemBO from './ClothingItemBO';
 import WardrobeBO from './WardrobeBO';
+import WardrobeEntryBO from "./WardrobeEntryBO";
 import BinaryConstraintBO from './BinaryConstraintBO';
 import UnaryConstraintBO from './UnaryConstraintBO';
 import ImplicationConstraintBO from './ImplicationConstraintBO';
@@ -11,9 +15,10 @@ import MutexConstraintBO from './MutexConstraintBO';
 import CardinalityConstraintBO from './CardinalityConstraintBO';
 import ConstraintBO from './ConstraintBO';
 
-export default class DigitalWardrobeAPI {
-  static #api = null;
-  #serverBaseURL = '/api';
+class DigitalWardrobeAPI {
+    // Basis-URL des Servers
+    #serverBaseURL = '/api';
+
   //Schrank API 
   // User endpoints
   #getUserURL = (id) => `${this.#serverBaseURL}/users/${id}`;
@@ -22,11 +27,18 @@ export default class DigitalWardrobeAPI {
   #updateUserURL = (id) => `${this.#serverBaseURL}/users/${id}`;
   #addUserURL = () => `${this.#serverBaseURL}/users`;
 
-  // Wardrobe endpoints
+  // Wardrobe Endpoints
   #getWardrobeURL = (userId) => `${this.#serverBaseURL}/users/${userId}/wardrobe`;
-  #addClothingItemURL = (userId) => `${this.#serverBaseURL}/users/${userId}/wardrobe/ClothingItems`;
-  #deleteClothingItemURL = (userId, clothingItemId) => `${this.#serverBaseURL}/users/${userId}/wardrobe/ClothingItems/${clothingItemId}`;
-  #updateClothingItemURL = (userId, clothingItemId) => `${this.#serverBaseURL}/users/${userId}/wardrobe/ClothingItems/${clothingItemId}`;
+  #addWardrobeURL = (userId) => `${this.#serverBaseURL}/users/${userId}/wardrobe`;
+  #updateWardrobeURL = (userId, wardrobeId) => `${this.#serverBaseURL}/users/${userId}/wardrobe/${wardrobeId}`;
+  #deleteWardrobeURL = (userId, wardrobeId) => `${this.#serverBaseURL}/users/${userId}/wardrobe/${wardrobeId}`;
+
+  // ClothingItem Endpoints
+  #getClothingItemsURL = (userId, wardrobeId) => `${this.#serverBaseURL}/users/${userId}/wardrobe/${wardrobeId}/clothingitems`;
+  #addClothingItemURL = (userId, wardrobeId) => `${this.#serverBaseURL}/users/${userId}/wardrobe/${wardrobeId}/clothingitems`;
+  #deleteClothingItemURL = (userId, wardrobeId, clothingItemId) => `${this.#serverBaseURL}/users/${userId}/wardrobe/${wardrobeId}/clothingitems/${clothingItemId}`;
+  #updateClothingItemURL = (userId, wardrobeId, clothingItemId) => `${this.#serverBaseURL}/users/${userId}/wardrobe/${wardrobeId}/clothingitems/${clothingItemId}`;
+
   // Outfit endpoints
   #getOutfitsURL = (userId) => `${this.#serverBaseURL}/users/${userId}/outfits`;
   #addOutfitURL = (userId) => `${this.#serverBaseURL}/users/${userId}/outfits`;
@@ -43,302 +55,66 @@ export default class DigitalWardrobeAPI {
   #getClothingTypesURL = () => `${this.#serverBaseURL}/ClothingTypes`;
   #addClothingTypeURL = () => `${this.#serverBaseURL}/ClothingTypes`;
 
-  // Constraint endpoints
-  #getConstraintsURL = (styleId) => `${this.#serverBaseURL}/styles/${styleId}/constraints`;
-  #addConstraintURL = (styleId) => `${this.#serverBaseURL}/styles/${styleId}/constraints`;
-  #updateConstraintURL = (styleId, constraintId) => `${this.#serverBaseURL}/styles/${styleId}/constraints/${constraintId}`;
-  #deleteConstraintURL = (styleId, constraintId) => `${this.#serverBaseURL}/styles/${styleId}/constraints/${constraintId}`;
 
-  static getAPI() {
-    if (this.#api == null) {
-      this.#api = new DigitalWardrobeAPI();
-    }
-    return this.#api;
-  }
+  // Constraint Endpoints
+    #getConstraintsURL = (styleId) => `${this.#serverBaseURL}/styles/${styleId}/constraints`;
+    #addConstraintURL = (styleId) => `${this.#serverBaseURL}/styles/${styleId}/constraints`;
+    #updateConstraintURL = (styleId, constraintId) => `${this.#serverBaseURL}/styles/${styleId}/constraints/${constraintId}`;
+    #deleteConstraintURL = (styleId, constraintId) => `${this.#serverBaseURL}/styles/${styleId}/constraints/${constraintId}`;
 
-  #fetchAdvanced = (url, init) => fetch(url, init)
-    .then(res => {
-      if (!res.ok) {
-        throw Error(`${res.status} ${res.statusText}`);
-      }
-      return res.json();
-    })
+    // WardrobeEntry Endpoints
+    #getWardrobeEntriesURL = (userId, wardrobeId) => `${this.#serverBaseURL}/users/${userId}/wardrobe/${wardrobeId}/entries`;
+    #addWardrobeEntryURL = (userId, wardrobeId) => `${this.#serverBaseURL}/users/${userId}/wardrobe/${wardrobeId}/entries`;
+    #deleteWardrobeEntryURL = (userId, wardrobeId, entryId) => `${this.#serverBaseURL}/users/${userId}/wardrobe/${wardrobeId}/entries/${entryId}`;
+    #updateWardrobeEntryURL = (userId, wardrobeId, entryId) => `${this.#serverBaseURL}/users/${userId}/wardrobe/${wardrobeId}/entries/${entryId}`;
 
-  // User management
-  getUser(userId) {
-    return this.#fetchAdvanced(this.#getUserURL(userId))
-      .then(responseJSON => {
-        let userBO = UserBO.fromJSON(responseJSON)[0];
-        return new Promise(resolve => resolve(userBO));
-      })
-  }
+    // BinaryConstraint Endpoints
+    #getBinaryConstraintsURL = (styleId) => `${this.#serverBaseURL}/styles/${styleId}/binaryconstraints`;
+    #addBinaryConstraintURL = (styleId) => `${this.#serverBaseURL}/styles/${styleId}/binaryconstraints`;
+    #updateBinaryConstraintURL = (styleId, constraintId) => `${this.#serverBaseURL}/styles/${styleId}/binaryconstraints/${constraintId}`;
+    #deleteBinaryConstraintURL = (styleId, constraintId) => `${this.#serverBaseURL}/styles/${styleId}/binaryconstraints/${constraintId}`;
 
-  updateUser(userBO) {
-    return this.#fetchAdvanced(this.#updateUserURL(userBO.getUserId()), {
-      method: 'PUT',
-      headers: {
-        'Accept': 'application/json, text/plain',
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify(userBO)
-    }).then(responseJSON => {
-      let responseUserBO = UserBO.fromJSON(responseJSON)[0];
-      return new Promise(resolve => resolve(responseUserBO));
-    })
-  }
-  deleteUser(userId) {
-    return this.#fetchAdvanced(this.#deleteUserURL(userId), {
-        method: 'DELETE'
-    }).then(responseJSON => UserBO.fromJSON(responseJSON)[0]);
-  }
+    // UnaryConstraint Endpoints
+    #getUnaryConstraintsURL = (styleId) => `${this.#serverBaseURL}/styles/${styleId}/unaryconstraints`;
+    #addUnaryConstraintURL = (styleId) => `${this.#serverBaseURL}/styles/${styleId}/unaryconstraints`;
+    #updateUnaryConstraintURL = (styleId, constraintId) => `${this.#serverBaseURL}/styles/${styleId}/unaryconstraints/${constraintId}`;
+    #deleteUnaryConstraintURL = (styleId, constraintId) => `${this.#serverBaseURL}/styles/${styleId}/unaryconstraints/${constraintId}`;
 
-  addUser(userBO) {
-    return this.#fetchAdvanced(this.#addUserURL(), {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json, text/plain',
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify(userBO)
-    }).then(responseJSON => {
-      let responseUserBO = UserBO.fromJSON(responseJSON)[0];
-      return new Promise(resolve => resolve(responseUserBO));
-    })
-  }
+    // ImplicationConstraint Endpoints
+    #getImplicationConstraintsURL = (styleId) => `${this.#serverBaseURL}/styles/${styleId}/implicationconstraints`;
+    #addImplicationConstraintURL = (styleId) => `${this.#serverBaseURL}/styles/${styleId}/implicationconstraints`;
+    #updateImplicationConstraintURL = (styleId, constraintId) => `${this.#serverBaseURL}/styles/${styleId}/implicationconstraints/${constraintId}`;
+    #deleteImplicationConstraintURL = (styleId, constraintId) => `${this.#serverBaseURL}/styles/${styleId}/implicationconstraints/${constraintId}`;
+
+    // MutexConstraint Endpoints
+    #getMutexConstraintsURL = (styleId) => `${this.#serverBaseURL}/styles/${styleId}/mutexconstraints`;
+    #addMutexConstraintURL = (styleId) => `${this.#serverBaseURL}/styles/${styleId}/mutexconstraints`;
+    #updateMutexConstraintURL = (styleId, constraintId) => `${this.#serverBaseURL}/styles/${styleId}/mutexconstraints/${constraintId}`;
+    #deleteMutexConstraintURL = (styleId, constraintId) => `${this.#serverBaseURL}/styles/${styleId}/mutexconstraints/${constraintId}`;
+
+    // CardinalityConstraint Endpoints
+    #getCardinalityConstraintsURL = (styleId) => `${this.#serverBaseURL}/styles/${styleId}/cardinalityconstraints`;
+    #addCardinalityConstraintURL = (styleId) => `${this.#serverBaseURL}/styles/${styleId}/cardinalityconstraints`;
+    #updateCardinalityConstraintURL = (styleId, constraintId) => `${this.#serverBaseURL}/styles/${styleId}/cardinalityconstraints/${constraintId}`;
+    #deleteCardinalityConstraintURL = (styleId, constraintId) => `${this.#serverBaseURL}/styles/${styleId}/cardinalityconstraints/${constraintId}`;
+
+    // ClothingEntry Endpoints
+    #getClothingEntriesURL = (userId) => `${this.#serverBaseURL}/users/${userId}/clothingentries`;
+    #addClothingEntryURL = (userId) => `${this.#serverBaseURL}/users/${userId}/clothingentries`;
+    #deleteClothingEntryURL = (userId, entryId) => `${this.#serverBaseURL}/users/${userId}/clothingentries/${entryId}`;
+    #updateClothingEntryURL = (userId, entryId) => `${this.#serverBaseURL}/users/${userId}/clothingentries/${entryId}`;
+
+    // ClothingItemEntry Endpoints
+    #getClothingItemEntriesURL = (userId) => `${this.#serverBaseURL}/users/${userId}/clothingitementries`;
+    #addClothingItemEntryURL = (userId) => `${this.#serverBaseURL}/users/${userId}/clothingitementries`;
+    #deleteClothingItemEntryURL = (userId, entryId) => `${this.#serverBaseURL}/users/${userId}/clothingitementries/${entryId}`;
+    #updateClothingItemEntryURL = (userId, entryId) => `${this.#serverBaseURL}/users/${userId}/clothingitementries/${entryId}`;
+
+    // Size Endpoints
+    #getSizesURL = () => `${this.#serverBaseURL}/sizes`;
+    #addSizeURL = () => `${this.#serverBaseURL}/sizes`;
+    #updateSizeURL = (sizeId) => `${this.#serverBaseURL}/sizes/${sizeId}`;
+    #deleteSizeURL = (sizeId) => `${this.#serverBaseURL}/sizes/${sizeId}`;
+
+
   
-
-  getUserByGoogleId(googleId) {
-    return this.#fetchAdvanced(this.#getUserByGoogleIdURL(googleId))
-        .then(responseJSON => UserBO.fromJSON(responseJSON)[0]);
-}
-
-  // Wardrobe management
-  getWardrobe(userId) {
-    return this.#fetchAdvanced(this.#getWardrobeURL(userId))
-      .then(responseJSON => {
-        let wardrobeBO = WardrobeBO.fromJSON(responseJSON);
-        return new Promise(resolve => resolve(wardrobeBO));
-      })
-  }
-
-  addClothingItem(userId, clothingItemBO) {
-    return this.#fetchAdvanced(this.#addClothingItemURL(userId), {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json, text/plain',
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify(clothingItemBO)
-    }).then(responseJSON => {
-      let responseClothingItemBO = ClothingItemBO.fromJSON(responseJSON)[0];
-      return new Promise(resolve => resolve(responseClothingItemBO));
-    })
-  }
-  updateClothingItem(userId, clothingItemBO) {
-    return this.#fetchAdvanced(this.#updateClothingItemURL(userId, clothingItemBO.getId()), {
-        method: 'PUT',
-        headers: {
-            'Accept': 'application/json, text/plain',
-            'Content-type': 'application/json',
-        },
-        body: JSON.stringify(clothingItemBO)
-    }).then(responseJSON => ClothingItemBO.fromJSON(responseJSON)[0]);
-  }
-
-  deleteClothingItem(userId, clothingItemId) {
-    return this.#fetchAdvanced(this.#deleteClothingItemURL(userId, clothingItemId), {
-      method: 'DELETE'
-    }).then(responseJSON => {
-      let responseClothingItemBO = ClothingItemBO.fromJSON(responseJSON)[0];
-      return new Promise(resolve => resolve(responseClothingItemBO));
-    })
-  }
-
-  // Outfit management
-  getOutfits(userId) {
-    return this.#fetchAdvanced(this.#getOutfitsURL(userId))
-      .then(responseJSON => {
-        let outfitBOs = OutfitBO.fromJSON(responseJSON);
-        return new Promise(resolve => resolve(outfitBOs));
-      })
-  }
-
-  addOutfit(userId, outfitBO) {
-    return this.#fetchAdvanced(this.#addOutfitURL(userId), {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json, text/plain',
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify(outfitBO)
-    }).then(responseJSON => {
-      let responseOutfitBO = OutfitBO.fromJSON(responseJSON)[0];
-      return new Promise(resolve => resolve(responseOutfitBO));
-    })
-  }
-  updateOutfit(userId, outfitBO) {
-    return this.#fetchAdvanced(this.#updateOutfitURL(userId, outfitBO.getId()), {
-        method: 'PUT',
-        headers: {
-            'Accept': 'application/json, text/plain',
-            'Content-type': 'application/json',
-        },
-        body: JSON.stringify(outfitBO)
-    }).then(responseJSON => OutfitBO.fromJSON(responseJSON)[0]);
-  }
-  deleteOutfit(userId, outfitId) {
-    return this.#fetchAdvanced(this.#deleteOutfitURL(userId, outfitId), {
-      method: 'DELETE'
-    }).then(responseJSON => {
-      let responseOutfitBO = OutfitBO.fromJSON(responseJSON)[0];
-      return new Promise(resolve => resolve(responseOutfitBO));
-    })
-  }
-
-  // Style management
-  getStyles() {
-    return this.#fetchAdvanced(this.#getStylesURL())
-      .then(responseJSON => {
-        let styleBOs = StyleBO.fromJSON(responseJSON);
-        return new Promise(resolve => resolve(styleBOs));
-      })
-  }
-
-  addStyle(styleBO) {
-    return this.#fetchAdvanced(this.#addStyleURL(), {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json, text/plain',
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify(styleBO)
-    }).then(responseJSON => {
-      let responseStyleBO = StyleBO.fromJSON(responseJSON)[0];
-      return new Promise(resolve => resolve(responseStyleBO));
-    })
-  }
-
-  updateStyle(styleBO) {
-    return this.#fetchAdvanced(this.#updateStyleURL(styleBO.getStyleId()), {
-      method: 'PUT',
-      headers: {
-        'Accept': 'application/json, text/plain',
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify(styleBO)
-    }).then(responseJSON => {
-      let responseStyleBO = StyleBO.fromJSON(responseJSON)[0];
-      return new Promise(resolve => resolve(responseStyleBO));
-    })
-  }
-
-  deleteStyle(styleId) {
-    return this.#fetchAdvanced(this.#deleteStyleURL(styleId), {
-      method: 'DELETE'
-    }).then(responseJSON => {
-      let responseStyleBO = StyleBO.fromJSON(responseJSON)[0];
-      return new Promise(resolve => resolve(responseStyleBO));
-    })
-  }
-
-  // ClothingType management
-  getClothingTypes() {
-    return this.#fetchAdvanced(this.#getClothingTypesURL())
-      .then(responseJSON => {
-        let clothingTypeBOs = ClothingTypeBO.fromJSON(responseJSON);
-        return new Promise(resolve => resolve(clothingTypeBOs));
-      })
-  }
-
-  addClothingType(clothingTypeBO) {
-    return this.#fetchAdvanced(this.#addClothingTypeURL(), {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json, text/plain',
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify(clothingTypeBO)
-    }).then(responseJSON => {
-      let responseClothingTypeBO = ClothingTypeBO.fromJSON(responseJSON)[0];
-      return new Promise(resolve => resolve(responseClothingTypeBO));
-    })
-  }
-
-  // Constraint management
-  getConstraints(styleId) {
-    return this.#fetchAdvanced(this.#getConstraintsURL(styleId))
-      .then(responseJSON => {
-        let constraints = responseJSON.map(constraint => {
-          switch(constraint.type) {
-            case 'binary':
-              return BinaryConstraintBO.fromJSON(constraint);
-            case 'unary':
-              return UnaryConstraintBO.fromJSON(constraint);
-            case 'implication':
-              return ImplicationConstraintBO.fromJSON(constraint);
-            case 'mutex':
-              return MutexConstraintBO.fromJSON(constraint);
-            case 'cardinality':
-              return CardinalityConstraintBO.fromJSON(constraint);
-            default:
-              return ConstraintBO.fromJSON(constraint);
-          }
-        });
-        return new Promise(resolve => resolve(constraints));
-      })
-  }
-
-  addConstraint(styleId, constraintBO) {
-    return this.#fetchAdvanced(this.#addConstraintURL(styleId), {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json, text/plain',
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify(constraintBO)
-    }).then(responseJSON => {
-      let responseConstraintBO = this.#createConstraintFromJSON(responseJSON[0]);
-      return new Promise(resolve => resolve(responseConstraintBO));
-    })
-  }
-
-  updateConstraint(styleId, constraintBO) {
-    return this.#fetchAdvanced(this.#updateConstraintURL(styleId, constraintBO.getId()), {
-      method: 'PUT',
-      headers: {
-        'Accept': 'application/json, text/plain',
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify(constraintBO)
-    }).then(responseJSON => {
-      let responseConstraintBO = this.#createConstraintFromJSON(responseJSON[0]);
-      return new Promise(resolve => resolve(responseConstraintBO));
-    })
-  }
-
-  deleteConstraint(styleId, constraintId) {
-    return this.#fetchAdvanced(this.#deleteConstraintURL(styleId, constraintId), {
-      method: 'DELETE'
-    }).then(responseJSON => {
-      let responseConstraintBO = this.#createConstraintFromJSON(responseJSON[0]);
-      return new Promise(resolve => resolve(responseConstraintBO));
-    })
-  }
-
-  #createConstraintFromJSON(json) {
-    switch(json.type) {
-      case 'binary':
-        return BinaryConstraintBO.fromJSON(json);
-      case 'unary':
-        return UnaryConstraintBO.fromJSON(json);
-      case 'implication':
-        return ImplicationConstraintBO.fromJSON(json);
-      case 'mutex':
-        return MutexConstraintBO.fromJSON(json);
-      case 'cardinality':
-        return CardinalityConstraintBO.fromJSON(json);
-      default:
-        return ConstraintBO.fromJSON(json);
-    }
-  }
-}
