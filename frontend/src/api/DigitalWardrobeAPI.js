@@ -117,4 +117,71 @@ class DigitalWardrobeAPI {
     #deleteSizeURL = (sizeId) => `${this.#serverBaseURL}/sizes/${sizeId}`;
 
 
-  
+  // Fetch-Helper-Methode
+    #fetchAdvanced = (url, init) => fetch(url, init)
+        .then(res => {
+            if (!res.ok) {
+                throw Error(`${res.status} ${res.statusText}`);
+            }
+            return res.json();
+        });
+
+    // User Endpoints
+    getUser = async (id) => {
+        const response = await fetch(this.#getUserURL(id));
+        return await response.json();
+    };
+
+    addUser = async (userData) => {
+        const response = await fetch(this.#addUserURL(), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(userData),
+        });
+        return await response.json();
+    };
+
+    updateUser = async (id, userData) => {
+        const response = await fetch(this.#updateUserURL(id), {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(userData),
+        });
+        return await response.json();
+    };
+
+    deleteUser = async (id) => {
+        await fetch(this.#deleteUserURL(id), {
+            method: 'DELETE',
+        });
+    };
+
+    // Wardrobe Endpoints
+    getWardrobe = async (userId) => {
+        const response = await fetch(this.#getWardrobeURL(userId));
+        return await response.json();
+    };
+
+    addWardrobe = async (userId, wardrobeData) => {
+        const response = await fetch(this.#addWardrobeURL(userId), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(wardrobeData),
+        });
+        return await response.json();
+    };
+
+    updateWardrobe = async (userId, wardrobeId, wardrobeData) => {
+        const response = await fetch(this.#updateWardrobeURL(userId, wardrobeId), {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(wardrobeData),
+        });
+        return await response.json();
+    };
+
+    deleteWardrobe = async (userId, wardrobeId) => {
+        await fetch(this.#deleteWardrobeURL(userId, wardrobeId), {
+            method: 'DELETE',
+        });
+    };
