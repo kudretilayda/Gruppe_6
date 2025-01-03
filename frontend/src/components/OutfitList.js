@@ -9,6 +9,8 @@ import OutfitBO from '../API/OutfitBO';
 import OutfitForm from './dialogs/OutfitForm';
 import OutfitCard from './layout/OutfitCard';
 import { getAuth } from 'firebase/auth';
+import OutfitEntryBO from '../API/OutfitEntryBO';
+import ClothingItemBO from '../API/ClothingItemBO';
 
 function OutfitList() {
     const [outfits, setOutfits] = useState([]);
