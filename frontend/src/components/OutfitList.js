@@ -14,6 +14,7 @@ import ClothingItemBO from '../API/ClothingItemBO';
 
 function OutfitList() {
     const [outfits, setOutfits] = useState([]);
+    const [clothingItems, setClothingItems] = useState([]);
     const [showAddForm, setShowAddForm] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -22,6 +23,7 @@ function OutfitList() {
 
     useEffect(() => {
         fetchOutfits();
+        fetchClothingItems();
     }, []);
 
     const fetchOutfits = async () => {
@@ -33,6 +35,22 @@ function OutfitList() {
             const outfits = await WardrobeAPI.getAPI().getOutfitsByWardrobeId(wardrobe_id.wardrobe_id);
             const outfitBOs = OutfitBO.fromJSON(outfits);
             setOutfits(outfitBOs);
+            setLoading(false);
+        } catch (error) {
+            setError(error);
+            setLoading(false);
+        }
+    };
+
+    const fetchClothingItems = async () => {
+        setLoading(true);
+        const auth = getAuth();
+        const currentUser = auth.currentUser;
+        try {
+            const wardrobe_id = await WardrobeAPI.getAPI().getWardrobeIdByGoogleUserId(currentUser.uid);
+            const items = await WardrobeAPI.getAPI().getClothingItemsByWardrobeId(wardrobe_id.wardrobe_id);
+            const clothingItemBOs = ClothingItemBO.fromJSON(items);
+            setClothingItems(clothingItemBOs);
             setLoading(false);
         } catch (error) {
             setError(error);
