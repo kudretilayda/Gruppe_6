@@ -1,3 +1,7 @@
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+
+
 const firebaseConfig = {
   apiKey: "AIzaSyCN5yEcyPtsbObW-Pa-i9gTG61JgxqiIH8",
   authDomain: "digital-wardrobe-442615.firebaseapp.com",
@@ -8,5 +12,10 @@ const firebaseConfig = {
   measurementId: "G-DLV0BPVGMV"
 };
 
+//Initalisierung der Firebase-App
+const app = initializeApp(firebaseConfig);
 
-export default firebaseConfig
+//Erstellen der Auth-Instanz
+export const auth = getAuth(app)
+
+export default firebaseConfig;
