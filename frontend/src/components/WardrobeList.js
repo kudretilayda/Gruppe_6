@@ -39,7 +39,7 @@ const WardrobeList = ({ navigate }) => {
         }
 
         try {
-            const userBO = await DigitalWardrobeAPI.getAPI().getUserByGoogleUserId(currentUser.uid);
+            const userBO = await DigitalWardrobeAPI.getAPI().getUserByGoogleId(currentUser.uid);
             if (userBO && userBO.length > 0 && userBO[0].wardrobe_id) {
                 const users = await DigitalWardrobeAPI.getAPI().getUsersByWardrobeID(userBO[0].wardrobe_id);
                 const wardrobeArray = await DigitalWardrobeAPI.getAPI().getWardrobeByID(userBO[0].wardrobe_id);
@@ -109,7 +109,7 @@ const WardrobeList = ({ navigate }) => {
             let wardrobeBO = new WardrobeBO(newWardrobeName, []);
             wardrobeBO.setPassword(newPassword); // Passwort für den Kleiderschrank setzen
             const addedWardrobe = await DigitalWardrobeAPI.getAPI().addWardrobe(wardrobeBO);
-            let userBOArray = await DigitalWardrobeAPI.getAPI().getUserByGoogleUserId(currentUser.uid);
+            let userBOArray = await DigitalWardrobeAPI.getAPI().getUserByGoogleId(currentUser.uid);
             if (userBOArray && userBOArray.length > 0) {
                 let userBO = userBOArray[0];
                 userBO.wardrobe_id = addedWardrobe.id;
