@@ -1,22 +1,41 @@
-import ConstraintBO from "./ConstraintBO";
+import ConstraintBO from "./ConstraintBO.js";
 
 export default class CardinalityConstraintBO extends ConstraintBO {
-  constructor(objects, minCount, maxCount) {
-    super();
-    this.objects = objects;
-    this.minCount = minCount;
-    this.maxCount = maxCount;
-  }
-
-  validate() {
-    const selectedCount = this.objects.filter(obj => obj.isSelected()).length;
-
-    if (selectedCount < this.minCount || selectedCount > this.maxCount) {
-      console.error(
-        `Error: ${selectedCount} selected items, allowed range: ${this.minCount} - ${this.maxCount}.`
-      );
-      return false;
+    constructor(min, max) {
+        super();
+        this.min = min;  // Minimum Anzahl
+        this.max = max;  // Maximum Anzahl
     }
-    return true;
-  }
+
+    // Getter und Setter für jedes Attribut
+    getMin() {
+        return this.min;
+    }
+
+    setMin(min) {
+        this.min = min;
+    }
+
+    getMax() {
+        return this.max;
+    }
+
+    setMax(max) {
+        this.max = max;
+    }
+
+    static fromJSON(cardinalityConstraints) {
+        let result = [];
+        if (Array.isArray(cardinalityConstraints)) {
+            cardinalityConstraints.forEach((cc) => {
+                Object.setPrototypeOf(cc, CardinalityConstraintBO.prototype);
+                result.push(cc);
+            });
+        } else {
+            let cc = cardinalityConstraints;
+            Object.setPrototypeOf(cc, CardinalityConstraintBO.prototype);
+            result.push(cc);
+        }
+        return result;
+    }
 }

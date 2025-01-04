@@ -1,28 +1,28 @@
-import BusinessObject from "frontend/src/api/BusinessObject.js";
-
-
+import BusinessObject from './BusinessObject.js'
 
 export default class ConstraintBO extends BusinessObject {
-   
-
-constructor() {
-  super();
-  this.constraintID = 0}
-
-  getConstraintID() {
-    return this.constraintID
+  constructor() {
+    super();  // Ruft den Konstruktor der Basisklasse BusinessObject auf
   }
 
-  setConstraintID(c_id) {
-    this.constraintID = c_id
+  // Überprüft, ob der Constraint erfüllt ist
+  // Diese Methode muss von den Unterklassen überschrieben werden
+  isValid() {
+    throw new Error("Methode 'isValid()' muss von der Unterklasse implementiert werden.");
   }
 
-validate(...args) {
-  throw new Error("Validate method must be implemented in a subclass.");}
-
-
-static fromJSON(dictionary = {}) {
-  const constraint = new ConstraintBO();
-  constraint.setConstraintID(dictionary.constraintID || 0);
-  return constraint;}
+  static fromJSON(constraints) {
+    let result = [];
+    if (Array.isArray(constraints)) {
+      constraints.forEach((c) => {
+        Object.setPrototypeOf(c, ConstraintBO.prototype);
+        result.push(c);
+      });
+    } else {
+      let c = constraints;
+      Object.setPrototypeOf(c, ConstraintBO.prototype);
+      result.push(c);
+    }
+    return result;
+  }
 }

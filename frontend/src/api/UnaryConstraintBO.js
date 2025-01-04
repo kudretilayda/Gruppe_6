@@ -1,23 +1,32 @@
-import ConstraintBO from "./ConstraintBO";
+import ConstraintBO from "./ConstraintBO.js";
 
 export default class UnaryConstraintBO extends ConstraintBO {
-  constructor() {
-    super();
-    this.style = null;
-  }
+    constructor(referenceObject) {
+        super();
+        this.referenceObject = referenceObject; // Das referenzierte Objekt
+    }
 
-  // Getter and Setter for style
-  getStyle() {
-    return this.style;
-  }
+    // Getter und Setter für jedes Attribut
+    getReferenceObject() {
+        return this.referenceObject;
+    }
 
-  setStyle(value) {
-    this.style = value;
-  }
+    setReferenceObject(referenceObject) {
+        this.referenceObject = referenceObject;
+    }
 
-  validate(outfit) {
-    return outfit.items.every(item =>
-      this.style.getClothingTypes().includes(item.clothingType)
-    );
-  }
+    static fromJSON(unaryConstraints) {
+        let result = [];
+        if (Array.isArray(unaryConstraints)) {
+            unaryConstraints.forEach((uc) => {
+                Object.setPrototypeOf(uc, UnaryConstraintBO.prototype);
+                result.push(uc);
+            });
+        } else {
+            let uc = unaryConstraints;
+            Object.setPrototypeOf(uc, UnaryConstraintBO.prototype);
+            result.push(uc);
+        }
+        return result;
+    }
 }

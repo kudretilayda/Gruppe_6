@@ -1,52 +1,46 @@
-import BusinessObject from './BusinessObject.js'
+import BusinessObject from "./BusinessObject.js";
 
-/**
- * Repräsentiert einen Kleiderschrank
- */
+// Die Klasse WardrobeBO erbt von der BusinessObject-Klasse.
+// Diese Klasse repräsentiert einen digitalen Kleiderschrank.
 export default class WardrobeBO extends BusinessObject {
-    
-    /** 
-     * Konstruktor für einen Kleiderschrank
-     * 
-     * @param {String} awardrobe_name - Name des Kleiderschranks
-     * @param {Number} aperson_id - ID des Besitzers
-     */
-    constructor(awardrobe_name, aperson_id) {
+    constructor(ownerId, clothingItems = []) {
         super();
-        this.wardrobe_name = awardrobe_name;
-        this.person_id = aperson_id;
+        this.owner = ownerId; // Der Besitzer des Kleiderschranks
+        this.content = content; // Inhalt des Kleiderschrankes (Kleidungsstücke)
+
     }
 
-    setWardrobeName(awardrobe_name) {
-        this.wardrobe_name = awardrobe_name;
+    // Getter und Setter für ownerId
+    getOwnerId() {
+        return this.owner;
     }
 
-    getWardrobeName() {
-        return this.wardrobe_name;
+    setOwnerId(ownerId) {
+        this.owner = ownerId;
     }
 
-    setPersonId(aperson_id) {
-        this.person_id = aperson_id;
+    // Getter und Setter für Content
+    getContent() {
+        return this.content;
     }
 
-    getPersonId() {
-        return this.person_id;
+    setContent(clothingItems) {
+        this.clothingItems = content;
     }
 
+    // Statische Methode zur Konvertierung von JSON-Daten in WardrobeBO-Objekte
     static fromJSON(wardrobes) {
         let result = [];
-
         if (Array.isArray(wardrobes)) {
             wardrobes.forEach((w) => {
                 Object.setPrototypeOf(w, WardrobeBO.prototype);
                 result.push(w);
-            })
+            });
         } else {
             let w = wardrobes;
             Object.setPrototypeOf(w, WardrobeBO.prototype);
             result.push(w);
         }
-
         return result;
     }
 }

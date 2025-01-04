@@ -1,63 +1,71 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Container, Typography, Box, Button } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { getAuth } from 'firebase/auth';
+import DigitalWardrobeAPI from "../api/DigitalWardrobeAPI";
+/**Dient als Startseite der App */
+
 
 const Home = () => {
-  return (
-    <Container maxWidth="md">
-      <Box sx={{ mt: 8, textAlign: 'center' }}>
-        <Typography variant="h3" gutterBottom>
-          Willkommen zu deinem digitalen Kleiderschrank
-        </Typography>
-        <Typography variant="body1" paragraph>
-          Verwalte deine Kleidung, Styles und Outfits einfach und effizient.
-        </Typography>
+    const [user, setUser] = useState(null);
 
-        <Box sx={{ mt: 4 }}>
-          <Button variant="contained" color="primary" sx={{ m: 1 }}>
-            <Link to="/kleiderschrank" style={{ textDecoration: 'none', color: 'white' }}>
-              Kleiderschrank
-            </Link>
-          </Button>
+    useEffect(() => {
+        const fetchData = async () => {
+            const auth = getAuth();
+            const currentUser = auth.currentUser;
+            if (currentUser) {
 
-          <Button variant="contained" color="secondary" sx={{ m: 1 }}>
-            <Link to="/styles" style={{ textDecoration: 'none', color: 'white' }}>
-              Styles
-            </Link>
-          </Button>
 
-          <Button variant="contained" sx={{ m: 1 }}>
-            <Link to="/outfits" style={{ textDecoration: 'none', color: 'black' }}>
-              Outfits
-            </Link>
-          </Button>
-        </Box>
-      </Box>
-    </Container>
-  );
+                const userBO = await DigitalWardrobeAPI.getAPI().getUserbyGoogleUserId(currentUser.uid);
+                setUser(userBO[0]);
+
+
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    if (!user) {
+        return <div>Loading...</div>;
+    }
+
+    return (
+        <div style={styles.container}>
+            <h1 style={styles.heading}>Willkommen, <br></br> {user.nickname} bei FridgeFinder!</h1>
+            <div style={styles.logoContainer}>
+                <img src={`${process.env.PUBLIC_URL}/LogoIcon.png`} alt="FridgeFinder Logo" style={styles.logo} />
+            </div>
+        </div>
+    );
+};
+
+const styles = {
+    container: {
+        textAlign: 'center',
+        flex: 1, //Nimmt den verbleibenden Platz zwischen Header und Footer ein
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-start', //Text bleibt oben in der Mitte
+        alignItems: 'center',
+        position: 'relative',
+    },
+    heading: {
+        color: '#001b33',
+        margin: '10px 0',
+    },
+    logoContainer: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flex: 1,
+        width: '100%',
+    },
+    logo: {
+        width: '50vw', //Relative Größe des Logos in Bezug auf die Bildschirmbreite
+        maxWidth: '350px', //Maximale Größe des Logos
+        height: 'auto', //Automatische Höhe, um das Seitenverhältnis beizubehalten
+        borderRadius: '50%', //Rundes Bild
+        opacity: 0.5, //Setzt die Transparenz auf 50%
+    },
 };
 
 export default Home;
-
-
-// src/pages/Home.js
-//import React from 'react';
-//import { Link } from 'react-router-dom';
-
-//const Home = () => {
- // return (
-  //  <div>
-   //   <h1>Willkommen zu deinem digitalen Kleiderschrank</h1>
-   //   <p>Verwalte deine Kleidung, Styles und Outfits einfach und effizient.</p>
-    //  <nav>
-    //    <ul>
-     //     <li><Link to="/kleiderschrank">Kleiderschrank</Link></li>
-     //     <li><Link to="/styles">Styles</Link></li>
-     //     <li><Link to="/outfits">Outfits</Link></li>
-     //   </ul>
-     // </nav>
-   // </div>
- // );
-//};
-
-//export default Home;

@@ -1,20 +1,41 @@
-import ConstraintBO from "./ConstraintBO";
+import ConstraintBO from "./ConstraintBO.js";
 
 export default class MutexConstraintBO extends ConstraintBO {
-  constructor(mutexPairs) {
-    super();
-    this.mutexPairs = mutexPairs; // Array of pairs [item1, item2]
-  }
-
-  validate(outfit) {
-    for (const [item1, item2] of this.mutexPairs) {
-      if (outfit.items.includes(item1) && outfit.items.includes(item2)) {
-        console.error(
-          `Conflict: ${item1.name} and ${item2.name} cannot coexist in the same outfit.`
-        );
-        return false;
-      }
+    constructor(referenceObject1, referenceObject2) {
+        super();
+        this.referenceObject1 = referenceObject1; // Erstes Referenzobjekt
+        this.referenceObject2 = referenceObject2; // Zweites Referenzobjekt
     }
-    return true;
-  }
+
+    // Getter und Setter für jedes Attribut
+    getReferenceObject1() {
+        return this.referenceObject1;
+    }
+
+    setReferenceObject1(referenceObject1) {
+        this.referenceObject1 = referenceObject1;
+    }
+
+    getReferenceObject2() {
+        return this.referenceObject2;
+    }
+
+    setReferenceObject2(referenceObject2) {
+        this.referenceObject2 = referenceObject2;
+    }
+
+    static fromJSON(mutexConstraints) {
+        let result = [];
+        if (Array.isArray(mutexConstraints)) {
+            mutexConstraints.forEach((mc) => {
+                Object.setPrototypeOf(mc, MutexConstraintBO.prototype);
+                result.push(mc);
+            });
+        } else {
+            let mc = mutexConstraints;
+            Object.setPrototypeOf(mc, MutexConstraintBO.prototype);
+            result.push(mc);
+        }
+        return result;
+    }
 }

@@ -1,0 +1,151 @@
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { Paper, IconButton, Drawer, List, ListItem, ListItemIcon, ListItemText, ThemeProvider, useMediaQuery } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
+import MenuIcon from '@mui/icons-material/Menu';
+import ProfileDropDownWithRouter from "../dialogs/ProfilDropDown";
+import SettingsIcon from '@mui/icons-material/Settings';
+import MicrowaveIcon from '@mui/icons-material/Microwave';
+import HomeIcon from '@mui/icons-material/Home';
+import InfoIcon from '@mui/icons-material/Info';
+import KitchenIcon from '@mui/icons-material/Kitchen';
+import LivingIcon from '@mui/icons-material/Living';
+import StraightenIcon from '@mui/icons-material/Straighten';
+import Theme from '../../theme.js';
+
+const Header = ({ user }) => {
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const isMobile = useMediaQuery('(max-width:600px)');
+
+  const toggleDrawer = (open) => (event) => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+    setDrawerOpen(open);
+  };
+
+  const menuItems = [
+    { icon: <HomeIcon style={styles.icon} />, label: 'Homepage', path: '/homepage' },
+    { icon: <WardrobeIcon style={styles.icon} />, label: 'Wardrobe', path: '/wardrobe' },
+    { icon: <StyleIcon style={styles.icon} />, label: 'Styles', path: '/styles' },
+    { icon: <OutfitIcon style={styles.icon} />, label: 'Outfits', path: '/outfits' },
+    { icon: <SettingsIcon style={styles.icon} />, label: 'Settings', path: '/settings' },
+];
+
+
+  const renderDrawer = () => (
+    <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)} PaperProps={{ style: styles.drawer }}>
+      <List>
+        {menuItems.map((item) => (
+          <ListItem button component={RouterLink} to={item.path} key={item.label} onClick={toggleDrawer(false)}>
+            <ListItemIcon>{item.icon}</ListItemIcon>
+            <ListItemText primary={item.label} primaryTypographyProps={{ style: styles.listItemText }} />
+          </ListItem>
+        ))}
+      </List>
+    </Drawer>
+  );
+
+  const logoContainerStyle = isMobile ? styles.logoContainerMobile : styles.logoContainerDesktop;
+  const logoStyle = isMobile ? styles.logoMobile : styles.logoDesktop;
+
+  return (
+    <ThemeProvider theme={Theme}>
+      <Paper variant="outlined" style={styles.paper}>
+        <div style={styles.headerContent}>
+          <IconButton edge="start" color="inherit" aria-label="menu" onClick={toggleDrawer(true)} style={styles.menuButton}>
+            <MenuIcon style={styles.menuIcon} />
+          </IconButton>
+          <div style={logoContainerStyle}>
+            <img src={`${process.env.PUBLIC_URL}/Logo.png`} alt="FridgeFinder Logo" style={logoStyle} />
+          </div>
+          <div style={styles.profileContainer}>
+            <ProfileDropDownWithRouter user={user} />
+          </div>
+        </div>
+        {renderDrawer()}
+      </Paper>
+    </ThemeProvider>
+  );
+};
+
+Header.propTypes = {
+  user: PropTypes.object,
+};
+
+const styles = {
+  paper: {
+    borderRadius: '10px',
+    overflow: 'hidden',
+    boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
+    width: '100%',
+    backgroundColor: '#c6d9e7',
+    position: 'relative',
+    zIndex: 1,
+  },
+  headerContent: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: '10px',
+    height: '100px',
+  },
+  logoContainerDesktop: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    backgroundColor: '#fff', //Weißer Hintergrund
+    borderRadius: '50%', //Runder Rahmen
+    padding: '5px',
+    boxShadow: '0 0 0 5px #fff', //Weißer Rahmen
+    height: '200px',
+    width: '400px',
+  },
+  logoContainerMobile: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    backgroundColor: '#fff', //Weißer Hintergrund
+    borderRadius: '50%', //Runder Rahmen
+    padding: '3px',
+    boxShadow: '0 0 0 2px #fff', //Weißer Rahmen
+    height: '70px',
+    width: '120px',
+  },
+  logoDesktop: {
+    height: '400px', //Höhe des Logos für Desktop
+    width: 'auto',
+  },
+  logoMobile: {
+    height: '120px', //Höhe des Logos für Handys
+    width: 'auto',
+  },
+  menuButton: {
+    zIndex: 2,
+  },
+  menuIcon: {
+    fontSize: '2rem',
+  },
+  profileContainer: {
+    zIndex: 2,
+    display: 'flex',
+    alignItems: 'center',
+  },
+  drawer: {
+    width: '250px',
+  },
+  icon: {
+    fontSize: '1.5rem',
+  },
+  listItemText: {
+    fontSize: '1.2rem',
+  },
+};
+
+export default Header;
