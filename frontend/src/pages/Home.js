@@ -14,7 +14,7 @@ const Home = () => {
             if (currentUser) {
 
 
-                const userBO = await DigitalWardrobeAPI.getAPI().getUserbyGoogleId(currentUser.uid);
+                const userBO = await DigitalWardrobeAPI.getAPI().getUserByGoogleId(currentUser.uid);
                 setUser(userBO[0]);
 
 
