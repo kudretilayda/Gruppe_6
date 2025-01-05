@@ -1,66 +1,62 @@
-import BusinessObject from "./BusinessObject";
+import BusinessObject from './BusinessObject.js'
 
 /**
- * Represents an Outfit object.
+ * Repräsentiert ein Outfit-Objekt
  */
 export default class OutfitBO extends BusinessObject {
-  /**
-   * Constructs an OutfitBO object.
-   *
-   * @param {Number} aOutfitId - ID of the outfit.
-   * @param {Array} aClothingItems - Clothing items of the outfit.
-   * @param {Object} aStyle - Style of the outfit.
-   */
-  constructor(aOutfitId = 0, aClothingItems = [], aStyle = null) {
-    super();
-    this.outfitId = aOutfitId;
-    this.clothingItems = aClothingItems;
-    this.style = aStyle;
-  }
+    
+    /** 
+     * Konstruktor für ein Outfit-Objekt
+     * 
+     * @param {String} aoutfit_name - Name des Outfits
+     * @param {Number} astyle_id - ID des zugehörigen Styles
+     * @param {Array} aclothing_items - Zugehörige Kleidungsstücke
+     */
+    constructor(aoutfit_name, astyle_id, aclothing_items) {
+        super();
+        this.outfit_name = aoutfit_name;
+        this.style_id = astyle_id;
+        this.clothing_items = aclothing_items;
+    }
 
-  // Getter and setter for outfitId
-  getOutfitId() {
-    return this.outfitId;
-  }
+    setOutfitName(aoutfit_name) {
+        this.outfit_name = aoutfit_name;
+    }
 
-  setOutfitId(value) {
-    this.outfitId = value;
-  }
+    getOutfitName() {
+        return this.outfit_name;
+    }
 
-  // Getter and setter for clothingItems
-  getClothingItems() {
-    return this.clothingItems;
-  }
+    setStyleId(astyle_id) {
+        this.style_id = astyle_id;
+    }
 
-  setClothingItems(value) {
-    this.clothingItems = value;
-  }
+    getStyleId() {
+        return this.style_id;
+    }
 
-  // Getter and setter for style
-  getStyle() {
-    return this.style;
-  }
+    setClothingItems(aclothing_items) {
+        this.clothing_items = aclothing_items;
+    }
 
-  setStyle(value) {
-    this.style = value;
-  }
+    getClothingItems() {
+        return this.clothing_items;
+    }
 
-  // String representation of the object
-  toString() {
-    return `Outfit: ${this.getOutfitId()}, ${JSON.stringify(this.getClothingItems())}, ${this.getStyle()}`;
-  }
+    static fromJSON(outfits) {
+        let result = [];
 
-  /**
-   * Converts a JSON structure into an OutfitBO object.
-   * @param {Object} dictionary - The JSON data describing the OutfitBO.
-   * @param {Object|null} styleInstance - An optional style instance associated with the outfit.
-   * @returns {OutfitBO} - A new OutfitBO object.
-   */
-  static fromJSON(dictionary = {}, styleInstance = null) {
-    const outfit = new OutfitBO();
-    outfit.setOutfitId(dictionary.outfitId || 0);
-    outfit.setClothingItems(dictionary.clothingItems || []);
-    outfit.setStyle(styleInstance);
-    return outfit;
-  }
+        if (Array.isArray(outfits)) {
+            outfits.forEach((o) => {
+                Object.setPrototypeOf(o, OutfitBO.prototype);
+                result.push(o);
+            })
+        } else {
+            let o = outfits;
+            Object.setPrototypeOf(o, OutfitBO.prototype);
+            result.push(o);
+        }
+
+        return result;
+    }
 }

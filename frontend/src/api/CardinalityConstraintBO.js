@@ -1,79 +1,41 @@
-import ConstraintBO from "./ConstraintBO";
+import ConstraintBO from "./ConstraintBO.js";
 
-/**
- * Represents a Cardinality Constraint.
- *
- * A CardinalityConstraint has:
- * - An object (object),
- * - A minimum count (minCount) and a maximum count (maxCount).
- */
 export default class CardinalityConstraintBO extends ConstraintBO {
-  /**
-   * Constructs a CardinalityConstraintBO object.
-   *
-   * @param {Number} minCount - The minimum cardinality.
-   * @param {Number} maxCount - The maximum cardinality.
-   * @param {Object} object - The object the cardinality applies to.
-   * @param {String} name - The name of the constraint.
-   * @param {String} description - The description of the constraint.
-   */
-  constructor(
-    minCount = 0,
-    maxCount = 0,
-    object = null,
-    name = "",
-    description = ""
-  ) {
-    super(name, description);
-    this.minCount = minCount;
-    this.maxCount = maxCount;
-    this.object = object;
-  }
+    constructor(min, max) {
+        super();
+        this.min = min;  // Minimum Anzahl
+        this.max = max;  // Maximum Anzahl
+    }
 
-  // Getter and setter for minCount
-  getMinCount() {
-    return this.minCount;
-  }
+    // Getter und Setter für jedes Attribut
+    getMin() {
+        return this.min;
+    }
 
-  setMinCount(value) {
-    this.minCount = value;
-  }
+    setMin(min) {
+        this.min = min;
+    }
 
-  // Getter and setter for maxCount
-  getMaxCount() {
-    return this.maxCount;
-  }
+    getMax() {
+        return this.max;
+    }
 
-  setMaxCount(value) {
-    this.maxCount = value;
-  }
+    setMax(max) {
+        this.max = max;
+    }
 
-  // Getter and setter for object
-  getObject() {
-    return this.object;
-  }
-
-  setObject(value) {
-    this.object = value;
-  }
-
-  // String representation of the object
-  toString() {
-    return `CardinalityConstraint: min=${this.getMinCount()}, max=${this.getMaxCount()}, object=${JSON.stringify(
-      this.getObject()
-    )}`;
-  }
-
-  /**
-   * Converts a JSON structure into a CardinalityConstraintBO object.
-   * @param {Object} dictionary - The JSON data describing the CardinalityConstraintBO.
-   * @returns {CardinalityConstraintBO} - A new CardinalityConstraintBO object.
-   */
-  static fromJSON(dictionary = {}) {
-    const cardinalityConstraint = new CardinalityConstraintBO();
-    cardinalityConstraint.setMinCount(dictionary.minCount || 0);
-    cardinalityConstraint.setMaxCount(dictionary.maxCount || 0);
-    cardinalityConstraint.setObject(dictionary.object || null);
-    return cardinalityConstraint;
-  }
+    static fromJSON(cardinalityConstraints) {
+        let result = [];
+        if (Array.isArray(cardinalityConstraints)) {
+            cardinalityConstraints.forEach((cc) => {
+                Object.setPrototypeOf(cc, CardinalityConstraintBO.prototype);
+                result.push(cc);
+            });
+        } else {
+            let cc = cardinalityConstraints;
+            Object.setPrototypeOf(cc, CardinalityConstraintBO.prototype);
+            result.push(cc);
+        }
+        return result;
+    }
 }
