@@ -10,13 +10,13 @@ import ErrorMessage from "./components/dialogs/ErrorMessage";
 import DigitalWardrobeAPI from "./api/DigitalWardrobeAPI";
 
 // Seiten importieren
-import SignIn from "./pages/SignIn";
-import Home from './pages/Home';
-import Wardrobe from './pages/Wardrobe';
-import Outfits from './pages/Outfits';
-import Styles from './pages/Styles';
-import Settings from './pages/Settings';
-import Profile from "./pages/Profile";
+import SignIn from "./components/Login_Register/SignIn";
+import Home from './components/pages/Home';
+import Wardrobe from './components/pages/Wardrobe';
+import Outfits from './components/pages/Outfits';
+import Styles from './components/pages/Styles';
+import Settings from './components/pages/Settings';
+import Profile from "./components/pages/Profile";
 
 // Importiere die notwendige Firebase-Funktion
 import { initializeApp } from 'firebase/app';
