@@ -5,7 +5,7 @@ import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from
 import { auth } from './firebase';
 import GoogleIcon from '@mui/icons-material/Google';
 import Navbar from './components/layout/Navbar';
-import Home from './components/pages/Home';
+import Home from './pages/Home';
 
 
 //init app
