@@ -1,90 +1,56 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Grid, Typography, Box } from '@mui/material';
-/**Anmeldung über Google Firebase Authentifikator wird hier erstellt */
+import { Button, Grid, Typography } from '@mui/material';
 
+/**
+ * Zeigt eine Landingpage für Benutzer, die noch nicht eingeloggt sind.
+ * Bietet einen Anmeldebutton an, um sich mit einem bestehenden Google-Konto anzumelden.
+ * Die Komponente verwendet Firebase für den Anmeldeprozess über eine Weiterleitung.
+ *
+ * @see Siehe Googles [firebase authentication](https://firebase.google.com/docs/web/setup)
+ * @see Siehe Googles [firebase API reference](https://firebase.google.com/docs/reference/js)
+ *
+ */
+class SignIn extends Component {
 
-const SignIn = ({ onSignIn }) => {
-    const handleSignInButtonClicked = () => {
-        onSignIn();
-    };
+	/**
+	 * Behandelt das Klicken des Anmeldebuttons und ruft die übergebene onSignIn-Handler-Funktion auf.
+	 */
+	handleSignInButtonClicked = () => {
+		this.props.onSignIn();
+	}
 
-    return (
-        <Box sx={styles.container}>
-            <img src={`${process.env.PUBLIC_URL}/LogoIcon.png`} alt="Background" style={styles.backgroundImage} />
-            <Box sx={styles.overlay}>
-                <Box sx={styles.box}>
-                    <Typography sx={{ margin: 2 }} variant='h5' align='center' fontWeight="bold">
-                        Wilkommen in deinem Digital Wardrobe
-                    </Typography>
-                    <Typography sx={{ margin: 2 }} align='center'>
-                        Es scheint, dass Sie nicht angemeldet sind.
-                    </Typography>
-                    <Typography sx={{ margin: 2 }} align='center'>
-                        Melden Sie sich bei Ihrem Digital Wardrobe an
-                    </Typography>
-                    <Grid container justifyContent='center'>
-                        <Button variant='contained' color='primary' sx={{ mt: 2 }} onClick={handleSignInButtonClicked}>
-                            Mit Google anmelden
-                        </Button>
-                    </Grid>
-                    <Grid container justifyContent='center' sx={{ mt: 1 }}>
-                        <Typography variant="body2">
-                            Sie haben noch kein Konto? <a href="https://www.google.com" target='_blank' rel='noopener noreferrer'>Sign up!</a>
-                        </Typography>
-                    </Grid>
-                </Box>
-            </Box>
-        </Box>
-    );
-};
+	/** Rendert die Anmeldeseite, wenn das Benutzerobjekt null ist */
+	render() {
+		return (
+			<div>
+				<Typography sx={{ margin: 2 }} align='center' variant='h6'>
+					Willkommen im Digitalen Kleiderschrank
+				</Typography>
+				<Typography sx={{ margin: 2 }} align='center'>
+					Es scheint, dass Sie noch nicht eingeloggt sind.
+				</Typography>
+				<Typography sx={{ margin: 2 }} align='center'>
+					Um die Dienste des Digitalen Kleiderschranks zu nutzen, melden Sie sich bitte an.
+				</Typography>
+				<Grid container justifyContent='center'>
+					<Grid item>
+						<Button variant='contained' color='primary' onClick={this.handleSignInButtonClicked}>
+							Mit Google anmelden
+						</Button>
+					</Grid>
+				</Grid>
+			</div>
+		);
+	}
+}
 
+/** PropTypes */
 SignIn.propTypes = {
-    onSignIn: PropTypes.func.isRequired,
-};
-
-const styles = {
-    container: {
-        width: '100%',
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center', //Zentriert den Inhalt vertikal
-        alignItems: 'center',
-        position: 'relative',
-        overflow: 'hidden', //Verhindert Überlauf
-    },
-    overlay: {
-        width: '100%',
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        zIndex: 1, //Über das Bild legen
-        backgroundColor: 'rgba(255, 255, 255, 0.8)', //Transparenter weißer Hintergrund
-    },
-    box: {
-        width: 'auto',
-        maxWidth: 360,
-        padding: 3,
-        borderRadius: 2,
-        boxShadow: 3,
-        backgroundColor: 'background.paper',
-    },
-    backgroundImage: {
-        width: '40%',
-        height: '40%',
-        objectFit: 'cover', //Das Bild wird skalieren, um Container auszufüllen
-        position: 'center',
-        top: 0,
-        left: 0,
-        zIndex: 0, //Hinter den Inhalt legen
-        opacity: 0.5,
-    },
-};
+	/**
+	 * Handler-Funktion, die aufgerufen wird, wenn der Benutzer sich anmelden möchte.
+	 */
+	onSignIn: PropTypes.func.isRequired,
+}
 
 export default SignIn;
