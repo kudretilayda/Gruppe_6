@@ -1,58 +1,103 @@
-import BusinessObject from './BusinessObject.js';
+import BusinessObject from './BusinessObject.js'
 
-/** UserBO für den digitalen Kleiderschrank */
+/**UserBO fürs Frontend */
 
 export default class UserBO extends BusinessObject {
+    googleuserid;
 
-    /** Konstruktion eines neuen Benutzers
-     * @param {String} anickname - Der Nickname des Benutzers.
-     * @param {String} afirstname - Der Vorname des Benutzers.
-     * @param {String} alastname - Der Nachname des Benutzers.
-     * @param {String} awardrobeid - Die ID des Kleiderschranks des Benutzers.
-     * @param {String} agoogleuserid - Die Google User ID des Benutzers.
+    /** Konstruktion eines neuen Users
+     * @param anick_name
+     * @param {String} afirstname - der Vorname von diesem  CustomerBO.
+     * @param {String} alastname - der Nachname von diesem  CustomerBO.
+     * @param {String} ahouseholdid - die Haushalts ID von diesem CustomerBO.
+     * @param {String} agoogleuserid - die Google User ID von diesem CustomerBO.
      */
-    constructor(anickname, afirstname, alastname, awardrobeid, agoogleuserid) {
+    constructor(anick_name, afirstname, alastname,  ahouseholdid, agoogleuserid,) {
         super();
-        this.nick_name = anickname;
+        this.nick_name = anick_name;
         this.first_name = afirstname;
         this.last_name = alastname;
-        this.wardrobe_id = awardrobeid; // Referenz zum Kleiderschrank
-        this.google_user_id = agoogleuserid; // Google ID für die Authentifizierung
+        this.google_user_id = agoogleuserid;
     }
 
-    // Getter und Setter für die Benutzerdaten
-    setFirstName(afirstname) { this.first_name = afirstname; }
-    getFirstName() { return this.first_name; }
-
-    setLastName(alastname) { this.last_name = alastname; }
-    getLastName() { return this.last_name; }
-
-    setNickName(anickname) { this.nick_name = anickname; }
-    getNickName() { return this.nick_name; }
-
-    setGoogleUserId(agoogleuserid) { this.google_user_id = agoogleuserid; }
-    getGoogleUserId() { return this.google_user_id; }
-
-    setWardrobeId(awardrobeid) { this.wardrobe_id = awardrobeid; }
-    getWardrobeId() { return this.wardrobe_id; }
 
     /**
-     * Erstellt ein Array von UserBO Objekten aus JSON.
-     * @param {Array|Object} users - JSON-Daten von Benutzern.
-     * @returns {Array} Array von UserBO Objekten.
+   * Setzen eines neuen Vornamen.
+   *
+   * @param {String} afirstname - neuer Vorname von diesem CustomerBO.
+   */
+    setfirstname(afirstname) {
+        this.first_name = afirstname;
+    }
+
+    getfirsname() {
+        return this.first_name;
+    }
+
+
+    /**
+     * Setzen eines neuen Nachnamen.
+     *
+     * @param alastname
      */
+    setlastname(alastname) {
+        this.last_name = alastname;
+    }
+
+    getlastname(){
+        return this.last_name;
+    }
+
+
+    /**
+     * Setzen eines neuen Nicknamen.
+     *
+     * @param anick_name
+     */
+    setnickname(anick_name) {
+        this.nick_name = anick_name;
+    }
+
+    getnickname() {
+        return this.nick_name;
+    }
+
+
+    /**
+   * Setzen einer neuen Google User ID.
+   *
+   * @param {String} agoogleuserid - neue Google User ID von diesem CustomerBO.
+   */
+    setgoogleuserid(agoogleuserid) {
+        this.google_user_id = agoogleuserid;
+    }
+
+    getgoogleuserid() {
+        return this.googleuserid;
+    }
+
+
+
+
     static fromJSON(users) {
         let result = [];
+        /**
+         * Wir erstellen aus jedem Objekt von User eine Json.
+         *
+         */
+
         if (Array.isArray(users)) {
-            users.forEach((u) => {
-                Object.setPrototypeOf(u, UserBO.prototype);
-                result.push(u);
-            });
-        } else {
-            let u = users;
+          users.forEach((u) => {
             Object.setPrototypeOf(u, UserBO.prototype);
             result.push(u);
+          })
+        } else {
+          // Sollte es ein Singelton Objekt sein
+          let u = users;
+          Object.setPrototypeOf(u, UserBO.prototype);
+          result.push(u);
         }
+
         return result;
-    }
+      }
 }

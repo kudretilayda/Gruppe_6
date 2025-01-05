@@ -25,7 +25,7 @@ export default class WardrobeBO extends BusinessObject {
     }
 
     setContent(clothingItems) {
-        this.clothingItems = content;
+        this.content = content;
     }
 
     // Statische Methode zur Konvertierung von JSON-Daten in WardrobeBO-Objekte
