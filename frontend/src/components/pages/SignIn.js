@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Grid, Typography } from '@mui/material';
+import { Button, Grid, Typography, Container, Box } from '@mui/material';
+import GoogleIcon from '@mui/icons-material/Google'
 
 /**
  * Zeigt eine Landingpage für Benutzer, die noch nicht eingeloggt sind.
@@ -11,46 +12,55 @@ import { Button, Grid, Typography } from '@mui/material';
  * @see Siehe Googles [firebase API reference](https://firebase.google.com/docs/reference/js)
  *
  */
-class SignIn extends Component {
+const SignIn = ({ onSignIn }) => {
+	//Button Click handler
+	const handleSignInButtonClicked = () => {
+		if (typeof onSignIn !== 'function') {
+			console.error('onSingIn prop is not a function:', onSignIn);
+			return;
+		}
+		onSignIn();
+	};
 
-	/**
-	 * Behandelt das Klicken des Anmeldebuttons und ruft die übergebene onSignIn-Handler-Funktion auf.
-	 */
-	handleSignInButtonClicked = () => {
-		this.props.onSignIn();
-	}
-
-	/** Rendert die Anmeldeseite, wenn das Benutzerobjekt null ist */
-	render() {
-		return (
-			<div>
-				<Typography sx={{ margin: 2 }} align='center' variant='h6'>
+	return (
+		<Container maxWidth="sm">
+			<Box sx={{
+				mt: 8,
+				display: 'flex',
+				flexDirection: 'column',
+				alignItems: 'center',
+			}}>
+				<Typography variant='h4' gutterBottom align='center'>
 					Willkommen im Digitalen Kleiderschrank
-				</Typography>
-				<Typography sx={{ margin: 2 }} align='center'>
-					Es scheint, dass Sie noch nicht eingeloggt sind.
-				</Typography>
-				<Typography sx={{ margin: 2 }} align='center'>
-					Um die Dienste des Digitalen Kleiderschranks zu nutzen, melden Sie sich bitte an.
-				</Typography>
-				<Grid container justifyContent='center'>
-					<Grid item>
-						<Button variant='contained' color='primary' onClick={this.handleSignInButtonClicked}>
-							Mit Google anmelden
-						</Button>
-					</Grid>
-				</Grid>
-			</div>
-		);
-	}
-}
+				</Typography> 
 
-/** PropTypes */
+				<Typography variant='h6' align='center' color='textSecondary' paragraph>
+					Es scheint, dass Sie noch nicht eingeloggt sind.
+				</Typography> 
+
+				<Typography align='center' color='textSecondary' paragraph>
+					Um die Dienste des Digitalen Kleiderschranks zu nutzen,
+					melden Sie sich bitte an.
+				</Typography>
+				
+				<Button
+					variant='contained'
+					color='primary'
+					onClick={handleSignInButtonClicked}
+					startIcon={<GoogleIcon />}
+					size='large'
+					sx={{ mt: 3 }}
+				>
+					Mit Google anmelden
+				</Button>
+			</Box>
+		</Container>
+	);
+};
+
 SignIn.propTypes = {
-	/**
-	 * Handler-Funktion, die aufgerufen wird, wenn der Benutzer sich anmelden möchte.
-	 */
+	//definiert die benötigte SignIn prop
 	onSignIn: PropTypes.func.isRequired,
-}
+};
 
 export default SignIn;
