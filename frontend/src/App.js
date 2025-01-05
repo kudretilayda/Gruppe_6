@@ -1,108 +1,107 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'react-router-dom';
-import { Container, ThemeProvider, CssBaseline } from "@mui/material";
-import { onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import theme from './theme';
-import Navbar from "./components/layout/Navbar";
-import Footer from "./components/layout/Footer";
-import LoadingSpinner from "./components/dialogs/LoadingSpinner";
-import ErrorMessage from "./components/dialogs/ErrorMessage";
-import DigitalWardrobeAPI from "./api/DigitalWardrobeAPI";
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { Typography, Button, CssBaseline, Grid, Container, Box, CircularProgress } from '@mui/material';
+import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'firebase/auth';
+import { auth } from './firebase';
+import GoogleIcon from '@mui/icons-material/Google';
+import Navbar from './components/layout/Navbar';
+import Home from './components/pages/Home';
 
-// Seiten importieren
-import SignIn from "./pages/SignIn";
-import Home from './pages/Home';
-import Wardrobe from './pages/Wardrobe';
-import Outfits from './pages/Outfits';
-import Styles from './pages/Styles';
-import Settings from './pages/Settings';
-import Profile from "./pages/Profile";
 
-// Importiere die notwendige Firebase-Funktion
-import { initializeApp } from 'firebase/app';
-import firebaseConfig from './firebaseConfig'; // Deine Konfiguration importieren
-
-// Initialisiere Firebase mit deiner Konfiguration
-const app = initializeApp(firebaseConfig);
-
-// Optional: Firebase-Dienste wie Auth und Firestore können hinzugefügt werden
-// Beispiel für Firebase Auth:
-import { getAuth } from 'firebase/auth';
-const auth = getAuth(app);
-
-// Beispiel für Firestore:
-import { getFirestore } from 'firebase/firestore';
-const firestore = getFirestore(app);
-
+//init app
 const App = () => {
-    const [currentUser, setCurrentUser] = useState(null);
-    const [authLoading, setAuthLoading] = useState(false);
-    const [authError, setAuthError] = useState(null);
-
-    const handleSignIn = () => {
-        setAuthLoading(true);
-        signInWithPopup(auth, provider).then(async (result) => {
-            const user = result.user;
-            const token = await user.getIdToken();
-            document.cookie = `token=${token};path=/;`;
-            setAuthLoading(false);
-            setCurrentUser(user);
-        }).catch((error) => {
-            setAuthLoading(false);
-            setAuthError(error.message);
-        });
-    };
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                const token = await user.getIdToken();
-                document.cookie = `token=${token};path=/;`;
-                setCurrentUser(user);
-            } else {
-                setCurrentUser(null);
-            }
+        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+            setUser(currentUser);
+            setLoading(false);
         });
+
         return () => unsubscribe();
     }, []);
 
-    return (
-        <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <Router>
-                <Navbar user={currentUser} onSignOut={() => auth.signOut()} />
-                <Container component="main" style={styles.main}>
-                    <Routes>
-                        <Route path="/" element={currentUser ? <Navigate to="/home" /> : <SignIn onSignIn={handleSignIn} />} />
-                        <Route path="/home" element={<Secured user={currentUser}><Home /></Secured>} />
-                        <Route path="/wardrobe" element={<Secured user={currentUser}><Wardrobe /></Secured>} />
-                        <Route path="/outfits" element={<Secured user={currentUser}><Outfits /></Secured>} />
-                        <Route path="/styles" element={<Secured user={currentUser}><Styles /></Secured>} />
-                        <Route path="/settings" element={<Secured user={currentUser}><Settings /></Secured>} />
-                        <Route path="/profile" element={<Secured user={currentUser}><Profile /></Secured>} />
-                    </Routes>
-                </Container>
-                <Footer />
-                <LoadingSpinner show={authLoading} />
-                <ErrorMessage error={authError} contextErrorMsg={`Login fehlgeschlagen. Bitte versuchen Sie es erneut.`} onReload={handleSignIn} />
-            </Router>
-        </ThemeProvider>
-    );
-};
+    const handleGoogleSignIn = async () => {
+        const provider = new GoogleAuthProvider();
+        try {
+            await signInWithPopup(auth, provider);
+        } catch (error) {
+            console.error('Error signing in with Google:', error);
+        }
+    };
 
-const Secured = ({ user, children }) => {
-    const location = useLocation();
-    if (!user) {
-        return <Navigate to="/" state={{ from: location }} replace />;
+    const handleSignOut = async () => {
+        try {
+            await signOut(auth);
+        } catch (error) {
+            console.error('Error signing out:', error);
+        }
+    };
+
+    if (loading) {
+        return (
+            <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+                <CircularProgress />
+            </Box>
+        );
     }
-    return children;
-};
 
-const styles = {
-    main: {
-        marginTop: '64px',
-        flex: 1,
-    },
-};
+    return (
+        <BrowserRouter>
+            <CssBaseline />
+            <Navbar user={user} onLogout={handleSignOut} />
+            
+            <Routes>
+                <Route path="/" element={
+                    user ? (
+                        <Home />
+                    ) : (
+                        <Container maxWidth="sm">
+                            <Box sx={{ mt: 8, textAlign: 'center' }}>
+                                <Typography variant='h2' gutterBottom>
+                                    Digital Wardrobe
+                                </Typography>
+                                <Typography variant='h5' color="text.secondary" paragraph>
+                                    Manage your wardrobe smartly and create stunning outfits
+                                </Typography>
+                                <Button 
+                                    variant="contained" 
+                                    color="primary"
+                                    onClick={handleGoogleSignIn}
+                                    startIcon={<GoogleIcon />}
+                                    size="large"
+                                    sx={{ mt: 2 }}
+                                >
+                                    Sign in with Google
+                                </Button>
+                            </Box>
+                        </Container>
+                    )
+                } />
+
+                {/* Protected Routes */}
+                <Route 
+                    path="/wardrobe" 
+                    element={user ? <div>Wardrobe Page</div> : <Navigate to="/" replace />} 
+                />
+                <Route 
+                    path="/styles" 
+                    element={user ? <div>Styles Page</div> : <Navigate to="/" replace />} 
+                />
+                <Route 
+                    path="/outfits" 
+                    element={user ? <div>Outfits Page</div> : <Navigate to="/" replace />} 
+                />
+                <Route 
+                    path="/profile" 
+                    element={user ? <div>Profile Page</div> : <Navigate to="/" replace />} 
+                />
+            </Routes>
+        </BrowserRouter>
+    );
+
+
+}
 
 export default App;

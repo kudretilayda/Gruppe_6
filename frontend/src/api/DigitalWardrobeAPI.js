@@ -778,6 +778,5 @@ deleteSize(sizeId) {
     });
 }
 
-export default DigitalWardropeAPI;
+export default DigitalWardrobeAPI;
 
-//API TESTEN
