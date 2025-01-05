@@ -16,107 +16,119 @@ import CardinalityConstraintBO from './CardinalityConstraintBO';
 import ConstraintBO from './ConstraintBO';
 
 class DigitalWardrobeAPI {
-    // Basis-URL des Servers
-    #serverBaseURL = '/api';
+
+  // Singelton instance
+  static #api = null;
+
+  // Local Python backend
+  #wardrobeServerBaseURL = 'http://localhost:5000/wardrobe';
 
   //Schrank API 
   // User endpoints
-  #getUserURL = (id) => `${this.#serverBaseURL}/users/${id}`;
-  #deleteUserURL = (id) => `${this.#serverBaseURL}/users/${id}`;
-  #getUserByGoogleIdURL = (google_id) => `${this.#serverBaseURL}/user-by-google-id/${google_id}`;
-  #updateUserURL = (id) => `${this.#serverBaseURL}/users/${id}`;
-  #addUserURL = () => `${this.#serverBaseURL}/users`;
+  #getUserURL = (id) => `${this.#wardrobeServerBaseURL}/users/${id}`;
+  #deleteUserURL = (id) => `${this.#wardrobeServerBaseURL}/users/${id}`;
+  #getUserByGoogleIdURL = (google_id) => `${this.#wardrobeServerBaseURL}/user-by-google-id/${google_id}`;
+  #updateUserURL = (id) => `${this.#wardrobeServerBaseURL}/users/${id}`;
+  #addUserURL = () => `${this.#wardrobeServerBaseURL}/users`;
 
   // Wardrobe Endpoints
-  #getWardrobeURL = (userId) => `${this.#serverBaseURL}/users/${userId}/wardrobe`;
-  #addWardrobeURL = (userId) => `${this.#serverBaseURL}/users/${userId}/wardrobe`;
-  #updateWardrobeURL = (userId, wardrobeId) => `${this.#serverBaseURL}/users/${userId}/wardrobe/${wardrobeId}`;
-  #deleteWardrobeURL = (userId, wardrobeId) => `${this.#serverBaseURL}/users/${userId}/wardrobe/${wardrobeId}`;
+  #getWardrobeURL = (userId) => `${this.#wardrobeServerBaseURL}/users/${userId}/wardrobe`;
+  #getWardrobeByGoogleIdURL = (google_id) => `${this.#wardrobeServerBaseURL}/user-by-google-id/${google_id}/wardrobe`;
+  #addWardrobeURL = (userId) => `${this.#wardrobeServerBaseURL}/users/${userId}/wardrobe`;
+  #updateWardrobeURL = (userId, wardrobeId) => `${this.#wardrobeServerBaseURL}/users/${userId}/wardrobe/${wardrobeId}`;
+  #deleteWardrobeURL = (userId, wardrobeId) => `${this.#wardrobeServerBaseURL}/users/${userId}/wardrobe/${wardrobeId}`;
 
   // ClothingItem Endpoints
-  #getClothingItemsURL = (userId, wardrobeId) => `${this.#serverBaseURL}/users/${userId}/wardrobe/${wardrobeId}/ClothingTtems`;
-  #addClothingItemURL = (userId, wardrobeId) => `${this.#serverBaseURL}/users/${userId}/wardrobe/${wardrobeId}/ClothingItems`;
-  #deleteClothingItemURL = (userId, wardrobeId, clothingItemId) => `${this.#serverBaseURL}/users/${userId}/wardrobe/${wardrobeId}/ClothingItems/${clothingItemId}`;
-  #updateClothingItemURL = (userId, wardrobeId, clothingItemId) => `${this.#serverBaseURL}/users/${userId}/wardrobe/${wardrobeId}/ClothingItems/${clothingItemId}`;
+  #getClothingItemsURL = (userId, wardrobeId) => `${this.#wardrobeServerBaseURL}/users/${userId}/wardrobe/${wardrobeId}/ClothingItems`;
+  #addClothingItemURL = (userId, wardrobeId) => `${this.#wardrobeServerBaseURL}/users/${userId}/wardrobe/${wardrobeId}/ClothingItems`;
+  #deleteClothingItemURL = (userId, wardrobeId, clothingItemId) => `${this.#wardrobeServerBaseURL}/users/${userId}/wardrobe/${wardrobeId}/ClothingItems/${clothingItemId}`;
+  #updateClothingItemURL = (userId, wardrobeId, clothingItemId) => `${this.#wardrobeServerBaseURL}/users/${userId}/wardrobe/${wardrobeId}/ClothingItems/${clothingItemId}`;
 
   // Outfit endpoints
-  #getOutfitsURL = (userId) => `${this.#serverBaseURL}/users/${userId}/outfits`;
-  #addOutfitURL = (userId) => `${this.#serverBaseURL}/users/${userId}/outfits`;
-  #deleteOutfitURL = (userId, outfitId) => `${this.#serverBaseURL}/users/${userId}/outfits/${outfitId}`;
-  #updateOutfitURL = (userId, outfitId) => `${this.#serverBaseURL}/users/${userId}/outfits/${outfitId}`;
+  #getOutfitsURL = (userId) => `${this.#wardrobeServerBaseURL}/users/${userId}/outfits`;
+  #addOutfitURL = (userId) => `${this.#wardrobeServerBaseURL}/users/${userId}/outfits`;
+  #deleteOutfitURL = (userId, outfitId) => `${this.#wardrobeServerBaseURL}/users/${userId}/outfits/${outfitId}`;
+  #updateOutfitURL = (userId, outfitId) => `${this.#wardrobeServerBaseURL}/users/${userId}/outfits/${outfitId}`;
   // Style endpoints
-  #getStylesURL = () => `${this.#serverBaseURL}/styles`;
-  #addStyleURL = () => `${this.#serverBaseURL}/styles`;
-  #updateStyleURL = (styleId) => `${this.#serverBaseURL}/styles/${styleId}`;
-  #deleteStyleURL = (styleId) => `${this.#serverBaseURL}/styles/${styleId}`;
-  #getStyleByIdURL = (styleId) => `${this.#serverBaseURL}/styles/${styleId}`;
+  #getStylesURL = () => `${this.#wardrobeServerBaseURL}/styles`;
+  #addStyleURL = () => `${this.#wardrobeServerBaseURL}/styles`;
+  #updateStyleURL = (styleId) => `${this.#wardrobeServerBaseURL}/styles/${styleId}`;
+  #deleteStyleURL = (styleId) => `${this.#wardrobeServerBaseURL}/styles/${styleId}`;
+  #getStyleByIdURL = (styleId) => `${this.#wardrobeServerBaseURL}/styles/${styleId}`;
 
   // ClothingType endpoints
-  #getClothingTypesURL = () => `${this.#serverBaseURL}/ClothingTypes`;
-  #addClothingTypeURL = () => `${this.#serverBaseURL}/ClothingTypes`;
+  #getClothingTypesURL = () => `${this.#wardrobeServerBaseURL}/ClothingTypes`;
+  #addClothingTypeURL = () => `${this.#wardrobeServerBaseURL}/ClothingTypes`;
 
 
   // Constraint Endpoints
-    #getConstraintsURL = (styleId) => `${this.#serverBaseURL}/styles/${styleId}/constraints`;
-    #addConstraintURL = (styleId) => `${this.#serverBaseURL}/styles/${styleId}/constraints`;
-    #updateConstraintURL = (styleId, constraintId) => `${this.#serverBaseURL}/styles/${styleId}/constraints/${constraintId}`;
-    #deleteConstraintURL = (styleId, constraintId) => `${this.#serverBaseURL}/styles/${styleId}/constraints/${constraintId}`;
+    #getConstraintsURL = (styleId) => `${this.#wardrobeServerBaseURL}/styles/${styleId}/constraints`;
+    #addConstraintURL = (styleId) => `${this.#wardrobeServerBaseURL}/styles/${styleId}/constraints`;
+    #updateConstraintURL = (styleId, constraintId) => `${this.#wardrobeServerBaseURL}/styles/${styleId}/constraints/${constraintId}`;
+    #deleteConstraintURL = (styleId, constraintId) => `${this.#wardrobeServerBaseURL}/styles/${styleId}/constraints/${constraintId}`;
 
     // WardrobeEntry Endpoints
-    #getWardrobeEntriesURL = (userId, wardrobeId) => `${this.#serverBaseURL}/users/${userId}/wardrobe/${wardrobeId}/entries`;
-    #addWardrobeEntryURL = (userId, wardrobeId) => `${this.#serverBaseURL}/users/${userId}/wardrobe/${wardrobeId}/entries`;
-    #deleteWardrobeEntryURL = (userId, wardrobeId, entryId) => `${this.#serverBaseURL}/users/${userId}/wardrobe/${wardrobeId}/entries/${entryId}`;
-    #updateWardrobeEntryURL = (userId, wardrobeId, entryId) => `${this.#serverBaseURL}/users/${userId}/wardrobe/${wardrobeId}/entries/${entryId}`;
+    #getWardrobeEntriesURL = (userId, wardrobeId) => `${this.#wardrobeServerBaseURL}/users/${userId}/wardrobe/${wardrobeId}/entries`;
+    #addWardrobeEntryURL = (userId, wardrobeId) => `${this.#wardrobeServerBaseURL}/users/${userId}/wardrobe/${wardrobeId}/entries`;
+    #deleteWardrobeEntryURL = (userId, wardrobeId, entryId) => `${this.#wardrobeServerBaseURL}/users/${userId}/wardrobe/${wardrobeId}/entries/${entryId}`;
+    #updateWardrobeEntryURL = (userId, wardrobeId, entryId) => `${this.#wardrobeServerBaseURL}/users/${userId}/wardrobe/${wardrobeId}/entries/${entryId}`;
 
     // BinaryConstraint Endpoints
-    #getBinaryConstraintsURL = (styleId) => `${this.#serverBaseURL}/styles/${styleId}/BinaryConstraints`;
-    #addBinaryConstraintURL = (styleId) => `${this.#serverBaseURL}/styles/${styleId}/BinaryConstraints`;
-    #updateBinaryConstraintURL = (styleId, constraintId) => `${this.#serverBaseURL}/styles/${styleId}/BinaryConstraints/${constraintId}`;
-    #deleteBinaryConstraintURL = (styleId, constraintId) => `${this.#serverBaseURL}/styles/${styleId}/BinaryConstraints/${constraintId}`;
+    #getBinaryConstraintsURL = (styleId) => `${this.#wardrobeServerBaseURL}/styles/${styleId}/BinaryConstraints`;
+    #addBinaryConstraintURL = (styleId) => `${this.#wardrobeServerBaseURL}/styles/${styleId}/BinaryConstraints`;
+    #updateBinaryConstraintURL = (styleId, constraintId) => `${this.#wardrobeServerBaseURL}/styles/${styleId}/BinaryConstraints/${constraintId}`;
+    #deleteBinaryConstraintURL = (styleId, constraintId) => `${this.#wardrobeServerBaseURL}/styles/${styleId}/BinaryConstraints/${constraintId}`;
 
     // UnaryConstraint Endpoints
-    #getUnaryConstraintsURL = (styleId) => `${this.#serverBaseURL}/styles/${styleId}/UnaryConstraints`;
-    #addUnaryConstraintURL = (styleId) => `${this.#serverBaseURL}/styles/${styleId}/UnaryConstraints`;
-    #updateUnaryConstraintURL = (styleId, constraintId) => `${this.#serverBaseURL}/styles/${styleId}/UnaryConstraints/${constraintId}`;
-    #deleteUnaryConstraintURL = (styleId, constraintId) => `${this.#serverBaseURL}/styles/${styleId}/UnaryConstraints/${constraintId}`;
+    #getUnaryConstraintsURL = (styleId) => `${this.#wardrobeServerBaseURL}/styles/${styleId}/UnaryConstraints`;
+    #addUnaryConstraintURL = (styleId) => `${this.#wardrobeServerBaseURL}/styles/${styleId}/UnaryConstraints`;
+    #updateUnaryConstraintURL = (styleId, constraintId) => `${this.#wardrobeServerBaseURL}/styles/${styleId}/UnaryConstraints/${constraintId}`;
+    #deleteUnaryConstraintURL = (styleId, constraintId) => `${this.#wardrobeServerBaseURL}/styles/${styleId}/UnaryConstraints/${constraintId}`;
 
     // ImplicationConstraint Endpoints
-    #getImplicationConstraintsURL = (styleId) => `${this.#serverBaseURL}/styles/${styleId}/ImplicationConstraints`;
-    #addImplicationConstraintURL = (styleId) => `${this.#serverBaseURL}/styles/${styleId}/ImplicationConstraints`;
-    #updateImplicationConstraintURL = (styleId, constraintId) => `${this.#serverBaseURL}/styles/${styleId}/ImplicationConstraints/${constraintId}`;
-    #deleteImplicationConstraintURL = (styleId, constraintId) => `${this.#serverBaseURL}/styles/${styleId}/ImplicationConstraints/${constraintId}`;
+    #getImplicationConstraintsURL = (styleId) => `${this.#wardrobeServerBaseURL}/styles/${styleId}/ImplicationConstraints`;
+    #addImplicationConstraintURL = (styleId) => `${this.#wardrobeServerBaseURL}/styles/${styleId}/ImplicationConstraints`;
+    #updateImplicationConstraintURL = (styleId, constraintId) => `${this.#wardrobeServerBaseURL}/styles/${styleId}/ImplicationConstraints/${constraintId}`;
+    #deleteImplicationConstraintURL = (styleId, constraintId) => `${this.#wardrobeServerBaseURL}/styles/${styleId}/ImplicationConstraints/${constraintId}`;
 
     // MutexConstraint Endpoints
-    #getMutexConstraintsURL = (styleId) => `${this.#serverBaseURL}/styles/${styleId}/MutexConstraints`;
-    #addMutexConstraintURL = (styleId) => `${this.#serverBaseURL}/styles/${styleId}/MutexConstraints`;
-    #updateMutexConstraintURL = (styleId, constraintId) => `${this.#serverBaseURL}/styles/${styleId}/MutexConstraints/${constraintId}`;
-    #deleteMutexConstraintURL = (styleId, constraintId) => `${this.#serverBaseURL}/styles/${styleId}/MutexConstraints/${constraintId}`;
+    #getMutexConstraintsURL = (styleId) => `${this.#wardrobeServerBaseURL}/styles/${styleId}/MutexConstraints`;
+    #addMutexConstraintURL = (styleId) => `${this.#wardrobeServerBaseURL}/styles/${styleId}/MutexConstraints`;
+    #updateMutexConstraintURL = (styleId, constraintId) => `${this.#wardrobeServerBaseURL}/styles/${styleId}/MutexConstraints/${constraintId}`;
+    #deleteMutexConstraintURL = (styleId, constraintId) => `${this.#wardrobeServerBaseURL}/styles/${styleId}/MutexConstraints/${constraintId}`;
 
     // CardinalityConstraint Endpoints
-    #getCardinalityConstraintsURL = (styleId) => `${this.#serverBaseURL}/styles/${styleId}/CardinalityConstraints`;
-    #addCardinalityConstraintURL = (styleId) => `${this.#serverBaseURL}/styles/${styleId}/CardinalityConstraints`;
-    #updateCardinalityConstraintURL = (styleId, constraintId) => `${this.#serverBaseURL}/styles/${styleId}/CardinalityConstraints/${constraintId}`;
-    #deleteCardinalityConstraintURL = (styleId, constraintId) => `${this.#serverBaseURL}/styles/${styleId}/CardinalityConstraints/${constraintId}`;
+    #getCardinalityConstraintsURL = (styleId) => `${this.#wardrobeServerBaseURL}/styles/${styleId}/CardinalityConstraints`;
+    #addCardinalityConstraintURL = (styleId) => `${this.#wardrobeServerBaseURL}/styles/${styleId}/CardinalityConstraints`;
+    #updateCardinalityConstraintURL = (styleId, constraintId) => `${this.#wardrobeServerBaseURL}/styles/${styleId}/CardinalityConstraints/${constraintId}`;
+    #deleteCardinalityConstraintURL = (styleId, constraintId) => `${this.#wardrobeServerBaseURL}/styles/${styleId}/CardinalityConstraints/${constraintId}`;
 
     // ClothingEntry Endpoints
-    #getClothingEntriesURL = (userId) => `${this.#serverBaseURL}/users/${userId}/ClothingEntry`;
-    #addClothingEntryURL = (userId) => `${this.#serverBaseURL}/users/${userId}/ClothingEntry`;
-    #deleteClothingEntryURL = (userId, entryId) => `${this.#serverBaseURL}/users/${userId}/ClothingEntry/${entryId}`;
-    #updateClothingEntryURL = (userId, entryId) => `${this.#serverBaseURL}/users/${userId}/ClothingEntry/${entryId}`;
+    #getClothingEntriesURL = (userId) => `${this.#wardrobeServerBaseURL}/users/${userId}/ClothingEntry`;
+    #addClothingEntryURL = (userId) => `${this.#wardrobeServerBaseURL}/users/${userId}/ClothingEntry`;
+    #deleteClothingEntryURL = (userId, entryId) => `${this.#wardrobeServerBaseURL}/users/${userId}/ClothingEntry/${entryId}`;
+    #updateClothingEntryURL = (userId, entryId) => `${this.#wardrobeServerBaseURL}/users/${userId}/ClothingEntry/${entryId}`;
 
     // ClothingItemEntry Endpoints
-    #getClothingItemEntriesURL = (userId) => `${this.#serverBaseURL}/users/${userId}/ClothingItemEntry`;
-    #addClothingItemEntryURL = (userId) => `${this.#serverBaseURL}/users/${userId}/ClothingItemEntry`;
-    #deleteClothingItemEntryURL = (userId, entryId) => `${this.#serverBaseURL}/users/${userId}/ClothingItemEntry/${entryId}`;
-    #updateClothingItemEntryURL = (userId, entryId) => `${this.#serverBaseURL}/users/${userId}/ClothingItemEntry/${entryId}`;
+    #getClothingItemEntriesURL = (userId) => `${this.#wardrobeServerBaseURL}/users/${userId}/ClothingItemEntry`;
+    #addClothingItemEntryURL = (userId) => `${this.#wardrobeServerBaseURL}/users/${userId}/ClothingItemEntry`;
+    #deleteClothingItemEntryURL = (userId, entryId) => `${this.#wardrobeServerBaseURL}/users/${userId}/ClothingItemEntry/${entryId}`;
+    #updateClothingItemEntryURL = (userId, entryId) => `${this.#wardrobeServerBaseURL}/users/${userId}/ClothingItemEntry/${entryId}`;
 
     // Size Endpoints
-    #getSizesURL = () => `${this.#serverBaseURL}/Unit`;
-    #addSizeURL = () => `${this.#serverBaseURL}/Unit`;
-    #updateSizeURL = (sizeId) => `${this.#serverBaseURL}/Unit/${sizeId}`;
-    #deleteSizeURL = (sizeId) => `${this.#serverBaseURL}/Unit/${sizeId}`;
+    #getSizesURL = () => `${this.#wardrobeServerBaseURL}/Unit`;
+    #getSizesByWardrobeIdURL = (wardrobeId) => `${this.#wardrobeServerBaseURL}/wardrobe/${wardrobeId}/sizes`;
+    #addSizeURL = () => `${this.#wardrobeServerBaseURL}/Unit`;
+    #updateSizeURL = (sizeId) => `${this.#wardrobeServerBaseURL}/Unit/${sizeId}`;
+    #deleteSizeURL = (sizeId) => `${this.#wardrobeServerBaseURL}/Unit/${sizeId}`;
 
 
+    static getAPI() {
+    if (this.#api == null) {
+      this.#api = new DigitalWardrobeAPI();
+    }
+    return this.#api;
+  }
   // Fetch-Helper-Methode
     #fetchAdvanced = (url, init) => fetch(url, init)
         .then(res => {
@@ -173,6 +185,16 @@ getWardrobe(userId) {
         return Promise.resolve(wardrobeBO);
     });
 }
+
+// Methode für das Abrufen der WardrobeId für die Google User ID
+  getWardrobeIdByGoogleUserId(google_id) {
+    return this.#fetchAdvanced(this.#getWardrobeByGoogleIdURL(google_id))
+      .then((responseJSON) => {
+        // Hier anpassen, je nachdem wie die Daten strukturiert sind, aber
+        // wir gehen davon aus, dass die `wardrobeId` vom Server zurückgegeben wird.
+        return responseJSON.wardrobeId; // Beispiel, wie du die ID extrahierst
+      });
+  }
 
 // Add a new wardrobe
 addWardrobe(userId, wardrobeData) {
@@ -743,6 +765,15 @@ getSizes() {
     });
 }
 
+// Methode für das Abrufen der Größen für ein bestimmtes Wardrobe
+  getSizeByWardrobeId(wardrobeId) {
+    return this.#fetchAdvanced(this.#getSizesByWardrobeIdURL(wardrobeId))
+      .then((sizes) => {
+        // Hier gehst du davon aus, dass die API die Größen als Array zurückgibt.
+        return sizes; // Die tatsächlichen Größen-Daten
+      });
+  }
+
 addSize(sizeData) {
     return this.#fetchAdvanced(this.#addSizeURL(), {
         method: 'POST',
@@ -772,11 +803,13 @@ deleteSize(sizeId) {
         method: 'DELETE',
     }).then((responseJSON) => {
         let deletedSize = UnitBO.fromJSON(responseJSON);
-        return new Promise(function(resolve) {
+        return new Promise(function (resolve) {
             resolve(deletedSize);
         });
     });
+    }
+
 }
+export default DigitalWardrobeAPI
 
-export default DigitalWardrobeAPI;
-
+//API TESTEN

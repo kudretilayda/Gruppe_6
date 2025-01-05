@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Grid, Button, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import StylesAPI from '../API/StylesAPI';  // API, die die Stile des Kleiderschranks verwaltet
-import LoadingProgress from './dialogs/LoadingProgress';
-import ContextErrorMessage from './dialogs/ContextErrorMessage';
+import StylesBO from '../api/StyleBO';
+import LoadingProgress from './dialogs/LoadingSpinner';
+import ContextErrorMessage from './dialogs/ErrorMessage';
 import StylesEntryCard from './layout/StylesEntryCard';  // Karte, die die einzelnen Stile darstellt
 
 const StylesEntryList = () => {
@@ -19,7 +19,7 @@ const StylesEntryList = () => {
     const fetchStyles = async () => {
         setLoading(true);
         try {
-            const fetchedStyles = await StylesAPI.getStyles();
+            const fetchedStyles = await StylesBO.getStyles();
             setStyles(fetchedStyles);
             setLoading(false);
         } catch (err) {

@@ -26,10 +26,10 @@ const ClothingItemList = () => {
     const fetchClothingItems = async () => {
         const auth = getAuth();
         const user = auth.currentUser;
-        const wardrobe_id = await WardrobeAPI.getAPI().getWardrobeIdByGoogleUserId(user.uid); // Holen der WardrobeID des Benutzers
+        const wardrobe_id = await DigitalWardrobeAPI.getAPI().getWardrobeIdByGoogleUserId(user.uid); // Holen der WardrobeID des Benutzers
         setLoading(true);
         try {
-            const items = await WardrobeAPI.getAPI().getClothingItemsByWardrobeId(wardrobe_id.wardrobe_id); // Holen der Kleidungsstücke
+            const items = await DigitalWardrobeAPI.getAPI().getClothingItemsByWardrobeId(wardrobe_id.wardrobe_id); // Holen der Kleidungsstücke
             const clothingItemBOs = ClothingItemBO.fromJSON(items); // Konvertieren der Antwort in BOs
             setClothingItems(clothingItemBOs);
             setLoading(false);
@@ -63,7 +63,7 @@ const ClothingItemList = () => {
     // Handle Delete Button Click
     const handleDeleteButtonClick = async (designation) => {
         try {
-            await WardrobeAPI.getAPI().deleteClothingItem(designation); // Löschen des Kleidungsstücks
+            await DigitalWardrobeAPI.getAPI().deleteClothingItem(designation); // Löschen des Kleidungsstücks
             fetchClothingItems(); // Aktualisieren der Liste nach Löschung
         } catch (error) {
             console.error("Failed to delete clothing item:", error);

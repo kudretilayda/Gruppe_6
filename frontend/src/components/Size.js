@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import WardrobeAPI from '../API/DigitalWardrobeAPI';
+import DigitalWardrobeAPI from "../api/DigitalWardrobeAPI";
 import SizeBO from '../api/UnitBO';
 import { getAuth } from 'firebase/auth';
 import {
@@ -36,9 +36,9 @@ const SizeList = ({ wardrobeId }) => {
     setLoading(true);
     const auth = getAuth();
     const currentUser = auth.currentUser;
-    const wardrobe_id = await WardrobeAPI.getAPI().getWardrobeIdByGoogleUserId(currentUser.uid);
+    const wardrobe_id = await DigitalWardrobeAPI.getAPI().getWardrobeIdByGoogleUserId(currentUser.uid);
     try {
-      const fetchedSizes = await WardrobeAPI.getAPI().getSizeByWardrobeId(wardrobe_id.wardrobe_id);
+      const fetchedSizes = await DigitalWardrobeAPI.getAPI().getSizeByWardrobeId(wardrobe_id.wardrobe_id);
       setSizes(fetchedSizes || []);
     } catch (error) {
       console.error('Failed to fetch sizes:', error);
@@ -56,7 +56,7 @@ const SizeList = ({ wardrobeId }) => {
     const auth = getAuth();
     const currentUser = auth.currentUser;
     try {
-      const wardrobe_id = await WardrobeAPI.getAPI().getWardrobeIdByGoogleUserId(currentUser.uid);
+      const wardrobe_id = await DigitalWardrobeAPI.getAPI().getWardrobeIdByGoogleUserId(currentUser.uid);
       const sizeBO = new SizeBO(newSize, wardrobe_id.wardrobe_id);
 
       await WardrobeAPI.getAPI().addSize(sizeBO);
@@ -72,7 +72,7 @@ const SizeList = ({ wardrobeId }) => {
 
   const handleDeleteSize = async (sizeId) => {
     try {
-      await WardrobeAPI.getAPI().deleteSize(sizeId);
+      await DigitalWardrobeAPI.getAPI().deleteSize(sizeId);
       fetchSizes();
     } catch (error) {
       console.error('Failed to delete size:', error);
