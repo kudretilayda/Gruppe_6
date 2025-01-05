@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0b36f84f-6ad4-4404-a25a-055e1c7ce6fe" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Settings.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Settings.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Wardrobe.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Wardrobe.js" afterDir="false" />
-    </list>
+    <list default="true" id="0b36f84f-6ad4-4404-a25a-055e1c7ce6fe" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -78,7 +74,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "draft__be__fe__kudi",
+    "git-widget-placeholder": "FE__plus__BE",
     "last_opened_file_path": "C:/Users/serta/Documents/GitHub/Gruppe_6/src/server",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -213,7 +209,6 @@
       <list>
         <item itemvalue="Python.Admin2" />
         <item itemvalue="Python.Constraint_Test" />
-        <item itemvalue="Database Script.mysql-dump.sql" />
         <item itemvalue="Python.Admin" />
         <item itemvalue="Python.Mutex" />
       </list>
@@ -222,8 +217,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-e768b9ed790e-JavaScript-PY-243.21565.199" />
-        <option value="bundled-python-sdk-cab1f2013843-4ae2d6a61b08-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-243.21565.199" />
+        <option value="bundled-python-sdk-fb887030ada0-aa17d162503b-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-243.21565.199" />
       </set>
     </attachedChunks>
   </component>
