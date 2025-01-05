@@ -6,8 +6,7 @@ export default class WardrobeBO extends BusinessObject {
     constructor(ownerId, clothingItems = []) {
         super();
         this.owner = ownerId; // Der Besitzer des Kleiderschranks
-        this.content = content; // Inhalt des Kleiderschrankes (Kleidungsstücke)
-
+        this.content = clothingItems; // Inhalt des Kleiderschranks (Kleidungsstücke)
     }
 
     // Getter und Setter für ownerId
@@ -25,7 +24,7 @@ export default class WardrobeBO extends BusinessObject {
     }
 
     setContent(clothingItems) {
-        this.clothingItems = content;
+        this.content = clothingItems; // Korrigiert, damit content richtig gesetzt wird
     }
 
     // Statische Methode zur Konvertierung von JSON-Daten in WardrobeBO-Objekte
