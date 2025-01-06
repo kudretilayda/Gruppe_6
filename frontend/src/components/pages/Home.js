@@ -17,19 +17,23 @@ const Home = () => {
                 const auth = getAuth();
                 const currentUser = auth.currentUser;
 
-                if (currentUser) {
-
-
-                    const userBO = await DigitalWardrobeAPI.getAPI().getUserByGoogleId(currentUser.uid);
-
-                    if (userBO && userBO[0]) {
-                        setUser(userBO[0]);
+               if (currentUser) {
+                      try {
+                        const userBO = await DigitalWardrobeAPI.getAPI().getUserByGoogleId(currentUser.uid);
+                        if (userBO) {
+                          setUser(userBO);
+                        } else {
+                          setError('Benutzerdaten nicht gefunden');
+                        }
+                      } catch (err) {
+                        setError(`Fehler beim Abrufen der Benutzerdaten: ${err.message}`);
+                      } finally {
+                        setLoading(false);
+                      }
                     } else {
-                        setError('User data not found');
+                      setError('Kein authentifizierter Benutzer gefunden');
+                      setLoading(false);
                     }
-                } else {
-                    setError('No authenticated user found');
-                }
             } catch (err) {
                 setError('Error fetching user data: ' + err.message);
             } finally {
