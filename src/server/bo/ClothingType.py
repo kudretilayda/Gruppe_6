@@ -4,7 +4,6 @@ from src.server.bo.BusinessObject import BusinessObject
 class ClothingType(BusinessObject):
     def __init__(self):
         super().__init__()
-        self._id = int
         self._name = ""
         self._usage = ""
 
