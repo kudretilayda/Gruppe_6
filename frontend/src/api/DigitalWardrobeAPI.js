@@ -21,7 +21,7 @@ class DigitalWardrobeAPI {
   static #api = null;
 
   // Local Python backend
-  #wardrobeServerBaseURL = '/wardrobe';
+  #wardrobeServerBaseURL = 'http://localhost:5000/wardrobe';
 
   //Schrank API 
   // User endpoints
@@ -33,12 +33,13 @@ class DigitalWardrobeAPI {
 
   // Wardrobe Endpoints
   #getWardrobeURL = (userId) => `${this.#wardrobeServerBaseURL}/users/${userId}/wardrobe`;
+  #getWardrobeByGoogleIdURL = (google_id) => `${this.#wardrobeServerBaseURL}/user-by-google-id/${google_id}/wardrobe`;
   #addWardrobeURL = (userId) => `${this.#wardrobeServerBaseURL}/users/${userId}/wardrobe`;
   #updateWardrobeURL = (userId, wardrobeId) => `${this.#wardrobeServerBaseURL}/users/${userId}/wardrobe/${wardrobeId}`;
   #deleteWardrobeURL = (userId, wardrobeId) => `${this.#wardrobeServerBaseURL}/users/${userId}/wardrobe/${wardrobeId}`;
 
   // ClothingItem Endpoints
-  #getClothingItemsURL = (userId, wardrobeId) => `${this.#wardrobeServerBaseURL}/users/${userId}/wardrobe/${wardrobeId}/ClothingTtems`;
+  #getClothingItemsURL = (userId, wardrobeId) => `${this.#wardrobeServerBaseURL}/users/${userId}/wardrobe/${wardrobeId}/ClothingItems`;
   #addClothingItemURL = (userId, wardrobeId) => `${this.#wardrobeServerBaseURL}/users/${userId}/wardrobe/${wardrobeId}/ClothingItems`;
   #deleteClothingItemURL = (userId, wardrobeId, clothingItemId) => `${this.#wardrobeServerBaseURL}/users/${userId}/wardrobe/${wardrobeId}/ClothingItems/${clothingItemId}`;
   #updateClothingItemURL = (userId, wardrobeId, clothingItemId) => `${this.#wardrobeServerBaseURL}/users/${userId}/wardrobe/${wardrobeId}/ClothingItems/${clothingItemId}`;
@@ -116,6 +117,7 @@ class DigitalWardrobeAPI {
 
     // Size Endpoints
     #getSizesURL = () => `${this.#wardrobeServerBaseURL}/Unit`;
+    #getSizesByWardrobeIdURL = (wardrobeId) => `${this.#wardrobeServerBaseURL}/wardrobe/${wardrobeId}/sizes`;
     #addSizeURL = () => `${this.#wardrobeServerBaseURL}/Unit`;
     #updateSizeURL = (sizeId) => `${this.#wardrobeServerBaseURL}/Unit/${sizeId}`;
     #deleteSizeURL = (sizeId) => `${this.#wardrobeServerBaseURL}/Unit/${sizeId}`;
@@ -183,6 +185,16 @@ getWardrobe(userId) {
         return Promise.resolve(wardrobeBO);
     });
 }
+
+// Methode für das Abrufen der WardrobeId für die Google User ID
+  getWardrobeIdByGoogleUserId(google_id) {
+    return this.#fetchAdvanced(this.#getWardrobeByGoogleIdURL(google_id))
+      .then((responseJSON) => {
+        // Hier anpassen, je nachdem wie die Daten strukturiert sind, aber
+        // wir gehen davon aus, dass die `wardrobeId` vom Server zurückgegeben wird.
+        return responseJSON.wardrobeId; // Beispiel, wie du die ID extrahierst
+      });
+  }
 
 // Add a new wardrobe
 addWardrobe(userId, wardrobeData) {
@@ -752,6 +764,15 @@ getSizes() {
         });
     });
 }
+
+// Methode für das Abrufen der Größen für ein bestimmtes Wardrobe
+  getSizeByWardrobeId(wardrobeId) {
+    return this.#fetchAdvanced(this.#getSizesByWardrobeIdURL(wardrobeId))
+      .then((sizes) => {
+        // Hier gehst du davon aus, dass die API die Größen als Array zurückgibt.
+        return sizes; // Die tatsächlichen Größen-Daten
+      });
+  }
 
 addSize(sizeData) {
     return this.#fetchAdvanced(this.#addSizeURL(), {
