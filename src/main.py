@@ -1,13 +1,15 @@
+import os
+import sys
+
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+sys.path.append(parent_dir)
+
+
+
 from flask import Flask
 from flask_cors import CORS
 from flask_restx import Api, Resource, fields
-
-import sys
-import os
-
-# Füge den 'src' Ordner zum Suchpfad hinzu
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), 'src')))
-
 
 from server.Admin import Admin
 from server.bo.User import User

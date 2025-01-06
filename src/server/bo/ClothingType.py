@@ -1,6 +1,6 @@
 #TypEbene
 
-from src.server.bo.BusinessObject import BusinessObject
+from .BusinessObject import BusinessObject
 
 class ClothingType(BusinessObject):
     def __init__(self, name: str = "", usage: str= ""):
