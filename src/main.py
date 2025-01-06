@@ -2,6 +2,13 @@ from flask import Flask
 from flask_cors import CORS
 from flask_restx import Api, Resource, fields
 
+import sys
+import os
+
+# Füge den 'src' Ordner zum Suchpfad hinzu
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), 'src')))
+
+
 from server.Admin import Admin
 from server.bo.User import User
 from server.bo.Wardrobe import Wardrobe
