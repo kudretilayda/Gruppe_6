@@ -1,4 +1,4 @@
-import ConstraintBO from "./ConstraintBO";
+import ConstraintBO from "./ConstraintBO.js";
 
 export default class MutexConstraintBO extends ConstraintBO {
   constructor(mutexPairs) {

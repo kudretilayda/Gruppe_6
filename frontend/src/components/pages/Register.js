@@ -1,8 +1,5 @@
-// Importiere die benötigten React Komponenten und Hooks
 import React, { useState } from 'react';
-// Importiere die Material-UI Komponenten für das Design
 import { TextField, Button, Container, Stack, Box } from '@mui/material';
-// Importiere die React Router Komponenten für die Navigation
 import { Form, Link } from 'react-router-dom';
 
 
@@ -94,7 +91,7 @@ const RegisterForm = () => {
                    />
                    {/* Register Button */}
                    <Button variant='outlined' color='secondary' type='submit'>Register</Button>
-                   
+
                    {/* Link zur Login-Seite mit Abstand nach oben */}
                    <Box sx={{ mt: 2 }}>
                        <small>Already have an account? <Link to='/login'>Login Here</Link></small>

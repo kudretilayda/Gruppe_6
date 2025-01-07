@@ -1,4 +1,4 @@
-import ConstraintBO from "./ConstraintBO";
+import ConstraintBO from "./ConstraintBO.js";
 
 export default class ImplicationConstraintBO extends ConstraintBO {
   constructor(ifType, thenType) {

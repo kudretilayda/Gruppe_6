@@ -1,4 +1,4 @@
-import ConstraintBO from "./ConstraintBO";
+import ConstraintBO from "./ConstraintBO.js";
 
 export default class BinaryConstraintBO extends ConstraintBO {
   constructor(item1, item2) {

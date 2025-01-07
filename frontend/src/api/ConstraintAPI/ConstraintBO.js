@@ -1,4 +1,4 @@
-import BusinessObject from "frontend/src/api/BusinessObject.js";
+import BusinessObject from "../BusinessObject.js";
 
 
 /**

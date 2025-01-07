@@ -1,4 +1,4 @@
-import BusinessObject from "BusinessObject.js";
+import BusinessObject from "./BusinessObject.js";
 
 export default class ClothingItemBO extends BusinessObject {
 

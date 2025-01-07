@@ -26,6 +26,15 @@ class Wardrobe(BusinessObject):
     def set_outfits(self, outfit):
         self._outfits.append(outfit)
 
+    def __str__(self):
+        # Gibt eine textuelle Darstellung des Kühlschranks zurück, hier nur die ID
+        return f"ID: {self._id}"
+
     @classmethod
-    def from_dict(cls, payload):
-        pass
+    def from_dict(cls=None):
+        if cls is None:
+            cls = dict()
+
+        from ClothingItem import ClothingItem
+        obj = Wardrobe()
+        obj.set_id(cls['id'])

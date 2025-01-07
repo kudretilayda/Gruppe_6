@@ -1,4 +1,4 @@
-import UserBO from './UserBO';
+/*import UserBO from './UserBO';
 import StyleBO from './StyleBO';
 import OutfitBO from './OutfitBO';
 import ClothingTypeBO from './ClothingTypeBO';
@@ -310,3 +310,4 @@ export default class WardrobeAPI {
     }
   }
 }
+*/

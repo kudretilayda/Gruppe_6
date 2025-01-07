@@ -186,7 +186,8 @@ class UserWardrobeOperations(Resource):
     def post(self, user_id):
         """Create a new wardrobe for a user"""
         adm = Admin()
-        proposal = Wardrobe.from_dict(api.payload)
+        proposal = Wardrobe.from_dict()
+#        proposal = Wardrobe.from_dict(api.payload) Dasselbe für Zeile 218
         if proposal is not None:
             proposal.set_user_id(user_id)
             wardrobe = adm.create_wardrobe(proposal)
@@ -214,7 +215,7 @@ class WardrobeOperations(Resource):
     def put(self, wardrobe_id):
         """Update a wardrobe"""
         adm = Admin()
-        wardrobe = Wardrobe.from_dict(api.payload)
+        wardrobe = Wardrobe.from_dict()
         if wardrobe is not None:
             wardrobe.set_id(wardrobe_id)
             adm.save_wardrobe(wardrobe)
