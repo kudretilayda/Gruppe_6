@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getAuth } from 'firebase/auth';
 import { Container, Typography, Box, CircularProgress } from '@mui/material';
-import DigitalWardrobeAPI from '../../api/DigitalWardrobeAPI';
+import DigitalWardrobeAPI from '../../api/DigitalWardrobeAPI.js';
 /**Dient als Startseite der App */
 
 

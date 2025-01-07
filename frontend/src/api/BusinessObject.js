@@ -1,27 +1,26 @@
-
 export default class BusinessObject {
-
-
-  constructor() {
-    this.id = 0;
-  }
-
-
-  setID(aId) {
-    this.id = aId;
-  }
-
-
-  getID() {
-    return this.id;
-  }
-
-
-  toString() {
-    let result = '';
-    for (var prop in this) {
-      result += prop + ': ' + this[prop] + ' ';
+    constructor() {
+        this.id = 0
     }
-    return result;
-  }
+
+    /**
+     * Sets the ID of this BusinessObject.
+     * @param {*} aId - the new ID of this BusinessObject
+     */
+
+    setID(aId) {
+        this.id = aId
+    }
+
+    getID() {
+        return this.id
+    }
+
+    toString() {
+        let result = '';
+        for (var prop in this) {
+            result += prop + ': ' + this[prop] + ' ';
+        }
+        return result;
+    }
 }

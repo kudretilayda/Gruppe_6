@@ -2,18 +2,18 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Typography, Button, CssBaseline, Grid, Container, Box, CircularProgress } from '@mui/material';
 import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'firebase/auth';
-import { auth } from './firebase';
-import { AuthProvider, useAuth } from './context/AuthContext';
+import { auth } from './firebase.js';
+import { AuthProvider, useAuth } from './context/AuthContext.js';
 
-import Navbar from './components/layout/Navbar';
+import Navbar from './components/layout/Navbar.js';
 
-import Home from './components/pages/Home';
-import Wardrobe from './components/pages/Wardrobe';
-import Outfits from './components/pages/Outfits';
-import Styles from './components/pages/Styles';
-import Profile from './components/pages/Profile';
-import Settings from './components/pages/Settings';
-import SignIn from './components/pages/SignIn';
+import Home from './components/pages/Home.js';
+import Wardrobe from './components/pages/Wardrobe.js';
+import Outfits from './components/pages/Outfits.js';
+import Styles from './components/pages/Styles.js';
+import Profile from './components/pages/Profile.js';
+// import Settings from './components/pages/Settings.js';
+import SignIn from './components/pages/SignIn.js';
 
 
 //init app

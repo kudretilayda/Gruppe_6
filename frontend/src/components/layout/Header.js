@@ -5,12 +5,12 @@ import { Link as RouterLink } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 import ProfileDropDownWithRouter from "../dialogs/ProfilDropDown";
 import SettingsIcon from '@mui/icons-material/Settings';
-import MicrowaveIcon from '@mui/icons-material/Microwave';
+// import MicrowaveIcon from '@mui/icons-material/Microwave';
 import HomeIcon from '@mui/icons-material/Home';
-import InfoIcon from '@mui/icons-material/Info';
-import KitchenIcon from '@mui/icons-material/Kitchen';
-import LivingIcon from '@mui/icons-material/Living';
-import StraightenIcon from '@mui/icons-material/Straighten';
+// import InfoIcon from '@mui/icons-material/Info';
+// import KitchenIcon from '@mui/icons-material/Kitchen';
+// import LivingIcon from '@mui/icons-material/Living';
+// import StraightenIcon from '@mui/icons-material/Straighten';
 import Theme from '../../theme.js';
 
 const Header = ({ user }) => {
