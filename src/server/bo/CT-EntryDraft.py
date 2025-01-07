@@ -27,5 +27,5 @@ class ClothingTypeEntry(ClothingType):
         obj = ClothingType()
         obj.set_id(dictionary.get("clothing_type_id"))
         obj.set_name(dictionary.get("clothing_type_name"))
-        obj.set_usage(dictionary.get("clothing_type_usage", ""))
+        obj.set_usage(dictionary.get("clothing_type_usage"))
         return obj
