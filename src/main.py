@@ -1,6 +1,7 @@
 import os
 import sys
 
+# src module not found workaround (failed)
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
 sys.path.append(parent_dir)
@@ -30,8 +31,18 @@ from SecurityDecorator import secured
 # Flask instanziieren
 app = Flask(__name__)
 
+
+
 # Cors insanziieren
-CORS(app, resources=r'/wardrobe/*')
+CORS(app, resources={
+    r"/*": {
+        "origins": ["http://localhost:3000"],
+        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization", "Access-Control-Allow-Credentials"],
+        "supports_credentials": True
+    }
+})
+#CORS(app, resources=r'/wardrobe/*')
 
 # API für Datenstruktur
 api = Api(app, version='1.0', title='Digital Wardrobe',

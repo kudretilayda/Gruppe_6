@@ -1,4 +1,4 @@
-from ..Constraints import Constraint
+from .Constraint import Constraint
 from ..Style import Style
 
 
