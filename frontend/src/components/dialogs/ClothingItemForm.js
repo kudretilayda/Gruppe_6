@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, Grid } from '@mui/material';
-import ClothingItemBO from '../API/ClothingItemBO';
+// import ClothingItemBO from '../../api/ClothingItemBO.js';
 import DigitalWardrobeAPI from "../../api/DigitalWardrobeAPI"; // Modell für Kleidungsstücke
 
 function ClothingItemForm({ show, item, onClose, wardrobeId }) {
