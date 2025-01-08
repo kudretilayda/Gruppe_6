@@ -1,5 +1,5 @@
-from src.server.db.Mapper import Mapper
-from src.server.bo.Style import Style
+from server.db.Mapper import Mapper
+from server.bo.Style import Style
 
 class StyleMapper(Mapper):
     def find_all(self):
