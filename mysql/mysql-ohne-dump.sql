@@ -31,7 +31,7 @@ CREATE TABLE clothing_item (
     FOREIGN KEY (wardrobe_id) REFERENCES wardrobe(id) ON DELETE CASCADE,
     FOREIGN KEY (clothing_type_id) REFERENCES clothing_type(id)
 ) ;
-
+dragonhart192837465
 -- Outfit
 DROP TABLE IF EXISTS outfit;
 CREATE TABLE outfit (

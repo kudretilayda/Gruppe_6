@@ -25,7 +25,7 @@ class DigitalWardrobeAPI {
     static #api = null;
 
     // Local Python backend
-    #wardrobeServerBaseURL = 'http://localhost:3000/wardrobe';
+    #wardrobeServerBaseURL = 'http://127.0.0.1:5000/';
 
     //Schrank API
     // User endpoints
