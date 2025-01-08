@@ -1,6 +1,7 @@
 import unittest
 from datetime import datetime
-from src.server.test.ConstraintRuletest import ConstraintRule, ConstraintType
+from .ConstraintRuletest import ConstraintRule, ConstraintType
+#from src.server.test.ConstraintRuletest import ConstraintRule, ConstraintType
 
 class TestConstraintRule(unittest.TestCase):
     def setUp(self):

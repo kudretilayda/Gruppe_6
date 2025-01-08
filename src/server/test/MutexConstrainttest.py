@@ -1,6 +1,8 @@
 import unittest
-from src.server.bo.Constraint import Constraint
-from src.server.bo.MutexConstraint import MutexConstraint
+from ..bo.Constraints import Constraint
+#from src.server.bo.Constraint import Constraint
+from ..bo.Constraints.Mutex import MutexConstraint
+#from src.server.bo.MutexConstraint import MutexConstraint
 
 
 # Dummy-Klasse für die zu testenden Objekte

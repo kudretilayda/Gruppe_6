@@ -1,3 +1,12 @@
+import os
+import sys
+
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+sys.path.append(parent_dir)
+
+
+
 from flask import Flask
 from flask_cors import CORS
 from flask_restx import Api, Resource, fields

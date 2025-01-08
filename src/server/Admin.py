@@ -1,28 +1,28 @@
-from src.server.db.UserMapper import UserMapper
-from src.server.db.WardrobeMapper import WardrobeMapper
-from src.server.db.ClothingItemMapper import ClothingItemMapper
-from src.server.db.ClothingTypeMapper import ClothingTypeMapper
-from src.server.db.StyleMapper import StyleMapper
-from src.server.db.OutfitMapper import OutfitMapper
+from .db.UserMapper import UserMapper
+from .db.WardrobeMapper import WardrobeMapper
+from .db.ClothingItemMapper import ClothingItemMapper
+from .db.ClothingTypeMapper import ClothingTypeMapper
+from .db.StyleMapper import StyleMapper
+from .db.OutfitMapper import OutfitMapper
 
-from src.server.db.ConstraintMapper.UnaryMapper import UnaryConstraintMapper
-from src.server.db.ConstraintMapper.BinaryMapper import BinaryConstraintMapper
-from src.server.db.ConstraintMapper.ImplicationMapper import ImplicationConstraintMapper
-from src.server.db.ConstraintMapper.CardinalityMapper import CardinalityConstraintMapper
-from src.server.db.ConstraintMapper.MutexMapper import MutexConstraintMapper
+from .db.ConstraintMapper.UnaryMapper import UnaryConstraintMapper
+from .db.ConstraintMapper.BinaryMapper import BinaryConstraintMapper
+from .db.ConstraintMapper.ImplicationMapper import ImplicationConstraintMapper
+from .db.ConstraintMapper.CardinalityMapper import CardinalityConstraintMapper
+from .db.ConstraintMapper.MutexMapper import MutexConstraintMapper
 
-from src.server.bo.User import User
-from src.server.bo.Wardrobe import Wardrobe
-from src.server.bo.ClothingItem import ClothingItem
-from src.server.bo.ClothingType import ClothingType
-from src.server.bo.Style import Style
-from src.server.bo.Outfit import Outfit
+from .bo.User import User
+from .bo.Wardrobe import Wardrobe
+from .bo.ClothingItem import ClothingItem
+from .bo.ClothingType import ClothingType
+from .bo.Style import Style
+from .bo.Outfit import Outfit
 
-from src.server.bo.Constraints.Unary import UnaryConstraint
-from src.server.bo.Constraints.Binary import BinaryConstraint
-from src.server.bo.Constraints.Implication import ImplicationConstraint
-from src.server.bo.Constraints.Cardinality import CardinalityConstraint
-from src.server.bo.Constraints.Mutex import MutexConstraint
+from .bo.Constraints.Unary import UnaryConstraint
+from .bo.Constraints.Binary import BinaryConstraint
+from .bo.Constraints.Implication import ImplicationConstraint
+from .bo.Constraints.Cardinality import CardinalityConstraint
+from .bo.Constraints.Mutex import MutexConstraint
 
 '''
 Service Layer und Business Logic Layer stellen zusammen den sog. Applikationsserver dar. Er soll der
