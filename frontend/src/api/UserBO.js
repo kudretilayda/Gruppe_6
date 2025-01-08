@@ -1,58 +1,103 @@
-import BusinessObject from './BusinessObject.js';
+import BusinessObject from "./BusinessObject.js";
 
-/** UserBO für den digitalen Kleiderschrank */
-
+/**
+ * Represents a User object
+ */
 export default class UserBO extends BusinessObject {
+   /**
+   * Constructs a UserBO object.
+   *
+   * @param {String} aUserId - User ID.
+   * @param {String} aLastName - Last name of the user.
+   * @param {String} aFirstName - First name of the user.
+   * @param {String} aNickname - Nickname of the user.
+   * @param {String} aGoogleId - Google ID of the user.
+   * @param {String} anEmail - Email address of the user.
+   */
+  constructor(aUserId = "", aLastName = "", aFirstName = "",
+              aNickname = "", aGoogleId = "", anEmail = "") {
+    super();
+    this.userId = aUserId;
+    this.lastName = aLastName;
+    this.firstName = aFirstName;
+    this.nickname = aNickname;
+    this.googleId = aGoogleId;
+    this.email = anEmail;
+  }
 
-    /** Konstruktion eines neuen Benutzers
-     * @param {String} anickname - Der Nickname des Benutzers.
-     * @param {String} afirstname - Der Vorname des Benutzers.
-     * @param {String} alastname - Der Nachname des Benutzers.
-     * @param {String} awardrobeid - Die ID des Kleiderschranks des Benutzers.
-     * @param {String} agoogleuserid - Die Google User ID des Benutzers.
-     */
-    constructor(anickname, afirstname, alastname, awardrobeid, agoogleuserid) {
-        super();
-        this.nick_name = anickname;
-        this.first_name = afirstname;
-        this.last_name = alastname;
-        this.wardrobe_id = awardrobeid; // Referenz zum Kleiderschrank
-        this.google_user_id = agoogleuserid; // Google ID für die Authentifizierung
-    }
+  // Getter and Setter for userId
+  getUserId() {
+    return this.userId;
+  }
 
-    // Getter und Setter für die Benutzerdaten
-    setFirstName(afirstname) { this.first_name = afirstname; }
-    getFirstName() { return this.first_name; }
+  setUserId(value) {
+    this.userId = value;
+  }
 
-    setLastName(alastname) { this.last_name = alastname; }
-    getLastName() { return this.last_name; }
+  // Getter and Setter for lastName
+  getLastName() {
+    return this.lastName;
+  }
 
-    setNickName(anickname) { this.nick_name = anickname; }
-    getNickName() { return this.nick_name; }
+  setLastName(value) {
+    this.lastName = value;
+  }
 
-    setGoogleUserId(agoogleuserid) { this.google_user_id = agoogleuserid; }
-    getGoogleUserId() { return this.google_user_id; }
+  // Getter and Setter for firstName
+  getFirstName() {
+    return this.firstName;
+  }
 
-    setWardrobeId(awardrobeid) { this.wardrobe_id = awardrobeid; }
-    getWardrobeId() { return this.wardrobe_id; }
+  setFirstName(value) {
+    this.firstName = value;
+  }
 
-    /**
-     * Erstellt ein Array von UserBO Objekten aus JSON.
-     * @param {Array|Object} users - JSON-Daten von Benutzern.
-     * @returns {Array} Array von UserBO Objekten.
-     */
-    static fromJSON(users) {
-        let result = [];
-        if (Array.isArray(users)) {
-            users.forEach((u) => {
-                Object.setPrototypeOf(u, UserBO.prototype);
-                result.push(u);
-            });
-        } else {
-            let u = users;
-            Object.setPrototypeOf(u, UserBO.prototype);
-            result.push(u);
-        }
-        return result;
-    }
+  // Getter and Setter for nickname
+  getNickname() {
+    return this.nickname;
+  }
+
+  setNickname(value) {
+    this.nickname = value;
+  }
+
+  // Getter and Setter for googleId
+  getGoogleId() {
+    return this.googleId;
+  }
+
+  setGoogleId(value) {
+    this.googleId = value;
+  }
+
+  // Getter and Setter for email
+  getEmail() {
+    return this.email;
+  }
+
+  setEmail(value) {
+    this.email = value;
+  }
+
+  // String representation of the object
+  toString() {
+    return `User: ${this.getUserId()},${this.getFirstName()} ,${this.getLastName()}, ${this.getNickname()}, 
+    ${this.getEmail()}, ${this.getGoogleId()}`;
+  }
+
+  /**
+   * Converts a JSON structure into a UserBO object.
+   * @param {Object} dictionary - The JSON data describing the UserBO.
+   * @returns {UserBO} - A new UserBO object.
+   */
+  static fromJSON(dictionary = {}) {
+    const user = new UserBO();
+    user.setUserId(dictionary.userId || "");
+    user.setLastName(dictionary.lastName || "");
+    user.setFirstName(dictionary.firstName || "");
+    user.setNickname(dictionary.nickname || "");
+    user.setGoogleId(dictionary.googleId || "");
+    user.setEmail(dictionary.email || "");
+    return user;
+  }
 }

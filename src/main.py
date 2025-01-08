@@ -1,6 +1,7 @@
 import os
 import sys
 
+# src module not found workaround (failed)
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
 sys.path.append(parent_dir)
@@ -30,8 +31,18 @@ from SecurityDecorator import secured
 # Flask instanziieren
 app = Flask(__name__)
 
+
+
 # Cors insanziieren
-CORS(app, resources=r'/wardrobe/*')
+CORS(app, resources={
+    r"/*": {
+        "origins": ["http://localhost:3000"],
+        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization", "Access-Control-Allow-Credentials"],
+        "supports_credentials": True
+    }
+})
+#CORS(app, resources=r'/wardrobe/*')
 
 # API für Datenstruktur
 api = Api(app, version='1.0', title='Digital Wardrobe',
@@ -195,7 +206,8 @@ class UserWardrobeOperations(Resource):
     def post(self, user_id):
         """Create a new wardrobe for a user"""
         adm = Admin()
-        proposal = Wardrobe.from_dict(api.payload)
+        proposal = Wardrobe.from_dict()
+#        proposal = Wardrobe.from_dict(api.payload) Dasselbe für Zeile 218
         if proposal is not None:
             proposal.set_user_id(user_id)
             wardrobe = adm.create_wardrobe(proposal)
@@ -223,7 +235,7 @@ class WardrobeOperations(Resource):
     def put(self, wardrobe_id):
         """Update a wardrobe"""
         adm = Admin()
-        wardrobe = Wardrobe.from_dict(api.payload)
+        wardrobe = Wardrobe.from_dict()
         if wardrobe is not None:
             wardrobe.set_id(wardrobe_id)
             adm.save_wardrobe(wardrobe)

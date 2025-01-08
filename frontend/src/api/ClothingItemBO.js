@@ -1,82 +1,83 @@
-import BusinessObject from './BusinessObject.js'
+import BusinessObject from "./BusinessObject.js";
 
-/**
- * Repräsentiert ein Kleidungsstück
- */
 export default class ClothingItemBO extends BusinessObject {
-    
-    /** 
-     * Konstruktor für ein Kleidungsstück
-     * 
-     * @param {String} aitem_name - Name des Kleidungsstücks
-     * @param {String} awardrobe_id - ID des zugehörigen Kleiderschranks
-     * @param {String} atype_id - ID des Kleidungstyps
-     * @param {String} acolor - Farbe des Kleidungsstücks
-     * @param {String} aseason - Saison des Kleidungsstücks
-     */
-    constructor(aitem_name, awardrobe_id, atype_id, acolor, aseason) {
-        super();
-        this.item_name = aitem_name;
-        this.wardrobe_id = awardrobe_id;
-        this.type_id = atype_id;
-        this.color = acolor;
-        this.season = aseason;
-    }
 
-    setItemName(aitem_name) {
-        this.item_name = aitem_name;
-    }
+  /**
+   * Constructs a ClothingItemBO object.
+   *
+   * @param {Number} aClothingItemId - The ID of the clothing item.
+   * @param {Object|null} aClothingType - The type of the clothing item (e.g., shirt, pants).
+   * @param {String} aClothingItemName - The name of the clothing item.
+   * @param {Number} aWardrobeId - Associated Wardrobe
+   */
+  constructor(
+    aClothingItemId = 0,
+    aWardrobeId = 0,
+    aClothingType = null,
+    aClothingItemName = ""
+  ) {
+    super();
+    this.clothingItemId = aClothingItemId;
+    this.clothingType = aClothingType;
+    this.clothingItemName = aClothingItemName;
+    this.wardrobeId = aWardrobeId
+  }
 
-    getItemName() {
-        return this.item_name;
-    }
+  // Getter and setter for clothingItemId
+  getClothingItemId() {
+    return this.clothingItemId;
+  }
 
-    setWardrobeId(awardrobe_id) {
-        this.wardrobe_id = awardrobe_id;
-    }
+  setClothingItemId(itemId) {
+    this.clothingItemId = itemId;
+  }
 
-    getWardrobeId() {
-        return this.wardrobe_id;
-    }
+  getWardrobeId() {
+    return this.wardrobeId
+  }
 
-    setTypeId(atype_id) {
-        this.type_id = atype_id;
-    }
+  setWardrobeId(wardrobeId) {
+    this.wardrobeId = wardrobeId
+  }
 
-    getTypeId() {
-        return this.type_id;
-    }
+  // Getter and setter for clothingType
+  getClothingType() {
+    return this.clothingType;
+  }
 
-    setColor(acolor) {
-        this.color = acolor;
-    }
+  setClothingType(ctype) {
+    this.clothingType = ctype;
+  }
 
-    getColor() {
-        return this.color;
-    }
+  // Getter and setter for clothingItemName
+  getClothingItemName() {
+    return this.clothingItemName;
+  }
 
-    setSeason(aseason) {
-        this.season = aseason;
-    }
+  setClothingItemName(name) {
+    this.clothingItemName = name;
+  }
 
-    getSeason() {
-        return this.season;
-    }
+  // String representation of the object
+  toString() {
+    return `Clothing Item ID: ${this.getClothingItemId()}, 
+    Name: ${this.getClothingItemName()},
+    Type: ${this.getClothingType()}, 
+    Wardrobe: ${this.getWardrobeId()}
+    }`;
+  }
 
-    static fromJSON(items) {
-        let result = [];
-
-        if (Array.isArray(items)) {
-            items.forEach((i) => {
-                Object.setPrototypeOf(i, ClothingItemBO.prototype);
-                result.push(i);
-            })
-        } else {
-            let i = items;
-            Object.setPrototypeOf(i, ClothingItemBO.prototype);
-            result.push(i);
-        }
-
-        return result;
-    }
+  /**
+   * Converts a JSON structure into a ClothingItemBO object.
+   * @param {Object} dictionary - The JSON data describing the ClothingItemBO.
+   * @returns {ClothingItemBO} - A new ClothingItemBO object.
+   */
+  static fromJSON(dictionary = {}) {
+    const clothingItem = new ClothingItemBO();
+    clothingItem.setClothingItemId(dictionary.clothingItemId || 0);
+    clothingItem.setClothingType(dictionary.clothingType || null);
+    clothingItem.setClothingItemName(dictionary.clothingItemName || "");
+    clothingItem.setWardrobeId(dictionary.wardrobeId || 0);
+    return clothingItem;
+  }
 }
