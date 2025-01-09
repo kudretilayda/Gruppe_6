@@ -12,13 +12,6 @@ import MutexConstraintBO from './ConstraintAPI/MutexConstraintBO.js';
 import CardinalityConstraintBO from './ConstraintAPI/CardinalityConstraintBO.js';
 import ConstraintBO from './ConstraintAPI/ConstraintBO.js';
 
-/*
-import ClothingEntryBO from "./ClothingEntryBO";
-import ClothingItemEntryBO from "./ClothingItemEntryBO";
-import UnitBO from "./UnitBO";
-import WardrobeEntryBO from "./WardrobeEntryBO";
- */
-
 class DigitalWardrobeAPI {
 
     // Singelton instance
@@ -70,12 +63,6 @@ class DigitalWardrobeAPI {
     #addConstraintURL = (styleId) => `${this.#wardrobeServerBaseURL}/styles/${styleId}/constraints`;
     #updateConstraintURL = (styleId, constraintId) => `${this.#wardrobeServerBaseURL}/styles/${styleId}/constraints/${constraintId}`;
     #deleteConstraintURL = (styleId, constraintId) => `${this.#wardrobeServerBaseURL}/styles/${styleId}/constraints/${constraintId}`;
-
-    // WardrobeEntry Endpoints
-    #getWardrobeEntriesURL = (userId, wardrobeId) => `${this.#wardrobeServerBaseURL}/users/${userId}/wardrobe/${wardrobeId}/entries`;
-    #addWardrobeEntryURL = (userId, wardrobeId) => `${this.#wardrobeServerBaseURL}/users/${userId}/wardrobe/${wardrobeId}/entries`;
-    #deleteWardrobeEntryURL = (userId, wardrobeId, entryId) => `${this.#wardrobeServerBaseURL}/users/${userId}/wardrobe/${wardrobeId}/entries/${entryId}`;
-    #updateWardrobeEntryURL = (userId, wardrobeId, entryId) => `${this.#wardrobeServerBaseURL}/users/${userId}/wardrobe/${wardrobeId}/entries/${entryId}`;
 
     // UnaryConstraint Endpoints
     #getUnaryConstraintsURL = (styleId) => `${this.#wardrobeServerBaseURL}/styles/${styleId}/UnaryConstraints`;

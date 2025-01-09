@@ -5,12 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0b36f84f-6ad4-4404-a25a-055e1c7ce6fe" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/pages/Constraint.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Gruppe_6.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Gruppe_6.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/dialogs/ClothingItemForm.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/layout/Navbar.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/layout/Navbar.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/pages/ClothingType.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/pages/ClothingType.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/pages/Wardrobe.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/pages/Wardrobe.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/pages/ClothingType.js" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,68 +47,69 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Database Script.mysql-dump.sql.executor&quot;: &quot;Run&quot;,
-    &quot;Node.js.App.js.executor&quot;: &quot;Run&quot;,
-    &quot;Node.js.ErrorMessage.js.executor&quot;: &quot;Run&quot;,
-    &quot;Node.js.Header.js.executor&quot;: &quot;Run&quot;,
-    &quot;Node.js.Home.js.executor&quot;: &quot;Run&quot;,
-    &quot;Node.js.LoadingSpinner.js.executor&quot;: &quot;Run&quot;,
-    &quot;Node.js.Navbar.js.executor&quot;: &quot;Run&quot;,
-    &quot;Node.js.Outfits.js.executor&quot;: &quot;Run&quot;,
-    &quot;Node.js.ProfilDropDown.js.executor&quot;: &quot;Run&quot;,
-    &quot;Node.js.Profile.js.executor&quot;: &quot;Run&quot;,
-    &quot;Node.js.Wardrobe.js.executor&quot;: &quot;Run&quot;,
-    &quot;Python.Admin.executor&quot;: &quot;Run&quot;,
-    &quot;Python.Admin2.executor&quot;: &quot;Run&quot;,
-    &quot;Python.Binary.executor&quot;: &quot;Run&quot;,
-    &quot;Python.BinaryConstraint.executor&quot;: &quot;Run&quot;,
-    &quot;Python.BusinessObject.executor&quot;: &quot;Run&quot;,
-    &quot;Python.CardinalityConstraint.executor&quot;: &quot;Run&quot;,
-    &quot;Python.ClothingItem.executor&quot;: &quot;Run&quot;,
-    &quot;Python.Constraint Tests.executor&quot;: &quot;Run&quot;,
-    &quot;Python.Constraint.executor&quot;: &quot;Run&quot;,
-    &quot;Python.ConstraintMapper.executor&quot;: &quot;Run&quot;,
-    &quot;Python.Constraint_Test.executor&quot;: &quot;Run&quot;,
-    &quot;Python.Dummy.executor&quot;: &quot;Debug&quot;,
-    &quot;Python.ImplicationConstraint.executor&quot;: &quot;Run&quot;,
-    &quot;Python.Kleiderschrank.executor&quot;: &quot;Run&quot;,
-    &quot;Python.Kleidungsstueck.executor&quot;: &quot;Run&quot;,
-    &quot;Python.Kleidungsstück(prüfen,  ggf Mapper).executor&quot;: &quot;Run&quot;,
-    &quot;Python.Kleidungstyp.executor&quot;: &quot;Run&quot;,
-    &quot;Python.Mapper.executor&quot;: &quot;Run&quot;,
-    &quot;Python.Mutex.executor&quot;: &quot;Run&quot;,
-    &quot;Python.MutexConstraint.executor&quot;: &quot;Run&quot;,
-    &quot;Python.Outfit.executor&quot;: &quot;Run&quot;,
-    &quot;Python.Style.executor&quot;: &quot;Run&quot;,
-    &quot;Python.Unary.executor&quot;: &quot;Run&quot;,
-    &quot;Python.UnaryConstraint.executor&quot;: &quot;Run&quot;,
-    &quot;Python.User.executor&quot;: &quot;Run&quot;,
-    &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;DraftBackend&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/serta/Documents/GitHub/Gruppe_6/src/server&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\PyCharm 2024.3\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Database Script.mysql-dump.sql.executor": "Run",
+    "Node.js.App.js.executor": "Run",
+    "Node.js.ErrorMessage.js.executor": "Run",
+    "Node.js.Header.js.executor": "Run",
+    "Node.js.Home.js.executor": "Run",
+    "Node.js.LoadingSpinner.js.executor": "Run",
+    "Node.js.Navbar.js.executor": "Run",
+    "Node.js.Outfits.js.executor": "Run",
+    "Node.js.ProfilDropDown.js.executor": "Run",
+    "Node.js.Profile.js.executor": "Run",
+    "Node.js.Wardrobe.js.executor": "Run",
+    "Python.Admin.executor": "Run",
+    "Python.Admin2.executor": "Run",
+    "Python.Binary.executor": "Run",
+    "Python.BinaryConstraint.executor": "Run",
+    "Python.BusinessObject.executor": "Run",
+    "Python.CardinalityConstraint.executor": "Run",
+    "Python.ClothingItem.executor": "Run",
+    "Python.Constraint Tests.executor": "Run",
+    "Python.Constraint.executor": "Run",
+    "Python.ConstraintMapper.executor": "Run",
+    "Python.Constraint_Test.executor": "Run",
+    "Python.Dummy.executor": "Debug",
+    "Python.ImplicationConstraint.executor": "Run",
+    "Python.Kleiderschrank.executor": "Run",
+    "Python.Kleidungsstueck.executor": "Run",
+    "Python.Kleidungsstück(prüfen,  ggf Mapper).executor": "Run",
+    "Python.Kleidungstyp.executor": "Run",
+    "Python.Mapper.executor": "Run",
+    "Python.Mutex.executor": "Run",
+    "Python.MutexConstraint.executor": "Run",
+    "Python.Outfit.executor": "Run",
+    "Python.Style.executor": "Run",
+    "Python.Unary.executor": "Run",
+    "Python.UnaryConstraint.executor": "Run",
+    "Python.User.executor": "Run",
+    "Python.main.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "DraftBackend",
+    "last_opened_file_path": "C:/Users/serta/Documents/GitHub/Gruppe_6",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "com.intellij.pycharm.community.ide.impl.configuration.PythonContentEntriesConfigurable",
+    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\PyCharm 2024.3\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mysql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
     ],
-    &quot;RunConfigurationTargetLRU&quot;: [
-      &quot;0ba7c31d-66a9-426f-a9cb-112c76a75293&quot;
+    "RunConfigurationTargetLRU": [
+      "0ba7c31d-66a9-426f-a9cb-112c76a75293"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\serta\Documents\GitHub\Gruppe_6\src\server" />
@@ -204,6 +205,7 @@
       <workItem from="1734908413502" duration="3454000" />
       <workItem from="1736357604641" duration="23419000" />
       <workItem from="1736384337447" duration="2748000" />
+      <workItem from="1736445920650" duration="3610000" />
     </task>
     <servers />
   </component>

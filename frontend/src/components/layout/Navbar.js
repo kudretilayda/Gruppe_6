@@ -20,21 +20,19 @@ function Navbar() {
               </Typography>
               <Box>
                   <Button color="inherit" component={RouterLink} to="/wardrobe" style={{ textTransform: 'none' }}>
-                      Wardrobe
+                      Items
+                  </Button>
+
+                  <Button color="inherit" component={RouterLink} to="/constraints" style={{ textTransform: 'none' }}>
+                      constraints
                   </Button>
 
                   <Button color="inherit" component={RouterLink} to="/outfits" style={{ textTransform: 'none' }}>
                       Outfits
                   </Button>
-
                   <Button color="inherit" component={RouterLink} to="/styles" style={{ textTransform: 'none' }}>
                       Styles
                   </Button>
-
-                  <Button color="inherit" component={RouterLink} to="/types" style={{ textTransform: 'none' }}>
-                      Types
-                  </Button>
-
                   <Button color="inherit" component={RouterLink} to="/profile" style={{ textTransform: 'none' }}>
                       Profile
                   </Button>
