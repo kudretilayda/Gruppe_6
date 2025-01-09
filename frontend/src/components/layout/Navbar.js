@@ -40,16 +40,16 @@ function Navbar() {
             to="/wardrobe"
             style={{ textTransform: 'none' }}
           >
-            Wardrobe
+            KLEIDUNGSSTÜCK
           </Button>
 
           <Button
             color="inherit"
             component={RouterLink}
-            to="/outfits"
+            to="/Outfits"
             style={{ textTransform: 'none' }}
           >
-            Outfits
+            OUTFIT
           </Button>
 
           <Button
@@ -60,14 +60,44 @@ function Navbar() {
           >
             Types
           </Button>
+          
+          <Button
+            color="inherit"
+            component={RouterLink}
+            to="/Profile"
+            style={{ textTransform: 'none' }}
+          >
+            PROFIL
+          </Button>
 
           <Button
             color="inherit"
             component={RouterLink}
-            to="/profile"
+            to="/Constraints"
             style={{ textTransform: 'none' }}
           >
-            Profile
+            CONTRAINTS
+          </Button>
+
+          <Button
+            color="inherit"
+            component={RouterLink}
+            to="/settings"
+            style={{ textTransform: 'none' }}
+          >
+            EINSTELLUNGEN
+          </Button>
+
+          <Button
+            color="inherit"
+            component={RouterLink}
+            to="/Logout"
+            style={{ textTransform: 'none' }}
+          >
+            ABMELDEN
+            <ListItemIcon style={{ marginLeft: 'auto', color: 'white' }}>
+            <ExitToAppIcon fontSize="small" />
+            </ListItemIcon>
           </Button>
 
           {/* Hamburger-Icon als Dropdown-Button */}
@@ -79,51 +109,72 @@ function Navbar() {
           >
             <MenuIcon /> {/* Hier ist das Hamburger-Menü-Icon */}
           </IconButton>
+
           <Menu
             id="more-menu"
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
             onClose={handleMenuClose}
           >
+
             <MenuItem
               onClick={handleMenuClose}
               component={RouterLink}
-              to="/profile"
-            >
-              Profil
-            </MenuItem>
-            <MenuItem
-              onClick={handleMenuClose}
-              component={RouterLink}
-              to="/wardrobe"
+              to="/Wardrobe"
             >
               Kleidungsstück
             </MenuItem>
+
+
             <MenuItem
               onClick={handleMenuClose}
               component={RouterLink}
-              to="/constraints"
-            >
-              Constraints
-            </MenuItem>
-            <MenuItem
-              onClick={handleMenuClose}
-              component={RouterLink}
-              to="/styles"
-            >
-              Style
-            </MenuItem>
-            <MenuItem
-              onClick={handleMenuClose}
-              component={RouterLink}
-              to="/outfits"
+              to="/Outfits"
             >
               Outfit
             </MenuItem>
+
+
             <MenuItem
               onClick={handleMenuClose}
               component={RouterLink}
-              to="/logout"
+              to="/Styles"
+            >
+              Style
+            </MenuItem>
+
+
+            <MenuItem
+              onClick={handleMenuClose}
+              component={RouterLink}
+              to="/Profile"
+            >
+              Profil
+            </MenuItem>
+
+
+            <MenuItem
+              onClick={handleMenuClose}
+              component={RouterLink}
+              to="/Constraints"
+            >
+              Constraints
+            </MenuItem>
+
+
+            <MenuItem
+              onClick={handleMenuClose}
+              component={RouterLink}
+              to="/settings"
+            >
+              Einstellungen
+            </MenuItem>
+
+
+            <MenuItem
+              onClick={handleMenuClose}
+              component={RouterLink}
+              to="/SignIn"
             >
               Abmelden
             <ListItemIcon style={{ marginLeft: 'auto' }}>
