@@ -1,49 +1,47 @@
-import React from "react";
-import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
 
-const Navbar = ({ user, onLogout }) => {
+function Navbar() {
   return (
-    <AppBar position="static">
-      <Toolbar>
-        <Typography variant="h6" sx={{ flexGrow: 1 }}>
-          Digital Wardrobe
-        </Typography>
+      <AppBar position="static" color="primary">
+          <Toolbar>
+              <Typography
+                  variant="h6"
+                  component={RouterLink}
+                  to="/"
+                  style={{
+                      color: 'white',
+                      textDecoration: 'none',
+                      flexGrow: 1, // Pushes the buttons to the right
+              }}
+              >
+                  Digital Wardrobe
+              </Typography>
+              <Box>
+                  <Button color="inherit" component={RouterLink} to="/wardrobe" style={{ textTransform: 'none' }}>
+                      Wardrobe
+                  </Button>
 
-        {/* Navigation Links */}
-        {user && (
-          <Box sx={{ display: "flex", gap: "10px" }}>
-            <Button color="inherit" component={Link} to="/">
-              Home
-            </Button>
-            <Button color="inherit" component={Link} to="/wardrobe">
-              Wardrobe
-            </Button>
-            <Button color="inherit" component={Link} to="/styles">
-              Styles
-            </Button>
-            <Button color="inherit" component={Link} to="/outfits">
-              Outfits
-            </Button>
-            <Button color="inherit" component={Link} to="/profile">
-              Profile
-            </Button>
-          </Box>
-        )}
+                  <Button color="inherit" component={RouterLink} to="/outfits" style={{ textTransform: 'none' }}>
+                      Outfits
+                  </Button>
 
-        {/* Logout Button */}
-        {user ? (
-          <Button color="inherit" onClick={onLogout}>
-            Logout
-          </Button>
-        ) : (
-          <Button color="inherit" component={Link} to="/login">
-            Login
-          </Button>
-        )}
-      </Toolbar>
-    </AppBar>
+                  <Button color="inherit" component={RouterLink} to="/styles" style={{ textTransform: 'none' }}>
+                      Styles
+                  </Button>
+
+                  <Button color="inherit" component={RouterLink} to="/clothingtypes" style={{ textTransform: 'none' }}>
+                      Types
+                  </Button>
+
+                  <Button color="inherit" component={RouterLink} to="/profile" style={{ textTransform: 'none' }}>
+                      Profile
+                  </Button>
+              </Box>
+          </Toolbar>
+      </AppBar>
   );
-};
+}
 
 export default Navbar;

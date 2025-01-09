@@ -23,12 +23,16 @@ function ClothingItemForm({ show, item, onClose, wardrobeId }) {
             if (item) {
                 // Update existing clothing item
                 await DigitalWardrobeAPI.getAPI().updateClothingItem(item.getId(), designation, size, color, quantity, wardrobeId);
-            } else {
+            }
+
+            else {
                 // Add new clothing item
                 await DigitalWardrobeAPI.getAPI().addClothingItem(designation, size, color, quantity, wardrobeId);
             }
             onClose(true); // Notify parent that the form is closed
-        } catch (error) {
+        }
+
+        catch (error) {
             console.error('Error saving clothing item:', error);
         }
     };
