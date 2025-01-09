@@ -10,8 +10,9 @@ from server.bo.Outfit import Outfit
 from server.bo.ClothingItem import ClothingItem
 from server.bo.ClothingType import ClothingType
 
-from src.server.bo.Constraints.Constraint import Constraint
-from src.server.bo.Constraints.Unary import UnaryConstraint
+from server.bo.Constraints.Constraint import Constraint
+from server.bo.Constraints.Unary import UnaryConstraint
+
 # from src.server.bo.Constraints.Binary import BinaryConstraint
 # from src.server.bo.Constraints.Implication import ImplicationConstraint
 # from src.server.bo.Constraints.Cardinality import CardinalityConstraint
