@@ -22,7 +22,7 @@ function Navbar() {
         <Typography
           variant="h6"
           component={RouterLink}
-          to="/"
+          to="/home"
           style={{
             color: 'white',
             textDecoration: 'none',
