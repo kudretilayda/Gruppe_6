@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { Typography, Button, CssBaseline, Grid, Container, Box, CircularProgress } from '@mui/material';
-import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'firebase/auth';
+import { Typography, Button, CssBaseline, Grid,Container, Box, CircularProgress} from '@mui/material';
+import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut} from 'firebase/auth';
 import { auth } from './firebase.js';
 import { AuthProvider, useAuth } from './context/AuthContext.js';
 
@@ -12,7 +12,8 @@ import Wardrobe from './components/pages/Wardrobe.js';
 import Outfits from './components/pages/Outfits.js';
 import Styles from './components/pages/Styles.js';
 import Profile from './components/pages/Profile.js';
-// import Settings from './components/pages/Settings.js';
+import ClothingType from "./components/pages/ClothingType.js";
+import Settings from './components/pages/Settings.js';
 import SignIn from './components/pages/SignIn.js';
 
 
@@ -20,7 +21,7 @@ import SignIn from './components/pages/SignIn.js';
 const AppContent = () => {
     const { user, loading } = useAuth();
 
-    //Google SignIn 
+    //Google SignIn
     const handleGoogleSignIn = async () => {
         const provider = new GoogleAuthProvider();
         try {
@@ -50,8 +51,7 @@ const AppContent = () => {
     }
 
     return (
-        <>
-            <CssBaseline />
+        <><CssBaseline />
             <Navbar user={user} onLogout={handleSignOut} />
             
             <Routes>
@@ -61,24 +61,28 @@ const AppContent = () => {
                     ) : (
                         <SignIn onSignIn = {handleGoogleSignIn} />
                     )
-                } />
+                }
+                />
 
-                {/* Protected Routes */}
-                <Route 
+                <Route
                     path="/wardrobe" 
                     element={user ? <Wardrobe /> : <Navigate to="/" replace />} 
                 />
-                <Route 
-                    path="/styles" 
+                    <Route
+                    path="/styles"
                     element={user ? <Styles /> : <Navigate to="/" replace />} 
                 />
                 <Route 
                     path="/outfits" 
-                    element={user ? <Outfits /> : <Navigate to="/" replace />} 
+                    element={user ? <Outfits /> : <Navigate to="/" replace />}
                 />
                 <Route 
                     path="/profile" 
-                    element={user ? <Profile /> : <Navigate to="/" replace />} 
+                    element={user ? <Profile /> : <Navigate to="/" replace />}
+                />
+                <Route
+                    path="/types"
+                    element={user ? <ClothingType /> : <Navigate to="/" replace />}
                 />
             </Routes>
         </>
@@ -94,6 +98,6 @@ const App = () => {
             </AuthProvider>
         </BrowserRouter>
     );
-}; 
+};
 
 export default App;

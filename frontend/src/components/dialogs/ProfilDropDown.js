@@ -6,13 +6,13 @@ import { useNavigate } from 'react-router-dom';
 
 class ProfileDropDown extends Component {
 
-
   #avatarButtonRef = createRef();
+
   //Konstruktor mit Initialisierung des States
   constructor(props) {
     super(props);
 
-  //Initialisierung des states
+    //Initialisierung des states
     this.state = {
       open: false,
     }
@@ -25,7 +25,7 @@ class ProfileDropDown extends Component {
     });
   }
 
- //Funktion zum Schließen des Popovers
+  //Funktion zum Schließen des Popovers
   handleClose = () => {
     this.setState({
       open: false
@@ -41,65 +41,65 @@ class ProfileDropDown extends Component {
   }
 
   render() {
-
     const { user } = this.props;
-
     const { open } = this.state;
-
     return (
-      user ?
-        <Box>
-          <IconButton sx={{ float: 'right' }} ref={this.#avatarButtonRef} onClick={this.handleAvatarButtonClick}>
-            <Avatar src={user.photoURL} />
-          </IconButton>
+        user ?
+            <Box>
+              <IconButton sx={{ float: 'right' }} ref={this.#avatarButtonRef} onClick={this.handleAvatarButtonClick}>
+                <Avatar src={user.photoURL} />
+              </IconButton>
 
-          <Popover
-            open={open}
-            anchorEl={this.#avatarButtonRef.current}
-            onClose={this.handleClose}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'right',
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-            PaperProps={{
-              sx: {
-                mt: 1,
-                boxShadow: 3,
-                borderRadius: 2,
-                width: 260
+              <Popover
+                  open={open}
+                  anchorEl={this.#avatarButtonRef.current}
+                  onClose={this.handleClose}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                  }
               }
-            }}
-          >
-            <ClickAwayListener onClickAway={this.handleClose}>
-              <Paper sx={{ padding: 2, bgcolor: 'background.default' }}>
-                <Typography align='center' variant='h6' sx={{ fontWeight: 'bold', color: 'primary.main' }}>
-                  Hello
-                </Typography>
-                <Divider sx={{ margin: 1 }} />
-                <Typography align='center' variant='body1' sx={{ fontWeight: 'medium' }}>{user.displayName}</Typography>
-                <Typography align='center' variant='body2' sx={{ color: 'text.secondary' }}>{user.email}</Typography>
-                <Divider sx={{ margin: 1 }} />
-                <Grid container justifyContent='center'>
-                  <Grid item>
-                    <Button
-                      color='primary'
-                      variant="contained"
-                      onClick={this.handleSignOutButtonClicked}
-                      sx={{ mt: 1 }}
-                    >
-                      Logout
-                    </Button>
-                  </Grid>
-                </Grid>
-              </Paper>
-            </ClickAwayListener>
-          </Popover>
-        </Box>
-        : null
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }
+              }
+                  PaperProps={{
+                    sx: {
+                      mt:
+                          1,
+                      boxShadow: 3,
+                      borderRadius: 2,
+                      width: 260
+                    }
+              }}
+              >
+                <ClickAwayListener onClickAway={this.handleClose}>
+                  <Paper sx={{ padding: 2, color: 'background.default' }}>
+                    <Typography align='center' variant='h6' sx={{ fontWeight: 'bold', color: 'primary.main' }}>
+                      Hello
+                    </Typography>
+                    <Divider sx={{ margin: 1 }} />
+                    <Typography align='center' variant='body1' sx={{ fontWeight: 'medium' }}>{user.displayName}</Typography>
+                    <Typography align='center' variant='body2' sx={{ color: 'text.secondary' }}>{user.email}</Typography>
+                    <Divider sx={{ margin: 1 }} />
+                    <Grid container justifyContent='center'>
+                      <Grid item>
+                        <Button
+                            color='primary'
+                            variant="contained"
+                            onClick={this.handleSignOutButtonClicked}
+                            sx={{ mt: 1 }}
+                        >
+                          Logout
+                        </Button>
+                      </Grid>
+                    </Grid>
+                  </Paper>
+                </ClickAwayListener>
+              </Popover>
+            </Box>
+            : null
     )
   }
 }
