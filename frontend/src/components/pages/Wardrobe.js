@@ -108,7 +108,7 @@ const Wardrobe = () => {
                 <Box display="flex" justifyContent="flex-end">
                   <IconButton
                     color="primary"
-                    onClick={() => handleAddClothing(index)}
+                    onClick={() => handleEditClothing(index)}
                   >
                     <EditIcon />
                   </IconButton>

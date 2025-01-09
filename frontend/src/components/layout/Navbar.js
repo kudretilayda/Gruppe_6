@@ -31,7 +31,7 @@ function Navbar() {
                       Styles
                   </Button>
 
-                  <Button color="inherit" component={RouterLink} to="/clothingtypes" style={{ textTransform: 'none' }}>
+                  <Button color="inherit" component={RouterLink} to="/types" style={{ textTransform: 'none' }}>
                       Types
                   </Button>
 

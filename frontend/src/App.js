@@ -12,6 +12,7 @@ import Wardrobe from './components/pages/Wardrobe.js';
 import Outfits from './components/pages/Outfits.js';
 import Styles from './components/pages/Styles.js';
 import Profile from './components/pages/Profile.js';
+import ClothingType from "./components/pages/ClothingType.js";
 import Settings from './components/pages/Settings.js';
 import SignIn from './components/pages/SignIn.js';
 
@@ -73,11 +74,15 @@ const AppContent = () => {
                 />
                 <Route 
                     path="/outfits" 
-                    element={user ? <Outfits /> : <Navigate to="/" replace />} 
+                    element={user ? <Outfits /> : <Navigate to="/" replace />}
                 />
                 <Route 
                     path="/profile" 
-                    element={user ? <Profile /> : <Navigate to="/" replace />} 
+                    element={user ? <Profile /> : <Navigate to="/" replace />}
+                />
+                <Route
+                    path="/types"
+                    element={user ? <ClothingType /> : <Navigate to="/" replace />}
                 />
             </Routes>
         </>

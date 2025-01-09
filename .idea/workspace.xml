@@ -5,37 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0b36f84f-6ad4-4404-a25a-055e1c7ce6fe" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/pages/ClothingType.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/DigitalWardrobeAPI.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/DigitalWardrobeAPI.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/SchrankAPI.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/ClothingItemList.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/OutfitList.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Size.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/StylesEntryList.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/WardrobeEntryList.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/WardrobeList.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/dialogs/ClothingItemForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/dialogs/ClothingItemForm.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/dialogs/LoadingSpinner.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/dialogs/LoadingSpinner.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/dialogs/ProfilDropDown.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/dialogs/ProfilDropDown.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/layout/ClothingItemCard.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/layout/Footer.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/layout/Footer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/layout/Header.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/layout/Header.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/dialogs/ClothingItemForm.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/layout/Navbar.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/layout/Navbar.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/layout/StylesCards.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/layout/StylesEntryCard.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/layout/WardrobeEntryCard.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/pages/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/pages/Home.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/pages/Outfits.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/pages/Outfits.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/pages/Profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/pages/Profile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/pages/Styles.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/pages/Styles.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/pages/ClothingType.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/pages/ClothingType.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/pages/Wardrobe.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/pages/Wardrobe.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/bo/CT-EntryDraft.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -228,7 +203,7 @@
       <workItem from="1734887219716" duration="17560000" />
       <workItem from="1734908413502" duration="3454000" />
       <workItem from="1736357604641" duration="23419000" />
-      <workItem from="1736384337447" duration="933000" />
+      <workItem from="1736384337447" duration="2748000" />
     </task>
     <servers />
   </component>

@@ -8,23 +8,25 @@ const ClothingType = () => {
   const [clothingType, set_type] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+    const [currentTypeIndex, setCurrentTypeIndex] = useState(null); // Track the index of the style being edited
+
   const [newType, setNewType] = useState({
     name: '',
     usage: ''
   });
   useEffect(() => {
-    const saved = localStorage.getItem('Types');
+    const saved = localStorage.getItem('clothingType');
     if (saved) {
-      setTypes(JSON.parse(saved));
+      set_type(JSON.parse(saved));
     }
   }, []);
 
   const handleAddType = () => {
-    const updated = [...Types, newType];
-    setTypes(updated);
+    const updated = [...clothingType, newType];
+    set_type(updated);
 
     // Speichern der neuen Liste in localStorage
-    localStorage.setItem('Types', JSON.stringify(updated));
+    localStorage.setItem('clothingType', JSON.stringify(updated));
 
     // Reset des Dialogs
     setOpenDialog(false);
@@ -32,12 +34,12 @@ const ClothingType = () => {
   };
 
   const handleEditType = () => {
-    const updated = [...Types];
+    const updated = [...clothingType];
     updated[currentTypeIndex] = newType;
-    setTypes(updated);
+    set_type(updated);
 
     // Speichern der aktualisierten Liste in localStorage
-    localStorage.setItem('Types', JSON.stringify(updated));
+    localStorage.setItem('clothingType', JSON.stringify(updated));
 
     // Reset des Dialogs
     setOpenDialog(false);
@@ -47,17 +49,17 @@ const ClothingType = () => {
   };
 
   const handleDeleteType = (index) => {
-    const updated = Types.filter((_, i) => i !== index);
-    setTypes(updated);
+    const updated = clothingType.filter((_, i) => i !== index);
+    set_type(updated);
 
     // Speichern der aktualisierten Liste in localStorage
-    localStorage.setItem('Types', JSON.stringify(updated));
+    localStorage.setItem('clothingType', JSON.stringify(updated));
   };
 
   const handleOpenEditDialog = (index) => {
     setIsEditing(true);
     setCurrentTypeIndex(index);
-    setNewType(Types[index]);
+    setNewType(clothingType[index]);
     setOpenDialog(true);
   };
   return (
@@ -83,20 +85,17 @@ const ClothingType = () => {
               <Card elevation={3}>
                 <CardContent>
                   <Typography variant="h6">{ctype.name}</Typography>
-                  <Typography color="textSecondary" paragraph>
-                    Typ: {ctype.usage}
-                  </Typography>
                 </CardContent>
                 <Box display="flex" justifyContent="flex-end">
                   <IconButton
                     color="primary"
-                    onClick={() => handleAddctype(index)}
+                    onClick={() => handleEditType(index)}
                   >
                     <EditIcon />
                   </IconButton>
                   <IconButton
                     color="secondary"
-                    onClick={() => handleDeletectype(index)}
+                    onClick={() => handleDeleteType(index)}
                   >
                     <DeleteIcon />
                   </IconButton>
@@ -112,24 +111,24 @@ const ClothingType = () => {
             <TextField
               fullWidth
               margin="normal"
-              label="Name des Kleidungstyp"
-              value={newctype.name}
-              onChange={(e) => setNewctype({ ...newctype, name: e.target.value })}
+              label="Kleidungstyp"
+              value={newType.name}
+              onChange={(e) => setNewType({ ...newType, name: e.target.value })}
               required
             />
             <TextField
               fullWidth
               margin="normal"
-              label="Typ des Kleidungstyp"
-              value={newctype.ctype_type}
-              onChange={(e) => setNewctype({ ...newctype, clothing_type: e.target.value })}
-              required>
+              label="Verwendung"
+              value={newType.ctype}
+              onChange={(e) => setNewType({ ...newType, clothing_type: e.target.value })}
+              >
             </TextField>
           </DialogContent>
           <DialogActions>
             <Button onClick={() => setOpenDialog(false)}>Abbrechen</Button>
             <Button
-              onClick={isEditing ? handleEditctype : handleAddctype}
+              onClick={isEditing ? handleEditType : handleAddType}
               color="primary"
             >
               {isEditing ? 'Ändern' : 'Hinzufügen'}
@@ -138,4 +137,6 @@ const ClothingType = () => {
         </Dialog>
       </div>
   );
-}
+};
+
+export default ClothingType;
