@@ -1,3 +1,4 @@
+/*
 import React, { useState } from "react";
 import { Container, TextField, Button, Typography } from "@mui/material";
 
@@ -32,3 +33,17 @@ const ProfilePage = () => {
 };
 
 export default ProfilePage;
+ */
+
+import React from 'react';
+
+function Profile() {
+  return (
+        <div style={{ padding: '20px' }}>
+          <h1>Profile</h1>
+          <p>Manage your profile and settings here.</p>
+        </div>
+  );
+}
+
+export default Profile;

@@ -5,9 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0b36f84f-6ad4-4404-a25a-055e1c7ce6fe" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/httpRequests/http-requests-log.http" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/httpRequests/http-requests-log.http" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/DigitalWardrobeAPI.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/DigitalWardrobeAPI.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/bo/CT-EntryDraft.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/dialogs/ClothingItemForm.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/layout/Navbar.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/layout/Navbar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/pages/ClothingType.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/pages/ClothingType.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/pages/Wardrobe.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/pages/Wardrobe.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,6 +21,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Python Script" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -43,58 +47,68 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Database Script.mysql-dump.sql.executor": "Run",
-    "HTTP Request.generated-requests | #1.executor": "Run",
-    "Python.Admin.executor": "Run",
-    "Python.Admin2.executor": "Run",
-    "Python.Binary.executor": "Run",
-    "Python.BinaryConstraint.executor": "Run",
-    "Python.BusinessObject.executor": "Run",
-    "Python.CardinalityConstraint.executor": "Run",
-    "Python.ClothingItem.executor": "Run",
-    "Python.Constraint Tests.executor": "Run",
-    "Python.Constraint.executor": "Run",
-    "Python.ConstraintMapper.executor": "Run",
-    "Python.Constraint_Test.executor": "Run",
-    "Python.Dummy.executor": "Debug",
-    "Python.ImplicationConstraint.executor": "Run",
-    "Python.Kleiderschrank.executor": "Run",
-    "Python.Kleidungsstueck.executor": "Run",
-    "Python.Kleidungsstück(prüfen,  ggf Mapper).executor": "Run",
-    "Python.Kleidungstyp.executor": "Run",
-    "Python.Mapper.executor": "Run",
-    "Python.Mutex.executor": "Run",
-    "Python.MutexConstraint.executor": "Run",
-    "Python.Outfit.executor": "Run",
-    "Python.Style.executor": "Run",
-    "Python.Unary.executor": "Run",
-    "Python.UnaryConstraint.executor": "Run",
-    "Python.User.executor": "Run",
-    "Python.main.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "Sertan",
-    "last_opened_file_path": "C:/Users/serta/Documents/GitHub/Gruppe_6/src/server",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Database Script.mysql-dump.sql.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.App.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.ErrorMessage.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.Header.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.Home.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.LoadingSpinner.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.Navbar.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.Outfits.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.ProfilDropDown.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.Profile.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.Wardrobe.js.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Admin.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Admin2.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Binary.executor&quot;: &quot;Run&quot;,
+    &quot;Python.BinaryConstraint.executor&quot;: &quot;Run&quot;,
+    &quot;Python.BusinessObject.executor&quot;: &quot;Run&quot;,
+    &quot;Python.CardinalityConstraint.executor&quot;: &quot;Run&quot;,
+    &quot;Python.ClothingItem.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Constraint Tests.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Constraint.executor&quot;: &quot;Run&quot;,
+    &quot;Python.ConstraintMapper.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Constraint_Test.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Dummy.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.ImplicationConstraint.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Kleiderschrank.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Kleidungsstueck.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Kleidungsstück(prüfen,  ggf Mapper).executor&quot;: &quot;Run&quot;,
+    &quot;Python.Kleidungstyp.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Mapper.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Mutex.executor&quot;: &quot;Run&quot;,
+    &quot;Python.MutexConstraint.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Outfit.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Style.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Unary.executor&quot;: &quot;Run&quot;,
+    &quot;Python.UnaryConstraint.executor&quot;: &quot;Run&quot;,
+    &quot;Python.User.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;DraftBackend&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/serta/Documents/GitHub/Gruppe_6/src/server&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\PyCharm 2024.3\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ],
-    "RunConfigurationTargetLRU": [
-      "0ba7c31d-66a9-426f-a9cb-112c76a75293"
+    &quot;RunConfigurationTargetLRU&quot;: [
+      &quot;0ba7c31d-66a9-426f-a9cb-112c76a75293&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\serta\Documents\GitHub\Gruppe_6\src\server" />
@@ -109,78 +123,16 @@
     </key>
   </component>
   <component name="RunManager" selected="Python.main">
-    <configuration name="mysql-dump.sql" type="DatabaseScript" editBeforeRun="true" temporary="true" nameIsGenerated="true">
-      <script-file value="$PROJECT_DIR$/mysql/mysql-dump.sql" />
-      <script-mode>FILE</script-mode>
+    <configuration name="App.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/frontend/src/App.js" working-dir="$PROJECT_DIR$/frontend/src">
       <method v="2" />
     </configuration>
-    <configuration name="Admin" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="Gruppe_6" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/server" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/server/Admin.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
+    <configuration name="Home.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/frontend/src/components/pages/Home.js" working-dir="$PROJECT_DIR$/frontend/src/components/pages">
       <method v="2" />
     </configuration>
-    <configuration name="Admin2" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="Gruppe_6" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/server" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/server/Admin2.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
+    <configuration name="Navbar.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/frontend/src/components/layout/Navbar.js" working-dir="$PROJECT_DIR$/frontend/src/components/layout">
       <method v="2" />
     </configuration>
-    <configuration name="Constraint_Test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="Gruppe_6" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/server/bo/Constraints" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/server/bo/Constraints/Constraint_Test.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
+    <configuration name="Outfits.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/frontend/src/components/pages/Outfits.js" working-dir="$PROJECT_DIR$/frontend/src/components/pages">
       <method v="2" />
     </configuration>
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
@@ -209,18 +161,18 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.main" />
-        <item itemvalue="Python.Admin2" />
-        <item itemvalue="Python.Constraint_Test" />
-        <item itemvalue="Database Script.mysql-dump.sql" />
-        <item itemvalue="Python.Admin" />
+        <item itemvalue="Node.js.Outfits.js" />
+        <item itemvalue="Node.js.Home.js" />
+        <item itemvalue="Node.js.App.js" />
+        <item itemvalue="Node.js.Navbar.js" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-e768b9ed790e-JavaScript-PY-243.21565.199" />
-        <option value="bundled-python-sdk-cab1f2013843-4ae2d6a61b08-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-243.21565.199" />
+        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-PY-243.22562.220" />
+        <option value="bundled-python-sdk-0fc6c617c4bd-9a18a617cbe4-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-243.22562.220" />
       </set>
     </attachedChunks>
   </component>
@@ -250,6 +202,8 @@
       <workItem from="1734706299367" duration="1550000" />
       <workItem from="1734887219716" duration="17560000" />
       <workItem from="1734908413502" duration="3454000" />
+      <workItem from="1736357604641" duration="23419000" />
+      <workItem from="1736384337447" duration="2748000" />
     </task>
     <servers />
   </component>
@@ -290,7 +244,7 @@
     <SUITE FILE_PATH="coverage/Gruppe_6$Dummy.coverage" NAME="Dummy Coverage Results" MODIFIED="1733933449328" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/Gruppe_6$Kleiderschrank.coverage" NAME="Kleiderschrank Coverage Results" MODIFIED="1732648373453" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
     <SUITE FILE_PATH="coverage/Gruppe_6$ClothingItem.coverage" NAME="ClothingItem Coverage Results" MODIFIED="1734575026880" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
-    <SUITE FILE_PATH="coverage/Gruppe_6$main.coverage" NAME="main Coverage Results" MODIFIED="1736258180174" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$main.coverage" NAME="main Coverage Results" MODIFIED="1736382425293" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/Gruppe_6$Binary.coverage" NAME="Binary Coverage Results" MODIFIED="1734574862745" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo/Constraints" />
     <SUITE FILE_PATH="coverage/Gruppe_6$Wardrobe.coverage" NAME="Wardrobe Coverage Results" MODIFIED="1733923779176" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
   </component>

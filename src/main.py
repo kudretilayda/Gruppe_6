@@ -10,7 +10,8 @@ from server.bo.Outfit import Outfit
 from server.bo.ClothingItem import ClothingItem
 from server.bo.ClothingType import ClothingType
 
-# from src.server.bo.Constraints.Unary import UnaryConstraint
+from src.server.bo.Constraints.Constraint import Constraint
+from src.server.bo.Constraints.Unary import UnaryConstraint
 # from src.server.bo.Constraints.Binary import BinaryConstraint
 # from src.server.bo.Constraints.Implication import ImplicationConstraint
 # from src.server.bo.Constraints.Cardinality import CardinalityConstraint
@@ -22,7 +23,16 @@ from SecurityDecorator import secured
 app = Flask(__name__)
 
 # Cors insanziieren
-CORS(app, resources=r'/wardrobe/*')
+# CORS(app, resources={r"/api/":{"origins":"*"}})
+CORS(app, resources={
+    r"/*": {
+        "origins": ["http://localhost:3000"],
+        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization", "Access-Control-Allow-Credentials"],
+        "supports_credentials": True
+    }
+})
+# CORS(app, supports_credentials=True, resources=r'/wardrobe')
 
 # API für Datenstruktur
 api = Api(app, version='1.0', title='Digital Wardrobe',
@@ -70,14 +80,9 @@ outfit = api.inherit('Outfit', bo, {
     'style': fields.Integer(attribute='style', description='ID of the associated style'),
 })
 
-constraint = api.model('Constraint', {
-    'type': fields.String(description='Type of the constraint'),
-    'details': fields.Raw(description='Details of the constraint')
+constraint = api.inherit('Constraint', bo, {
+    'constraint_id': fields.Integer(description='ID of the constraint')
 })
-
-'''
-Nun ist die Frage, ob wir die einzelnen Constraints brauchen
-'''
 
 unary_constraint = api.inherit('UnaryConstraint', constraint, {
     'style': fields.Integer(attribute='style', description='ID of the reference style'),
@@ -593,3 +598,8 @@ class ImplicationConstraintOperations(Resource):
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+'''
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8080, debug=True)
+'''
