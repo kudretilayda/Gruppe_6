@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { AppBar, Toolbar, Typography, Button, Box, Menu, MenuItem, IconButton } from '@mui/material';
+import { AppBar, Toolbar, Typography, Button, Box, Menu, MenuItem, IconButton, ListItemIcon } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu'; // Importiere das Icon
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { Link as RouterLink } from 'react-router-dom';
 
 function Navbar() {
@@ -125,6 +126,9 @@ function Navbar() {
               to="/logout"
             >
               Abmelden
+            <ListItemIcon style={{ marginLeft: 'auto' }}>
+            <ExitToAppIcon fontSize="small" />
+            </ListItemIcon>
             </MenuItem>
           </Menu>
         </Box>
