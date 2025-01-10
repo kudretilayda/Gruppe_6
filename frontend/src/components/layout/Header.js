@@ -35,10 +35,10 @@ class Header extends Component {
                   textColor="inherit"
                   centered
               >
-                <Tab label="Wardrobe" component={RouterLink} to={process.env.PUBLIC_URL + '/wardrobe'} />
+                <Tab label="Items" component={RouterLink} to={process.env.PUBLIC_URL + '/items'} />
                 <Tab label="Outfits" component={RouterLink} to={process.env.PUBLIC_URL + '/outfits'} />
                 <Tab label="Styles" component={RouterLink} to={process.env.PUBLIC_URL + '/styles'} />
-                <Tab label="About" component={RouterLink} to={process.env.PUBLIC_URL + '/about'} />
+                <Tab label="Constraints" component={RouterLink} to={process.env.PUBLIC_URL + '/constraints'} />
               </Tabs>
           )}
         </AppBar>

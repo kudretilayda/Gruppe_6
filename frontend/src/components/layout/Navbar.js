@@ -40,6 +40,7 @@ const Navbar = () => {
 
   // menü item config
   const menuItems = [
+    { label: 'Home', path: '/home' },
     { label: 'Profil', path: '/profile' },
     { label: 'Kleidungsstück', path: '/wardrobe' },
     { label: 'Constraints', path: '/constraints' },
@@ -73,7 +74,7 @@ const Navbar = () => {
   };
 
   return (
-    <AppBar position="static" sx={{ bgcolor: '#1976d2' }}>
+    <AppBar position="static" sx={{ color: '#1976d2' }}>
       <Toolbar>
         {/* LOGO/NAME */}
         <Typography
@@ -89,7 +90,7 @@ const Navbar = () => {
           DigitalWardrobe
         </Typography>
 
-        {/* zeigt das menü nur athentifizierten nutzern */}
+        {/* zeigt das menü nur authentifizierten nutzern */}
         {user && (
           <>
             <IconButton

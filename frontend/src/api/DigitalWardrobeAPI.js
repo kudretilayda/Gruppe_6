@@ -102,8 +102,6 @@ class DigitalWardrobeAPI {
         return this.#api;
     }
 
-    
-
     // Fetch-Helper-Methode
     #fetchAdvanced = (url, init = {}) => {
         // Get authentication token if available
@@ -112,14 +110,14 @@ class DigitalWardrobeAPI {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         };
-    
+
         // Add auth token if available
         if (auth.currentUser) {
             auth.currentUser.getIdToken().then(token => {
                 headers['Authorization'] = `Bearer ${token}`;
             });
         }
-    
+
         // Prepare the request configuration
         const finalInit = {
             ...init,
@@ -130,12 +128,12 @@ class DigitalWardrobeAPI {
             mode: 'cors',
             credentials: 'include'
         };
-    
+
         // Add method if not provided
         if (!finalInit.method) {
             finalInit.method = 'GET';
         }
-    
+
         return fetch(url, finalInit)
             .then(async response => {
                 if (!response.ok) {
