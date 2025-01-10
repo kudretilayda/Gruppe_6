@@ -1,154 +1,3 @@
-import React, {createContext, useContext, useEffect, useState} from 'react';
-import {BrowserRouter, Navigate, Route, Routes} from 'react-router-dom';
-import {CssBaseline} from '@mui/material';
-import {AuthProvider, useAuth} from './context/AuthContext';
-
-// imports
-import Navbar from './components/layout/Navbar';
-import Home from './components/pages/Home';
-import Profile from './components/pages/Profile';
-import Wardrobe from './components/pages/Wardrobe';
-import Outfits from './components/pages/Outfits';
-import Styles from './components/pages/Styles';
-import SignIn from './components/pages/SignIn';
-import {GoogleAuthProvider, onAuthStateChanged, signInWithPopup} from 'firebase/auth';
-import {auth} from './firebase';
-
-const cors = require('cors')
-// geschützte route um auth zu checken 
-const ProtectedRoute = ({ children }) => {
-  const { user } = useAuth();
-  console.log("ProtectedRoute - user:", user);
-  return user ? children : <Navigate to="/" />;
-};
-
-// Main App komponente
-const App = () => {
-
-	const signInWithGoogle = async () => {
-		const provider = new GoogleAuthProvider();
-		try {
-			const result = await signInWithPopup(auth, provider);
-			console.log("User signed in:", result.user);
-		} catch (error) {
-			console.error("Error during sign-in:", error);
-		}
-	};
-
-    return (
-        <BrowserRouter>
-          <AuthProvider>
-            <CssBaseline />
-            <Navbar />
-            <Routes>
-          {/* öffentliche route - sign in */}
-          <Route path="/" element={<SignIn />} />
-          <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
-
-
-          {/* geschützte routen - einsehbar wenn man angemeldet ist */}
-          <Route path="/home" element={
-            <ProtectedRoute>
-              <Home />
-            </ProtectedRoute>
-          } />
-          <Route path="/profile" element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          } />
-          <Route path="/wardrobe" element={
-            <ProtectedRoute>
-              <Wardrobe />
-            </ProtectedRoute>
-          } />
-          <Route path="/outfits" element={
-            <ProtectedRoute>
-              <Outfits />
-            </ProtectedRoute>
-          } />
-          <Route path="/styles" element={
-            <ProtectedRoute>
-              <Styles />
-            </ProtectedRoute>
-          } />
-        </Routes>
-      </AuthProvider>
-    </BrowserRouter>
-  );
-};
-App.use(cors());
-export default App;
-
-/*
-import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { CssBaseline } from '@mui/material';
-import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'firebase/auth';
-import { auth } from './firebase'
-import { AuthProvider, useAuth } from './context/AuthContext';
-
-// imports
-import Navbar from './components/layout/Navbar';
-import Home from './components/pages/Home';
-import Profile from './components/pages/Profile';
-import Wardrobe from './components/pages/Wardrobe';
-import Outfits from './components/pages/Outfits';
-import Styles from './components/pages/Styles';
-import SignIn from './components/pages/SignIn';
-
-// geschützte route um auth zu checken 
-const ProtectedRoute = ({ children }) => {
-  const { user } = useAuth();
-  return user ? children : <Navigate to="/" />;
-};
-
-// Main App komponente
-const App = () => {
-  return (
-    <BrowserRouter>
-      <AuthProvider>
-        <CssBaseline />
-        <Navbar />
-        <Routes>
-          {/* öffentliche route - sign in */}
-          <Route path="/" element={<SignIn />} />
-
-          {/* geschützte routen - einsehbar wenn man angemeldet ist */}
-          <Route path="/home" element={
-            <ProtectedRoute>
-              <Home />
-            </ProtectedRoute>
-          } />
-          <Route path="/profile" element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          } />
-          <Route path="/wardrobe" element={
-            <ProtectedRoute>
-              <Wardrobe />
-            </ProtectedRoute>
-          } />
-          <Route path="/outfits" element={
-            <ProtectedRoute>
-              <Outfits />
-            </ProtectedRoute>
-          } />
-          <Route path="/styles" element={
-            <ProtectedRoute>
-              <Styles />
-            </ProtectedRoute>
-          } />
-        </Routes>
-      </AuthProvider>
-    </BrowserRouter>
-  );
-};
-
-export default App;
-
-/*
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Typography, Button, CssBaseline, Grid,Container, Box, CircularProgress} from '@mui/material';
@@ -252,4 +101,160 @@ const App = () => {
 };
 
 export default App;
+
+
+/*
+import React, {createContext, useContext, useEffect, useState} from 'react';
+import {BrowserRouter, Navigate, Route, Routes} from 'react-router-dom';
+import {CssBaseline} from '@mui/material';
+import {AuthProvider, useAuth} from './context/AuthContext';
+import {GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut} from 'firebase/auth';
+import {auth} from './firebase';
+
+// imports
+import Navbar from './components/layout/Navbar';
+import Home from './components/pages/Home';
+import Profile from './components/pages/Profile';
+import Wardrobe from './components/pages/Wardrobe';
+import Outfits from './components/pages/Outfits';
+import Styles from './components/pages/Styles';
+import SignIn from './components/pages/SignIn';
+
+
+
+
+// geschützte route um auth zu checken 
+const ProtectedRoute = ({ children }) => {
+  const { user } = useAuth();
+  return user ? children : <Navigate to="/" />;
+};
+
+// Main App komponente
+const App = () => {
+
+	const signInWithGoogle = async () => {
+		const provider = new GoogleAuthProvider();
+		try {
+			const result = await signInWithPopup(auth, provider);
+			console.log("User signed in:", result.user);
+		} catch (error) {
+			console.error("Error during sign-in:", error);
+		}
+	};
+
+    return (
+        <BrowserRouter>
+          <AuthProvider>
+            <CssBaseline />
+            <Navbar />
+            <Routes>
+          {/* öffentliche route - sign in }
+          <Route path="/" element={<SignIn />} />
+          <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+
+
+          {/* geschützte routen - einsehbar wenn man angemeldet ist }
+          <Route path="/home" element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          } />
+          <Route path="/profile" element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          } />
+          <Route path="/wardrobe" element={
+            <ProtectedRoute>
+              <Wardrobe />
+            </ProtectedRoute>
+          } />
+          <Route path="/outfits" element={
+            <ProtectedRoute>
+              <Outfits />
+            </ProtectedRoute>
+          } />
+          <Route path="/styles" element={
+            <ProtectedRoute>
+              <Styles />
+            </ProtectedRoute>
+          } />
+        </Routes>
+      </AuthProvider>
+    </BrowserRouter>
+  );
+};
+
+export default App;
+*/
+/*
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { CssBaseline } from '@mui/material';
+import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'firebase/auth';
+import { auth } from './firebase'
+import { AuthProvider, useAuth } from './context/AuthContext';
+
+// imports
+import Navbar from './components/layout/Navbar';
+import Home from './components/pages/Home';
+import Profile from './components/pages/Profile';
+import Wardrobe from './components/pages/Wardrobe';
+import Outfits from './components/pages/Outfits';
+import Styles from './components/pages/Styles';
+import SignIn from './components/pages/SignIn';
+
+// geschützte route um auth zu checken 
+const ProtectedRoute = ({ children }) => {
+  const { user } = useAuth();
+  return user ? children : <Navigate to="/" />;
+};
+
+// Main App komponente
+const App = () => {
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <CssBaseline />
+        <Navbar />
+        <Routes>
+          {/* öffentliche route - sign in }
+          <Route path="/" element={<SignIn />} />
+
+          {/* geschützte routen - einsehbar wenn man angemeldet ist }
+          <Route path="/home" element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          } />
+          <Route path="/profile" element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          } />
+          <Route path="/wardrobe" element={
+            <ProtectedRoute>
+              <Wardrobe />
+            </ProtectedRoute>
+          } />
+          <Route path="/outfits" element={
+            <ProtectedRoute>
+              <Outfits />
+            </ProtectedRoute>
+          } />
+          <Route path="/styles" element={
+            <ProtectedRoute>
+              <Styles />
+            </ProtectedRoute>
+          } />
+        </Routes>
+      </AuthProvider>
+    </BrowserRouter>
+  );
+};
+
+export default App;
+
+/*
+
 */

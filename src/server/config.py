@@ -6,7 +6,8 @@ def get_db_connection():
         host="127.0.0.1",
         user="root",
         password="dragonhart192837465",
-        database="digital_wardrobe"
+        database="digital_wardrobe",
+        auth_Plugin="mysql_native_password"
     )
 
 
