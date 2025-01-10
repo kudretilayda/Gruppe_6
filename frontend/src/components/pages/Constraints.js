@@ -9,40 +9,48 @@ import {
   Box,
   IconButton,
   Tooltip,
+  TextField,
+  Button,
   Grid,
+  Snackbar,
+  Alert
 } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import { useAuth } from '../../context/AuthContext';
 import DigitalWardrobeAPI from '../../api/DigitalWardrobeAPI';
 
 const Constraints = () => {
-  // status constraint manager
+  // State-Variablen
   const [selectedConstraintType, setSelectedConstraintType] = useState('');
   const [implicationConstraints, setImplicationConstraints] = useState([]);
   const [mutexConstraints, setMutexConstraints] = useState([]);
   const [cardinalityConstraints, setCardinalityConstraints] = useState([]);
 
-  // hilfs text für die constraints
+  // Inputs für neue Constraints
+  const [newImplication, setNewImplication] = useState({ if_type: '', then_type: '' });
+  const [newMutex, setNewMutex] = useState({ item1: '', item2: '' });
+  const [newCardinality, setNewCardinality] = useState({ object: '', min_count: 0, max_count: 0 });
+
+  // Snackbar-Status
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+
+  // Hilfstexte für Constraints
   const constraintInfo = {
     implication: "Eine Implikation definiert eine 'Wenn-Dann' Beziehung zwischen Kleidungstypen",
     mutex: "Ein Mutex verhindert, dass bestimmte Kleidungsstücke zusammen getragen werden",
     cardinality: "Eine Kardinalität legt fest, wie viele Kleidungsstücke eines Typs verwendet werden müssen"
   };
 
-  // handle constraint typ selection
-  const handleConstraintTypeChange = (event) => {
-    setSelectedConstraintType(event.target.value);
-  };
-
-  // läd vorhandene constraints
+  // Lädt Constraints beim Rendern
   useEffect(() => {
     loadConstraints();
   }, []);
 
-  // funktion um alle existierenden constraints zu laden
+  // Funktion: Alle Constraints laden
   const loadConstraints = async () => {
     try {
-      // API calls um constraints zu laden
       const implication = await DigitalWardrobeAPI.getAPI().getImplicationConstraints();
       const mutex = await DigitalWardrobeAPI.getAPI().getMutexConstraints();
       const cardinality = await DigitalWardrobeAPI.getAPI().getCardinalityConstraints();
@@ -51,7 +59,85 @@ const Constraints = () => {
       setMutexConstraints(mutex || []);
       setCardinalityConstraints(cardinality || []);
     } catch (error) {
-      console.error('Error loading constraints:', error);
+      console.error('Fehler beim Laden der Constraints:', error);
+    }
+  };
+
+  // Funktion: Constraint-Typ ändern
+  const handleConstraintTypeChange = (event) => {
+    setSelectedConstraintType(event.target.value);
+  };
+
+  // Snackbar schließen
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false);
+  };
+
+  // Funktion: Neues Implication-Constraint speichern
+  const saveImplicationConstraint = async () => {
+    if (!newImplication.if_type || !newImplication.then_type) {
+      alert('Bitte geben Sie gültige Werte für Implikation ein!');
+      return;
+    }
+
+    try {
+      await DigitalWardrobeAPI.getAPI().createImplicationConstraint(newImplication);
+      loadConstraints();
+      setSnackbarMessage('Implikation erfolgreich gespeichert!');
+      setSnackbarSeverity('success');
+      setOpenSnackbar(true);
+      setNewImplication({ if_type: '', then_type: '' });
+    } catch (error) {
+      console.error('Fehler beim Speichern der Implikation:', error);
+      setSnackbarMessage('Fehler beim Speichern der Implikation');
+      setSnackbarSeverity('error');
+      setOpenSnackbar(true);
+    }
+  };
+
+  // Funktion: Neues Mutex-Constraint speichern
+  const saveMutexConstraint = async () => {
+    if (!newMutex.item1 || !newMutex.item2) {
+      alert('Bitte geben Sie gültige Werte für Mutex ein!');
+      return;
+    }
+
+    try {
+      await DigitalWardrobeAPI.getAPI().createMutexConstraint(newMutex);
+      loadConstraints();
+      setSnackbarMessage('Mutex erfolgreich gespeichert!');
+      setSnackbarSeverity('success');
+      setOpenSnackbar(true);
+      setNewMutex({ item1: '', item2: '' });
+    } catch (error) {
+      console.error('Fehler beim Speichern des Mutex:', error);
+      setSnackbarMessage('Fehler beim Speichern des Mutex');
+      setSnackbarSeverity('error');
+      setOpenSnackbar(true);
+    }
+  };
+
+  // Funktion: Neues Cardinality-Constraint speichern
+  const saveCardinalityConstraint = async () => {
+    const { object, min_count, max_count } = newCardinality;
+
+    if (!object || min_count < 0 || max_count < min_count) {
+      alert('Bitte geben Sie gültige Werte für Kardinalität ein!');
+      return;
+    }
+
+    try {
+      await DigitalWardrobeAPI.getAPI().createCardinalityConstraint(newCardinality);
+      loadConstraints();
+      setSnackbarMessage('Kardinalität erfolgreich gespeichert!');
+      setSnackbarSeverity('success');
+      setOpenSnackbar(true);
+      setNewCardinality({ object: '', min_count: 0, max_count: 0 });
+    } catch (error) {
+      console.error('Fehler beim Speichern der Kardinalität:', error);
+      setSnackbarMessage('Fehler beim Speichern der Kardinalität');
+      setSnackbarSeverity('error');
+      setOpenSnackbar(true);
     }
   };
 
@@ -59,140 +145,140 @@ const Constraints = () => {
     <Container maxWidth="lg" sx={{ mt: 4 }}>
       <Paper elevation={3} sx={{ p: 4 }}>
         <Typography variant="h5" gutterBottom>
-          Neuen Constraint erstellen
+          Constraints Manager
         </Typography>
 
-        {/* constraint typ auswahl */}
+        {/* Constraint-Typ auswählen */}
         <FormControl fullWidth sx={{ mt: 2 }}>
-          <Box display="flex" alignItems="center" mb={1}>
-            <Typography variant="subtitle2" component="label">
-              Constraint auswählen*
-            </Typography>
-          </Box>
           <Select
             value={selectedConstraintType}
             onChange={handleConstraintTypeChange}
             displayEmpty
           >
             <MenuItem value="" disabled>
-              Bitte wählen Sie ein Constraint Typ aus
+              Wählen Sie einen Constraint-Typ
             </MenuItem>
-            <MenuItem value="implication">
-              <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
-                <span>Implikation</span>
-                <Tooltip title={constraintInfo.implication}>
-                  <IconButton size="small">
-                    <InfoIcon fontSize="small" />
-                  </IconButton>
-                </Tooltip>
-              </Box>
-            </MenuItem>
-            <MenuItem value="mutex">
-              <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
-                <span>Mutex</span>
-                <Tooltip title={constraintInfo.mutex}>
-                  <IconButton size="small">
-                    <InfoIcon fontSize="small" />
-                  </IconButton>
-                </Tooltip>
-              </Box>
-            </MenuItem>
-            <MenuItem value="cardinality">
-              <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
-                <span>Kardinalität</span>
-                <Tooltip title={constraintInfo.cardinality}>
-                  <IconButton size="small">
-                    <InfoIcon fontSize="small" />
-                  </IconButton>
-                </Tooltip>
-              </Box>
-            </MenuItem>
+            <MenuItem value="implication">Implikation</MenuItem>
+            <MenuItem value="mutex">Mutex</MenuItem>
+            <MenuItem value="cardinality">Kardinalität</MenuItem>
           </Select>
         </FormControl>
 
-        {/* vorhandene constraints display */}
-        <Box sx={{ mt: 4 }}>
-          {/* implication constraint */}
-          <Box sx={{ mb: 3 }}>
-            <Box display="flex" alignItems="center">
-              <Typography variant="subtitle1" component="h3">
-                Implikation
-              </Typography>
-              <Tooltip title={constraintInfo.implication}>
-                <IconButton size="small">
-                  <InfoIcon fontSize="small" />
-                </IconButton>
-              </Tooltip>
-            </Box>
-            <Typography color="textSecondary">
-              {implicationConstraints.length === 0 
-                ? 'Keine Implikation gespeichert' 
-                : implicationConstraints.map((constraint, index) => (
-                    <Box key={index} sx={{ mt: 1 }}>
-                        <Typography>
-                            Wenn {constraint.if_type}, dann {constraint.then_type}
-                        </Typography>
-                    </Box>
-                ))
-            }
-            </Typography>
+        {/* Eingabefelder für neue Constraints */}
+        {selectedConstraintType === 'implication' && (
+          <Box sx={{ mt: 3 }}>
+            <Typography>Neue Implikation:</Typography>
+            <TextField
+              label="Wenn"
+              value={newImplication.if_type}
+              onChange={(e) => setNewImplication({ ...newImplication, if_type: e.target.value })}
+              fullWidth
+              sx={{ mb: 2 }}
+            />
+            <TextField
+              label="Dann"
+              value={newImplication.then_type}
+              onChange={(e) => setNewImplication({ ...newImplication, then_type: e.target.value })}
+              fullWidth
+              sx={{ mb: 2 }}
+            />
+            <Button variant="contained" onClick={saveImplicationConstraint}>
+              Speichern
+            </Button>
           </Box>
+        )}
 
-          {/* mutex constraint */}
-          <Box sx={{ mb: 3 }}>
-            <Box display="flex" alignItems="center">
-                <Typography variant="subtitle1" component="h3">
-                Mutex
-                </Typography>
-                <Tooltip title={constraintInfo.mutex}>
-                <IconButton size="small">
-                    <InfoIcon fontSize="small" />
-                </IconButton>
-                </Tooltip>
-            </Box>
-            <Typography color="textSecondary">
-                {mutexConstraints.length === 0 
-                ? 'Kein Mutex gespeichert' 
-                : mutexConstraints.map((constraint, index) => (
-                    <Box key={index} sx={{ mt: 1 }}>
-                        <Typography>
-                        {constraint.mutex.map(([item1, item2]) => 
-                            `${item1} und ${item2} nicht zusammen`
-                        ).join(', ')}
-                    </Typography>
-                    </Box>
-                    ))
-                }
-                </Typography>
-            </Box>
+        {selectedConstraintType === 'mutex' && (
+          <Box sx={{ mt: 3 }}>
+            <Typography>Neuer Mutex:</Typography>
+            <TextField
+              label="Kleidungsstück 1"
+              value={newMutex.item1}
+              onChange={(e) => setNewMutex({ ...newMutex, item1: e.target.value })}
+              fullWidth
+              sx={{ mb: 2 }}
+            />
+            <TextField
+              label="Kleidungsstück 2"
+              value={newMutex.item2}
+              onChange={(e) => setNewMutex({ ...newMutex, item2: e.target.value })}
+              fullWidth
+              sx={{ mb: 2 }}
+            />
+            <Button variant="contained" onClick={saveMutexConstraint}>
+              Speichern
+            </Button>
+          </Box>
+        )}
 
-          {/* cardinality constraint */}
-          <Box sx={{ mb: 3 }}>
-            <Box display="flex" alignItems="center">
-                <Typography variant="subtitle1" component="h3">
-                Kardinalitäten
-                </Typography>
-                <Tooltip title={constraintInfo.cardinality}>
-                <IconButton size="small">
-                    <InfoIcon fontSize="small" />
-                </IconButton>
-                </Tooltip>
-            </Box>
-            <Typography color="textSecondary">
-                {cardinalityConstraints.length === 0 
-                ? 'Keine Kardinalität gespeichert' 
-                : cardinalityConstraints.map((constraint, index) => (
-                    <Box key={index} sx={{ mt: 1 }}>
-                        <Typography>
-                        {`${constraint.objects} muss zwischen ${constraint.min_count} und ${constraint.max_count} mal vorkommen`}
-                        </Typography>
-                    </Box>
-                    ))
-                }
+        {selectedConstraintType === 'cardinality' && (
+          <Box sx={{ mt: 3 }}>
+            <Typography>Neue Kardinalität:</Typography>
+            <TextField
+              label="Kleidungsstück"
+              value={newCardinality.object}
+              onChange={(e) => setNewCardinality({ ...newCardinality, object: e.target.value })}
+              fullWidth
+              sx={{ mb: 2 }}
+            />
+            <TextField
+              label="Minimale Anzahl"
+              type="number"
+              value={newCardinality.min_count}
+              onChange={(e) => setNewCardinality({ ...newCardinality, min_count: parseInt(e.target.value) })}
+              fullWidth
+              sx={{ mb: 2 }}
+            />
+            <TextField
+              label="Maximale Anzahl"
+              type="number"
+              value={newCardinality.max_count}
+              onChange={(e) => setNewCardinality({ ...newCardinality, max_count: parseInt(e.target.value) })}
+              fullWidth
+              sx={{ mb: 2 }}
+            />
+            <Button variant="contained" onClick={saveCardinalityConstraint}>
+              Speichern
+            </Button>
+          </Box>
+        )}
+
+        {/* Bestehende Constraints anzeigen */}
+        <Box sx={{ mt: 5 }}>
+          <Typography variant="h6">Vorhandene Constraints</Typography>
+          <Typography>Implikationen:</Typography>
+          {implicationConstraints.map((c, index) => (
+            <Typography key={index}>
+              Wenn {c.if_type}, dann {c.then_type}
             </Typography>
-            </Box>
+          ))}
+
+          <Typography>Mutex:</Typography>
+          {mutexConstraints.map((c, index) => (
+            <Typography key={index}>
+              {c.item1} und {c.item2} nicht zusammen
+            </Typography>
+          ))}
+
+          <Typography>Kardinalitäten:</Typography>
+          {cardinalityConstraints.map((c, index) => (
+            <Typography key={index}>
+              {c.object}: {c.min_count} bis {c.max_count}
+            </Typography>
+          ))}
         </Box>
       </Paper>
+
+      {/* Snackbar anzeigen */}
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+      >
+        <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 };

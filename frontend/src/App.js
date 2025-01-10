@@ -14,7 +14,7 @@ import Outfits from './components/pages/Outfits';
 import Styles from './components/pages/Styles';
 import SignIn from './components/pages/SignIn';
 import Constraints from './components/pages/Constraints';
-
+import Settings from './components/pages/Settings';
 
 // geschützte route um auth zu checken 
 const ProtectedRoute = ({ children }) => {
@@ -62,6 +62,11 @@ const App = () => {
           <Route path="/constraints" element={ 
             <ProtectedRoute>
               <Constraints />
+            </ProtectedRoute>
+          } />
+          <Route path="/Settings" element={ 
+            <ProtectedRoute>
+              <Settings />
             </ProtectedRoute>
           } />
         </Routes>

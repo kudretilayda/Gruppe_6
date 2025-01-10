@@ -82,7 +82,7 @@ function Navbar() {
           <Button
             color="inherit"
             component={RouterLink}
-            to="/settings"
+            to="/Settings"
             style={{ textTransform: 'none' }}
           >
             EINSTELLUNGEN
@@ -91,7 +91,7 @@ function Navbar() {
           <Button
             color="inherit"
             component={RouterLink}
-            to="/Logout"
+            to="/SignIn"
             style={{ textTransform: 'none' }}
           >
             ABMELDEN
@@ -165,7 +165,7 @@ function Navbar() {
             <MenuItem
               onClick={handleMenuClose}
               component={RouterLink}
-              to="/settings"
+              to="/Settings"
             >
               Einstellungen
             </MenuItem>
