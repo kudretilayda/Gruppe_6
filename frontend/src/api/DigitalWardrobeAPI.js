@@ -18,7 +18,7 @@ class DigitalWardrobeAPI {
     static #api = null;
 
     // Local Python backend
-    #wardrobeServerBaseURL = 'http://127.0.0.1:5000/wardrobe';
+    #wardrobeServerBaseURL = 'http://127.0.0.1:5000';
 
     // Schrank API
     // User endpoints
@@ -127,11 +127,15 @@ class DigitalWardrobeAPI {
     }
 
     // Get user by Google ID
-    getUserByGoogleId(google_id) {
-        return this.#fetchAdvanced(this.#getUserByGoogleIdURL(google_id)).then((responseJSON) => {
-            let userBO = UserBO.fromJSON(responseJSON);
-            return Promise.resolve(userBO);
+    async getUserByGoogleId(googleId) {
+        const response = await fetch(`http://127.0.0.1:5000/wardrobe/user-by-google-id/${googleId}`, {
+            method: 'GET',
+            credentials: 'include',
         });
+        if (!response.ok) {
+            throw new Error(`Failed to fetch user by Google ID: ${response.status}`);
+        }
+        return await response.json();
     }
 
     // Update user by ID

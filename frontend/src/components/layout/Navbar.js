@@ -35,7 +35,7 @@ const Navbar = () => {
       }
     };
 
-    fetchUserData();
+    fetchUserData().then(r => user);
   }, [user]);
 
   // menü item config
