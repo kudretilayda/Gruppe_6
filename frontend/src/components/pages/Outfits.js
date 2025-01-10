@@ -1,63 +1,212 @@
 import React, { useState, useEffect } from 'react';
-import {Typography, Grid, Card, CardContent, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Chip,
-  CardActions, IconButton, Box, Select, MenuItem, FormControl, InputLabel} from '@mui/material';
+import {
+  Typography, Grid, Card, CardContent, Button, Dialog,
+  DialogTitle, DialogContent, DialogActions, TextField,
+  Chip, CardActions, IconButton, Box, Select, MenuItem,
+  FormControl, Paper, Tabs, Tab
+} from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import Wardrobe from "./Wardrobe";
 
-const Outfits = ({ wardrobeItems = [], styles = [] }) => {
+const TabPanel = ({ children, value, index }) => (
+  <div hidden={value !== index}>
+    {value === index && <Box p={3}>{children}</Box>}
+  </div>
+);
+
+const ValidationSteps = ({ currentStep }) => {
+  const steps = [
+    { label: "Style auswählen", number: 1 },
+    { label: "Kleidungsstücke auswählen", number: 2 },
+    { label: "Outfit validieren lassen", number: 3 }
+  ];
+
+  return (
+    <Box display="flex" mb={4} mt={2}>
+      {steps.map((step, index) => (
+        <Box key={step.number} display="flex" alignItems="center" mr={4}>
+          <Box
+            sx={{
+              width: 24,
+              height: 24,
+              borderRadius: '50%',
+              bgcolor: currentStep >= step.number ? 'primary.main' : 'grey.300',
+              color: 'white',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              mr: 1
+            }}
+          >
+            {step.number}
+          </Box>
+          <Typography color={currentStep >= step.number ? 'primary' : 'text.secondary'}>
+            {step.label}
+          </Typography>
+        </Box>
+      ))}
+    </Box>
+  );
+};
+
+const Outfits = ({ wardrobeItems = [] }) => {
   const [outfits, setOutfits] = useState([]);
+  const [styles, setStyles] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [currentOutfitIndex, setCurrentOutfitIndex] = useState(null);
+  const [selectedTab, setSelectedTab] = useState(0);
+  const [currentStep, setCurrentStep] = useState(1);
+  const [selectedStyle, setSelectedStyle] = useState('');
+  
   const [newOutfit, setNewOutfit] = useState({
     outfit_name: '',
     items: [],
     style: null,
   });
 
-  // Load saved outfits on component mount
+  // Lade Styles und Outfits beim Start
   useEffect(() => {
-    const saved = localStorage.getItem('outfits');
-    if (saved) {
-      setOutfits(JSON.parse(saved));
+    const savedStyles = localStorage.getItem('styles');
+    const savedOutfits = localStorage.getItem('outfits');
+    
+    if (savedStyles) {
+      setStyles(JSON.parse(savedStyles));
+    }
+    if (savedOutfits) {
+      setOutfits(JSON.parse(savedOutfits));
     }
   }, []);
 
-  const handleAddOutfit = () => {
-    const updated = [...outfits, newOutfit];
-    setOutfits(updated);
-    localStorage.setItem('outfits', JSON.stringify(updated));
-    setOpenDialog(false);
-    setNewOutfit({ outfit_name: '', items: [], style: null });
+  const handleStyleSelect = (e) => {
+    const styleId = e.target.value;
+    const selectedStyle = styles.find(style => style.name === styleId);
+    setSelectedStyle(styleId);
+    if (selectedStyle) {
+      setCurrentStep(2);
+    }
   };
 
-  const handleEditOutfit = () => {
-    const updated = [...outfits];
-    updated[currentOutfitIndex] = newOutfit;
-    setOutfits(updated);
-    localStorage.setItem('outfits', JSON.stringify(updated));
+  const handleTabChange = (event, newValue) => {
+    setSelectedTab(newValue);
+    setCurrentStep(1);
+    setSelectedStyle('');
+  };
+
+  const saveOutfits = (updatedOutfits) => {
+    setOutfits(updatedOutfits);
+    localStorage.setItem('outfits', JSON.stringify(updatedOutfits));
+  };
+
+  const handleAddOutfit = () => {
+    const updatedOutfits = [...outfits, { ...newOutfit, style: selectedStyle }];
+    saveOutfits(updatedOutfits);
     setOpenDialog(false);
-    setIsEditing(false);
     setNewOutfit({ outfit_name: '', items: [], style: null });
-    setCurrentOutfitIndex(null);
   };
 
   const handleDeleteOutfit = (index) => {
-    const updated = outfits.filter((_, i) => i !== index);
-    setOutfits(updated);
-    localStorage.setItem('outfits', JSON.stringify(updated));
-  };
-
-  const handleOpenEditDialog = (index) => {
-    setIsEditing(true);
-    setCurrentOutfitIndex(index);
-    setNewOutfit(outfits[index]);
-    setOpenDialog(true);
+    const updatedOutfits = outfits.filter((_, i) => i !== index);
+    saveOutfits(updatedOutfits);
   };
 
   return (
     <div className="p-4">
+      <Paper sx={{ width: '100%', bgcolor: 'background.paper', mb: 4 }}>
+        <Tabs
+          value={selectedTab}
+          onChange={handleTabChange}
+          indicatorColor="primary"
+          textColor="primary"
+          variant="fullWidth"
+        >
+          <Tab label="OUTFIT NACH STYLE VALIDIEREN" />
+          <Tab label="OUTFIT NACH WUNSCHKLEIDUNGSSTÜCK VALIDIEREN" />
+          <Tab label="OUTFIT NACH STYLE FILTERN" />
+        </Tabs>
+
+        <TabPanel value={selectedTab} index={0}>
+          <ValidationSteps currentStep={currentStep} />
+          
+          <FormControl fullWidth>
+            <Select
+              value={selectedStyle}
+              onChange={handleStyleSelect}
+              displayEmpty
+              sx={{ mb: 2 }}
+            >
+              <MenuItem value="" disabled>
+                Style auswählen
+              </MenuItem>
+              {styles.map((style, index) => (
+                <MenuItem key={index} value={style.name}>
+                  {style.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          {selectedStyle && currentStep === 2 && (
+            <Box mt={2}>
+              <Typography variant="h6" gutterBottom>
+                Gewählter Style: {selectedStyle}
+              </Typography>
+              <Typography variant="body1" gutterBottom>
+                Features: {styles.find(s => s.name === selectedStyle)?.features.join(', ')}
+              </Typography>
+              
+              <Button 
+                variant="contained" 
+                color="primary" 
+                onClick={() => setCurrentStep(3)}
+                fullWidth
+                sx={{ mt: 2 }}
+              >
+                Weiter zur Validierung
+              </Button>
+            </Box>
+          )}
+
+          {currentStep === 3 && (
+            <Box mt={2}>
+              <Typography variant="h6" gutterBottom>
+                Outfit Validierung
+              </Typography>
+              {/* Hier können Sie die Validierungslogik implementieren */}
+            </Box>
+          )}
+        </TabPanel>
+
+        <TabPanel value={selectedTab} index={1}>
+          <Typography variant="h6" gutterBottom>
+            Wählen Sie ein Kleidungsstück aus Ihrem Kleiderschrank
+          </Typography>
+        </TabPanel>
+
+        <TabPanel value={selectedTab} index={2}>
+          <Typography variant="h6" gutterBottom>
+            Wählen Sie einen Style zum Filtern
+          </Typography>
+          <FormControl fullWidth>
+            <Select
+              value={selectedStyle}
+              onChange={handleStyleSelect}
+              displayEmpty
+            >
+              <MenuItem value="" disabled>
+                Style auswählen
+              </MenuItem>
+              {styles.map((style, index) => (
+                <MenuItem key={index} value={style.name}>
+                  {style.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </TabPanel>
+      </Paper>
+
+      {/* Outfit Liste */}
       <Grid container spacing={3} alignItems="center" className="mb-4">
         <Grid item xs>
           <Typography variant="h4">Meine Outfits</Typography>
@@ -80,13 +229,13 @@ const Outfits = ({ wardrobeItems = [], styles = [] }) => {
               <CardContent>
                 <Typography variant="h6">{outfit.outfit_name}</Typography>
                 <Typography color="textSecondary" paragraph>
-                  Style: {outfit.style ? outfit.style.features : 'Kein Style ausgewählt'}
+                  Style: {outfit.style || 'Kein Style ausgewählt'}
                 </Typography>
                 <Box display="flex" flexWrap="wrap">
-                  {outfit.items.map((item, i) => (
+                  {outfit.items.map((itemId, i) => (
                     <Chip
                       key={i}
-                      label={wardrobeItems.find((wi) => wi.id === item)?.item_name}
+                      label={wardrobeItems.find(item => item.id === itemId)?.item_name}
                       style={{
                         margin: '0.25rem',
                         backgroundColor: '#e0e0e0',
@@ -100,7 +249,12 @@ const Outfits = ({ wardrobeItems = [], styles = [] }) => {
               <CardActions>
                 <IconButton
                   color="primary"
-                  onClick={() => handleOpenEditDialog(index)}
+                  onClick={() => {
+                    setIsEditing(true);
+                    setCurrentOutfitIndex(index);
+                    setNewOutfit(outfit);
+                    setOpenDialog(true);
+                  }}
                 >
                   <EditIcon />
                 </IconButton>
@@ -115,61 +269,6 @@ const Outfits = ({ wardrobeItems = [], styles = [] }) => {
           </Grid>
         ))}
       </Grid>
-
-      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-        <DialogTitle>{isEditing ? 'Outfit bearbeiten' : 'Neues Outfit erstellen'}</DialogTitle>
-        <DialogContent>
-          <TextField
-            fullWidth
-            margin="normal"
-            label="Name des Outfits"
-            value={newOutfit.outfit_name}
-            onChange={(e) => setNewOutfit({ ...newOutfit, outfit_name: e.target.value })}
-            required
-          />
-          <FormControl fullWidth margin="normal">
-            <InputLabel>Style</InputLabel>
-            <Select
-              value={newOutfit.style || ''}
-              onChange={(e) => setNewOutfit({ ...newOutfit, style: styles.find((s) => s.id === e.target.value) })}
-              required
-            >
-              {styles.map((style) => (
-                <MenuItem key={style.id} value={style.id}>
-                  {style.features}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControl fullWidth margin="normal">
-            <InputLabel>Kleidungsstücke</InputLabel>
-            <Select
-              multiple
-              value={newOutfit.items}
-              onChange={(e) => setNewOutfit({ ...newOutfit, items: e.target.value })}
-              renderValue={(selected) =>
-                selected.map((id) => wardrobeItems.find((wi) => wi.id === id)?.item_name || 'Unbekannt').join(', ')
-              }
-              required
-            >
-              {wardrobeItems.map((item) => (
-                <MenuItem key={item.id} value={item.id}>
-                  {item.item_name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenDialog(false)}>Abbrechen</Button>
-          <Button
-            onClick={isEditing ? handleEditOutfit : handleAddOutfit}
-            color="primary"
-          >
-            {isEditing ? 'Ändern' : 'Erstellen'}
-          </Button>
-        </DialogActions>
-      </Dialog>
     </div>
   );
 };
