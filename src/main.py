@@ -26,13 +26,14 @@ app = Flask(__name__)
 # Cors insanziieren
 # CORS(app, resources={r"/api/":{"origins":"*"}})
 CORS(app, resources={
-    r"/*": {
-        "origins": ["http://localhost:3000"],
-        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-        "allow_headers": ["Content-Type", "Authorization", "Access-Control-Allow-Credentials"],
-        "supports_credentials": True
+    r"/*": {  # This allows all routes
+        "origins": ["http://localhost:3000", "http://127.0.0.1:3000"],  # Both localhost variations
+        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],  # All needed HTTP methods
+        "allow_headers": ["Content-Type", "Authorization"],  # Required headers
+        "supports_credentials": True  # Important for authenticated requests
     }
 })
+
 # CORS(app, supports_credentials=True, resources=r'/wardrobe')
 
 # API für Datenstruktur

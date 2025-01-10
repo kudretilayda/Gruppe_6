@@ -4,6 +4,7 @@ import OutfitBO from './OutfitBO.js';
 import ClothingTypeBO from './ClothingTypeBO.js';
 import ClothingItemBO from './ClothingItemBO.js';
 import WardrobeBO from './WardrobeBO.js';
+import { getAuth } from 'firebase/auth';
 
 import UnaryConstraintBO from './ConstraintAPI/UnaryConstraintBO.js';
 import BinaryConstraintBO from './ConstraintAPI/BinaryConstraintBO.js';
@@ -114,14 +115,54 @@ class DigitalWardrobeAPI {
         return this.#api;
     }
 
+    
+
     // Fetch-Helper-Methode
-    #fetchAdvanced = (url, init) =>
-        fetch(url, init).then((res) => {
-            if (!res.ok) {
-                throw Error(`${res.status} ${res.statusText}`);
-            }
-            return res.json();
-        });
+    #fetchAdvanced = (url, init = {}) => {
+        // Get authentication token if available
+        const auth = getAuth();
+        let headers = {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        };
+    
+        // Add auth token if available
+        if (auth.currentUser) {
+            auth.currentUser.getIdToken().then(token => {
+                headers['Authorization'] = `Bearer ${token}`;
+            });
+        }
+    
+        // Prepare the request configuration
+        const finalInit = {
+            ...init,
+            headers: {
+                ...headers,
+                ...(init.headers || {})
+            },
+            mode: 'cors',
+            credentials: 'include'
+        };
+    
+        // Add method if not provided
+        if (!finalInit.method) {
+            finalInit.method = 'GET';
+        }
+    
+        return fetch(url, finalInit)
+            .then(async response => {
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+                }
+                return response.json();
+            })
+            .catch(error => {
+                console.error('API request failed:', error);
+                throw error;
+            });
+    };
+
 
     // Get a single user by ID
     getUser(id) {
