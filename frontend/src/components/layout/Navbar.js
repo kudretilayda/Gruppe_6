@@ -55,10 +55,10 @@ function Navbar() {
           <Button
             color="inherit"
             component={RouterLink}
-            to="/types"
+            to="/styles"
             style={{ textTransform: 'none' }}
           >
-            Types
+            STYLE
           </Button>
           
           <Button
@@ -73,10 +73,10 @@ function Navbar() {
           <Button
             color="inherit"
             component={RouterLink}
-            to="/Constraints"
+            to="/constraints"
             style={{ textTransform: 'none' }}
           >
-            CONTRAINTS
+            CONSTRAINTS
           </Button>
 
           <Button
@@ -156,7 +156,7 @@ function Navbar() {
             <MenuItem
               onClick={handleMenuClose}
               component={RouterLink}
-              to="/Constraints"
+              to="/constraints"
             >
               Constraints
             </MenuItem>

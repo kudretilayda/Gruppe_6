@@ -13,6 +13,8 @@ import Wardrobe from './components/pages/Wardrobe';
 import Outfits from './components/pages/Outfits';
 import Styles from './components/pages/Styles';
 import SignIn from './components/pages/SignIn';
+import Constraints from './components/pages/Constraints';
+
 
 // geschützte route um auth zu checken 
 const ProtectedRoute = ({ children }) => {
@@ -55,6 +57,11 @@ const App = () => {
           <Route path="/styles" element={
             <ProtectedRoute>
               <Styles />
+            </ProtectedRoute>
+          } />
+          <Route path="/constraints" element={ 
+            <ProtectedRoute>
+              <Constraints />
             </ProtectedRoute>
           } />
         </Routes>

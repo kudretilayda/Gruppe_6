@@ -5,12 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0b36f84f-6ad4-4404-a25a-055e1c7ce6fe" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/layout/Navbar.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/layout/Navbar.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/pages/Profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/pages/Profile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/pages/SignIn.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/pages/SignIn.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/pages/Wardrobe.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/pages/Wardrobe.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/context/AuthContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/context/AuthContext.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,7 +86,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "current__branch__Aliaksei",
+    "git-widget-placeholder": "current__branch__moreno",
     "last_opened_file_path": "C:/Users/serta/Documents/GitHub/Gruppe_6/src/server",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
