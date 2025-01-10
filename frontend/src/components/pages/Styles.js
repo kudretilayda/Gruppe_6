@@ -1,5 +1,247 @@
 import React, { useState, useEffect } from 'react';
 import {
+  Container,
+  Paper,
+  TextField,
+  Button,
+  Typography,
+  FormControl,
+  Select,
+  MenuItem,
+  Box,
+  Grid,
+} from '@mui/material';
+import { useAuth } from '../../context/AuthContext';
+import DigitalWardrobeAPI from '../../api/DigitalWardrobeAPI';
+
+const Styles = () => {
+  // status management 
+  const [styleName, setStyleName] = useState('');
+  const [selectedMutex, setSelectedMutex] = useState('');
+  const [selectedImplication, setSelectedImplication] = useState('');
+  const [selectedCardinality, setSelectedCardinality] = useState('');
+  const [styles, setStyles] = useState([]);
+  const [constraints, setConstraints] = useState([]);
+
+  // läd vorhandene styles
+  useEffect(() => {
+    loadStyles();
+  }, []);
+
+  // funktion um existierende styles zu laden
+  const loadStyles = async () => {
+    try {
+      const stylesData = await DigitalWardrobeAPI.getAPI().getStyles();
+      setStyles(stylesData);
+    } catch (error) {
+      console.error('Error loading styles:', error);
+    }
+  };
+
+  // funktion um neue constraint hinzuzufügen
+  const addConstraint = (type) => {
+    let constraint;
+    switch(type) {
+      case 'mutex':
+        constraint = selectedMutex;
+        break;
+      case 'implication':
+        constraint = selectedImplication;
+        break;
+      case 'cardinality':
+        constraint = selectedCardinality;
+        break;
+      default:
+        return;
+    }
+
+    if (constraint) {
+      setConstraints([...constraints, { type, value: constraint }]);
+      // reset des dazugehörigen feldes
+      switch(type) {
+        case 'mutex':
+          setSelectedMutex('');
+          break;
+        case 'implication':
+          setSelectedImplication('');
+          break;
+        case 'cardinality':
+          setSelectedCardinality('');
+          break;
+      }
+    }
+  };
+
+  // funktion um style zu speichern
+  const handleSaveStyle = async () => {
+    try {
+      const newStyle = {
+        name: styleName,
+        constraints: constraints
+      };
+      
+      await DigitalWardrobeAPI.getAPI().createStyle(newStyle);
+      // reset form und neuladen der styles
+      setStyleName('');
+      setConstraints([]);
+      loadStyles();
+    } catch (error) {
+      console.error('Error saving style:', error);
+    }
+  };
+
+  return (
+    <Container maxWidth="lg" sx={{ mt: 4 }}>
+      <Paper elevation={3} sx={{ p: 4 }}>
+        <Typography variant="h5" gutterBottom>
+          Style erstellen
+        </Typography>
+
+        {/* input style name */}
+        <TextField
+          fullWidth
+          label="Style Name"
+          value={styleName}
+          onChange={(e) => setStyleName(e.target.value)}
+          margin="normal"
+          required
+        />
+
+        {/* constraint abschnitt */}
+        <Grid container spacing={3} sx={{ mt: 2 }}>
+          {/* mutex constraint */}
+          <Grid item xs={12} md={4}>
+            <FormControl fullWidth>
+              <Typography variant="subtitle2" gutterBottom>
+                Mutex Constraint
+              </Typography>
+              <Select
+                value={selectedMutex}
+                onChange={(e) => setSelectedMutex(e.target.value)}
+              >
+                <MenuItem value="">
+                  <em>Auswählen</em>
+                </MenuItem>
+                
+              </Select>
+              <Button
+                onClick={() => addConstraint('mutex')}
+                variant="outlined"
+                sx={{ mt: 1 }}
+              >
+                MUTEX HINZUFÜGEN
+              </Button>
+            </FormControl>
+          </Grid>
+
+          {/* implikation constraint */}
+          <Grid item xs={12} md={4}>
+            <FormControl fullWidth>
+              <Typography variant="subtitle2" gutterBottom>
+                Implikation Constraint
+              </Typography>
+              <Select
+                value={selectedImplication}
+                onChange={(e) => setSelectedImplication(e.target.value)}
+              >
+                <MenuItem value="">
+                  <em>Auswählen</em>
+                </MenuItem>
+                
+              </Select>
+              <Button
+                onClick={() => addConstraint('implication')}
+                variant="outlined"
+                sx={{ mt: 1 }}
+              >
+                IMPLIKATION HINZUFÜGEN
+              </Button>
+            </FormControl>
+          </Grid>
+
+          {/* kardinalität constraint */}
+          <Grid item xs={12} md={4}>
+            <FormControl fullWidth>
+              <Typography variant="subtitle2" gutterBottom>
+                Kardinalität Constraint
+              </Typography>
+              <Select
+                value={selectedCardinality}
+                onChange={(e) => setSelectedCardinality(e.target.value)}
+              >
+                <MenuItem value="">
+                  <em>Auswählen</em>
+                </MenuItem>
+                
+              </Select>
+              <Button
+                onClick={() => addConstraint('cardinality')}
+                variant="outlined"
+                sx={{ mt: 1 }}
+              >
+                KARDINALITÄT HINZUFÜGEN
+              </Button>
+            </FormControl>
+          </Grid>
+        </Grid>
+
+        {/* constraint list */}
+        <Box sx={{ mt: 4 }}>
+          <Typography variant="h6" gutterBottom>
+            Hinzugefügte Constraints
+          </Typography>
+          {constraints.length === 0 ? (
+            <Typography color="textSecondary">
+              Sie haben noch keine Constraints hinzugefügt.
+            </Typography>
+          ) : (
+            constraints.map((constraint, index) => (
+              <Typography key={index}>
+                {constraint.type}: {constraint.value}
+              </Typography>
+            ))
+          )}
+        </Box>
+
+        {/* speicher knopf */}
+        <Button
+          variant="contained"
+          onClick={handleSaveStyle}
+          sx={{ mt: 4 }}
+          disabled={!styleName}
+        >
+          STYLE SPEICHERN
+        </Button>
+
+        {/* existierende styles */}
+        <Box sx={{ mt: 4 }}>
+          <Typography variant="h6" gutterBottom>
+            Vorhandene Styles
+          </Typography>
+          {styles.length === 0 ? (
+            <Typography color="textSecondary">
+              Sie haben noch keine Styles gespeichert.
+            </Typography>
+          ) : (
+            styles.map((style, index) => (
+              <Paper key={index} sx={{ p: 2, mt: 2 }}>
+                <Typography variant="subtitle1">{style.getName()}</Typography>
+              </Paper>
+            ))
+          )}
+        </Box>
+      </Paper>
+    </Container>
+  );
+};
+
+export default Styles;
+
+
+
+/*
+import React, { useState, useEffect } from 'react';
+import {
   Typography,
   Grid,
   Card,
@@ -179,3 +421,4 @@ const Styles = () => {
 };
 
 export default Styles;
+*/

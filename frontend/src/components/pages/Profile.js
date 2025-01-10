@@ -1,141 +1,154 @@
 import React, { useState, useEffect } from 'react';
-
 import {
-    Container,
-    TextField,
-    Button,
-    Typography,
-    Paper,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Box
-}  from '@mui/material';
-
+  Container,
+  TextField,
+  Button,
+  Typography,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Box,
+  Alert,
+  CircularProgress
+} from '@mui/material';
 import { useAuth } from '../../context/AuthContext';
 import DigitalWardrobeAPI from '../../api/DigitalWardrobeAPI';
-import UserBO from '../../api/UserBO';
 
 const Profile = () => {
-    const { user } = useAuth();
-    const [editMode, setEditMode] = useState(false);
-    const [UserBO, setUserBO] = useState(null);
-    const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
-        nickName: '',
-    });
-    const [allUsers, setAllUsers] = useState([]);
-    const [error, setError] = useState(null);
+  const { user } = useAuth();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [userBO, setUserBO] = useState(null);
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    nickName: ''
+  });
+  const [allUsers, setAllUsers] = useState([]);
 
-    useEffect(() => {
-        if (user?.uid) {
-            fetchUserData();
-            fetchAllUsers();
-        }
-    }, [user]);
+  // läd user daten 
+  useEffect(() => {
+    if (user?.uid) {
+      loadUserData();
+    }
+  }, [user]);
 
-    const fetchUserData = async () => {
-        try {
-            const users = await DigitalWardrobeAPI.getAPI().getUserByGoogleID(user.uid);
-            if (response) {
-                setUserBO(response);
-                setFormData({
-                    firstname: response.getFirstName(),
-                    lastname: response.getLastName(),
-                    nickname: response.getNickname(),
-                });
-            }
-        } catch (error) {
-            console.error('Error fetching user data:', error);
-            setError('Fehler beim laden der Benutzerdaten');
-        }
-    };
+  // funktion um alle nötigen user daten zu laden
+  const loadUserData = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      // get user daten vom jetzigen nutzer
+      const userData = await DigitalWardrobeAPI.getAPI().getUserByGoogleId(user.uid);
+      if (userData) {
+        setUserBO(userData);
+        setFormData({
+          firstName: userData.getFirstName(),
+          lastName: userData.getLastName(),
+          nickName: userData.getNickname()
+        });
+      }
 
-    const fetchAllUsers = async () => {
-        try {
-            const users = await DigitalWardrobeAPI.getAPI().getUsers();
-            setAllUsers(users);
-        } catch (error) {
-            console.error('Error fetching all users:', error);
-        }
-    };
+      // get alle user aus der tabelle
+      const users = await DigitalWardrobeAPI.getAPI().getUsers();
+      setAllUsers(users);
+    } catch (error) {
+      console.error('Error loading user data:', error);
+      setError('Failed to load user data. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        try {
-            if (UserBO) {
-                const updateUserBO = new UserBO();
-                updateUserBO.setID(UserBO.getID());
-                updateUserBO.setGoogleID(UserBO.getGoogleID());
-                updateUserBO.setFirstName(formData.firstName);
-                updateUserBO.setLastName(formData.lastName);
-                updateUserBO.setNickname(formData.nickName);
-                updateUserBO.setEmail(UserBO.getEmail());
+  // handle form submission
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setError(null);
+    try {
+      if (!userBO) {
+        throw new Error('No user data found');
+      }
 
-                await DigitalWardrobeAPI.getAPI().updateUser(updateUserBO);
-                await fetchAllUsers();
-                setEditMode(false);
-            }
-        } catch (error) {
-            console.error('Error updating profile:', error);
-            setError('Fehler beim aktualisieren des Profils');
-        }
-    };
+      // update user info
+      const updatedUser = {
+        ...userBO,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        nickName: formData.nickName
+      };
 
+      await DigitalWardrobeAPI.getAPI().updateUser(updatedUser);
+      await loadUserData(); // neu laden um updates zu sehen
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      setError('Failed to update profile. Please try again.');
+    }
+  };
+
+  if (loading) {
     return (
-        <Container maxWidth='lg' sx={{mt: 4}}>
-            <Paper elevation={3} sx={{p: 4, mb: 4}}>
-                <Typography variant='h5' gutterBottom>
-                    Profil anlegen
-                </Typography>
+      <Container sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+        <CircularProgress />
+      </Container>
+    );
+  }
 
-                <form onSubmit={handleSubmit}>
-                    <TextField 
-                        fullWidth
-                        label="Vorname"
-                        value={formData.firstName}
-                        onChange={(e) => setFormData({...formData, firstName: e.target.value})}
-                        margin='normal'
-                        required
-                    />
-                    <TextField 
-                        fullWidth
-                        label = "Nachname"
-                        value={formData.value}
-                        onChange={(e) => setFormData({...formData, lastName: e.target.value})}
-                        margin='normal'
-                        required
-                    />
+  return (
+    <Container maxWidth="lg" sx={{ mt: 4 }}>
+      {error && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {error}
+        </Alert>
+      )}
 
-                    <TextField 
-                        fullWidth
-                        label = "Benutzername"
-                        value={formData.nickName}
-                        onChange={(e) => setFormData({...formData, nickName: e.target.value})}
-                        margin='normal'
-                        required
-                    />
+      <Paper elevation={3} sx={{ p: 4, mb: 4 }}>
+        <Typography variant="h5" gutterBottom>
+          Profil anlegen
+        </Typography>
 
-                    <Button
-                        variant='contained'
-                        color='primary'
-                        type='submit'
-                        fullWidth
-                        sx={{ mt: 3 }}
-                    >
-                        PROFIL ANLEGEN
-                    </Button>
+        <form onSubmit={handleSubmit}>
+          <TextField
+            fullWidth
+            label="Vorname"
+            value={formData.firstName}
+            onChange={(e) => setFormData({...formData, firstName: e.target.value})}
+            margin="normal"
+            required
+          />
+          <TextField
+            fullWidth
+            label="Nachname"
+            value={formData.lastName}
+            onChange={(e) => setFormData({...formData, lastName: e.target.value})}
+            margin="normal"
+            required
+          />
+          <TextField
+            fullWidth
+            label="Benutzername"
+            value={formData.nickName}
+            onChange={(e) => setFormData({...formData, nickName: e.target.value})}
+            margin="normal"
+            required
+          />
 
-                </form>
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            fullWidth
+            sx={{ mt: 3 }}
+          >
+            PROFIL ANLEGEN
+          </Button>
+        </form>
+      </Paper>
 
-            </Paper>
-
-            {/* User Tabelle */}
-            <Box sx={{ mt: 4 }}>
+      <Box sx={{ mt: 4 }}>
         <Typography variant="h6" gutterBottom>
           Angelegte Benutzer
         </Typography>
@@ -148,13 +161,12 @@ const Profile = () => {
                 <TableCell>Nachname</TableCell>
                 <TableCell>Benutzername</TableCell>
                 <TableCell>Email</TableCell>
-                <TableCell>Aktionen</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {allUsers.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={6} align="center">
+                  <TableCell colSpan={5} align="center">
                     Keine Benutzer angelegt.
                   </TableCell>
                 </TableRow>
@@ -166,8 +178,6 @@ const Profile = () => {
                     <TableCell>{user.getLastName()}</TableCell>
                     <TableCell>{user.getNickname()}</TableCell>
                     <TableCell>{user.getEmail()}</TableCell>
-                    <TableCell>
-                    </TableCell>
                   </TableRow>
                 ))
               )}

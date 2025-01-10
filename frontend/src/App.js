@@ -1,5 +1,73 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { CssBaseline } from '@mui/material';
+import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'firebase/auth';
+import { auth } from './firebase'
+import { AuthProvider, useAuth } from './context/AuthContext';
+
+// imports
+import Navbar from './components/layout/Navbar';
+import Home from './components/pages/Home';
+import Profile from './components/pages/Profile';
+import Wardrobe from './components/pages/Wardrobe';
+import Outfits from './components/pages/Outfits';
+import Styles from './components/pages/Styles';
+import SignIn from './components/pages/SignIn';
+
+// geschützte route um auth zu checken 
+const ProtectedRoute = ({ children }) => {
+  const { user } = useAuth();
+  return user ? children : <Navigate to="/" />;
+};
+
+// Main App komponente
+const App = () => {
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <CssBaseline />
+        <Navbar />
+        <Routes>
+          {/* öffentliche route - sign in */}
+          <Route path="/" element={<SignIn />} />
+
+          {/* geschützte routen - einsehbar wenn man angemeldet ist */}
+          <Route path="/home" element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          } />
+          <Route path="/profile" element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          } />
+          <Route path="/wardrobe" element={
+            <ProtectedRoute>
+              <Wardrobe />
+            </ProtectedRoute>
+          } />
+          <Route path="/outfits" element={
+            <ProtectedRoute>
+              <Outfits />
+            </ProtectedRoute>
+          } />
+          <Route path="/styles" element={
+            <ProtectedRoute>
+              <Styles />
+            </ProtectedRoute>
+          } />
+        </Routes>
+      </AuthProvider>
+    </BrowserRouter>
+  );
+};
+
+export default App;
+
+/*
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Typography, Button, CssBaseline, Grid,Container, Box, CircularProgress} from '@mui/material';
 import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut} from 'firebase/auth';
 import { auth } from './firebase.js';
@@ -19,7 +87,7 @@ import SignIn from './components/pages/SignIn.js';
 
 //init app
 const AppContent = () => {
-    const { user, loading } = useAuth();
+    const { user, setUser, loading } = useAuth();
 
     //Google SignIn
     const handleGoogleSignIn = async () => {
@@ -101,3 +169,4 @@ const App = () => {
 };
 
 export default App;
+*/

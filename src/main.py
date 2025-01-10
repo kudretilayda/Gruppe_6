@@ -13,10 +13,10 @@ from server.bo.ClothingType import ClothingType
 from server.bo.Constraints.Constraint import Constraint
 from server.bo.Constraints.Unary import UnaryConstraint
 
-# from src.server.bo.Constraints.Binary import BinaryConstraint
-# from src.server.bo.Constraints.Implication import ImplicationConstraint
-# from src.server.bo.Constraints.Cardinality import CardinalityConstraint
-# from src.server.bo.Constraints.Mutex import MutexConstraint
+from server.bo.Constraints.Binary import BinaryConstraint
+from server.bo.Constraints.Implication import ImplicationConstraint
+from server.bo.Constraints.Cardinality import CardinalityConstraint
+from server.bo.Constraints.Mutex import MutexConstraint
 
 from SecurityDecorator import secured
 
@@ -382,6 +382,37 @@ class StyleOperations(Resource):
         style = adm.get_style_by_id(style_id)
         adm.delete_style(style)
         return '', 200
+    
+# Style + Constraint 
+@wardrobe_ns.route('/styles/<int:style_id>/constraints')
+class StyleConstraintsOperations(Resource):
+    @wardrobe_ns.marshal_list_with(constraint)
+    @secured
+    def get(self, style_id):
+        # alle constraints für einen Style 
+        adm = Admin()
+        return adm.get_constraints_by_style(style_id)
+    
+    @wardrobe_ns.marshal_with(constraint, code=201)
+    @wardrobe_ns.expect(constraint)
+    @secured
+
+    def post(self, style_id):
+        # füge eine constraint einem style hinzu
+        adm = Admin()
+        constraint_data = api.payload
+        constraint_type = constraint_data.get('type')
+
+        if constraint_type == 'implication':
+            constraint = ImplicationConstraint.from_dict(constraint_data)
+        elif constraint_type == 'mutex':
+            constraint = MutexConstraint.from_dict(constraint_data)
+        elif constraint_type == 'cardinality':
+            constraint = CardinalityConstraint.from_dict(constraint_data)
+        else:
+            return {'message': 'Invalid constraint type'}, 400
+        
+        return adm.add_constraint_to_style(style_id, constraint), 201
 
 # API Endpoints for Outfits
 
