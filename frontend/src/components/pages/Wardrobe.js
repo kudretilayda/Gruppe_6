@@ -1,174 +1,201 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
-  Typography,
-  Grid,
-  Card,
-  CardContent,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
+  Container,
+  Paper,
   TextField,
-  IconButton,
-  Box,
-  MenuItem,
+  Button,
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   Select,
-  InputLabel,
+  MenuItem,
   FormControl,
-} from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
+  InputLabel,
+  Box,
+  Alert,
+  CircularProgress
+} from '@mui/material';
+import { useAuth } from '../../context/AuthContext';
+import DigitalWardrobeAPI from '../../api/DigitalWardrobeAPI';
 
 const Wardrobe = () => {
-  const [wardrobe, setWardrobe] = useState([]);
-  const [openDialog, setOpenDialog] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
-  const [currentClothingIndex, setCurrentClothingIndex] = useState(null);
-  const [clothingTypes, setClothingTypes] = useState(["T-Shirt", "Hose", "Jacke"]); // Vorhandene Typen
-  const [newType, setNewType] = useState(""); // Neuer Kleidungsstücktyp
-
-  const [newClothing, setNewClothing] = useState({
-    item_name: "",
-    clothing_type: null,
+  // State management with loading and error states for better user experience
+  const { user } = useAuth();
+  const [wardrobe, setWardrobe] = useState(null);
+  const [clothingItems, setClothingItems] = useState([]);
+  const [clothingTypes, setClothingTypes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [newItem, setNewItem] = useState({
+    name: '',
+    typeId: ''
   });
 
-  // Load wardrobe from localStorage when page loads
+  // Load initial data when component mounts
   useEffect(() => {
-    const savedWardrobe = localStorage.getItem("wardrobe");
-    if (savedWardrobe) {
-      setWardrobe(JSON.parse(savedWardrobe));
+    if (user?.uid) {
+      loadInitialData();
     }
-  }, []);
+  }, [user]);
 
-  const handleAddClothing = () => {
-    const updatedWardrobe = [...wardrobe, newClothing];
-    setWardrobe(updatedWardrobe);
+  // Combined function to load all necessary data
+  const loadInitialData = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      // First, get the user's wardrobe
+      const wardrobeData = await DigitalWardrobeAPI.getAPI().getWardrobeByGoogleUserId(user.uid);
+      setWardrobe(wardrobeData);
 
-    // Save to localStorage
-    localStorage.setItem("wardrobe", JSON.stringify(updatedWardrobe));
+      // If we have a wardrobe, load its items
+      if (wardrobeData) {
+        const items = await DigitalWardrobeAPI.getAPI().getClothingItems(wardrobeData.getId());
+        setClothingItems(items);
+      }
 
-    setOpenDialog(false);
-    setNewClothing({ item_name: "", clothing_type: "" });
-  };
-
-  const handleEditClothing = () => {
-    const updatedWardrobe = [...wardrobe];
-    updatedWardrobe[currentClothingIndex] = newClothing;
-    setWardrobe(updatedWardrobe);
-
-    localStorage.setItem("wardrobe", JSON.stringify(updatedWardrobe));
-
-    setOpenDialog(false);
-    setIsEditing(false);
-    setNewClothing({ item_name: "", clothing_type: ""});
-    setCurrentClothingIndex(null);
-  };
-
-  const handleDeleteClothing = (index) => {
-    const updatedWardrobe = wardrobe.filter((_, i) => i !== index);
-    setWardrobe(updatedWardrobe);
-
-    localStorage.setItem("wardrobe", JSON.stringify(updatedWardrobe));
-  };
-
-  const handleAddNewType = () => {
-    if (newType && !clothingTypes.includes(newType)) {
-      setClothingTypes([...clothingTypes, newType]);
-      setNewType("");
+      // Load clothing types regardless of wardrobe status
+      const types = await DigitalWardrobeAPI.getAPI().getClothingTypes();
+      setClothingTypes(types);
+    } catch (error) {
+      console.error('Error loading wardrobe data:', error);
+      setError('Failed to load wardrobe data. Please try again later.');
+    } finally {
+      setLoading(false);
     }
   };
+
+  // Handle form submission for new clothing item
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setError(null);
+    try {
+      if (!wardrobe) {
+        throw new Error('No wardrobe found');
+      }
+
+      // Create and save new clothing item
+      const newClothingItem = {
+        wardrobeId: wardrobe.getId(),
+        name: newItem.name,
+        typeId: newItem.typeId
+      };
+
+      await DigitalWardrobeAPI.getAPI().addClothingItem(wardrobe.getId(), newClothingItem);
+      
+      // Reset form and reload items
+      setNewItem({ name: '', typeId: '' });
+      await loadInitialData();
+    } catch (error) {
+      console.error('Error adding clothing item:', error);
+      setError('Failed to add clothing item. Please try again.');
+    }
+  };
+
+  // Show loading state
+  if (loading) {
+    return (
+      <Container sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+        <CircularProgress />
+      </Container>
+    );
+  }
 
   return (
-    <div className="p-4">
-      <Grid container spacing={3} alignItems="center" className="mb-4">
-        <Grid item xs>
-          <Typography variant="h4">Mein Kleiderschrank</Typography>
-        </Grid>
-        <Grid item>
-          <Button variant="contained" color="primary" onClick={() => setOpenDialog(true)}>
-            Kleidungsstück hinzufügen
-          </Button>
-        </Grid>
-      </Grid>
+    <Container maxWidth="lg" sx={{ mt: 4 }}>
+      {/* Error display */}
+      {error && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {error}
+        </Alert>
+      )}
 
-      <Grid container spacing={3}>
-        {wardrobe.map((clothing, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index}>
-            <Card elevation={3}>
-              <CardContent>
-                <Typography variant="h6">{clothing.item_name}</Typography>
-                <Typography color="textSecondary" paragraph>
-                  Typ: {clothing.clothing_type}
-                </Typography>
-              </CardContent>
-              <Box display="flex" justifyContent="flex-end">
-                <IconButton color="primary" onClick={() => {
-                  setIsEditing(true);
-                  setCurrentClothingIndex(index);
-                  setNewClothing(wardrobe[index]);
-                  setOpenDialog(true);
-                }}>
-                  <EditIcon />
-                </IconButton>
-                <IconButton color="secondary" onClick={() => handleDeleteClothing(index)}>
-                  <DeleteIcon />
-                </IconButton>
-              </Box>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-
-      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-        <DialogTitle>{isEditing ? "Kleidungsstück bearbeiten" : "Neues Kleidungsstück hinzufügen"}</DialogTitle>
-        <DialogContent>
+      {/* Add new clothing item form */}
+      <Paper elevation={3} sx={{ p: 4, mb: 4 }}>
+        <Typography variant="h5" gutterBottom>
+          Neues Kleidungsstück anlegen
+        </Typography>
+        
+        <form onSubmit={handleSubmit}>
           <TextField
             fullWidth
-            margin="normal"
             label="Name des Kleidungsstücks"
-            value={newClothing.item_name}
-            onChange={(e) => setNewClothing({ ...newClothing, item_name: e.target.value })}
+            value={newItem.name}
+            onChange={(e) => setNewItem({...newItem, name: e.target.value})}
+            margin="normal"
             required
           />
-
-          {/* Select Dropdown for Clothing Types */}
+          
           <FormControl fullWidth margin="normal">
-            <InputLabel>Typ des Kleidungsstücks</InputLabel>
+            <InputLabel>Kleidungstyp auswählen</InputLabel>
             <Select
-              value={newClothing.clothing_type || ""}
-              onChange={(e) => setNewClothing({ ...newClothing, clothing_type: e.target.value })}
+              value={newItem.typeId}
+              onChange={(e) => setNewItem({...newItem, typeId: e.target.value})}
               required
             >
-              {clothingTypes.map((type, index) => (
-                <MenuItem key={index} value={type}>
-                  {type}
+              {clothingTypes.map((type) => (
+                <MenuItem key={type.getId()} value={type.getId()}>
+                  {type.getName()}
                 </MenuItem>
               ))}
             </Select>
           </FormControl>
 
-          {/* Option to Add New Clothing Type */}
-          <Box display="flex" gap={1} alignItems="center" marginY={2}>
-            <TextField
-              label="Neuen Typ hinzufügen"
-              value={newType}
-              onChange={(e) => setNewType(e.target.value)}
-            />
-            <Button variant="outlined" onClick={handleAddNewType}>
-              Hinzufügen
-            </Button>
-          </Box>
-
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenDialog(false)}>Abbrechen</Button>
-          <Button onClick={isEditing ? handleEditClothing : handleAddClothing} color="primary">
-            {isEditing ? "Ändern" : "Hinzufügen"}
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            fullWidth
+            sx={{ mt: 3 }}
+          >
+            KLEIDUNGSSTÜCK HINZUFÜGEN
           </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+        </form>
+      </Paper>
+
+      {/* Display clothing items */}
+      <Paper elevation={3} sx={{ p: 4 }}>
+        <Typography variant="h6" gutterBottom>
+          Angelegte Kleidungsstücke
+        </Typography>
+        
+        <TableContainer>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Kleidungsname</TableCell>
+                <TableCell>Kleidungstyp</TableCell>
+                <TableCell>Aktionen</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {clothingItems.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={3} align="center">
+                    Keine Kleidungsstücke vorhanden
+                  </TableCell>
+                </TableRow>
+              ) : (
+                clothingItems.map((item) => (
+                  <TableRow key={item.getId()}>
+                    <TableCell>{item.getName()}</TableCell>
+                    <TableCell>
+                      {clothingTypes.find(t => t.getId() === item.getTypeId())?.getName()}
+                    </TableCell>
+                    <TableCell>
+                      
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Paper>
+    </Container>
   );
 };
 

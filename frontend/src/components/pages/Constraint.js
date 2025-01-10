@@ -1,392 +1,193 @@
-/* import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
+  Container,
+  Paper,
+  Typography,
   FormControl,
-  IconButton,
-  InputLabel,
-  MenuItem,
   Select,
-  TextField,
+  MenuItem,
+  Box,
+  IconButton,
   Tooltip,
-  Typography
+  Grid,
 } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import SaveIcon from '@mui/icons-material/Save';
-import CloseIcon from '@mui/icons-material/Close';
+import { useAuth } from '../../context/AuthContext';
+import DigitalWardrobeAPI from '../../api/DigitalWardrobeAPI';
 
-// Styles should be imported or defined here.
-import './Constraints.css';
+const Constraints = () => {
+  // status constraint manager
+  const [selectedConstraintType, setSelectedConstraintType] = useState('');
+  const [implicationConstraints, setImplicationConstraints] = useState([]);
+  const [mutexConstraints, setMutexConstraints] = useState([]);
+  const [cardinalityConstraints, setCardinalityConstraints] = useState([]);
 
-const Constraints = ({ kleidungstypen, mutex, cardinality, onMutexSave, onCardinalitySave, onDeleteMutex, onDeleteCardinality }) => {
-  const [editMutexIndex, setEditMutexIndex] = useState(null);
-  const [editMutex, setEditMutex] = useState({});
-  const [hasMutexChanges, setHasMutexChanges] = useState(false);
-  const [editCardinalityIndex, setEditCardinalityIndex] = useState(null);
-  const [editCardinality, setEditCardinality] = useState({});
-  const [hasCardinalityChanges, setHasCardinalityChanges] = useState(false);
-  const [openDialog, setOpenDialog] = useState(false);
-  const [dialogMessage, setDialogMessage] = useState('');
-
-  // Helpers
-  const getKleidungstypBezeichnung = (id) => {
-    const typ = kleidungstypen.find((k) => k.id === id);
-    return typ ? typ.bezeichnung : 'Unbekannt';
+  // hilfs text für die constraints
+  const constraintInfo = {
+    implication: "Eine Implikation definiert eine 'Wenn-Dann' Beziehung zwischen Kleidungstypen",
+    mutex: "Ein Mutex verhindert, dass bestimmte Kleidungsstücke zusammen getragen werden",
+    cardinality: "Eine Kardinalität legt fest, wie viele Kleidungsstücke eines Typs verwendet werden müssen"
   };
 
-  const handleDialogOpen = (message) => {
-    setDialogMessage(message);
-    setOpenDialog(true);
+  // handle constraint typ selection
+  const handleConstraintTypeChange = (event) => {
+    setSelectedConstraintType(event.target.value);
   };
 
-  const handleDialogClose = () => {
-    setOpenDialog(false);
-  };
+  // läd vorhandene constraints
+  useEffect(() => {
+    loadConstraints();
+  }, []);
 
-  const handleEditMutexSave = () => {
-    if (onMutexSave) onMutexSave(editMutexIndex, editMutex);
-    setEditMutexIndex(null);
-    setEditMutex({});
-    setHasMutexChanges(false);
-  };
+  // funktion um alle existierenden constraints zu laden
+  const loadConstraints = async () => {
+    try {
+      // API calls um constraints zu laden
+      const implication = await DigitalWardrobeAPI.getAPI().getImplicationConstraints();
+      const mutex = await DigitalWardrobeAPI.getAPI().getMutexConstraints();
+      const cardinality = await DigitalWardrobeAPI.getAPI().getCardinalityConstraints();
 
-  const handleEditCardinalitySave = () => {
-    if (onCardinalitySave) onCardinalitySave(editCardinalityIndex, editCardinality);
-    setEditCardinalityIndex(null);
-    setEditCardinality({});
-    setHasCardinalityChanges(false);
+      setImplicationConstraints(implication || []);
+      setMutexConstraints(mutex || []);
+      setCardinalityConstraints(cardinality || []);
+    } catch (error) {
+      console.error('Error loading constraints:', error);
+    }
   };
 
   return (
-    <Box className="constraints-container">
-      <Card className="constraints-card">
-        <CardContent>
-          <Typography variant="h5" className="constraints-title">
-            Einschränkungen
-          </Typography>
-          <Box className="constraint-section">
+    <Container maxWidth="lg" sx={{ mt: 4 }}>
+      <Paper elevation={3} sx={{ p: 4 }}>
+        <Typography variant="h5" gutterBottom>
+          Neuen Constraint erstellen
+        </Typography>
 
-            {/* Mutex Section }
-            <Card className="constraint-type-card">
-              <Typography variant="h6" className="section-header">
-                Mutex
-                <Tooltip
-                  title="Ein Mutex bedeutet: Zwei ausgewählte Kleidungstypen können nicht zusammen in einem Outfit getragen werden."
-                  placement="right"
-                >
-                  <InfoIcon className="info-icon" />
-                </Tooltip>
-              </Typography>
-              {mutex.length === 0 ? (
-                <Box className="empty-constraint-message">
-                  Kein Mutex gespeichert
-                </Box>
-              ) : (
-                mutex.map((item, index) => (
-                  <Card key={index} className="constraint-item-card">
-                    <CardContent className="constraint-content">
-                      <Box className="constraint-box">
-                        {editMutexIndex === index ? (
-                          <Box className="edit-mode-container">
-                            <FormControl size="small" className="form-control-width">
-                              <InputLabel>Kleidungstyp 1</InputLabel>
-                              <Select
-                                value={editMutex.bezugsobjekt1}
-                                onChange={(e) => {
-                                  setEditMutex({
-                                    ...editMutex,
-                                    bezugsobjekt1: e.target.value
-                                  });
-                                  setHasMutexChanges(true);
-                                }}
-                                label="Kleidungstyp 1"
-                              >
-                                {kleidungstypen.map((typ) => (
-                                  <MenuItem key={typ.id} value={typ.id}>
-                                    {typ.bezeichnung}
-                                  </MenuItem>
-                                ))}
-                              </Select>
-                            </FormControl>
-
-                            <FormControl size="small" className="form-control-width">
-                              <InputLabel>Kleidungstyp 2</InputLabel>
-                              <Select
-                                value={editMutex.bezugsobjekt2}
-                                onChange={(e) => {
-                                  setEditMutex({
-                                    ...editMutex,
-                                    bezugsobjekt2: e.target.value
-                                  });
-                                  setHasMutexChanges(true);
-                                }}
-                                label="Kleidungstyp 2"
-                              >
-                                {kleidungstypen.map((typ) => (
-                                  <MenuItem key={typ.id} value={typ.id}>
-                                    {typ.bezeichnung}
-                                  </MenuItem>
-                                ))}
-                              </Select>
-                            </FormControl>
-                          </Box>
-
-                          <Box sx={{ display: 'flex', gap: 0 }}>
-                            <Tooltip title="Speichern">
-                              <span>
-                                <IconButton
-                                  size="small"
-                                  onClick={handleEditMutexSave}
-                                  color="primary"
-                                  disabled={!hasMutexChanges}
-                                >
-                                  <SaveIcon />
-                                </IconButton>
-                              </span>
-                            </Tooltip>
-                            <Tooltip title="Abbrechen">
-                              <IconButton
-                                size="small"
-                                onClick={() => {
-                                  setEditMutexIndex(null);
-                                  setEditMutex({});
-                                  setHasMutexChanges(false);
-                                }}
-                                color="error"
-                              >
-                                <CloseIcon />
-                              </IconButton>
-                            </Tooltip>
-                          </Box>
-                        ) : (
-                          <>
-                            <Typography className="constraint-text">
-                              <Box component="span" className="constraint-type">
-                                {getKleidungstypBezeichnung(item.bezugsobjekt1)}
-                              </Box>{' '}
-                              und {' '}
-                              <Box component="span" className="constraint-type">
-                                {getKleidungstypBezeichnung(item.bezugsobjekt2)}
-                              </Box>{' '}
-                              können nicht zusammen getragen werden
-                            </Typography>
-                            <Box sx={{ display: 'flex', alignItems: 'center', margin: 0 }}>
-                              <Tooltip title="Bearbeiten">
-                                <IconButton
-                                  color="primary"
-                                  onClick={() => {
-                                    setEditMutexIndex(index);
-                                    setEditMutex(item);
-                                  }}
-                                  size="small"
-                                >
-                                  <EditIcon />
-                                </IconButton>
-                              </Tooltip>
-                              <Tooltip title="Löschen">
-                                <IconButton
-                                  color="error"
-                                  onClick={() => onDeleteMutex(item.id)}
-                                  size="small"
-                                >
-                                  <DeleteIcon />
-                                </IconButton>
-                              </Tooltip>
-                            </Box>
-                          </>
-                        )}
-                      </Box>
-                    </CardContent>
-                  </Card>
-                ))
-              )}
-            </Card>
-
-            {/* Cardinality Section }
-            <Card className="constraint-type-card">
-              <Typography variant="h6" className="section-header">
-                Kardinalitäten
-                <Tooltip
-                  title="Eine Kardinalität legt fest, wie oft ein bestimmter Kleidungstyp in einem Outfit vorkommen muss."
-                  placement="right"
-                >
-                  <InfoIcon className="info-icon" />
-                </Tooltip>
-              </Typography>
-              {cardinality.length === 0 ? (
-                <Box className="empty-constraint-message">
-                  Keine Kardinalitäten gespeichert
-                </Box>
-              ) : (
-                cardinality.map((item, index) => (
-                  <Card key={index} className="constraint-item-card">
-                    <CardContent className="constraint-content">
-                      <Box className="constraint-box">
-                        {editCardinalityIndex === index ? (
-                          <Box className="edit-mode-container">
-                            <FormControl size="small" className="form-control-width">
-                              <InputLabel>Kleidungstyp</InputLabel>
-                              <Select
-                                value={editCardinality.bezugsobjekt}
-                                onChange={(e) => {
-                                  setEditCardinality({
-                                    ...editCardinality,
-                                    bezugsobjekt: e.target.value
-                                  });
-                                  setHasCardinalityChanges(true);
-                                }}
-                                label="Kleidungstyp"
-                              >
-                                {kleidungstypen.map((typ) => (
-                                  <MenuItem key={typ.id} value={typ.id}>
-                                    {typ.bezeichnung}
-                                  </MenuItem>
-                                ))}
-                              </Select>
-                            </FormControl>
-
-                            <TextField
-                              label="Anzahl"
-                              type="number"
-                              size="small"
-                              value={editCardinality.anzahl}
-                              onChange={(e) => {
-                                setEditCardinality({
-                                  ...editCardinality,
-                                  anzahl: e.target.value
-                                });
-                                setHasCardinalityChanges(true);
-                              }}
-                            />
-                          </Box>
-
-                          <Box sx={{ display: 'flex', gap: 0 }}>
-                            <Tooltip title="Speichern">
-                              <span>
-                                <IconButton
-                                  size="small"
-                                  onClick={handleEditCardinalitySave}
-                                  color="primary"
-                                  disabled={!hasCardinalityChanges}
-                                >
-                                  <SaveIcon />
-                                </IconButton>
-                              </span>
-                            </Tooltip>
-                            <Tooltip title="Abbrechen">
-                              <IconButton
-                                size="small"
-                                onClick={() => {
-                                  setEditCardinalityIndex(null);
-                                  setEditCardinality({});
-                                  setHasCardinalityChanges(false);
-                                }}
-                                color="error"
-                              >
-                                <CloseIcon />
-                              </IconButton>
-                            </Tooltip>
-                          </Box>
-                        ) : (
-                          <>
-                            <Typography className="constraint-text">
-                              In einem Outfit {item.anzahl === 1 ? (
-                                <>
-                                  muss genau{' '}
-                                  <Box component="span" className="constraint-number">
-                                    {item.anzahl}
-                                  </Box>{' '}
-                                  <Box component="span" className="constraint-type">
-                                    {getKleidungstypBezeichnung(item.bezugsobjekt)}
-                                  </Box>{' '}
-                                  enthalten sein
-                                </>
-                              ) : (
-                                <>
-                                  müssen genau{' '}
-                                  <Box component="span" className="constraint-number">
-                                    {item.anzahl}
-                                  </Box>{' '}
-                                  <Box component="span" className="constraint-type">
-                                    {getKleidungstypBezeichnung(item.bezugsobjekt)}
-                                  </Box>{' '}
-                                  enthalten sein
-                                </>
-                              )}
-                            </Typography>
-                            <Box className="constraint-actions">
-                              <Tooltip title="Bearbeiten">
-                                <IconButton
-                                  color="primary"
-                                  onClick={() => {
-                                    setEditCardinalityIndex(index);
-                                    setEditCardinality(item);
-                                  }}
-                                  size="small"
-                                >
-                                  <EditIcon />
-                                </IconButton>
-                              </Tooltip>
-                              <Tooltip title="Löschen">
-                                <IconButton
-                                  color="error"
-                                  onClick={() => onDeleteCardinality(item.id)}
-                                  size="small"
-                                >
-                                  <DeleteIcon />
-                                </IconButton>
-                              </Tooltip>
-                            </Box>
-                          </>
-                        )}
-                      </Box>
-                    </CardContent>
-                  </Card>
-                ))
-              )}
-            </Card>
+        {/* constraint typ auswahl */}
+        <FormControl fullWidth sx={{ mt: 2 }}>
+          <Box display="flex" alignItems="center" mb={1}>
+            <Typography variant="subtitle2" component="label">
+              Constraint auswählen*
+            </Typography>
           </Box>
-        </CardContent>
-      </Card>
-
-      {/* Dialog }
-      <Dialog
-        open={openDialog}
-        onClose={handleDialogClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">{"Hinweis"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            {dialogMessage}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={handleDialogClose}
-            variant="contained"
-            className="dialog-button"
-            autoFocus
+          <Select
+            value={selectedConstraintType}
+            onChange={handleConstraintTypeChange}
+            displayEmpty
           >
-            OK
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </Box>
-  );
+            <MenuItem value="" disabled>
+              Bitte wählen Sie ein Constraint Typ aus
+            </MenuItem>
+            <MenuItem value="implication">
+              <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
+                <span>Implikation</span>
+                <Tooltip title={constraintInfo.implication}>
+                  <IconButton size="small">
+                    <InfoIcon fontSize="small" />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+            </MenuItem>
+            <MenuItem value="mutex">
+              <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
+                <span>Mutex</span>
+                <Tooltip title={constraintInfo.mutex}>
+                  <IconButton size="small">
+                    <InfoIcon fontSize="small" />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+            </MenuItem>
+            <MenuItem value="cardinality">
+              <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
+                <span>Kardinalität</span>
+                <Tooltip title={constraintInfo.cardinality}>
+                  <IconButton size="small">
+                    <InfoIcon fontSize="small" />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+            </MenuItem>
+          </Select>
+        </FormControl>
+
+        {/* vorhandene constraints display */}
+        <Box sx={{ mt: 4 }}>
+          {/* implication constraint */}
+          <Box sx={{ mb: 3 }}>
+            <Box display="flex" alignItems="center">
+              <Typography variant="subtitle1" component="h3">
+                Implikation
+              </Typography>
+              <Tooltip title={constraintInfo.implication}>
+                <IconButton size="small">
+                  <InfoIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            </Box>
+            <Typography color="textSecondary">
+              {implicationConstraints.length === 0 
+                ? 'Keine Implikation gespeichert' 
+                : implicationConstraints.map((constraint, index) => (
+                    <Box key={index} sx={{ mt: 1 }}>
+                        <Typography>
+                            Wenn {constraint.if_type}, dann {constraint.then_type}
+                        </Typography>
+                    </Box>
+                ))
+            }
+            </Typography>
+          </Box>
+
+          {/* mutex constraint */}
+          <Box sx={{ mb: 3 }}>
+            <Box display="flex" alignItems="center">
+                <Typography variant="subtitle1" component="h3">
+                Mutex
+                </Typography>
+                <Tooltip title={constraintInfo.mutex}>
+                <IconButton size="small">
+                    <InfoIcon fontSize="small" />
+                </IconButton>
+                </Tooltip>
+            </Box>
+            <Typography color="textSecondary">
+                {mutexConstraints.length === 0 
+                ? 'Kein Mutex gespeichert' 
+                : mutexConstraints.map((constraint, index) => (
+                    <Box key={index} sx={{ mt: 1 }}>
+                        <Typography>
+                        {constraint.mutex.map(([item1, item2]) => 
+                            `${item1} und ${item2} nicht zusammen`
+                        ).join(', ')}
+                    </Typography>
+                    </Box>
+                    ))
+                }
+                </Typography>
+            </Box>
+
+          {/* cardinality constraint */}
+          <Box sx={{ mb: 3 }}>
+            <Box display="flex" alignItems="center">
+              <Typography variant="subtitle1" component="h3">
+                Kardinalitäten
+              </Typography>
+              <Tooltip title={constraintInfo.cardinality}>
+                <IconButton size="small">
+                  <InfoIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            </Box>
+            <Typography color="textSecondary">
+              {cardinalityConstraints.length === 0 
+                ? 'Keine Kardinalität gespeichert' 
+                : {/* Display your cardinality constraints here */}}
+            </Typography>
+          </Box>
+        </Box>
+      </Paper>
+    </Container>
+  )
 };
 
 export default Constraints;
-
-
- */

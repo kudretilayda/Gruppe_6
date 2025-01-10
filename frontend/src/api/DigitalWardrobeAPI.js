@@ -323,25 +323,14 @@ class DigitalWardrobeAPI {
     }
 
     // Constraint Endpoints
-    /*getConstraints(styleId) {
+    getConstraints(styleId) {
         return this.#fetchAdvanced(this.#getConstraintsURL(styleId)).then((responseJSON) => {
             let constraints = ConstraintBO.fromJSON(responseJSON);
             return new Promise(function (resolve) {
                 resolve(constraints);
             });
         });
-    }*/
-
-    async getConstraints(styleId) {
-        try {
-            const responseJSON = await this.#fetchAdvanced(this.#getConstraintsURL(styleId));
-            return ConstraintBO.fromJSON(responseJSON);
-        } catch (error) {
-            console.error(`Failed to fetch constraints for styleId: ${styleId}`, error);
-            throw error; // Gibt den Fehler nach oben weiter
-        }
     }
-
 
     addConstraint(styleId, constraintData) {
         return this.#fetchAdvanced(this.#addConstraintURL(styleId), {
@@ -377,22 +366,6 @@ class DigitalWardrobeAPI {
             });
         });
     }
-
-    async fetchConstraint(url, method = 'GET', data = null) {
-        const options = {
-            method,
-            headers: {'Content-Type': 'application/json'},
-            body: data ? JSON.stringify(data) : null,
-        };
-
-        try {
-            return await this.#fetchAdvanced(url, options);
-        } catch (error) {
-            console.error(`Failed to ${method} constraint at URL: ${url}`, error);
-            throw error;
-        }
-    }
-
 
     // UnaryConstraint Endpoints
     getUnaryConstraints(styleId) {

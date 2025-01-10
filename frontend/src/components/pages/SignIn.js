@@ -1,4 +1,43 @@
 import React from 'react';
+import { Button, Container, Typography, Box } from '@mui/material';
+import { useAuth } from '../../context/AuthContext';
+import GoogleIcon from '@mui/icons-material/Google';
+
+const SignIn = () => {
+    const { signInWithGoogle } = useAuth();
+
+    // funktion um google sign in zu handlen
+    const handleSignIn = () => {
+        signInWithGoogle();
+    };
+
+    return (
+        <Container maxWidth="sm">
+            <Box sx={{ mt: 8, textAlign: 'center' }}>
+                <Typography variant="h4" gutterBottom>
+                    Willkommen im Digitalen Kleiderschrank
+                </Typography>
+
+                <Typography sx={{ mb: 4 }}>
+                    Es scheint, dass Sie noch nicht eingeloggt sind.
+                </Typography>
+
+                <Button
+                    variant="contained"
+                    onClick={handleSignIn}
+                    startIcon={<GoogleIcon />}
+                >
+                    MIT GOOGLE ANMELDEN
+                </Button>
+            </Box>
+        </Container>
+    );
+};
+
+export default SignIn;
+
+/*
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Grid, Typography, Container, Box } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google'
@@ -11,7 +50,7 @@ import GoogleIcon from '@mui/icons-material/Google'
  * @see Siehe Googles [firebase authentication](https://firebase.google.com/docs/web/setup)
  * @see Siehe Googles [firebase API reference](https://firebase.google.com/docs/reference/js)
  *
- */
+ 
 const SignIn = ({ onSignIn }) => {
 	//Button Click handler
 	const handleSignInButtonClicked = () => {
@@ -64,3 +103,4 @@ SignIn.propTypes = {
 };
 
 export default SignIn;
+*/
