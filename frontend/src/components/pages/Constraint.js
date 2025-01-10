@@ -22,7 +22,7 @@ const Constraints = () => {
   const [mutexConstraints, setMutexConstraints] = useState([]);
   const [cardinalityConstraints, setCardinalityConstraints] = useState([]);
 
-  // hilfs text für die constraints
+  // text für die constraints
   const constraintInfo = {
     implication: "Eine Implikation definiert eine 'Wenn-Dann' Beziehung zwischen Kleidungstypen",
     mutex: "Ein Mutex verhindert, dass bestimmte Kleidungsstücke zusammen getragen werden",

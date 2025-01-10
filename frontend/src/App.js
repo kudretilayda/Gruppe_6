@@ -5,48 +5,129 @@ import {AuthProvider, useAuth} from './context/AuthContext';
 
 // imports
 import Navbar from './components/layout/Navbar';
-import Home from './components/pages/Home';
+import Home from './components/pages/Home.js';
 import Profile from './components/pages/Profile';
 import Wardrobe from './components/pages/Wardrobe';
 import Outfits from './components/pages/Outfits';
 import Styles from './components/pages/Styles';
 import SignIn from './components/pages/SignIn';
-import {GoogleAuthProvider, onAuthStateChanged, signInWithPopup} from 'firebase/auth';
+import {GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut} from 'firebase/auth';
 import {auth} from './firebase';
 
 const cors = require('cors')
-// geschützte route um auth zu checken 
+// geschützte route um auth zu checken
 const ProtectedRoute = ({ children }) => {
   const { user } = useAuth();
   console.log("ProtectedRoute - user:", user);
   return user ? children : <Navigate to="/" />;
 };
 
-// Main App komponente
-const App = () => {
 
-	const signInWithGoogle = async () => {
-		const provider = new GoogleAuthProvider();
-		try {
-			const result = await signInWithPopup(auth, provider);
-			console.log("User signed in:", result.user);
-		} catch (error) {
-			console.error("Error during sign-in:", error);
-		}
-	};
+
+// Main App komponente
+const AppContent = () => {
+    const { user } = useAuth();
+
+	const GoogleSignIn = async () => {
+    const provider = new GoogleAuthProvider(); // Use 'GoogleAuthProvider' directly
+    provider.setCustomParameters({ prompt: 'select_account' });
+    try {
+        await signInWithPopup(auth, provider); // Use 'provider' directly here
+    } catch (error) {
+        alert(error.message);
+    }};
+
+    const SignOut = async () => {
+        try {
+            await signOut(auth);
+        }   catch (error) {
+            console.error('Error signing out:', error);
+        }
+    };
 
     return (
-        <BrowserRouter>
-          <AuthProvider>
-            <CssBaseline />
-            <Navbar />
+        <><CssBaseline />
+            <Navbar user={user} onLogout={SignOut} />
+
             <Routes>
-          {/* öffentliche route - sign in */}
+                <Route path="/"  element={
+                    user ? (
+                        <Home />
+                    ) : (
+                        <SignIn onSignIn = {GoogleSignIn} />
+                    )
+                }
+                />
+
+                <Route path="/Home"  element={user ? <Home /> : <Navigate to="/" replace/>}
+                />
+
+                <Route
+                    path="/wardrobe"
+                    element={user ? <Wardrobe /> : <Navigate to="/" replace />}
+                />
+                <Route
+                    path="/styles"
+                    element={user ? <Styles /> : <Navigate to="/" replace />}
+                />
+                <Route
+                    path="/outfits"
+                    element={user ? <Outfits /> : <Navigate to="/" replace />}
+                />
+
+                <Route
+                    path="/profile"
+                    element={user ? <Profile /> : <Navigate to="/" replace />}
+                />
+            </Routes>
+        </>
+    );
+};
+
+const App = () => {
+    return (
+        <BrowserRouter>
+            <AuthProvider>
+                <CssBaseline/>
+                <AppContent/>
+            </AuthProvider>
+        </BrowserRouter>
+    );
+};
+
+export default App;
+/*
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { CssBaseline } from '@mui/material';
+import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'firebase/auth';
+import { auth } from './firebase'
+import { AuthProvider, useAuth } from './context/AuthContext';
+
+// imports
+import Navbar from './components/layout/Navbar';
+import Home from './components/pages/Home';
+import Profile from './components/pages/Profile';
+import Wardrobe from './components/pages/Wardrobe';
+import Outfits from './components/pages/Outfits';
+import Styles from './components/pages/Styles';
+import SignIn from './components/pages/SignIn';
+
+// geschützte route um auth zu checken
+
+
+// Main App komponente
+const App = () => {
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <CssBaseline />
+        <Navbar />
+        <Routes>
+          {/* öffentliche route - sign in }
           <Route path="/" element={<SignIn />} />
-          <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
 
-
-          {/* geschützte routen - einsehbar wenn man angemeldet ist */}
+          {/* geschützte routen - einsehbar wenn man angemeldet ist }
           <Route path="/home" element={
             <ProtectedRoute>
               <Home />
@@ -77,7 +158,7 @@ const App = () => {
     </BrowserRouter>
   );
 };
-App.use(cors());
+
 export default App;
 
 /*
@@ -117,13 +198,7 @@ const AppContent = () => {
     };
 
     //SignOut
-    const handleSignOut = async () => {
-        try {
-            await signOut(auth);
-        }   catch (error) {
-            console.error('Error signing out:', error);
-        }
-    };
+
 
     if (loading) {
         return (
@@ -136,7 +211,7 @@ const AppContent = () => {
     return (
         <><CssBaseline />
             <Navbar user={user} onLogout={handleSignOut} />
-            
+
             <Routes>
                 <Route path="/" element={
                     user ? (
@@ -148,19 +223,19 @@ const AppContent = () => {
                 />
 
                 <Route
-                    path="/wardrobe" 
-                    element={user ? <Wardrobe /> : <Navigate to="/" replace />} 
+                    path="/wardrobe"
+                    element={user ? <Wardrobe /> : <Navigate to="/" replace />}
                 />
                     <Route
                     path="/styles"
-                    element={user ? <Styles /> : <Navigate to="/" replace />} 
+                    element={user ? <Styles /> : <Navigate to="/" replace />}
                 />
-                <Route 
-                    path="/outfits" 
+                <Route
+                    path="/outfits"
                     element={user ? <Outfits /> : <Navigate to="/" replace />}
                 />
-                <Route 
-                    path="/profile" 
+                <Route
+                    path="/profile"
                     element={user ? <Profile /> : <Navigate to="/" replace />}
                 />
                 <Route
