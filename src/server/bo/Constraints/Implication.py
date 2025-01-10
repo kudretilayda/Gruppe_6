@@ -23,3 +23,13 @@ class ImplicationConstraint(Constraint):
             return False
         else:
             return True
+
+    # static method    
+    def from_dict(dictionary=None):
+        if dictionary is None:
+            dictionary = dict()
+        constraint = ImplicationConstraint()
+        constraint.set_id(dictionary.get("id", 0))
+        constraint.if_type = dictionary.get("if_type")
+        constraint.then_type = dictionary.get("then_type")
+        return constraint
