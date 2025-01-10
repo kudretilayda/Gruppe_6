@@ -78,7 +78,7 @@ export default class ClothingEntryBO extends BusinessObject {
     static fromJSON(clothingEntries) {
         return clothingEntries.map(f => {
             // Erzeugt eine neue Instanz von ClothingEntry basierend auf den JSON-Daten.
-            let clothingEntry = new ClothingEntry(
+            let clothingEntry = new clothingEntries(
                 f.designation,
                 f.quantity,
                 f.unit,

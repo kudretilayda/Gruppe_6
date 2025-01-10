@@ -112,6 +112,8 @@ import Wardrobe from './components/pages/Wardrobe';
 import Outfits from './components/pages/Outfits';
 import Styles from './components/pages/Styles';
 import SignIn from './components/pages/SignIn';
+import Constraints from './components/pages/Constraints';
+import Settings from './components/pages/Settings';
 
 // geschützte route um auth zu checken
 
@@ -151,6 +153,16 @@ const App = () => {
           <Route path="/styles" element={
             <ProtectedRoute>
               <Styles />
+            </ProtectedRoute>
+          } />
+          <Route path="/constraints" element={ 
+            <ProtectedRoute>
+              <Constraints />
+            </ProtectedRoute>
+          } />
+          <Route path="/Settings" element={ 
+            <ProtectedRoute>
+              <Settings />
             </ProtectedRoute>
           } />
         </Routes>

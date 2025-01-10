@@ -96,3 +96,45 @@ class ClothingItemMapper(Mapper):
 
         self._cnx.commit()
         cursor.close()
+
+    def suggest_complementary_items(self, selected_item_ids):
+        """Schlägt Kleidungsstücke vor, um ein Outfit zu vervollständigen."""
+        cursor = self._cnx.cursor()
+
+        # 1. Kategorien der ausgewählten Kleidungsstücke abrufen
+        cursor.execute(f"""
+            SELECT DISTINCT clothing_type_id 
+            FROM digital_wardrobe.clothing_item 
+            WHERE id IN ({','.join(map(str, selected_item_ids))})
+        """)
+        selected_types = {row[0] for row in cursor.fetchall()}
+
+        # 2. Definiere vollständiges Outfit (Regeln)
+        required_types = {1, 2, 3}  # Beispiel: 1 = Shirt, 2 = Pants, 3 = Shoes
+
+        # 3. Fehlende Typen ermitteln
+        missing_types = required_types - selected_types
+
+        # 4. Kleidungsstücke für die fehlenden Typen vorschlagen
+        if missing_types:
+            cursor.execute(f"""
+                SELECT * 
+                FROM digital_wardrobe.clothing_item 
+                WHERE clothing_type_id IN ({','.join(map(str, missing_types))})
+            """)
+            tuples = cursor.fetchall()
+
+            suggestions = []
+            for (item_id, wardrobe_id, clothing_type_id, clothing_item_name) in tuples:
+                clothing_item = ClothingItem()
+                clothing_item.set_id(item_id)
+                clothing_item.set_wardrobe_id(wardrobe_id)
+                clothing_item.set_clothing_type(clothing_type_id)
+                clothing_item.set_item_name(clothing_item_name)
+                suggestions.append(clothing_item)
+            
+            cursor.close()
+            return suggestions
+        else:
+            cursor.close()
+            return []  # Kein fehlendes Kleidungsstück
