@@ -58,6 +58,8 @@ const Outfits = ({ wardrobeItems = [] }) => {
   const [selectedTab, setSelectedTab] = useState(0);
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedStyle, setSelectedStyle] = useState('');
+  const [selectedWardrobeItem, setSelectedWardrobeItem] = useState(null);
+  const [filteredOutfits, setFilteredOutfits] = useState([]);
   
   const [newOutfit, setNewOutfit] = useState({
     outfit_name: '',
@@ -65,7 +67,7 @@ const Outfits = ({ wardrobeItems = [] }) => {
     style: null,
   });
 
-  // Lade Styles und Outfits beim Start
+  // Load Styles and Outfits on start
   useEffect(() => {
     const savedStyles = localStorage.getItem('styles');
     const savedOutfits = localStorage.getItem('outfits');
@@ -82,15 +84,34 @@ const Outfits = ({ wardrobeItems = [] }) => {
     const styleId = e.target.value;
     const selectedStyle = styles.find(style => style.name === styleId);
     setSelectedStyle(styleId);
-    if (selectedStyle) {
-      setCurrentStep(2);
+
+    // If on the filter tab, filter outfits by style
+    if (selectedTab === 2) {
+      const filtered = outfits.filter(outfit => outfit.style === styleId);
+      setFilteredOutfits(filtered);
+    } else {
+      if (selectedStyle) {
+        setCurrentStep(2);
+      }
     }
+  };
+
+  const handleWardrobeItemSelect = (item) => {
+    setSelectedWardrobeItem(item);
+    // Find outfits containing this specific item
+    const filtered = outfits.filter(outfit => 
+      outfit.items.some(itemId => itemId === item.id)
+    );
+    setFilteredOutfits(filtered);
+    setCurrentStep(3);
   };
 
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
     setCurrentStep(1);
     setSelectedStyle('');
+    setSelectedWardrobeItem(null);
+    setFilteredOutfits([]);
   };
 
   const saveOutfits = (updatedOutfits) => {
@@ -109,6 +130,56 @@ const Outfits = ({ wardrobeItems = [] }) => {
     const updatedOutfits = outfits.filter((_, i) => i !== index);
     saveOutfits(updatedOutfits);
   };
+
+  const renderFilteredOutfits = (filterList) => (
+    <Grid container spacing={3}>
+      {filterList.map((outfit, index) => (
+        <Grid item xs={12} sm={6} md={4} key={index}>
+          <Card elevation={3}>
+            <CardContent>
+              <Typography variant="h6">{outfit.outfit_name}</Typography>
+              <Typography color="textSecondary" paragraph>
+                Style: {outfit.style || 'Kein Style ausgewählt'}
+              </Typography>
+              <Box display="flex" flexWrap="wrap">
+                {outfit.items.map((itemId, i) => (
+                  <Chip
+                    key={i}
+                    label={wardrobeItems.find(item => item.id === itemId)?.item_name}
+                    style={{
+                      margin: '0.25rem',
+                      backgroundColor: '#e0e0e0',
+                      color: '#333',
+                      borderRadius: '16px',
+                    }}
+                  />
+                ))}
+              </Box>
+            </CardContent>
+            <CardActions>
+              <IconButton
+                color="primary"
+                onClick={() => {
+                  setIsEditing(true);
+                  setCurrentOutfitIndex(index);
+                  setNewOutfit(outfit);
+                  setOpenDialog(true);
+                }}
+              >
+                <EditIcon />
+              </IconButton>
+              <IconButton
+                color="secondary"
+                onClick={() => handleDeleteOutfit(index)}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </CardActions>
+          </Card>
+        </Grid>
+      ))}
+    </Grid>
+  );
 
   return (
     <div className="p-4">
@@ -181,6 +252,44 @@ const Outfits = ({ wardrobeItems = [] }) => {
           <Typography variant="h6" gutterBottom>
             Wählen Sie ein Kleidungsstück aus Ihrem Kleiderschrank
           </Typography>
+          <Grid container spacing={2}>
+            {wardrobeItems.map((item) => (
+              <Grid item xs={6} sm={4} md={3} key={item.id}>
+                <Card 
+                  onClick={() => handleWardrobeItemSelect(item)}
+                  sx={{ 
+                    cursor: 'pointer', 
+                    '&:hover': { 
+                      boxShadow: 3,
+                      backgroundColor: 'action.hover' 
+                    }
+                  }}
+                >
+                  <CardContent>
+                    <Typography>{item.item_name}</Typography>
+                    <Typography variant="body2" color="textSecondary">
+                      {item.category}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+
+          {selectedWardrobeItem && currentStep === 3 && (
+            <Box mt={4}>
+              <Typography variant="h6" gutterBottom>
+                Outfits mit {selectedWardrobeItem.item_name}
+              </Typography>
+              {filteredOutfits.length > 0 ? (
+                renderFilteredOutfits(filteredOutfits)
+              ) : (
+                <Typography color="textSecondary">
+                  Keine Outfits mit diesem Kleidungsstück gefunden.
+                </Typography>
+              )}
+            </Box>
+          )}
         </TabPanel>
 
         <TabPanel value={selectedTab} index={2}>
@@ -203,6 +312,21 @@ const Outfits = ({ wardrobeItems = [] }) => {
               ))}
             </Select>
           </FormControl>
+
+          {selectedStyle && (
+            <Box mt={4}>
+              <Typography variant="h6" gutterBottom>
+                Outfits im {selectedStyle} Style
+              </Typography>
+              {filteredOutfits.length > 0 ? (
+                renderFilteredOutfits(filteredOutfits)
+              ) : (
+                <Typography color="textSecondary">
+                  Keine Outfits in diesem Style gefunden.
+                </Typography>
+              )}
+            </Box>
+          )}
         </TabPanel>
       </Paper>
 
@@ -269,6 +393,30 @@ const Outfits = ({ wardrobeItems = [] }) => {
           </Grid>
         ))}
       </Grid>
+
+      {/* Dialog for creating/editing outfits */}
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+        <DialogTitle>{isEditing ? 'Outfit bearbeiten' : 'Neues Outfit erstellen'}</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Outfit Name"
+            fullWidth
+            value={newOutfit.outfit_name}
+            onChange={(e) => setNewOutfit({...newOutfit, outfit_name: e.target.value})}
+          />
+          {/* You could add more fields here for selecting wardrobe items */}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)} color="primary">
+            Abbrechen
+          </Button>
+          <Button onClick={handleAddOutfit} color="primary">
+            Speichern
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

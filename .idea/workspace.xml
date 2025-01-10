@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0b36f84f-6ad4-4404-a25a-055e1c7ce6fe" name="Changes" comment="" />
+    <list default="true" id="0b36f84f-6ad4-4404-a25a-055e1c7ce6fe" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/pages/Outfits.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/pages/Outfits.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -117,7 +120,7 @@
       <recent name="C:\Users\serta\Documents\GitHub\Gruppe_6\src\server" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.test_connection">
+  <component name="RunManager" selected="Python.main">
     <configuration name="Home.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/frontend/src/components/pages/Home.js" working-dir="$PROJECT_DIR$/frontend/src/components/pages">
       <method v="2" />
     </configuration>
@@ -174,8 +177,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.test_connection" />
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.test_connection" />
       </list>
     </recent_temporary>
   </component>
