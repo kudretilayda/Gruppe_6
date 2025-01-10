@@ -10,13 +10,12 @@ from server.bo.Outfit import Outfit
 from server.bo.ClothingItem import ClothingItem
 from server.bo.ClothingType import ClothingType
 
-from server.bo.Constraints.Constraint import Constraint
-from server.bo.Constraints.Unary import UnaryConstraint
-
-from server.bo.Constraints.Binary import BinaryConstraint
-from server.bo.Constraints.Implication import ImplicationConstraint
-from server.bo.Constraints.Cardinality import CardinalityConstraint
-from server.bo.Constraints.Mutex import MutexConstraint
+# from src.server.bo.Constraints.Constraint import Constraint
+# from src.server.bo.Constraints.Unary import UnaryConstraint
+# from src.server.bo.Constraints.Binary import BinaryConstraint
+# from src.server.bo.Constraints.Implication import ImplicationConstraint
+# from src.server.bo.Constraints.Cardinality import CardinalityConstraint
+# from src.server.bo.Constraints.Mutex import MutexConstraint
 
 from SecurityDecorator import secured
 
@@ -26,15 +25,20 @@ app = Flask(__name__)
 # Cors insanziieren
 # CORS(app, resources={r"/api/":{"origins":"*"}})
 CORS(app, resources={
-    r"/*": {  # This allows all routes
-        "origins": ["http://localhost:3000", "http://127.0.0.1:3000"],  # Both localhost variations
-        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],  # All needed HTTP methods
-        "allow_headers": ["Content-Type", "Authorization"],  # Required headers
-        "supports_credentials": True  # Important for authenticated requests
+    r"/*": {
+        "origins": ["http://localhost:3000"],
+        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization"],
+        "supports_credentials": True
     }
 })
-
 # CORS(app, supports_credentials=True, resources=r'/wardrobe')
+
+# Sicherheitsheader
+@app.after_request
+def add_security_headers(response):
+    response.headers['Cross-Origin-Opener-Policy'] = 'unsafe-none'
+    return response
 
 # API für Datenstruktur
 api = Api(app, version='1.0', title='Digital Wardrobe',
@@ -202,6 +206,39 @@ class UserWardrobeOperations(Resource):
         else:
             return '', 500
 
+@wardrobe_ns.route('/user-by-google-id/<google_id>')
+@wardrobe_ns.response(404, 'User not found')
+@wardrobe_ns.param('google_id', 'Google ID of the user')
+class UserByGoogleIdOperations(Resource):
+    @wardrobe_ns.marshal_with(user)
+    def get(self, google_id):
+        """Get a user by Google ID"""
+        adm = Admin()
+        user = adm.get_user_by_google_id(google_id)
+        if user:
+            return user, 200
+        else:
+            return "User not found", 404
+
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+
+@wardrobe_ns.route('/user-by-google-id/<string:google_id>')
+class UserByGoogleIdOperations(Resource):
+    @wardrobe_ns.marshal_with(user)
+    def get(self, google_id):
+        try:
+            adm = Admin()
+            user = adm.get_user_by_google_id(google_id)
+            if user:
+                return user, 200
+            return "User not found", 404
+        except Exception as e:
+            logging.error(f"Error fetching user by Google ID {google_id}: {e}")
+            return "Internal Server Error", 500
+
+
 # API Endpoints for Wardrobe
 
 @wardrobe_ns.route('/wardrobes/<int:wardrobe_id>')
@@ -299,6 +336,7 @@ class ClothingItemOperations(Resource):
         adm.delete_clothing_item(item)
         return '', 200
 
+
 # API Endpoints for ClothingType
 
 @wardrobe_ns.route('/clothing-types')
@@ -383,37 +421,6 @@ class StyleOperations(Resource):
         style = adm.get_style_by_id(style_id)
         adm.delete_style(style)
         return '', 200
-    
-# Style + Constraint 
-@wardrobe_ns.route('/styles/<int:style_id>/constraints')
-class StyleConstraintsOperations(Resource):
-    @wardrobe_ns.marshal_list_with(constraint)
-    @secured
-    def get(self, style_id):
-        # alle constraints für einen Style 
-        adm = Admin()
-        return adm.get_constraints_by_style(style_id)
-    
-    @wardrobe_ns.marshal_with(constraint, code=201)
-    @wardrobe_ns.expect(constraint)
-    @secured
-
-    def post(self, style_id):
-        # füge eine constraint einem style hinzu
-        adm = Admin()
-        constraint_data = api.payload
-        constraint_type = constraint_data.get('type')
-
-        if constraint_type == 'implication':
-            constraint = ImplicationConstraint.from_dict(constraint_data)
-        elif constraint_type == 'mutex':
-            constraint = MutexConstraint.from_dict(constraint_data)
-        elif constraint_type == 'cardinality':
-            constraint = CardinalityConstraint.from_dict(constraint_data)
-        else:
-            return {'message': 'Invalid constraint type'}, 400
-        
-        return adm.add_constraint_to_style(style_id, constraint), 201
 
 # API Endpoints for Outfits
 

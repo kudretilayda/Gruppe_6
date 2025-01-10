@@ -169,32 +169,25 @@ const Constraints = () => {
           {/* cardinality constraint */}
           <Box sx={{ mb: 3 }}>
             <Box display="flex" alignItems="center">
-                <Typography variant="subtitle1" component="h3">
+              <Typography variant="subtitle1" component="h3">
                 Kardinalitäten
-                </Typography>
-                <Tooltip title={constraintInfo.cardinality}>
+              </Typography>
+              <Tooltip title={constraintInfo.cardinality}>
                 <IconButton size="small">
-                    <InfoIcon fontSize="small" />
+                  <InfoIcon fontSize="small" />
                 </IconButton>
-                </Tooltip>
+              </Tooltip>
             </Box>
             <Typography color="textSecondary">
-                {cardinalityConstraints.length === 0 
+              {cardinalityConstraints.length === 0 
                 ? 'Keine Kardinalität gespeichert' 
-                : cardinalityConstraints.map((constraint, index) => (
-                    <Box key={index} sx={{ mt: 1 }}>
-                        <Typography>
-                        {`${constraint.objects} muss zwischen ${constraint.min_count} und ${constraint.max_count} mal vorkommen`}
-                        </Typography>
-                    </Box>
-                    ))
-                }
+                : {/* Display your cardinality constraints here */}}
             </Typography>
-            </Box>
+          </Box>
         </Box>
       </Paper>
     </Container>
-  );
+  )
 };
 
 export default Constraints;
