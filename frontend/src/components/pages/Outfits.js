@@ -249,48 +249,46 @@ const Outfits = ({ wardrobeItems = [] }) => {
         </TabPanel>
 
         <TabPanel value={selectedTab} index={1}>
-          <Typography variant="h6" gutterBottom>
-            Wählen Sie ein Kleidungsstück aus Ihrem Kleiderschrank
-          </Typography>
-          <Grid container spacing={2}>
-            {wardrobeItems.map((item) => (
-              <Grid item xs={6} sm={4} md={3} key={item.id}>
-                <Card 
-                  onClick={() => handleWardrobeItemSelect(item)}
-                  sx={{ 
-                    cursor: 'pointer', 
-                    '&:hover': { 
-                      boxShadow: 3,
-                      backgroundColor: 'action.hover' 
-                    }
-                  }}
-                >
-                  <CardContent>
-                    <Typography>{item.item_name}</Typography>
-                    <Typography variant="body2" color="textSecondary">
-                      {item.category}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
+  <Typography variant="h6" gutterBottom>
+    Wählen Sie ein Kleidungsstück aus Ihrem Kleiderschrank
+  </Typography>
+  <FormControl fullWidth>
+    <Select
+      value={selectedWardrobeItem?.id || ''}
+      onChange={(e) => {
+        const itemId = e.target.value;
+        const selectedItem = wardrobeItems.find(item => item.id === itemId);
+        handleWardrobeItemSelect(selectedItem);
+      }}
+      displayEmpty
+    >
+      <MenuItem value="" disabled>
+        Kleidungsstück auswählen
+      </MenuItem>
+      {wardrobeItems.map((item) => (
+        <MenuItem key={item.id} value={item.id}>
+          {item.item_name}
+        </MenuItem>
+      ))}
+    </Select>
+  </FormControl>
 
-          {selectedWardrobeItem && currentStep === 3 && (
-            <Box mt={4}>
-              <Typography variant="h6" gutterBottom>
-                Outfits mit {selectedWardrobeItem.item_name}
-              </Typography>
-              {filteredOutfits.length > 0 ? (
-                renderFilteredOutfits(filteredOutfits)
-              ) : (
-                <Typography color="textSecondary">
-                  Keine Outfits mit diesem Kleidungsstück gefunden.
-                </Typography>
-              )}
-            </Box>
-          )}
-        </TabPanel>
+  {selectedWardrobeItem && currentStep === 3 && (
+    <Box mt={4}>
+      <Typography variant="h6" gutterBottom>
+        Outfits mit {selectedWardrobeItem.item_name}
+      </Typography>
+      {filteredOutfits.length > 0 ? (
+        renderFilteredOutfits(filteredOutfits)
+      ) : (
+        <Typography color="textSecondary">
+          Keine Outfits mit diesem Kleidungsstück gefunden.
+        </Typography>
+      )}
+    </Box>
+  )}
+</TabPanel>
+
 
         <TabPanel value={selectedTab} index={2}>
           <Typography variant="h6" gutterBottom>
