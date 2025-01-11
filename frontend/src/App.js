@@ -11,16 +11,18 @@ import Wardrobe from './components/pages/Wardrobe';
 import Outfits from './components/pages/Outfits';
 import Styles from './components/pages/Styles';
 import SignIn from './components/pages/SignIn';
+import Settings from './components/pages/Settings';
+
 import {GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut} from 'firebase/auth';
 import {auth} from './firebase';
 
-const cors = require('cors')
+/*const cors = require('cors')
 // geschützte route um auth zu checken
 const ProtectedRoute = ({ children }) => {
   const { user } = useAuth();
   console.log("ProtectedRoute - user:", user);
   return user ? children : <Navigate to="/" />;
-};
+};*/
 
 
 
@@ -59,17 +61,21 @@ const AppContent = () => {
                 }
                 />
 
-                <Route path="/Home"  element={user ? <Home /> : <Navigate to="/" replace/>}
+                <Route
+                    path="/Home"
+                    element={user ? <Home /> : <Navigate to="/" replace/>}
                 />
 
                 <Route
                     path="/wardrobe"
                     element={user ? <Wardrobe /> : <Navigate to="/" replace />}
                 />
+
                 <Route
                     path="/styles"
                     element={user ? <Styles /> : <Navigate to="/" replace />}
                 />
+
                 <Route
                     path="/outfits"
                     element={user ? <Outfits /> : <Navigate to="/" replace />}
@@ -79,6 +85,11 @@ const AppContent = () => {
                     path="/profile"
                     element={user ? <Profile /> : <Navigate to="/" replace />}
                 />
+                <Route
+                    path="/Settings"
+                    element={user ? <Profile /> : <Navigate to="/" replace />}
+                />
+
             </Routes>
         </>
     );
@@ -151,86 +162,6 @@ const App = () => {
           <Route path="/styles" element={
             <ProtectedRoute>
               <Styles />
-            </ProtectedRoute>
-          } />
-        </Routes>
-      </AuthProvider>
-    </BrowserRouter>
-  );
-};
-
-export default App;
-
-/*
-import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { CssBaseline } from '@mui/material';
-import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'firebase/auth';
-import { auth } from './firebase'
-import { AuthProvider, useAuth } from './context/AuthContext';
-
-// imports
-import Navbar from './components/layout/Navbar';
-import Home from './components/pages/Home';
-import Profile from './components/pages/Profile';
-import Wardrobe from './components/pages/Wardrobe';
-import Outfits from './components/pages/Outfits';
-import Styles from './components/pages/Styles';
-import SignIn from './components/pages/SignIn';
-import Constraints from './components/pages/Constraints';
-import Settings from './components/pages/Settings';
-
-// geschützte route um auth zu checken 
-const ProtectedRoute = ({ children }) => {
-  const { user } = useAuth();
-  return user ? children : <Navigate to="/" />;
-};
-
-// Main App komponente
-const App = () => {
-  return (
-    <BrowserRouter>
-      <AuthProvider>
-        <CssBaseline />
-        <Navbar />
-        <Routes>
-          {/* öffentliche route - sign in */}
-          <Route path="/" element={<SignIn />} />
-
-          {/* geschützte routen - einsehbar wenn man angemeldet ist */}
-          <Route path="/home" element={
-            <ProtectedRoute>
-              <Home />
-            </ProtectedRoute>
-          } />
-          <Route path="/profile" element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          } />
-          <Route path="/wardrobe" element={
-            <ProtectedRoute>
-              <Wardrobe />
-            </ProtectedRoute>
-          } />
-          <Route path="/outfits" element={
-            <ProtectedRoute>
-              <Outfits />
-            </ProtectedRoute>
-          } />
-          <Route path="/styles" element={
-            <ProtectedRoute>
-              <Styles />
-            </ProtectedRoute>
-          } />
-          <Route path="/constraints" element={ 
-            <ProtectedRoute>
-              <Constraints />
-            </ProtectedRoute>
-          } />
-          <Route path="/Settings" element={ 
-            <ProtectedRoute>
-              <Settings />
             </ProtectedRoute>
           } />
         </Routes>
