@@ -11,7 +11,7 @@ class UnaryConstraint(Constraint):
         # Attribut zur Darstellung des Stils eines Outfits
         self.style = None
 
-    
+
     # Überprüft, ob alle Kleidungsstücke im Outfit zum definierten Stil passen
     def validate(self, outfit):
         # Iteriere über alle Kleidungsstücke im Outfit
