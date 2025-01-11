@@ -166,16 +166,17 @@ class DigitalWardrobeAPI {
     }
 
     // Get user by Google ID
-   /* async getUserByGoogleId(googleId) {
-        const response = await fetch(`http://localhost:3000/${googleId}`, { // problematisch
-            method: 'GET',
-            credentials: 'include',
-        });
-        if (!response.ok) {
-            throw new Error(`Failed to fetch user by Google ID: ${response.status}`);
-        }
-        return await response.json();
-    }*/
+    /* async getUserByGoogleId(googleId) {
+         const response = await fetch(`http://localhost:3000/${googleId}`, { // problematisch
+             method: 'GET',
+             credentials: 'include',
+         });
+         if (!response.ok) {
+             throw new Error(`Failed to fetch user by Google ID: ${response.status}`);
+         }
+         return await response.json();
+     }*/
+
     async getUserByGoogleId(googleId) {
         const response = await fetch(`/api/users/google/${googleId}`, {
             method: 'GET',
@@ -186,6 +187,8 @@ class DigitalWardrobeAPI {
         if (!response.ok) {
             throw new Error(`API error: ${response.status}`);
         }
+        const api = DigitalWardrobeAPI.getAPI();
+        console.log("Available methods in API:", Object.keys(api));
         return await response.json();
     }
 
@@ -214,13 +217,21 @@ class DigitalWardrobeAPI {
     }
 
     // Methode für das Abrufen der WardrobeId für die Google User ID
-    getWardrobeIdByGoogleUserId(google_id) {
+    /*getWardrobeIdByGoogleUserId(google_id) {
         return this.#fetchAdvanced(this.#getWardrobeByGoogleIdURL(google_id))
             .then((responseJSON) => {
                 // Hier anpassen, je nachdem wie die Daten strukturiert sind, aber
                 // wir gehen davon aus, dass die `wardrobeId` vom Server zurückgegeben wird.
                 return responseJSON.wardrobeId; // Beispiel, wie du die ID extrahierst
             });
+    }*/
+
+    getWardrobeByGoogleUserId = async (googleUserId) => {
+        const response = await fetch(`/api/wardrobe/${googleUserId}`);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch wardrobe: ${response.status}`);
+        }
+        return await response.json();
     }
 
     // Add a new wardrobe
@@ -316,7 +327,15 @@ class DigitalWardrobeAPI {
     }
 
     // Get all styles
-    getStyles() {
+    async getStyles() {
+        const response = await fetch("http://localhost:3000/styles", {
+            method: "GET",
+            credentials: "include", // Wichtig für Authentifizierungsdaten
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
         return this.#fetchAdvanced(this.#getStylesURL()).then((responseJSON) => {
             let styleBOs = StyleBO.fromJSON(responseJSON);
             return Promise.resolve(styleBOs);

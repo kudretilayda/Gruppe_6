@@ -37,7 +37,8 @@ CORS(app, resources={
 # Sicherheitsheader
 @app.after_request
 def add_security_headers(response):
-    response.headers['Cross-Origin-Opener-Policy'] = 'unsafe-none'
+    response.headers.pop("Cross-Origin-Opener-Policy", None)
+    response.headers["Cross-Origin-Opener-Policy"] = "unsafe-none"  # CORS Fehlermeldung vermeiden
     return response
 
 # API für Datenstruktur
