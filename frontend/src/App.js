@@ -12,6 +12,7 @@ import Outfits from './components/pages/Outfits';
 import Styles from './components/pages/Styles';
 import SignIn from './components/pages/SignIn';
 import Settings from './components/pages/Settings';
+import Constraints from './components/pages/Constraints';
 
 import {GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut} from 'firebase/auth';
 import {auth} from './firebase';
@@ -87,6 +88,10 @@ const AppContent = () => {
                 />
                 <Route
                     path="/Settings"
+                    element={user ? <Profile /> : <Navigate to="/" replace />}
+                />
+                <Route
+                    path="/Constraints"
                     element={user ? <Profile /> : <Navigate to="/" replace />}
                 />
 

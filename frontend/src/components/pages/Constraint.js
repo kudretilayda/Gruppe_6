@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+/*import React, { useState, useEffect } from 'react';
 import {
   Container,
   Paper,
@@ -63,7 +63,7 @@ const Constraints = () => {
         </Typography>
 
         {/* constraint typ auswahl */}
-        <FormControl fullWidth sx={{ mt: 2 }}>
+/*        <FormControl fullWidth sx={{ mt: 2 }}>
           <Box display="flex" alignItems="center" mb={1}>
             <Typography variant="subtitle2" component="label">
               Constraint auswählen*
@@ -111,9 +111,9 @@ const Constraints = () => {
         </FormControl>
 
         {/* vorhandene constraints display */}
-        <Box sx={{ mt: 4 }}>
+/*        <Box sx={{ mt: 4 }}>
           {/* implication constraint */}
-          <Box sx={{ mb: 3 }}>
+ /*          <Box sx={{ mb: 3 }}>
             <Box display="flex" alignItems="center">
               <Typography variant="subtitle1" component="h3">
                 Implikation
@@ -139,7 +139,7 @@ const Constraints = () => {
           </Box>
 
           {/* mutex constraint */}
-          <Box sx={{ mb: 3 }}>
+ /*          <Box sx={{ mb: 3 }}>
             <Box display="flex" alignItems="center">
                 <Typography variant="subtitle1" component="h3">
                 Mutex
@@ -167,7 +167,7 @@ const Constraints = () => {
             </Box>
 
           {/* cardinality constraint */}
-          <Box sx={{ mb: 3 }}>
+/*           <Box sx={{ mb: 3 }}>
             <Box display="flex" alignItems="center">
               <Typography variant="subtitle1" component="h3">
                 Kardinalitäten
@@ -182,7 +182,7 @@ const Constraints = () => {
               {cardinalityConstraints.length === 0 
                 ? 'Keine Kardinalität gespeichert' 
                 : {/* Display your cardinality constraints here */}}
-            </Typography>
+ /*            </Typography>
           </Box>
         </Box>
       </Paper>
@@ -190,4 +190,4 @@ const Constraints = () => {
   )
 };
 
-export default Constraints;
+export default Constraints;*/
