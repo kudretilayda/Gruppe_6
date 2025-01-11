@@ -1,52 +1,71 @@
-from server.bo import BusinessObject as bo
+from src.server.bo.BusinessObject import BusinessObject
 
-class Style(bo.BusinessObject):
+
+class User (BusinessObject):
 
     def __init__(self):
         super().__init__()
-        self.__style_id = 0
-        self.__features = ""
-        self.__constraints = []
-        self.__kleidungstypen = []
+        self._user_id = 0
+        self._lastname = ""
+        self._firstname = ""
+        self._nickname = ""
+        self._google_id = ""
+        self._email = ""
 
-    def get_style_id(self):
-        return self.__style_id
+    def get_user_id(self):
+        return self._user_id
 
-    def set_style_id(self, style_id: int):
-        self.__style_id = style_id
+    def set_user_id(self, value):
+        self._user_id = value
 
-    def get_features(self):
-        return self.__features
+    def get_lastname(self):
+        return self._lastname
 
-    def set_features(self, features: str):
-        self.__features = features
+    def set_lastname(self, lastname):
+        self._lastname = lastname
 
-    def get_constraints(self):
-        return self.__constraints
+    def get_firstname(self):
+        return self._firstname
 
-    def set_constraints(self, constraints: list):
-        self.__constraints = constraints
+    def set_firstname(self, firstname):
+        self._firstname = firstname
 
-    def get_kleidungstypen(self):
-        return self.__kleidungstypen
+    def get_nickname(self):
+        return self._nickname
 
-    def set_kleidungstypen(self, kleidungstypen: list):
-        self.__kleidungstypen = kleidungstypen
+    def set_nickname(self, value):
+        self._nickname = value
+
+    def get_google_id(self):
+        return self._google_id
+
+    def set_google_id(self, value):
+        self._google_id = value
+
+    def get_email(self):
+        return self._email
+
+    def set_email(self, value):
+        self._email = value
 
     def __str__(self):
-        
-        return "Style: {}, {}, {}, {}".format(
-            self.__style_id,
-            self.__features,
-            self.__constraints,
-            self.__kleidungstypen
+        return "User: {}, {}, {}, {}".format(
+            self.get_user_id(),
+            self.get_lastname(),
+            self.get_email(),
+            self.get_firstname()
         )
 
     @staticmethod
-    def from_dict(dictionary=dict()):
-        obj = Style()
-        obj.set_style_id(dictionary.get("style_id", 0))
-        obj.set_features(dictionary.get("features", ""))
-        obj.set_constraints(dictionary.get("constraints", []))
-        obj.set_kleidungstypen(dictionary.get("kleidungstypen", []))
+    def from_dict(dictionary=None):
+        
+        if dictionary is None:
+            dictionary = dict()
+        obj = User()
+        obj.set_user_id(dictionary.get("user_id", ""))
+        obj.set_lastname(dictionary.get("lastname", ""))
+        obj.set_firstname(dictionary.get("firstname", ""))
+        obj.set_nickname(dictionary.get("nickname", ""))
+        obj.set_google_id(dictionary.get("google_id", ""))
+        obj.set_email(dictionary.get("email", ""))
         return obj

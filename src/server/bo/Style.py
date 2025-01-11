@@ -1,52 +1,61 @@
-from server.bo import BusinessObject as bo
+from src.server.bo.BusinessObject import BusinessObject
 
-class Style(bo.BusinessObject):
+
+class Style (BusinessObject):
 
     def __init__(self):
         super().__init__()
-        self.__style_id = 0
-        self.__features = ""
-        self.__constraints = []
-        self.__kleidungstypen = []
-
+        self._style_id = int
+        self._style_features = ""
+        self.style_constraints = []
+        self.clothing_type = []
+    
     def get_style_id(self):
-        return self.__style_id
+        return self._style_id
 
     def set_style_id(self, style_id: int):
-        self.__style_id = style_id
+        self._style_id = style_id
 
-    def get_features(self):
-        return self.__features
+    def get_style_features(self):
+        return self._style_features
 
-    def set_features(self, features: str):
-        self.__features = features
+    def set_style_features(self, features: str):
+        self._style_features = features
 
-    def get_constraints(self):
-        return self.__constraints
+    def get_style_constraints(self):
+        return self.style_constraints
 
-    def set_constraints(self, constraints: list):
-        self.__constraints = constraints
+    def set_style_constraints(self, constraint):
+        self.style_constraints.append(constraint)
 
-    def get_kleidungstypen(self):
-        return self.__kleidungstypen
+    def get_clothing_type(self):
+        return self.clothing_type
 
-    def set_kleidungstypen(self, kleidungstypen: list):
-        self.__kleidungstypen = kleidungstypen
+    def set_clothing_type(self, clothing_type):
+        self.clothing_type.append(clothing_type)
 
     def __str__(self):
-        
-        return "Style: {}, {}, {}, {}".format(
-            self.__style_id,
-            self.__features,
-            self.__constraints,
-            self.__kleidungstypen
-        )
+        return "Style: {}, {}, {}, {}".format(self._style_id,
+                                              self._style_features,
+                                              self.style_constraints,
+                                              self.clothing_type)
+
+    def validate(self):
+        for constraint in self.style_constraints:
+            if constraint.validate():
+                return True
+            else:
+                return False
+
 
     @staticmethod
-    def from_dict(dictionary=dict()):
+    def from_dict(dictionary=None):
+        
+        if dictionary is None:
+            dictionary = dict()
         obj = Style()
         obj.set_style_id(dictionary.get("style_id", 0))
-        obj.set_features(dictionary.get("features", ""))
-        obj.set_constraints(dictionary.get("constraints", []))
-        obj.set_kleidungstypen(dictionary.get("kleidungstypen", []))
+        obj.set_style_features(dictionary.get("style_features", ""))
+        obj.set_style_constraints(dictionary.get("style_constraints", []))
+        obj.set_clothing_type(dictionary.get("clothing_type", []))
         return obj
