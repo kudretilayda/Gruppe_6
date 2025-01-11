@@ -1,7 +1,9 @@
-import React from 'react';
+/*import React from 'react';
 import { Button, Container, Typography, Box } from '@mui/material';
 import { useAuth } from '../../context/AuthContext';
 import GoogleIcon from '@mui/icons-material/Google';
+import { auth } from '../../firebase.js';
+import firebaseConfig from '../../firebaseConfig.js'
 
 const SignIn = () => {
     const { signInWithGoogle } = useAuth();
@@ -35,14 +37,18 @@ const SignIn = () => {
 };
 
 export default SignIn;
+*/
 
-/*
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Grid, Typography, Container, Box } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google'
+import { useNavigate } from 'react-router-dom';
+import {useAuth} from "../../context/AuthContext";
 
-/**
+
+/*
  * Zeigt eine Landingpage für Benutzer, die noch nicht eingeloggt sind.
  * Bietet einen Anmeldebutton an, um sich mit einem bestehenden Google-Konto anzumelden.
  * Die Komponente verwendet Firebase für den Anmeldeprozess über eine Weiterleitung.
@@ -50,17 +56,23 @@ import GoogleIcon from '@mui/icons-material/Google'
  * @see Siehe Googles [firebase authentication](https://firebase.google.com/docs/web/setup)
  * @see Siehe Googles [firebase API reference](https://firebase.google.com/docs/reference/js)
  *
+ */
  
-const SignIn = ({ onSignIn }) => {
-	//Button Click handler
-	const handleSignInButtonClicked = () => {
-		if (typeof onSignIn !== 'function') {
-			console.error('onSingIn prop is not a function:', onSignIn);
-			return;
-		}
-		onSignIn();
+const SignIn = () => {
+	const {signInWithGoogle} = useAuth();
+	const navigate = useNavigate();
+	const handleSignIn = async () => {
+		await signInWithGoogle();
+		navigate('/home'); // Weiterleitung nach erfolgreichem Sign-In
 	};
+	return (
+		<Button onClick={handleSignIn}>Mit Google anmelden</Button>
+	);
+};
 
+export default SignIn;
+
+/*
 	return (
 		<Container maxWidth="sm">
 			<Box sx={{
@@ -103,4 +115,5 @@ SignIn.propTypes = {
 };
 
 export default SignIn;
-*/
+
+ */

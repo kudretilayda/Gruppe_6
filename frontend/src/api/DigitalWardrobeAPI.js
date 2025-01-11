@@ -4,6 +4,7 @@ import OutfitBO from './OutfitBO.js';
 import ClothingTypeBO from './ClothingTypeBO.js';
 import ClothingItemBO from './ClothingItemBO.js';
 import WardrobeBO from './WardrobeBO.js';
+import { getAuth } from 'firebase/auth';
 
 import UnaryConstraintBO from './ConstraintAPI/UnaryConstraintBO.js';
 import BinaryConstraintBO from './ConstraintAPI/BinaryConstraintBO.js';
@@ -12,20 +13,13 @@ import MutexConstraintBO from './ConstraintAPI/MutexConstraintBO.js';
 import CardinalityConstraintBO from './ConstraintAPI/CardinalityConstraintBO.js';
 import ConstraintBO from './ConstraintAPI/ConstraintBO.js';
 
-/*
-import ClothingEntryBO from "./ClothingEntryBO";
-import ClothingItemEntryBO from "./ClothingItemEntryBO";
-import UnitBO from "./UnitBO";
-import WardrobeEntryBO from "./WardrobeEntryBO";
- */
-
 class DigitalWardrobeAPI {
 
     // Singelton instance
     static #api = null;
 
     // Local Python backend
-    #wardrobeServerBaseURL = 'http://127.0.0.1:5000/wardrobe';
+    #wardrobeServerBaseURL = 'http://127.0.0.1:5000';
 
     // Schrank API
     // User endpoints
@@ -71,12 +65,6 @@ class DigitalWardrobeAPI {
     #updateConstraintURL = (styleId, constraintId) => `${this.#wardrobeServerBaseURL}/styles/${styleId}/constraints/${constraintId}`;
     #deleteConstraintURL = (styleId, constraintId) => `${this.#wardrobeServerBaseURL}/styles/${styleId}/constraints/${constraintId}`;
 
-    // WardrobeEntry Endpoints
-    #getWardrobeEntriesURL = (userId, wardrobeId) => `${this.#wardrobeServerBaseURL}/users/${userId}/wardrobe/${wardrobeId}/entries`;
-    #addWardrobeEntryURL = (userId, wardrobeId) => `${this.#wardrobeServerBaseURL}/users/${userId}/wardrobe/${wardrobeId}/entries`;
-    #deleteWardrobeEntryURL = (userId, wardrobeId, entryId) => `${this.#wardrobeServerBaseURL}/users/${userId}/wardrobe/${wardrobeId}/entries/${entryId}`;
-    #updateWardrobeEntryURL = (userId, wardrobeId, entryId) => `${this.#wardrobeServerBaseURL}/users/${userId}/wardrobe/${wardrobeId}/entries/${entryId}`;
-
     // UnaryConstraint Endpoints
     #getUnaryConstraintsURL = (styleId) => `${this.#wardrobeServerBaseURL}/styles/${styleId}/UnaryConstraints`;
     #addUnaryConstraintURL = (styleId) => `${this.#wardrobeServerBaseURL}/styles/${styleId}/UnaryConstraints`;
@@ -115,13 +103,51 @@ class DigitalWardrobeAPI {
     }
 
     // Fetch-Helper-Methode
-    #fetchAdvanced = (url, init) =>
-        fetch(url, init).then((res) => {
-            if (!res.ok) {
-                throw Error(`${res.status} ${res.statusText}`);
-            }
-            return res.json();
-        });
+    #fetchAdvanced = (url, init = {}) => {
+        // Get authentication token if available
+        const auth = getAuth();
+        let headers = {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        };
+
+        // Add auth token if available
+        if (auth.currentUser) {
+            auth.currentUser.getIdToken().then(token => {
+                headers['Authorization'] = `Bearer ${token}`;
+            });
+        }
+
+        // Prepare the request configuration
+        const finalInit = {
+            ...init,
+            headers: {
+                ...headers,
+                ...(init.headers || {})
+            },
+            mode: 'cors',
+            credentials: 'include'
+        };
+
+        // Add method if not provided
+        if (!finalInit.method) {
+            finalInit.method = 'GET';
+        }
+
+        return fetch(url, finalInit)
+            .then(async response => {
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+                }
+                return response.json();
+            })
+            .catch(error => {
+                console.error('API request failed:', error);
+                throw error;
+            });
+    };
+
 
     // Get a single user by ID
     getUser(id) {
@@ -140,11 +166,15 @@ class DigitalWardrobeAPI {
     }
 
     // Get user by Google ID
-    getUserByGoogleId(google_id) {
-        return this.#fetchAdvanced(this.#getUserByGoogleIdURL(google_id)).then((responseJSON) => {
-            let userBO = UserBO.fromJSON(responseJSON);
-            return Promise.resolve(userBO);
+    async getUserByGoogleId(googleId) {
+        const response = await fetch(`http://127.0.0.1:5000/wardrobe/user-by-google-id/${googleId}`, {
+            method: 'GET',
+            credentials: 'include',
         });
+        if (!response.ok) {
+            throw new Error(`Failed to fetch user by Google ID: ${response.status}`);
+        }
+        return await response.json();
     }
 
     // Update user by ID
