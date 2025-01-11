@@ -39,4 +39,43 @@ class OutfitMapper(Mapper):
         cursor.close()
         return result
 
+    def find_by_style(self, style_id):
+        result = []
+        cursor = self._cnx().cursor()
+        command = "SELECT * FROM outfit WHERE style_id='{}'".format(style_id)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        for (id, outfit_name, style_id) in tuples:
+            outfit = Outfit()
+            outfit.set_id(id)
+            outfit.set_outfit_name(outfit_name)
+            outfit.set_style(style_id)
+            result.append(outfit)
+
+        self._cnx().commit()
+        cursor.close()
+        return result
+
+    def find_items_by_outfit(self, outfit_id):
+        result = []
+        cursor = self._cnx().cursor()
+        command = "SELECT ci.* FROM clothing_item ci " \
+                 "JOIN outfit_items oi ON ci.id = oi.clothing_item_id " \
+                 "WHERE oi.outfit_id='{}'".format(outfit_id)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        for (id, wardrobe_id, type_id, item_name) in tuples:
+            clothing_item = ClothingItem()
+            clothing_item.set_id(id)
+            clothing_item.set_wardrobe_id(wardrobe_id)
+            clothing_item.set_clothing_type(type_id)
+            clothing_item.set_item_name(item_name)
+            result.append(clothing_item)
+
+        self._cnx().commit()
+        cursor.close()
+        return result
+
     
