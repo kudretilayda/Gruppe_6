@@ -88,11 +88,11 @@ const AppContent = () => {
                 />
                 <Route
                     path="/Settings"
-                    element={user ? <Profile /> : <Navigate to="/" replace />}
+                    element={user ? <Settings /> : <Navigate to="/" replace />}
                 />
                 <Route
                     path="/Constraints"
-                    element={user ? <Profile /> : <Navigate to="/" replace />}
+                    element={user ? <Constraints  /> : <Navigate to="/" replace />}
                 />
 
             </Routes>
