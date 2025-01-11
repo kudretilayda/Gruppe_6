@@ -48,7 +48,7 @@ const Wardrobe = () => {
     setError(null);
     try {
       // First, get the user's wardrobe
-      const wardrobeData = await DigitalWardrobeAPI.getAPI().getWardrobe(user.uid);
+      const wardrobeData = await DigitalWardrobeAPI.getAPI().getWardrobeByGoogleUserId(user.uid);
       setWardrobe(wardrobeData);
 
       // If we have a wardrobe, load its items

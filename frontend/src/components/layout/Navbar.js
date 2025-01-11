@@ -1,177 +1,191 @@
-import React, { useState, useEffect } from 'react';
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  IconButton,
-  Menu,
-  MenuItem,
-  Box,
-  Divider,
-} from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import LogoutIcon from '@mui/icons-material/Logout';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
-import DigitalWardrobeAPI from '../../api/DigitalWardrobeAPI';
+import React, { useState } from 'react';
+import { AppBar, Toolbar, Typography, Button, Box, Menu, MenuItem, IconButton, ListItemIcon } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu'; // Importiere das Icon
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import { Link as RouterLink } from 'react-router-dom';
 
-const Navbar = () => {
-  // status management für user daten
-  const [menuAnchor, setMenuAnchor] = useState(null);
-  const [userData, setUserData] = useState(null);
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
-  
-  // fetch user daten
-  useEffect(() => {
-    const fetchUserData = async () => {
-      if (user?.uid) {
-        try {
-          const response = await DigitalWardrobeAPI.getAPI().getUserByGoogleId(user.uid);
-          console.log("API Response:", response);
-          setUserData(response);
-        } catch (error) {
-          if (error.response) {
-            console.error('Error fetching user data:', error.response.status, error.response.data);
-          } else {
-            console.error('Error fetching user data:', error.message);
-          }
-        }
-      }
-    }
-  });
-  // menü item config
-  const menuItems = [
-    { label: 'Home', path: '/home' },
-    { label: 'Profil', path: '/profile' },
-    { label: 'Kleidungsstück', path: '/wardrobe' },
-    { label: 'Constraints', path: '/constraints' },
-    { label: 'Style', path: '/styles' },
-    { label: 'Outfit', path: '/outfits' },
-  ];
+function Navbar() {
+  const [anchorEl, setAnchorEl] = useState(null);
 
-  // menü handler
   const handleMenuOpen = (event) => {
-    setMenuAnchor(event.currentTarget);
+    setAnchorEl(event.currentTarget);
   };
 
   const handleMenuClose = () => {
-    setMenuAnchor(null);
-  };
-
-  const handleNavigate = (path) => {
-    navigate(path);
-    handleMenuClose();
-  };
-
-  // logout handler 
-  const handleLogout = async () => {
-    try {
-      await logout(); 
-      navigate('/');
-      handleMenuClose();
-    } catch (error) {
-      console.error('Logout error:', error);
-    }
+    setAnchorEl(null);
   };
 
   return (
-    <AppBar position="static" sx={{ color: '#1976d2' }}>
+    <AppBar position="static" color="primary">
       <Toolbar>
-        {/* LOGO/NAME */}
+        {/* Link zur Startseite */}
         <Typography
           variant="h6"
-          component="div"
-          sx={{ 
-            flexGrow: 1, 
-            cursor: 'pointer',
-            color: 'white'
+          component={RouterLink}
+          to="/home"
+          style={{
+            color: 'white',
+            textDecoration: 'none',
+            flexGrow: 1,
           }}
-          onClick={() => navigate('/')}
         >
-          DigitalWardrobe
+          Digital Wardrobe
         </Typography>
 
-        {/* zeigt das menü nur authentifizierten nutzern */}
-        {user && (
-          <>
-            <IconButton
-              color="inherit"
-              onClick={handleMenuOpen}
-              sx={{ ml: 2 }}
+        {/* Buttons */}
+        <Box>
+          <Button
+            color="inherit"
+            component={RouterLink}
+            to="/wardrobe"
+            style={{ textTransform: 'none' }}
+          >
+            KLEIDUNGSSTÜCK
+          </Button>
+
+          <Button
+            color="inherit"
+            component={RouterLink}
+            to="/Outfits"
+            style={{ textTransform: 'none' }}
+          >
+            OUTFIT
+          </Button>
+
+          <Button
+            color="inherit"
+            component={RouterLink}
+            to="/styles"
+            style={{ textTransform: 'none' }}
+          >
+            STYLE
+          </Button>
+
+          <Button
+            color="inherit"
+            component={RouterLink}
+            to="/Profile"
+            style={{ textTransform: 'none' }}
+          >
+            PROFIL
+          </Button>
+
+          <Button
+            color="inherit"
+            component={RouterLink}
+            to="/constraints"
+            style={{ textTransform: 'none' }}
+          >
+            CONSTRAINTS
+          </Button>
+
+          <Button
+            color="inherit"
+            component={RouterLink}
+            to="/Settings"
+            style={{ textTransform: 'none' }}
+          >
+            EINSTELLUNGEN
+          </Button>
+
+          <Button
+            color="inherit"
+            component={RouterLink}
+            to="/SignIn"
+            style={{ textTransform: 'none' }}
+          >
+            ABMELDEN
+            <ListItemIcon style={{ marginLeft: 'auto', color: 'white' }}>
+            <ExitToAppIcon fontSize="small" />
+            </ListItemIcon>
+          </Button>
+
+          {/* Hamburger-Icon als Dropdown-Button */}
+          <IconButton
+            color="inherit"
+            aria-controls="more-menu"
+            aria-haspopup="true"
+            onClick={handleMenuOpen}
+          >
+            <MenuIcon /> {/* Hier ist das Hamburger-Menü-Icon */}
+          </IconButton>
+
+          <Menu
+            id="more-menu"
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleMenuClose}
+          >
+
+            <MenuItem
+              onClick={handleMenuClose}
+              component={RouterLink}
+              to="/Wardrobe"
             >
-              <MenuIcon />
-            </IconButton>
+              Kleidungsstück
+            </MenuItem>
 
-            {/* dropdown menü mit @mui */}
-            <Menu
-              anchorEl={menuAnchor}
-              open={Boolean(menuAnchor)}
-              onClose={handleMenuClose}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              PaperProps={{
-                elevation: 3,
-                sx: {
-                  mt: 5,
-                  minWidth: 200,
-                  borderRadius: '4px',
-                  '& .MuiMenuItem-root': {
-                    py: 1,
-                    px: 2,
-                  }
-                }
-              }}
+
+            <MenuItem
+              onClick={handleMenuClose}
+              component={RouterLink}
+              to="/Outfits"
             >
-              {/* user information falls vorhanden */}
-              {userData && (
-                <Box sx={{ p: 2, borderBottom: '1px solid rgba(0,0,0,0.12)' }}>
-                  <Typography variant="subtitle2">
-                    {userData.getNickname() || userData.getFirstName()}
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary">
-                    {userData.getEmail()}
-                  </Typography>
-                </Box>
-              )}
+              Outfit
+            </MenuItem>
 
-              {/* nav menü items */}
-              {menuItems.map((item) => (
-                <MenuItem 
-                  key={item.path}
-                  onClick={() => handleNavigate(item.path)}
-                >
-                  {item.label}
-                </MenuItem>
-              ))}
 
-              <Divider sx={{ my: 1 }} />
+            <MenuItem
+              onClick={handleMenuClose}
+              component={RouterLink}
+              to="/Styles"
+            >
+              Style
+            </MenuItem>
 
-              {/* logout */}
-              <MenuItem 
-                onClick={handleLogout}
-                sx={{ 
-                  color: 'error.main',
-                  '&:hover': {
-                    backgroundColor: 'error.light',
-                  }
-                }}
-              >
-                <LogoutIcon sx={{ mr: 1, fontSize: 20 }} />
-                Abmelden
-              </MenuItem>
-            </Menu>
-          </>
-        )}
+
+            <MenuItem
+              onClick={handleMenuClose}
+              component={RouterLink}
+              to="/Profile"
+            >
+              Profil
+            </MenuItem>
+
+
+            <MenuItem
+              onClick={handleMenuClose}
+              component={RouterLink}
+              to="/constraints"
+            >
+              Constraints
+            </MenuItem>
+
+
+            <MenuItem
+              onClick={handleMenuClose}
+              component={RouterLink}
+              to="/Settings"
+            >
+              Einstellungen
+            </MenuItem>
+
+
+            <MenuItem
+              onClick={handleMenuClose}
+              component={RouterLink}
+              to="/SignIn"
+            >
+              Abmelden
+            <ListItemIcon style={{ marginLeft: 'auto' }}>
+            <ExitToAppIcon fontSize="small" />
+            </ListItemIcon>
+            </MenuItem>
+          </Menu>
+        </Box>
       </Toolbar>
     </AppBar>
   );
-};
+}
 
 export default Navbar;
