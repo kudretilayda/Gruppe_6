@@ -5,12 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0b36f84f-6ad4-4404-a25a-055e1c7ce6fe" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/pages/Constraints.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0ba7c31d-66a9-426f-a9cb-112c76a75293.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/0ba7c31d-66a9-426f-a9cb-112c76a75293.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/dialogs/ClothingItemForm.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/api/DigitalWardrobeAPI.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/DigitalWardrobeAPI.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/layout/Navbar.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/layout/Navbar.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/pages/ClothingType.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/pages/ClothingType.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/pages/Outfits.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/pages/Outfits.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/pages/Styles.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/pages/Styles.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/pages/Wardrobe.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/pages/Wardrobe.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,7 +32,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="Draft_Backend_Kudi" />
+        <entry key="$PROJECT_DIR$" value="current_branch_Aliaksei" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -51,15 +55,31 @@
   &quot;keyToString&quot;: {
     &quot;Database Script.mysql-dump.sql.executor&quot;: &quot;Run&quot;,
     &quot;Node.js.App.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.BusinessObject.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.ClothingType.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.ClothingTypeBO.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.Constraint.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.DigitalWardrobeAPI.js.executor&quot;: &quot;Run&quot;,
     &quot;Node.js.ErrorMessage.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.Footer.js.executor&quot;: &quot;Run&quot;,
     &quot;Node.js.Header.js.executor&quot;: &quot;Run&quot;,
     &quot;Node.js.Home.js.executor&quot;: &quot;Run&quot;,
     &quot;Node.js.LoadingSpinner.js.executor&quot;: &quot;Run&quot;,
     &quot;Node.js.Navbar.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.OutfitBO.js.executor&quot;: &quot;Run&quot;,
     &quot;Node.js.Outfits.js.executor&quot;: &quot;Run&quot;,
     &quot;Node.js.ProfilDropDown.js.executor&quot;: &quot;Run&quot;,
     &quot;Node.js.Profile.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.Register.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.Settings.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.SignIn.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.Styles.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.UserBO.js.executor&quot;: &quot;Run&quot;,
     &quot;Node.js.Wardrobe.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.WardrobeBO.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.api.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.firebase.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.index.js.executor&quot;: &quot;Run&quot;,
     &quot;Python.Admin.executor&quot;: &quot;Run&quot;,
     &quot;Python.Admin2.executor&quot;: &quot;Run&quot;,
     &quot;Python.Binary.executor&quot;: &quot;Run&quot;,
@@ -91,12 +111,13 @@
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;DraftBackend&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/serta/Documents/GitHub/Gruppe_6/src/server&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/serta/Documents/GitHub/Gruppe_6&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.intellij.pycharm.community.ide.impl.configuration.PythonContentEntriesConfigurable&quot;,
     &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\PyCharm 2024.3\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
@@ -126,13 +147,13 @@
     <configuration name="App.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/frontend/src/App.js" working-dir="$PROJECT_DIR$/frontend/src">
       <method v="2" />
     </configuration>
-    <configuration name="Home.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/frontend/src/components/pages/Home.js" working-dir="$PROJECT_DIR$/frontend/src/components/pages">
+    <configuration name="Styles.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/frontend/src/components/pages/Styles.js" working-dir="$PROJECT_DIR$/frontend/src/components/pages">
       <method v="2" />
     </configuration>
-    <configuration name="Navbar.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/frontend/src/components/layout/Navbar.js" working-dir="$PROJECT_DIR$/frontend/src/components/layout">
+    <configuration name="Wardrobe.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/frontend/src/components/pages/Wardrobe.js" working-dir="$PROJECT_DIR$/frontend/src/components/pages">
       <method v="2" />
     </configuration>
-    <configuration name="Outfits.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/frontend/src/components/pages/Outfits.js" working-dir="$PROJECT_DIR$/frontend/src/components/pages">
+    <configuration name="index.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/frontend/src/index.js" working-dir="$PROJECT_DIR$/frontend/src">
       <method v="2" />
     </configuration>
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
@@ -161,10 +182,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.main" />
-        <item itemvalue="Node.js.Outfits.js" />
-        <item itemvalue="Node.js.Home.js" />
+        <item itemvalue="Node.js.index.js" />
+        <item itemvalue="Node.js.Styles.js" />
         <item itemvalue="Node.js.App.js" />
-        <item itemvalue="Node.js.Navbar.js" />
+        <item itemvalue="Node.js.Wardrobe.js" />
       </list>
     </recent_temporary>
   </component>
@@ -204,6 +225,10 @@
       <workItem from="1734908413502" duration="3454000" />
       <workItem from="1736357604641" duration="23419000" />
       <workItem from="1736384337447" duration="2748000" />
+      <workItem from="1736445920650" duration="3610000" />
+      <workItem from="1736525582791" duration="13157000" />
+      <workItem from="1736545264103" duration="3548000" />
+      <workItem from="1736605541284" duration="6302000" />
     </task>
     <servers />
   </component>
@@ -221,14 +246,14 @@
     <SUITE FILE_PATH="coverage/Gruppe_6$StyleMapper.coverage" NAME="StyleMapper Coverage Results" MODIFIED="1733923860139" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/db" />
     <SUITE FILE_PATH="coverage/Gruppe_6$BusinessObject.coverage" NAME="BusinessObject Coverage Results" MODIFIED="1733923751720" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
     <SUITE FILE_PATH="coverage/Gruppe_6$ClothingTypeMapper.coverage" NAME="ClothingTypeMapper Coverage Results" MODIFIED="1733930379872" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/db" />
-    <SUITE FILE_PATH="coverage/Gruppe_6$Admin2.coverage" NAME="Admin2 Coverage Results" MODIFIED="1734910333539" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$Admin2.coverage" NAME="Admin2 Coverage Results" MODIFIED="1736548935885" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server" />
     <SUITE FILE_PATH="coverage/Gruppe_6$BinaryConstraint.coverage" NAME="BinaryConstraint Coverage Results" MODIFIED="1732396868692" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
     <SUITE FILE_PATH="coverage/Gruppe_6$ImplicationConstraint.coverage" NAME="ImplicationConstraint Coverage Results" MODIFIED="1732648368934" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
     <SUITE FILE_PATH="coverage/Gruppe_6$UnaryConstraint.coverage" NAME="UnaryConstraint Coverage Results" MODIFIED="1732397390640" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
     <SUITE FILE_PATH="coverage/Gruppe_6$RuleEngine.coverage" NAME="RuleEngine Coverage Results" MODIFIED="1733923877996" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server" />
     <SUITE FILE_PATH="coverage/Gruppe_6$MutexConstraint.coverage" NAME="MutexConstraint Coverage Results" MODIFIED="1732648377912" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
     <SUITE FILE_PATH="coverage/Gruppe_6$ConstraintMapper.coverage" NAME="ConstraintMapper Coverage Results" MODIFIED="1733923836488" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/db" />
-    <SUITE FILE_PATH="coverage/Gruppe_6$Admin.coverage" NAME="Admin Coverage Results" MODIFIED="1734648832775" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$Admin.coverage" NAME="Admin Coverage Results" MODIFIED="1736548952976" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server" />
     <SUITE FILE_PATH="coverage/Gruppe_6$Outfit.coverage" NAME="Outfit Coverage Results" MODIFIED="1733923766624" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
     <SUITE FILE_PATH="coverage/Gruppe_6$Kleidungsstück_prüfen___ggf_Mapper_.coverage" NAME="Kleidungsstück(prüfen,  ggf Mapper) Coverage Results" MODIFIED="1732397227386" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
     <SUITE FILE_PATH="coverage/Gruppe_6$Constraint.coverage" NAME="Constraint Coverage Results" MODIFIED="1732396178032" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
@@ -244,7 +269,7 @@
     <SUITE FILE_PATH="coverage/Gruppe_6$Dummy.coverage" NAME="Dummy Coverage Results" MODIFIED="1733933449328" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/Gruppe_6$Kleiderschrank.coverage" NAME="Kleiderschrank Coverage Results" MODIFIED="1732648373453" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
     <SUITE FILE_PATH="coverage/Gruppe_6$ClothingItem.coverage" NAME="ClothingItem Coverage Results" MODIFIED="1734575026880" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
-    <SUITE FILE_PATH="coverage/Gruppe_6$main.coverage" NAME="main Coverage Results" MODIFIED="1736382425293" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$main.coverage" NAME="main Coverage Results" MODIFIED="1736607300158" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/Gruppe_6$Binary.coverage" NAME="Binary Coverage Results" MODIFIED="1734574862745" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo/Constraints" />
     <SUITE FILE_PATH="coverage/Gruppe_6$Wardrobe.coverage" NAME="Wardrobe Coverage Results" MODIFIED="1733923779176" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
   </component>

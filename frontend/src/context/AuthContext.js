@@ -1,3 +1,45 @@
+import React, { createContext, useState, useContext } from 'react';
+import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+
+const AuthContext = createContext();
+
+export const AuthProvider = ({ children }) => {
+    const [user, setUser] = useState(null);
+
+    const signInWithGoogle = async () => {
+        const auth = getAuth();
+        const provider = new GoogleAuthProvider();
+        
+        try {
+            const result = await signInWithPopup(auth, provider);
+            setUser(result.user);
+        } catch (error) {
+            console.error('Sign in error:', error);
+        }
+    };
+
+    const signOut = async () => {
+        const auth = getAuth();
+        try {
+            await auth.signOut();
+            setUser(null);
+        } catch (error) {
+            console.error('Sign out error:', error);
+        }
+    };
+
+    return (
+        <AuthContext.Provider value={{ user, signInWithGoogle, signOut }}>
+            {children}
+        </AuthContext.Provider>
+    );
+};
+
+export const useAuth = () => useContext(AuthContext);
+
+
+
+/*
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { auth } from '../firebase.js';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -56,3 +98,5 @@ export const useAuth = () => {
   }
   return context;
 };
+
+*/

@@ -10,8 +10,8 @@ from server.bo.Outfit import Outfit
 from server.bo.ClothingItem import ClothingItem
 from server.bo.ClothingType import ClothingType
 
-from src.server.bo.Constraints.Constraint import Constraint
-from src.server.bo.Constraints.Unary import UnaryConstraint
+# from src.server.bo.Constraints.Constraint import Constraint
+# from src.server.bo.Constraints.Unary import UnaryConstraint
 # from src.server.bo.Constraints.Binary import BinaryConstraint
 # from src.server.bo.Constraints.Implication import ImplicationConstraint
 # from src.server.bo.Constraints.Cardinality import CardinalityConstraint
@@ -26,13 +26,19 @@ app = Flask(__name__)
 # CORS(app, resources={r"/api/":{"origins":"*"}})
 CORS(app, resources={
     r"/*": {
-        "origins": ["http://localhost:3000"],
-        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-        "allow_headers": ["Content-Type", "Authorization", "Access-Control-Allow-Credentials"],
-        "supports_credentials": True
+        "origins": ["http://localhost:3000"]
+        #"methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        #"allow_headers": ["Content-Type", "Authorization"],
+        #"supports_credentials": True
     }
 })
 # CORS(app, supports_credentials=True, resources=r'/wardrobe')
+
+# Sicherheitsheader
+@app.after_request
+def add_security_headers(response):
+    response.headers['Cross-Origin-Opener-Policy'] = 'unsafe-none'
+    return response
 
 # API für Datenstruktur
 api = Api(app, version='1.0', title='Digital Wardrobe',
@@ -200,6 +206,39 @@ class UserWardrobeOperations(Resource):
         else:
             return '', 500
 
+@wardrobe_ns.route('/user-by-google-id/<google_id>')
+@wardrobe_ns.response(404, 'User not found')
+@wardrobe_ns.param('google_id', 'Google ID of the user')
+class UserByGoogleIdOperations(Resource):
+    @wardrobe_ns.marshal_with(user)
+    def get(self, google_id):
+        """Get a user by Google ID"""
+        adm = Admin()
+        user = adm.get_user_by_google_id(google_id)
+        if user:
+            return user, 200
+        else:
+            return "User not found", 404
+
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+
+@wardrobe_ns.route('/user-by-google-id/<string:google_id>')
+class UserByGoogleIdOperations(Resource):
+    @wardrobe_ns.marshal_with(user)
+    def get(self, google_id):
+        try:
+            adm = Admin()
+            user = adm.get_user_by_google_id(google_id)
+            if user:
+                return user, 200
+            return "User not found", 404
+        except Exception as e:
+            logging.error(f"Error fetching user by Google ID {google_id}: {e}")
+            return "Internal Server Error", 500
+
+
 # API Endpoints for Wardrobe
 
 @wardrobe_ns.route('/wardrobes/<int:wardrobe_id>')
@@ -296,6 +335,7 @@ class ClothingItemOperations(Resource):
         item = adm.get_clothing_item_by_id(item_id)
         adm.delete_clothing_item(item)
         return '', 200
+
 
 # API Endpoints for ClothingType
 
