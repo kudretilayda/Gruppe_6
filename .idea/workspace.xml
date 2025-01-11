@@ -5,13 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0b36f84f-6ad4-4404-a25a-055e1c7ce6fe" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0ba7c31d-66a9-426f-a9cb-112c76a75293.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/0ba7c31d-66a9-426f-a9cb-112c76a75293.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/DigitalWardrobeAPI.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/DigitalWardrobeAPI.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/pages/Profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/pages/Profile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/pages/ClothingType.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -317,6 +311,7 @@
     <SUITE FILE_PATH="coverage/Gruppe_6$Style.coverage" NAME="Style Coverage Results" MODIFIED="1733923771579" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
     <SUITE FILE_PATH="coverage/Gruppe_6$ClothingItemMapper.coverage" NAME="ClothingItemMapper Coverage Results" MODIFIED="1733923811137" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/db" />
     <SUITE FILE_PATH="coverage/Gruppe_6$Constraint_Test.coverage" NAME="Constraint_Test Coverage Results" MODIFIED="1734896999139" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo/Constraints" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$Cardinality.coverage" NAME="Cardinality Coverage Results" MODIFIED="1736630909328" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo/Constraints" />
     <SUITE FILE_PATH="coverage/Gruppe_6$Constraints.coverage" NAME="Constraints Coverage Results" MODIFIED="1733923763205" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
     <SUITE FILE_PATH="coverage/Gruppe_6$Kleidungstyp.coverage" NAME="Kleidungstyp Coverage Results" MODIFIED="1732397323955" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
     <SUITE FILE_PATH="coverage/Gruppe_6$UserMapper.coverage" NAME="UserMapper Coverage Results" MODIFIED="1733923848655" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/db" />
@@ -347,7 +342,7 @@
     <SUITE FILE_PATH="coverage/Gruppe_6$Dummy.coverage" NAME="Dummy Coverage Results" MODIFIED="1733933449328" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/Gruppe_6$Kleiderschrank.coverage" NAME="Kleiderschrank Coverage Results" MODIFIED="1732648373453" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
     <SUITE FILE_PATH="coverage/Gruppe_6$ClothingItem.coverage" NAME="ClothingItem Coverage Results" MODIFIED="1734575026880" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
-    <SUITE FILE_PATH="coverage/Gruppe_6$main.coverage" NAME="main Coverage Results" MODIFIED="1736619472621" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
+    <SUITE FILE_PATH="coverage/Gruppe_6$main.coverage" NAME="main Coverage Results" MODIFIED="1736632873828" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/Gruppe_6$Binary.coverage" NAME="Binary Coverage Results" MODIFIED="1734574862745" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo/Constraints" />
     <SUITE FILE_PATH="coverage/Gruppe_6$Wardrobe.coverage" NAME="Wardrobe Coverage Results" MODIFIED="1733923779176" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server/bo" />
   </component>
