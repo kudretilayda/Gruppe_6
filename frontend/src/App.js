@@ -94,6 +94,11 @@ const AppContent = () => {
                     path="/Constraints"
                     element={user ? <Constraints  /> : <Navigate to="/" replace />}
                 />
+                <Route
+                    path="/signin"
+                    element={user ? <SignIn  /> : <Navigate to="/" replace />}
+                />
+
 
             </Routes>
         </>

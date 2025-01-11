@@ -119,30 +119,56 @@ export default SignIn;
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Button } from '@mui/material';
-import GoogleIcon from '@mui/icons-material/Google';
+import { Button, Container, Typography, Box } from '@mui/material';
+import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from "../../context/AuthContext";
+import GoogleIcon from '@mui/icons-material/Google';
 
 const SignIn = () => {
   const { signInWithGoogle } = useAuth();
   const navigate = useNavigate();
 
   const handleSignIn = async () => {
-    await signInWithGoogle();
-    navigate('/home'); // Weiterleitung nach erfolgreichem Sign-In
+    try {
+      await signInWithGoogle();
+      navigate('/home');
+    } catch (error) {
+      console.error('Error signing in:', error);
+      // Optional: Add error handling UI here
+    }
   };
 
   return (
-    <Button onClick={handleSignIn} startIcon={<GoogleIcon />}>
-      Mit Google anmelden
-    </Button>
-  );
-};
+    <Container maxWidth="sm">
+      <Box 
+        sx={{
+          mt: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: 4
+        }}
+      >
+        <Typography variant="h4" component="h1" align="center">
+          Willkommen im Digitalen Kleiderschrank
+        </Typography>
+        
+        <Typography variant="body1" align="center" color="text.secondary">
+          Bitte melden Sie sich an, um fortzufahren.
+        </Typography>
 
-SignIn.propTypes = {
-  signInWithGoogle: PropTypes.func,
+        <Button
+          variant="contained"
+          size="large"
+          onClick={handleSignIn}
+          startIcon={<GoogleIcon />}
+          sx={{ mt: 2 }}
+        >
+          Mit Google anmelden
+        </Button>
+      </Box>
+    </Container>
+  );
 };
 
 export default SignIn;
