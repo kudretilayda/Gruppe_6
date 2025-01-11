@@ -9,221 +9,247 @@ import {
   Box,
   IconButton,
   Tooltip,
-  TextField,
+  Card,
+  CardContent,
   Button,
-  Grid,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
   Snackbar,
-  Alert
+  Alert,
 } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import { useAuth } from '../../context/AuthContext';
 import DigitalWardrobeAPI from '../../api/DigitalWardrobeAPI';
 
 const Constraints = () => {
-  // State-Variablen
   const [selectedConstraintType, setSelectedConstraintType] = useState('');
   const [implicationConstraints, setImplicationConstraints] = useState([]);
   const [mutexConstraints, setMutexConstraints] = useState([]);
   const [cardinalityConstraints, setCardinalityConstraints] = useState([]);
-
-  // Inputs für neue Constraints
-  const [newImplication, setNewImplication] = useState({ if_type: '', then_type: '' });
-  const [newMutex, setNewMutex] = useState({ item1: '', item2: '' });
-  const [newCardinality, setNewCardinality] = useState({ object: '', min_count: 0, max_count: 0 });
-
-  // Snackbar-Status
-  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
   const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [dialogData, setDialogData] = useState({});
+  const { user } = useAuth();
 
-  // Hilfstexte für Constraints
+  // Info texts for constraints
   const constraintInfo = {
     implication: "Eine Implikation definiert eine 'Wenn-Dann' Beziehung zwischen Kleidungstypen",
     mutex: "Ein Mutex verhindert, dass bestimmte Kleidungsstücke zusammen getragen werden",
-    cardinality: "Eine Kardinalität legt fest, wie viele Kleidungsstücke eines Typs verwendet werden müssen"
+    cardinality: "Eine Kardinalität legt fest, wie viele Kleidungsstücke eines Typs verwendet werden müssen",
   };
 
-  // Lädt Constraints beim Rendern
   useEffect(() => {
-    loadConstraints();
-  }, []);
+    if (user) {
+      loadConstraints();
+    }
+  }, [user]);
 
-  // Funktion: Alle Constraints laden
   const loadConstraints = async () => {
+    setIsLoading(true);
     try {
       const implication = await DigitalWardrobeAPI.getAPI().getImplicationConstraints();
       const mutex = await DigitalWardrobeAPI.getAPI().getMutexConstraints();
       const cardinality = await DigitalWardrobeAPI.getAPI().getCardinalityConstraints();
 
-      setImplicationConstraints(implication || []);
-      setMutexConstraints(mutex || []);
-      setCardinalityConstraints(cardinality || []);
-    } catch (error) {
-      console.error('Fehler beim Laden der Constraints:', error);
+      setImplicationConstraints(Array.isArray(implication) ? implication : []);
+      setMutexConstraints(Array.isArray(mutex) ? mutex : []);
+      setCardinalityConstraints(Array.isArray(cardinality) ? cardinality : []);
+    } catch (err) {
+      console.error('Fehler beim Laden der Constraints:', err);
+      setError('Fehler beim Laden der Constraints.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  // Funktion: Constraint-Typ ändern
   const handleConstraintTypeChange = (event) => {
     setSelectedConstraintType(event.target.value);
   };
 
-  // Snackbar schließen
-  const handleCloseSnackbar = () => {
-    setOpenSnackbar(false);
+  const handleDialogOpen = (constraint = {}) => {
+    setDialogData(constraint);
+    setOpenDialog(true);
   };
 
-  // Funktion: Neues Implication-Constraint speichern
-  const saveImplicationConstraint = async () => {
-    if (!newImplication.if_type || !newImplication.then_type) {
-      alert('Bitte geben Sie gültige Werte für Implikation ein!');
-      return;
-    }
-
-    try {
-      await DigitalWardrobeAPI.getAPI().createImplicationConstraint(newImplication);
-      loadConstraints();
-      setSnackbarMessage('Implikation erfolgreich gespeichert!');
-      setSnackbarSeverity('success');
-      setOpenSnackbar(true);
-      setNewImplication({ if_type: '', then_type: '' });
-    } catch (error) {
-      console.error('Fehler beim Speichern der Implikation:', error);
-      setSnackbarMessage('Fehler beim Speichern der Implikation');
-      setSnackbarSeverity('error');
-      setOpenSnackbar(true);
-    }
+  const handleDialogClose = () => {
+    setOpenDialog(false);
+    setDialogData({});
   };
 
-  // Funktion: Neues Mutex-Constraint speichern
-  const saveMutexConstraint = async () => {
-    if (!newMutex.item1 || !newMutex.item2) {
-      alert('Bitte geben Sie gültige Werte für Mutex ein!');
-      return;
-    }
-
+  const handleSaveConstraint = async () => {
     try {
-      await DigitalWardrobeAPI.getAPI().createMutexConstraint(newMutex);
-      loadConstraints();
-      setSnackbarMessage('Mutex erfolgreich gespeichert!');
-      setSnackbarSeverity('success');
+      // API-Aufruf je nach Constraint-Typ (Neuerstellung oder Bearbeitung)
+      if (dialogData.id) {
+        await DigitalWardrobeAPI.getAPI().updateConstraint(dialogData);
+        setSnackbarMessage('Constraint erfolgreich aktualisiert.');
+      } else {
+        await DigitalWardrobeAPI.getAPI().createConstraint(dialogData);
+        setSnackbarMessage('Constraint erfolgreich hinzugefügt.');
+      }
       setOpenSnackbar(true);
-      setNewMutex({ item1: '', item2: '' });
-    } catch (error) {
-      console.error('Fehler beim Speichern des Mutex:', error);
-      setSnackbarMessage('Fehler beim Speichern des Mutex');
-      setSnackbarSeverity('error');
+      handleDialogClose();
+      loadConstraints();
+    } catch (err) {
+      console.error('Fehler beim Speichern des Constraints:', err);
+      setSnackbarMessage('Fehler beim Speichern des Constraints.');
       setOpenSnackbar(true);
     }
   };
 
-  // Funktion: Neues Cardinality-Constraint speichern
-  const saveCardinalityConstraint = async () => {
-    const { object, min_count, max_count } = newCardinality;
-
-    if (!object || min_count < 0 || max_count < min_count) {
-      alert('Bitte geben Sie gültige Werte für Kardinalität ein!');
-      return;
-    }
-
-    try {
-      await DigitalWardrobeAPI.getAPI().createCardinalityConstraint(newCardinality);
-      loadConstraints();
-      setSnackbarMessage('Kardinalität erfolgreich gespeichert!');
-      setSnackbarSeverity('success');
-      setOpenSnackbar(true);
-      setNewCardinality({ object: '', min_count: 0, max_count: 0 });
-    } catch (error) {
-      console.error('Fehler beim Speichern der Kardinalität:', error);
-      setSnackbarMessage('Fehler beim Speichern der Kardinalität');
-      setSnackbarSeverity('error');
-      setOpenSnackbar(true);
+  const handleDeleteConstraint = async (constraint) => {
+    if (window.confirm('Möchten Sie dieses Constraint wirklich löschen?')) {
+      try {
+        await DigitalWardrobeAPI.getAPI().deleteConstraint(constraint.id);
+        setSnackbarMessage('Constraint erfolgreich gelöscht.');
+        setOpenSnackbar(true);
+        loadConstraints();
+      } catch (err) {
+        console.error('Fehler beim Löschen des Constraints:', err);
+        setSnackbarMessage('Fehler beim Löschen des Constraints.');
+        setOpenSnackbar(true);
+      }
     }
   };
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 4 }}>
-      <Paper elevation={3} sx={{ p: 4 }}>
-        <Typography variant="h5" gutterBottom>
-          Constraints Manager
+    <Container maxWidth="lg" sx={{ mt: 4, backgroundColor: '#f5f5f5', minHeight: '100vh' }}>
+      <Paper elevation={3} sx={{ p: 4, backgroundColor: 'white', borderRadius: 2 }}>
+        <Typography variant="h6" gutterBottom sx={{ mb: 3 }}>
+          Constraints verwalten
         </Typography>
 
-        {/* Constraint-Typ auswählen */}
-        <FormControl fullWidth sx={{ mt: 2 }}>
-          <Select
-            value={selectedConstraintType}
-            onChange={handleConstraintTypeChange}
-            displayEmpty
-          >
-            <MenuItem value="" disabled>
-              Wählen Sie einen Constraint-Typ
-            </MenuItem>
-            <MenuItem value="implication">
-              Implikation
-              <Tooltip title={constraintInfo.implication}>
-                <IconButton sx={{ ml: 1 }}>
-                  <InfoIcon />
-                </IconButton>
-              </Tooltip>
-            </MenuItem>
-            <MenuItem value="mutex">
-              Mutex
-              <Tooltip title={constraintInfo.mutex}>
-                <IconButton sx={{ ml: 1 }}>
-                  <InfoIcon />
-                </IconButton>
-              </Tooltip>
-            </MenuItem>
-            <MenuItem value="cardinality">
-              Kardinalität
-              <Tooltip title={constraintInfo.cardinality}>
-                <IconButton sx={{ ml: 1 }}>
-                  <InfoIcon />
-                </IconButton>
-              </Tooltip>
-            </MenuItem>
-          </Select>
-        </FormControl>
+        {user ? (
+          <>
+            <FormControl fullWidth sx={{ mb: 4 }}>
+              <Typography variant="subtitle2" sx={{ mb: 1 }}>
+                Constraint auswählen:
+              </Typography>
+              <Select
+                value={selectedConstraintType}
+                onChange={handleConstraintTypeChange}
+                displayEmpty
+                sx={{
+                  backgroundColor: 'white',
+                  '& .MuiSelect-select': {
+                    p: 1.5,
+                  },
+                }}
+              >
+                <MenuItem value="" disabled>
+                  Bitte wählen Sie ein Constraint Typ aus
+                </MenuItem>
+                {Object.keys(constraintInfo).map((type) => (
+                  <MenuItem key={type} value={type}>
+                    {type.charAt(0).toUpperCase() + type.slice(1)}
+                    <Tooltip title={constraintInfo[type]}>
+                      <IconButton size="small" sx={{ ml: 1 }}>
+                        <InfoIcon fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
 
-        {/* Eingabefelder für neue Constraints */}
-        {/* Bedingungsauswahl und Eingabeformular für Implication, Mutex und Cardinality */}
-        {/* Der Rest des Codes bleibt gleich */}
-        
-        {/* Bestehende Constraints anzeigen */}
-        <Box sx={{ mt: 5 }}>
-          <Typography variant="h6">Vorhandene Constraints</Typography>
-          <Typography>Implikationen:</Typography>
-          {implicationConstraints.map((c, index) => (
-            <Typography key={index}>
-              Wenn {c.if_type}, dann {c.then_type}
-            </Typography>
-          ))}
-
-          <Typography>Mutex:</Typography>
-          {mutexConstraints.map((c, index) => (
-            <Typography key={index}>
-              {c.item1} und {c.item2} nicht zusammen
-            </Typography>
-          ))}
-
-          <Typography>Kardinalitäten:</Typography>
-          {cardinalityConstraints.map((c, index) => (
-            <Typography key={index}>
-              {c.object}: {c.min_count} bis {c.max_count}
-            </Typography>
-          ))}
-        </Box>
+            {isLoading ? (
+              <CircularProgress />
+            ) : (
+              <Box sx={{ mt: 4 }}>
+                {[{ title: 'Implikationen', data: implicationConstraints },
+                  { title: 'Mutex', data: mutexConstraints },
+                  { title: 'Kardinalitäten', data: cardinalityConstraints }].map(
+                  ({ title, data }) => (
+                    <Card key={title} sx={{ mb: 2, backgroundColor: '#f8f9fa' }}>
+                      <CardContent>
+                        <Typography variant="subtitle1" sx={{ display: 'flex', alignItems: 'center' }}>
+                          {title}
+                          <Tooltip title={constraintInfo[title.toLowerCase()]}>
+                            <IconButton size="small" sx={{ ml: 1 }}>
+                              <InfoIcon fontSize="small" />
+                            </IconButton>
+                          </Tooltip>
+                        </Typography>
+                        {data.length > 0 ? (
+                          data.map((c, i) => (
+                            <Box
+                              key={i}
+                              sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                mt: 1,
+                              }}
+                            >
+                              <Typography variant="body2">{JSON.stringify(c)}</Typography>
+                              <Box>
+                                <IconButton
+                                  size="small"
+                                  onClick={() => handleDialogOpen(c)}
+                                >
+                                  <EditIcon />
+                                </IconButton>
+                                <IconButton
+                                  size="small"
+                                  onClick={() => handleDeleteConstraint(c)}
+                                >
+                                  <DeleteIcon />
+                                </IconButton>
+                              </Box>
+                            </Box>
+                          ))
+                        ) : (
+                          <Typography variant="body2" color="text.secondary">
+                            Keine Daten verfügbar
+                          </Typography>
+                        )}
+                      </CardContent>
+                    </Card>
+                  )
+                )}
+              </Box>
+            )}
+          </>
+        ) : (
+          <Typography color="error">Sie müssen angemeldet sein, um Constraints zu verwalten.</Typography>
+        )}
       </Paper>
 
-      {/* Snackbar anzeigen */}
+      {/* Dialog */}
+      <Dialog open={openDialog} onClose={handleDialogClose}>
+        <DialogTitle>Constraint bearbeiten</DialogTitle>
+        <DialogContent>
+          <TextField
+            label="Daten"
+            value={dialogData.value || ''}
+            onChange={(e) =>
+              setDialogData({ ...dialogData, value: e.target.value })
+            }
+            fullWidth
+            sx={{ mt: 2 }}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDialogClose}>Abbrechen</Button>
+          <Button onClick={handleSaveConstraint}>Speichern</Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Snackbar */}
       <Snackbar
         open={openSnackbar}
         autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
+        onClose={() => setOpenSnackbar(false)}
       >
-        <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity}>
-          {snackbarMessage}
-        </Alert>
+        <Alert severity="info">{snackbarMessage}</Alert>
       </Snackbar>
     </Container>
   );
