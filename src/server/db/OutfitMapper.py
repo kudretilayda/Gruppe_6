@@ -2,8 +2,9 @@ from src.server.bo.ClothingItem import ClothingItem
 from src.server.db.Mapper import Mapper
 from src.server.bo.Outfit import Outfit
 
-
+# Die Klasse OutfitMapper erbt von Mapper und stellt Methoden zur Interaktion mit der Tabelle „outfit“ in der Datenbank dar.
 class OutfitMapper(Mapper):
+    # Diese Methode holt alle Outfits aus der Datenbank und gibt sie zurück
     def find_all(self):
         result = []
         cursor = self._cnx.cursor()
@@ -21,6 +22,7 @@ class OutfitMapper(Mapper):
         cursor.close()
         return result
 
+    # Diese Methode sucht ein Outfit basierend auf der übergebenen Schlüssel-ID
     def find_by_key(self, key):
         result = None
         cursor = self._cnx.cursor()
@@ -39,4 +41,98 @@ class OutfitMapper(Mapper):
         cursor.close()
         return result
 
-    
+    # Diese Methode sucht Outfits basierend auf dem Stil-Id
+    def find_by_style(self, style_id):
+        result = []
+        cursor = self._cnx().cursor()
+        command = "SELECT * FROM outfit WHERE style_id='{}'".format(style_id)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        for (id, outfit_name, style_id) in tuples:
+            outfit = Outfit()
+            outfit.set_id(id)
+            outfit.set_outfit_name(outfit_name)
+            outfit.set_style(style_id)
+            result.append(outfit)
+
+        self._cnx().commit()
+        cursor.close()
+        return result
+
+    # Diese Methode holt alle Kleidungseinheiten, die einem bestimmten Outfit zugeordnet sind
+    def find_items_by_outfit(self, outfit_id):
+        result = []
+        cursor = self._cnx().cursor()
+        command = "SELECT ci.* FROM clothing_item ci " \
+                 "JOIN outfit_items oi ON ci.id = oi.clothing_item_id " \
+                 "WHERE oi.outfit_id='{}'".format(outfit_id)
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        for (id, wardrobe_id, type_id, item_name) in tuples:
+            clothing_item = ClothingItem()
+            clothing_item.set_id(id)
+            clothing_item.set_wardrobe_id(wardrobe_id)
+            clothing_item.set_clothing_type(type_id)
+            clothing_item.set_item_name(item_name)
+            result.append(clothing_item)
+
+        self._cnx().commit()
+        cursor.close()
+        return result
+
+    # Diese Methode fügt ein neues Outfit in die Datenbank ein
+    def insert(self, outfit):
+        cursor = self._cnx.cursor()
+        cursor.execute("SELECT MAX(id) AS maxid FROM digital_wardrobe.outfit")
+        max_id = cursor.fetchone()[0]
+        outfit.set_id(max_id + 1 if max_id else 1)
+
+        command = ("INSERT INTO digital_wardrobe.outfit (id, outfit_name, style_id) "
+                   "VALUES (%s, %s, %s)")
+        data = (outfit.get_id(), outfit.get_name(), outfit.get_style_id())
+        cursor.execute(command, data)
+
+        self._cnx.commit()
+        cursor.close()
+        return outfit
+
+    # Diese Methode aktualisiert ein bestehendes Outfit in der Datenbank
+    def update(self, outfit):
+        cursor = self._cnx.cursor()
+        command = ("UPDATE digital_wardrobe.outfit "
+                   "SET outfit_name=%s, style_id=%s "
+                   "WHERE id=%s")
+        data = (outfit.get_name(), outfit.get_style_id(), outfit.get_id())
+        cursor.execute(command, data)
+
+        self._cnx.commit()
+        cursor.close()
+
+    # Diese Methode löscht ein Outfit aus der Datenbank
+    def delete(self, outfit):
+        cursor = self._cnx.cursor()
+        command = f"DELETE FROM outfit WHERE id={outfit.get_id()}"
+        cursor.execute(command)
+
+        self._cnx.commit()
+        cursor.close()
+
+    # Diese Methode fügt ein Kleidungselement einem Outfit hinzu
+    def add_item_to_outfit(self, outfit_id, clothing_item_id):
+        cursor = self._cnx().cursor()
+        command = "INSERT INTO outfit_items (outfit_id, clothing_item_id) VALUES ('{}','{}')" \
+            .format(outfit_id, clothing_item_id)
+        cursor.execute(command)
+        self._cnx().commit()
+        cursor.close()
+
+    # Diese Methode entfernt ein Kleidungselement aus einem Outfit
+    def remove_item_from_outfit(self, outfit_id, clothing_item_id):
+        cursor = self._cnx().cursor()
+        command = "DELETE FROM outfit_items WHERE outfit_id='{}' AND clothing_item_id='{}'" \
+            .format(outfit_id, clothing_item_id)
+        cursor.execute(command)
+        self._cnx().commit()
+        cursor.close()
