@@ -41,20 +41,8 @@ const Profile = () => {
   const loadUserData = async () => {
     setLoading(true);
     setError(null);
-
     try {
-      const response = await fetch(`/api/profile/${DigitalWardrobeAPI.getAPI().getUser()}`);
-      if (!response.ok) {
-        new Error(`Error: ${response.status}`);
-      }
-      const data = await response.json();
-      setUserData(data);
-    } catch (error) {
-      console.error("Error loading user data:", error);
-    }
-  };
-
-    /* try {
+      // get user daten vom jetzigen nutzer
       const userData = await DigitalWardrobeAPI.getAPI().getUserByGoogleId(user.uid);
       if (userData) {
         setUserBO(userData);
@@ -66,7 +54,7 @@ const Profile = () => {
       }
 
       // get alle user aus der tabelle
-      const users = await DigitalWardrobeAPI.getAPI();
+      const users = await DigitalWardrobeAPI.getAPI().getUsers();
       setAllUsers(users);
     } catch (error) {
       console.error('Error loading user data:', error);
@@ -74,7 +62,7 @@ const Profile = () => {
     } finally {
       setLoading(false);
     }
-  };*/
+  };
 
   // handle form submission
   const handleSubmit = async (event) => {

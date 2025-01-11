@@ -19,7 +19,7 @@ class DigitalWardrobeAPI {
     static #api = null;
 
     // Local Python backend
-    #wardrobeServerBaseURL = 'http://localhost:3000';
+    #wardrobeServerBaseURL = 'http://127.0.0.1:5000';
 
     // Schrank API
     // User endpoints
@@ -328,7 +328,7 @@ class DigitalWardrobeAPI {
 
     // Get all styles
     async getStyles() {
-        const response = await fetch("http://localhost:3000/styles", {
+        const response = await fetch("http://localhost:3306/styles", {
             method: "GET",
             credentials: "include", // Wichtig für Authentifizierungsdaten
             headers: {

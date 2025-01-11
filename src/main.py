@@ -22,11 +22,11 @@ from SecurityDecorator import secured
 # Flask instanziieren
 app = Flask(__name__)
 
-# Cors insanziieren
+# Cors instanziieren
 # CORS(app, resources={r"/api/":{"origins":"*"}})
 CORS(app, resources={
     r"/*": {
-        "origins": ["http://localhost:3000"]
+        "origins": ["http://localhost:3306"]
         #"methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
         #"allow_headers": ["Content-Type", "Authorization"],
         #"supports_credentials": True
