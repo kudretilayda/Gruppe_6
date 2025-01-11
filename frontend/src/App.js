@@ -11,9 +11,10 @@ import Outfits from './components/pages/Outfits';
 import Styles from './components/pages/Styles';
 import SignIn from './components/pages/SignIn';
 import Settings from './components/pages/Settings';
-import Constraints from './components/pages/Constraints';
+import Constraint from './components/pages/Constraint';
 
-import {GoogleAuthProvider, onAuthStateChanged, signInWithPopup, getAuth, signInWithRedirect, signOut} from 'firebase/auth';
+import {GoogleAuthProvider, onAuthStateChanged, signInWithPopup, getAuth,
+    getRedirectResult, signInWithRedirect, signOut} from 'firebase/auth';
 import {auth} from './firebase';
 
 // Main App komponente
@@ -24,25 +25,11 @@ const AppContent = () => {
         const provider = new GoogleAuthProvider();
         provider.setCustomParameters({ prompt: 'select_account' });
         try {
-            await signInWithPopup(auth, provider); // Popup statt Redirect
+            await signInWithRedirect(auth, provider); // Redirect statt Popup
         } catch (error) {
             console.error('Error during Google Sign-In:', error.message);
         }
     };
-
-    const location = useLocation();
-    const navigate = useNavigate();
-
-    const handleSignIn = async () => {
-        try {
-            await signInWithPopup(auth, new GoogleAuthProvider());
-            const from = location.state?.from || "/home";
-            navigate(from);
-        } catch (error) {
-            console.error("Error during sign-in:", error.message);
-        }
-    };
-
 
     const SignOut = async () => {
         try {
@@ -61,7 +48,7 @@ const AppContent = () => {
                     user ? (
                         <Home />
                     ) : (
-                        <SignIn onSignIn = {handleSignIn} />
+                        <SignIn onSignIn = {GoogleSignIn} />
                     )
                 }
                 />
@@ -87,23 +74,23 @@ const AppContent = () => {
                 />
 
                 <Route
-                    path="/profile"
-                    element={user ? <Profile /> : <Navigate to="/" replace />}
-                />
-
-                <Route
                     path="/settings"
-                    element={user ? <Profile /> : <Navigate to="/" replace />}
+                    element={user ? <Settings /> : <Navigate to="/" replace />}
                 />
 
                 <Route
                     path="/constraints"
-                    element={user ? <Profile /> : <Navigate to="/" replace />}
+                    element={user ? <Constraint /> : <Navigate to="/" replace />}
                 />
 
                 <Route
                     path="/profile"
                     element={user ? (<Profile />) : (<Navigate to="/" state={{ from: "/profile" }} replace />)}
+                />
+
+                <Route
+                    path="/profile"
+                    element={user ? <Profile /> : <Navigate to="/" replace />}
                 />
 
             </Routes>

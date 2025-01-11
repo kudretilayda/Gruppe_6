@@ -19,6 +19,14 @@ app.get("http://localhost:3000")
 app.listen(3000)
 */
 
+const response = await fetch("http://localhost:3000/styles", {
+    method: "GET",
+    credentials: "include", // Wichtig
+    headers: {
+        "Content-Type": "application/json",
+    },
+});
+
 const cors = require('cors')
 
 
