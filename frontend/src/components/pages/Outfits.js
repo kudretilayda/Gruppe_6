@@ -1,4 +1,43 @@
 import React, { useState, useEffect } from 'react';
+import Outfit from "../../api/OutfitBO";
+import DigitalWardrobeAPI from '../../api/DigitalWardrobeAPI'
+
+const OutfitPage = () => {
+  const [outfits, setOutfits] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const loadOutfits = async () => {
+      try {
+        const data = await DigitalWardrobeAPI.getAPI().getOutfits(outfits); //Error DigitalWardrobe 141
+        setOutfits(data);
+      } catch (err) {
+        setError('Fehler beim Laden der Outfits');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadOutfits();
+  }, []);
+
+  return (
+    <div>
+      <h2>Meine Outfits</h2>
+      {loading && <p>Lädt...</p>}
+      {error && <p>{error}</p>}
+      {!loading && !error && outfits.map((outfit) => (
+        <Outfit key={outfit.id} name={outfit.name} kleidungsstuecke={outfit.kleidungsstuecke} />
+      ))}
+    </div>
+  );
+};
+
+export default OutfitPage;
+
+/*
+import React, { useState, useEffect } from 'react';
 import {Typography, Grid, Card, CardContent, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Chip,
   CardActions, IconButton, Box, Select, MenuItem, FormControl, InputLabel} from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
@@ -175,3 +214,4 @@ const Outfits = ({ wardrobeItems = [], styles = [] }) => {
 };
 
 export default Outfits;
+*/

@@ -21,23 +21,25 @@ const Navbar = () => {
   const [userData, setUserData] = useState(null);
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-
+  
   // fetch user daten
   useEffect(() => {
     const fetchUserData = async () => {
       if (user?.uid) {
         try {
-          const userBO = await DigitalWardrobeAPI.getAPI().getUserByGoogleId(user.uid);
-          setUserData(userBO);
+          const response = await DigitalWardrobeAPI.getAPI().getUserByGoogleId(user.uid);
+          console.log("API Response:", response);
+          setUserData(response);
         } catch (error) {
-          console.error('Error fetching user data:', error);
+          if (error.response) {
+            console.error('Error fetching user data:', error.response.status, error.response.data);
+          } else {
+            console.error('Error fetching user data:', error.message);
+          }
         }
       }
-    };
-
-    fetchUserData().then(r => user);
-  }, [user]);
-
+    }
+  });
   // menü item config
   const menuItems = [
     { label: 'Home', path: '/home' },

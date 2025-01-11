@@ -59,17 +59,21 @@ const AppContent = () => {
                 }
                 />
 
-                <Route path="/Home"  element={user ? <Home /> : <Navigate to="/" replace/>}
+                <Route
+                    path="/Home"
+                    element={user ? <Home /> : <Navigate to="/" replace/>}
                 />
 
                 <Route
                     path="/wardrobe"
                     element={user ? <Wardrobe /> : <Navigate to="/" replace />}
                 />
+
                 <Route
                     path="/styles"
                     element={user ? <Styles /> : <Navigate to="/" replace />}
                 />
+
                 <Route
                     path="/outfits"
                     element={user ? <Outfits /> : <Navigate to="/" replace />}
@@ -79,6 +83,7 @@ const AppContent = () => {
                     path="/profile"
                     element={user ? <Profile /> : <Navigate to="/" replace />}
                 />
+
             </Routes>
         </>
     );

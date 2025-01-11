@@ -166,13 +166,25 @@ class DigitalWardrobeAPI {
     }
 
     // Get user by Google ID
-    async getUserByGoogleId(googleId) {
-        const response = await fetch(`http://127.0.0.1:5000/wardrobe/user-by-google-id/${googleId}`, {
+   /* async getUserByGoogleId(googleId) {
+        const response = await fetch(`http://localhost:3000/${googleId}`, { // problematisch
             method: 'GET',
             credentials: 'include',
         });
         if (!response.ok) {
             throw new Error(`Failed to fetch user by Google ID: ${response.status}`);
+        }
+        return await response.json();
+    }*/
+    async getUserByGoogleId(googleId) {
+        const response = await fetch(`/api/users/google/${googleId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        if (!response.ok) {
+            throw new Error(`API error: ${response.status}`);
         }
         return await response.json();
     }

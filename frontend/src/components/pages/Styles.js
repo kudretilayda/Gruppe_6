@@ -1,3 +1,34 @@
+// src/pages/StylePage.js
+import React, { useState, useEffect } from 'react';
+import Style from '../../api/StyleBO';
+import DigitalWardrobeAPI from '../../api/DigitalWardrobeAPI'
+
+
+const StylePage = () => {
+  const [styles, setStyles] = useState([]);
+
+  useEffect(() => {
+    const loadStyles = async () => {
+      const data = await fetch(Style);
+      setStyles(data);
+    };
+
+    loadStyles();
+  }, []);
+
+  return (
+    <div>
+      <h2>Meine Styles</h2>
+      {styles.map((style) => (
+          <Style key={style.id} name={style.name} />
+      ))}
+    </div>
+  );
+};
+
+export default StylePage;
+
+/*
 import React, { useState, useEffect } from 'react';
 import {
   Container,
@@ -97,7 +128,7 @@ const Styles = () => {
           Style erstellen
         </Typography>
 
-        {/* input style name */}
+        {/* input style name }
         <TextField
           fullWidth
           label="Style Name"
@@ -107,9 +138,9 @@ const Styles = () => {
           required
         />
 
-        {/* constraint abschnitt */}
+        {/* constraint abschnitt }
         <Grid container spacing={3} sx={{ mt: 2 }}>
-          {/* mutex constraint */}
+          {/* mutex constraint }
           <Grid item xs={12} md={4}>
             <FormControl fullWidth>
               <Typography variant="subtitle2" gutterBottom>
@@ -134,7 +165,7 @@ const Styles = () => {
             </FormControl>
           </Grid>
 
-          {/* implikation constraint */}
+          {/* implikation constraint }
           <Grid item xs={12} md={4}>
             <FormControl fullWidth>
               <Typography variant="subtitle2" gutterBottom>
@@ -159,7 +190,7 @@ const Styles = () => {
             </FormControl>
           </Grid>
 
-          {/* kardinalität constraint */}
+          {/* kardinalität constraint }
           <Grid item xs={12} md={4}>
             <FormControl fullWidth>
               <Typography variant="subtitle2" gutterBottom>
@@ -185,7 +216,7 @@ const Styles = () => {
           </Grid>
         </Grid>
 
-        {/* constraint list */}
+        {/* constraint list }
         <Box sx={{ mt: 4 }}>
           <Typography variant="h6" gutterBottom>
             Hinzugefügte Constraints
@@ -203,7 +234,7 @@ const Styles = () => {
           )}
         </Box>
 
-        {/* speicher knopf */}
+        {/* speicher knopf }
         <Button
           variant="contained"
           onClick={handleSaveStyle}
@@ -213,7 +244,7 @@ const Styles = () => {
           STYLE SPEICHERN
         </Button>
 
-        {/* existierende styles */}
+        {/* existierende styles }
         <Box sx={{ mt: 4 }}>
           <Typography variant="h6" gutterBottom>
             Vorhandene Styles
@@ -236,7 +267,7 @@ const Styles = () => {
 };
 
 export default Styles;
-
+*/
 
 
 /*
