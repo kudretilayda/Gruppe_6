@@ -10,14 +10,13 @@ class Mapper(AbstractContextManager, ABC):
 
     def __enter__(self):
 
-        if os.getenv('GAE_ENV', '').startswith('standard'):
-            
+        if os.getenv('DATABASE_URL', '').startswith(''):
             self._cnx = connector.connect(user='demo', password='demo',
                                           unix_socket='/cloudsql/digital-wardrobe-442615',
                                           database='digital_wardrobe')
 
         else:
-            self._cnx = connector.connect(user='root', password='kik7285hhg2001-',
+            self._cnx = connector.connect(user='demo', password='demo',
                                           host='localhost:3306',
                                           database='digital_wardrobe')
         return self

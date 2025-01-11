@@ -1,8 +1,6 @@
-#InstanzEbene
-
-from server.bo.ClothingItem import ClothingItem
-from server.db.Mapper import Mapper
-from server.bo.Outfit import Outfit
+from src.server.bo.ClothingItem import ClothingItem
+from src.server.db.Mapper import Mapper
+from src.server.bo.Outfit import Outfit
 
 
 class OutfitMapper(Mapper):

@@ -1,5 +1,5 @@
-from .Constraint import Constraint
-from ..Style import Style
+from src.server.bo.Constraints.Constraint import Constraint
+from src.server.bo.Style import Style
 
 
 class BinaryConstraint(Constraint):

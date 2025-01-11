@@ -1,7 +1,7 @@
-from ..ClothingType import ClothingType
-from ..Style import Style
-from ..Outfit import Outfit
-from ..ClothingItem import ClothingItem
+from src.server.bo.ClothingType import ClothingType
+from src.server.bo.Style import Style
+from src.server.bo.Outfit import Outfit
+from src.server.bo.ClothingItem import ClothingItem
 
 from Unary import UnaryConstraint
 from Binary import BinaryConstraint

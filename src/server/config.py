@@ -1,11 +1,10 @@
 import mysql.connector
-from mysql.connector import Error
 
 def get_db_connection():
     return mysql.connector.connect(
-        host="127.0.0.1",
+        host="localhost", 
         user="root",
-        password="dragonhart192837465",
+        password="demo",
         database="digital_wardrobe"
     )
 

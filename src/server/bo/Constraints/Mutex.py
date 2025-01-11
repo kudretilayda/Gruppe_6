@@ -1,10 +1,10 @@
-from .Constraint import Constraint
+from src.server.bo.Constraints.Constraint import Constraint
 
 
 class MutexConstraint(Constraint):
     def __init__(self, mutex):
         super().__init__()
-        self.mutex = mutex or [] # liste an paaren die nicht zusammen genutzt werden können
+        self.mutex = mutex
 
     def validate(self, outfit):
         for pair in self.mutex:
@@ -15,12 +15,3 @@ class MutexConstraint(Constraint):
             else:
                 print("Outfit erfüllt die Mutex-Bedingungen.")
                 return True
-            
-    # static method
-    def from_dict(dictionary=None):
-        if dictionary is None:
-            dictionary = dict()
-        constraint = MutexConstraint()
-        constraint.set_id(dictionary.get("id", 0))
-        constraint.mutex = dictionary.get("mutex", [])
-        return constraint

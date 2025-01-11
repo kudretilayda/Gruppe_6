@@ -1,4 +1,4 @@
-from .BusinessObject import BusinessObject
+from src.server.bo.BusinessObject import BusinessObject
 
 
 class User (BusinessObject):
@@ -49,15 +49,23 @@ class User (BusinessObject):
         self._email = value
 
     def __str__(self):
-        return "User: {}, {}, {}, {}".format(self.get_user_id(), self.get_lastname(), self.get_email(), self.get_firstname())
+        return "User: {}, {}, {}, {}".format(
+            self.get_user_id(),
+            self.get_lastname(),
+            self.get_email(),
+            self.get_firstname()
+        )
 
     @staticmethod
-    def from_dict(dictionary=dict()):
+    def from_dict(dictionary=None):
+        
+        if dictionary is None:
+            dictionary = dict()
         obj = User()
-        obj.set_user_id(dictionary("user_id", ""))
-        obj.set_lastname(dictionary("lastname", ""))
-        obj.set_firstname(dictionary("firstname", ""))
-        obj.set_nickname(dictionary("nickname", ""))
-        obj.set_google_id(dictionary("google_id", ""))
-        obj.set_email(dictionary("email", ""))
+        obj.set_user_id(dictionary.get("user_id", ""))
+        obj.set_lastname(dictionary.get("lastname", ""))
+        obj.set_firstname(dictionary.get("firstname", ""))
+        obj.set_nickname(dictionary.get("nickname", ""))
+        obj.set_google_id(dictionary.get("google_id", ""))
+        obj.set_email(dictionary.get("email", ""))
         return obj

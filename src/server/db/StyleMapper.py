@@ -1,5 +1,6 @@
-from server.db.Mapper import Mapper
-from server.bo.Style import Style
+from src.server.db.Mapper import Mapper
+from src.server.bo.Style import Style
+
 
 class StyleMapper(Mapper):
     def find_all(self):
@@ -70,36 +71,3 @@ class StyleMapper(Mapper):
 
         self._cnx.commit()
         cursor.close()
-
-    def find_by_closet_items(self, available_items):
-        results = []
-        cursor = self._cnx.cursor()
-
-        # Formatierte Liste der Kleidungsstücke für die SQL-Abfrage
-        item_types = ",".join([f"'{item}'" for item in available_items])
-        
-        # Abfrage für Styles, bei denen alle benötigten Kleidungsstücke im Kleiderschrank vorhanden sind
-        query = f"""
-            SELECT s.id, s.style_features, s.style_constraints 
-            FROM digital_wardrobe.style AS s
-            JOIN digital_wardrobe.style_items AS si ON s.id = si.style_id
-            WHERE si.item_type IN ({item_types})
-            GROUP BY s.id
-            HAVING COUNT(DISTINCT si.item_type) = (SELECT COUNT(*) 
-                                                   FROM digital_wardrobe.style_items 
-                                                   WHERE style_id = s.id);
-        """
-
-        cursor.execute(query)
-        tuples = cursor.fetchall()
-
-        for (id, style_features, style_constraints) in tuples:
-            style = Style()
-            style.set_id(id)
-            style.set_style_features(style_features)
-            style.set_style_constraints(style_constraints)
-            results.append(style)
-
-        self._cnx.commit()
-        cursor.close()
-        return results

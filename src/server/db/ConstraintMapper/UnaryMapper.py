@@ -1,4 +1,4 @@
-from ..Mapper import Mapper
+from src.server.db.Mapper import Mapper
 
 
 class UnaryConstraintMapper(Mapper):
