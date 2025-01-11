@@ -40,7 +40,7 @@ export default SignIn;
 */
 
 
-import React from 'react';
+/*import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Grid, Typography, Container, Box } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google'
@@ -58,7 +58,7 @@ import {useAuth} from "../../context/AuthContext";
  *
  */
  
-const SignIn = () => {
+/*const SignIn = () => {
 	const {signInWithGoogle} = useAuth();
 	const navigate = useNavigate();
 	const handleSignIn = async () => {
@@ -117,3 +117,32 @@ SignIn.propTypes = {
 export default SignIn;
 
  */
+
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Button } from '@mui/material';
+import GoogleIcon from '@mui/icons-material/Google';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from "../../context/AuthContext";
+
+const SignIn = () => {
+  const { signInWithGoogle } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSignIn = async () => {
+    await signInWithGoogle();
+    navigate('/home'); // Weiterleitung nach erfolgreichem Sign-In
+  };
+
+  return (
+    <Button onClick={handleSignIn} startIcon={<GoogleIcon />}>
+      Mit Google anmelden
+    </Button>
+  );
+};
+
+SignIn.propTypes = {
+  signInWithGoogle: PropTypes.func,
+};
+
+export default SignIn;
