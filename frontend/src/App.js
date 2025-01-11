@@ -1,40 +1,36 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { Typography, Button, CssBaseline, Grid,Container, Box, CircularProgress} from '@mui/material';
-import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut} from 'firebase/auth';
-import { auth } from './firebase.js';
-import { AuthProvider, useAuth } from './context/AuthContext.js';
-
-import Navbar from './components/layout/Navbar.js';
-
+import {BrowserRouter, Navigate, Route, Routes} from 'react-router-dom';
+import {CssBaseline} from '@mui/material';
+import {AuthProvider, useAuth} from './context/AuthContext';
+import Navbar from './components/layout/Navbar';
 import Home from './components/pages/Home.js';
-import Wardrobe from './components/pages/Wardrobe.js';
-import Outfits from './components/pages/Outfits.js';
-import Styles from './components/pages/Styles.js';
-import Profile from './components/pages/Profile.js';
-import ClothingType from "./components/pages/ClothingType.js";
-import Settings from './components/pages/Settings.js';
-import SignIn from './components/pages/SignIn.js';
+import Profile from './components/pages/Profile';
+import Wardrobe from './components/pages/Wardrobe';
+import Outfits from './components/pages/Outfits';
+import Styles from './components/pages/Styles';
+import SignIn from './components/pages/SignIn';
+import Settings from './components/pages/Settings';
+import Constraints from './components/pages/Constraints';
+
+import {GoogleAuthProvider, signInWithPopup, signOut} from 'firebase/auth';
+import {auth} from './firebase';
 
 
-//init app
+
+// Main App komponente
 const AppContent = () => {
-    const { user, loading } = useAuth();
+    const { user } = useAuth();
 
-    //Google SignIn
-    const handleGoogleSignIn = async () => {
-        const provider = new GoogleAuthProvider();
-        try {
-            console.log('Starting Google sign in...');
-            await signInWithPopup(auth, provider);
-            console.log('Sign in successful')
-        }   catch (error) {
-            console.error('Error singing in with Google:', error);
-        }
-    };
+	const GoogleSignIn = async () => {
+    const provider = new GoogleAuthProvider(); // Use 'GoogleAuthProvider' directly
+    provider.setCustomParameters({ prompt: 'select_account' });
+    try {
+        await signInWithPopup(auth, provider); // Use 'provider' directly here
+    } catch (error) {
+        alert(error.message);
+    }};
 
-    //SignOut
-    const handleSignOut = async () => {
+    const SignOut = async () => {
         try {
             await signOut(auth);
         }   catch (error) {
@@ -42,48 +38,58 @@ const AppContent = () => {
         }
     };
 
-    if (loading) {
-        return (
-            <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
-                <CircularProgress />
-            </Box>
-        );
-    }
-
     return (
         <><CssBaseline />
-            <Navbar user={user} onLogout={handleSignOut} />
-            
+            <Navbar user={user} onLogout={SignOut} />
+
             <Routes>
-                <Route path="/" element={
+                <Route path="/"  element={
                     user ? (
                         <Home />
                     ) : (
-                        <SignIn onSignIn = {handleGoogleSignIn} />
+                        <SignIn onSignIn = {GoogleSignIn} />
                     )
                 }
                 />
 
                 <Route
-                    path="/wardrobe" 
-                    element={user ? <Wardrobe /> : <Navigate to="/" replace />} 
+                    path="/Home"
+                    element={user ? <Home /> : <Navigate to="/" replace/>}
                 />
-                    <Route
+
+                <Route
+                    path="/wardrobe"
+                    element={user ? <Wardrobe /> : <Navigate to="/" replace />}
+                />
+
+                <Route
                     path="/styles"
-                    element={user ? <Styles /> : <Navigate to="/" replace />} 
+                    element={user ? <Styles /> : <Navigate to="/" replace />}
                 />
-                <Route 
-                    path="/outfits" 
+
+                <Route
+                    path="/outfits"
                     element={user ? <Outfits /> : <Navigate to="/" replace />}
                 />
-                <Route 
-                    path="/profile" 
+
+                <Route
+                    path="/profile"
                     element={user ? <Profile /> : <Navigate to="/" replace />}
                 />
                 <Route
-                    path="/types"
-                    element={user ? <ClothingType /> : <Navigate to="/" replace />}
+                    path="/Settings"
+                    element={user ? <Settings /> : <Navigate to="/" replace />}
                 />
+                <Route
+                    path="/Constraints"
+                    element={user ? <Constraints  /> : <Navigate to="/" replace />}
+                />
+                <Route
+                    path="/signin"
+                    element={user ? <SignIn  /> : <Navigate to="/" replace />}
+                />
+
+
             </Routes>
         </>
     );
@@ -93,8 +99,8 @@ const App = () => {
     return (
         <BrowserRouter>
             <AuthProvider>
-                <CssBaseline />
-                <AppContent />
+                <CssBaseline/>
+                <AppContent/>
             </AuthProvider>
         </BrowserRouter>
     );
