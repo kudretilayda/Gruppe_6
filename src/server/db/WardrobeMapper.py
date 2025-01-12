@@ -24,3 +24,28 @@ class WardrobeMapper(Mapper):
         self._cnx.commit()
         cursor.close()
         return result
+
+    def find_by_key(self, key):
+        """
+        Findet einen Wardrobe-Eintrag anhand seiner ID
+        Args:
+            key: Die ID des gesuchten Wardrobe-Eintrags
+        Returns: Wardrobe-Objekt oder None wenn nicht gefunden
+        """
+        result = None
+        cursor = self._cnx.cursor()
+        # SQL-Query mit WHERE-Klausel für spezifische ID
+        command = f"SELECT * FROM wardrobe WHERE id={key}"
+        cursor.execute(command)
+        tuples = cursor.fetchall()
+
+        # Wenn Eintrag gefunden wurde, konvertiere zu Wardrobe-Objekt
+        if tuples:
+            (wardrobe_id, wardrobe_owner) = tuples[0]
+            result = Wardrobe()
+            result.set_id(wardrobe_id)
+            result.set_wardrobe_owner(wardrobe_owner)
+
+        self._cnx.commit()
+        cursor.close()
+        return result
