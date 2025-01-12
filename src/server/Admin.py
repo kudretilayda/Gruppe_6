@@ -153,3 +153,44 @@ class Admin(object):
         with ClothingItemMapper() as mapper:
             self._cleanup_reference(clothing_item)
             mapper.delete(clothing_item)
+
+### Outfit ###
+
+    def create_outfit(self, outfit_name, style_id): # Hier wird ein neues Outfit erstellt
+        outfit = Outfit()
+        outfit.set_outfit_name(outfit_name)
+        outfit.set_style(style_id)
+
+        with OutfitMapper() as mapper:
+            return mapper.insert(outfit)
+
+    def add_item_to_outfit(self, outfit_id, item): # Fügt ein Kleidungsstück zu einem bestimmten Outfit hinzu
+        outfit = Outfit()
+        outfit.set_items(item)
+        with OutfitMapper() as mapper:
+            mapper.add_item_to_outfit(outfit_id, item)
+
+    def remove_item_from_outfit(self, outfit_id, item): # Entfernt ein Kleidungsstück aus einem bestimmten Outfit
+        with OutfitMapper() as mapper:
+            mapper.remove_item_from_outfit(outfit_id, item)
+
+    def get_outfit_by_id(self, outfit_id): # Holt ein Outfit anhand seiner ID
+        with OutfitMapper() as mapper:
+            return mapper.find_by_id(outfit_id)
+
+    def get_outfits_by_style_id(self, style_id): # Holt alle Outfits, die einem bestimmten Style zugeordnet sind
+        with OutfitMapper() as mapper:
+            return mapper.find_by_style_id(style_id)
+
+    def get_all_outfits(self): # Holt alle Outfits
+        with OutfitMapper() as mapper:
+            return mapper.find_all()
+
+    def save_outfit(self, outfit):
+        with OutfitMapper() as mapper: # Speichert Änderungen an einem Outfit
+            mapper.update(outfit)
+
+    def delete_outfit(self, outfit):
+        with OutfitMapper() as mapper: # Löscht ein Outfit
+            mapper.delete(outfit)
+
