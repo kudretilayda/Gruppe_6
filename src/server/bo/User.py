@@ -55,3 +55,17 @@ class User (BusinessObject): # Die Klasse User repräsentiert einen Benutzer und
             self.get_email(),
             self.get_firstname()
         )
+    
+    @staticmethod # Diese Methode erstellt ein neues User-Objekt aus den Daten eines übergebenen Dictionaries
+    def from_dict(dictionary=None):
+        
+        if dictionary is None:
+            dictionary = dict()
+        obj = User() # Ein neues User-Objekt wird instanziiert
+        obj.set_user_id(dictionary.get("user_id", ""))
+        obj.set_lastname(dictionary.get("lastname", ""))
+        obj.set_firstname(dictionary.get("firstname", ""))
+        obj.set_nickname(dictionary.get("nickname", ""))
+        obj.set_google_id(dictionary.get("google_id", ""))
+        obj.set_email(dictionary.get("email", ""))
+        return obj # Das erstellte User-Objekt wird zurückgegeben
