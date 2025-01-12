@@ -194,3 +194,29 @@ class Admin(object):
         with OutfitMapper() as mapper: # Löscht ein Outfit
             mapper.delete(outfit)
 
+### Style ###
+
+    def create_style(self, style_features, style_constraints): # Hier wird ein neuer Style erstellt
+        style = Style()
+        style.set_style_features(style_features)
+        style.set_style_constraints(style_constraints)
+
+        with StyleMapper() as mapper:
+            return mapper.insert(style)
+
+    def get_style_by_id(self, style_id): # Holt einen Style anhand seiner ID
+        with StyleMapper() as mapper:
+            return mapper.find_by_id(style_id)
+
+    def get_all_styles(self): # Holt alle Styles
+        with StyleMapper() as mapper:
+            return mapper.find_all()
+
+    def save_style(self, style): # Speichert Änderungen an einem bestimmten Style
+        with StyleMapper() as mapper:
+            mapper.update(style)
+
+    def delete_style(self, style): # Löscht ein Style
+        with StyleMapper() as mapper:
+            self._cleanup_reference(style)
+            mapper.delete(style)
