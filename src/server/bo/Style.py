@@ -50,7 +50,6 @@ class Style(BusinessObject):
                                               self.clothing_type)
 
     # Methode zur Validierung des Styles anhand seiner Constraints
-
     def validate(self):
         for constraint in self.style_constraints:
             if constraint.validate():
@@ -59,7 +58,6 @@ class Style(BusinessObject):
                 return False
 
     # Statische Methode, die ein Style-Objekt aus einem Dictionary erstellt
-
     @staticmethod
     def from_dict(dictionary=None):
 
