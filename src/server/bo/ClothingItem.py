@@ -42,3 +42,14 @@ class ClothingItem(BusinessObject):
             self.get_clothing_type(),
             self.get_item_name(),
         )
+    
+ @staticmethod # Statische Methode, um ein ClothingItem-Objekt aus einem Dictionary zu erstellen
+    def from_dict(dictionary=None):
+
+        if dictionary is None:
+            dictionary = {}
+        obj = ClothingItem()
+        obj.set_id(dictionary.get("clothing Item", 0))
+        obj.set_clothing_type(dictionary.get("clothing Item", None))
+        obj.set_item_name(dictionary.get("clothing Item name", ""))
+        return obj # Das erstellte Objekt zurückgeben
