@@ -48,3 +48,44 @@ Präsentationsschicht mindestens folgende Dienste anbieten:
 die Google Firebase Authentication API zurückgegriffen werden.
 
 '''
+class Admin(object):
+    def __init__(self):
+        pass
+
+### Person ###
+
+    def create_user(self, firstname, lastname, nickname, email, google_id): # Methode zum Erstellen eines neuen Benutzers
+        user = User()
+        user.set_firstname(firstname)
+        user.set_lastname(lastname)
+        user.set_nickname(nickname)
+        user.set_email(email)
+        user.set_google_id(google_id)
+        with UserMapper() as mapper:
+            return mapper.insert(user) # Speichert den Benutzer in der Datenbank
+
+    def get_all_users(self):
+        with UserMapper() as mapper:
+            return mapper.find_all() # Holen alle Benutzer aus der Datenbank
+
+    def get_user_by_id(self, user_id):
+        with UserMapper() as mapper:
+            return mapper.find_by_key(user_id) # Sucht den Benutzer mit der übergebenen ID
+
+    def get_user_by_google_id(self, google_id):
+        with UserMapper() as mapper:
+            return mapper.find_by_google_id(google_id) # Sucht den Benutzer mit der übergebenen Google-ID
+
+    def change_user(self, user):
+        with UserMapper() as mapper:
+            return mapper.update(user) # Aktualisiert die Benutzerdaten in der Datenbank
+
+    def save_user(self, user):
+        with UserMapper() as mapper:
+            mapper.insert(user) # Speichert den Benutzer in der Datenbank
+
+
+    def delete_user(self, user):
+        with UserMapper() as mapper:
+            mapper.delete(user) # Löscht den Benutzer aus der Datenbank
+
