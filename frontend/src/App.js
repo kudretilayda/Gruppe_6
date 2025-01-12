@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {BrowserRouter, Navigate, Route, Routes} from 'react-router-dom';
 import {CssBaseline} from '@mui/material';
 import {AuthProvider, useAuth} from './context/AuthContext';
@@ -12,23 +12,30 @@ import SignIn from './components/pages/SignIn';
 import Settings from './components/pages/Settings';
 import Constraints from './components/pages/Constraints';
 
-import {GoogleAuthProvider, signInWithPopup, signOut} from 'firebase/auth';
+import {GoogleAuthProvider, signInWithPopup, signInWithRedirect, signInWithCredential, signOut} from 'firebase/auth';
 import {auth} from './firebase';
 
 
 
 // Main App komponente
 const AppContent = () => {
-    const { user } = useAuth();
+    const {user} = useAuth();
 
-	const GoogleSignIn = async () => {
-    const provider = new GoogleAuthProvider(); // Use 'GoogleAuthProvider' directly
-    provider.setCustomParameters({ prompt: 'select_account' });
-    try {
-        await signInWithPopup(auth, provider); // Use 'provider' directly here
-    } catch (error) {
-        alert(error.message);
-    }};
+    const GoogleSignIn = async () => {
+        const provider = new GoogleAuthProvider();
+        provider.setCustomParameters({prompt: 'select_account'});
+        try {
+            const result = await signInWithPopup(auth, provider);
+            console.log("User signed in:", result.user);
+        } catch (error) {
+            if (error.code === "auth/popup-closed-by-user") {
+                console.error("Popup geschlossen, bevor die Anmeldung abgeschlossen wurde.");
+            } else {
+                console.error("Fehler bei der Anmeldung:", error.message);
+            }
+        }
+    };
+
 
     const SignOut = async () => {
         try {
@@ -96,6 +103,11 @@ const AppContent = () => {
 };
 
 const App = () => {
+    //useEffect(() => {
+    //    fetch('http://localhost:3000')
+    //        .then((res) => res.text())
+    //        .then((data) => console.log(data));
+    //}, []);
     return (
         <BrowserRouter>
             <AuthProvider>

@@ -5,18 +5,18 @@ class User (BusinessObject):
 
     def __init__(self):
         super().__init__()
-        self._user_id = 0
+#        self._user_id = 0
         self._lastname = ""
         self._firstname = ""
         self._nickname = ""
         self._google_id = ""
         self._email = ""
 
-    def get_user_id(self):
-        return self._user_id
+#    def get_user_id(self):
+#        return self._user_id
 
-    def set_user_id(self, value):
-        self._user_id = value
+#    def set_user_id(self, value):
+#        self._user_id = value
 
     def get_lastname(self):
         return self._lastname
@@ -50,7 +50,7 @@ class User (BusinessObject):
 
     def __str__(self):
         return "User: {}, {}, {}, {}".format(
-            self.get_user_id(),
+            self.get_id(),
             self.get_lastname(),
             self.get_email(),
             self.get_firstname()
@@ -62,7 +62,7 @@ class User (BusinessObject):
         if dictionary is None:
             dictionary = dict()
         obj = User()
-        obj.set_user_id(dictionary.get("user_id", ""))
+        obj.set_id(dictionary.get("user_id", ""))
         obj.set_lastname(dictionary.get("lastname", ""))
         obj.set_firstname(dictionary.get("firstname", ""))
         obj.set_nickname(dictionary.get("nickname", ""))

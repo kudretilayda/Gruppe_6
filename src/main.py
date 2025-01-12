@@ -23,23 +23,20 @@ from SecurityDecorator import secured
 app = Flask(__name__)
 
 # Cors instanziieren
-# CORS(app, resources={r"/api/":{"origins":"*"}})
-CORS(app, resources={
-    r"/*": {
-        "origins": ["http://localhost:3306"]
+CORS(app, resources={r"/*": {
+        "origins": ["http://localhost:3000"],  # Port des React-Frontends
         #"methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
         #"allow_headers": ["Content-Type", "Authorization"],
-        #"supports_credentials": True
-    }
-})
-# CORS(app, supports_credentials=True, resources=r'/wardrobe')
+        #"expose_headers": ["Authorization"]}}
+}})
 
 # Sicherheitsheader
-@app.after_request
+'''@app.after_request
 def add_security_headers(response):
-    response.headers.pop("Cross-Origin-Opener-Policy", None)
-    response.headers["Cross-Origin-Opener-Policy"] = "unsafe-none"  # CORS Fehlermeldung vermeiden
-    return response
+    response.headers.pop("Cross-Origin-Opener-Policy", "None")
+    response.headers["Cross-Origin-Opener-Policy"] = "same-origin"  # CORS Fehlermeldung vermeiden
+    response.headers["Cross-Origin-Embedder-Policy"] = "require-corp"
+    return response'''
 
 # API für Datenstruktur
 api = Api(app, version='1.0', title='Digital Wardrobe',

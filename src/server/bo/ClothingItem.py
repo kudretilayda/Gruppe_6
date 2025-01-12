@@ -5,17 +5,17 @@ class ClothingItem(BusinessObject):
 
     def __init__(self):
         super().__init__()
-        self._item_id = 0
+        #self._item_id = 0
         self._wardrobe_id = 0
         self.item_name = ""
         self.clothing_type = None
         self.selected = False
 
-    def get_id(self):
-        return self._item_id
+#    def get_id(self):
+#        return self._item_id
 
-    def set_id(self, item_id: int):
-        self._item_id = item_id
+#    def set_id(self, item_id: int):
+#        self._item_id = item_id
 
     def get_clothing_type(self):
         return self.clothing_type

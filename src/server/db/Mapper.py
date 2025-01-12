@@ -17,7 +17,7 @@ class Mapper(AbstractContextManager, ABC):
 
         else:
             self._cnx = connector.connect(user='demo', password='demo',
-                                          host='localhost:3306',
+                                          host='localhost:3000',
                                           database='digital_wardrobe')
         return self
 
