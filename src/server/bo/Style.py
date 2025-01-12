@@ -5,18 +5,18 @@ class Style(BusinessObject):
 
     def __init__(self):
         super().__init__()
-        self._style_id = int
+#        self._style_id = int
         self._style_features = ""
         self.style_constraints = []
         self.clothing_type = []
 
     # Getter-Methode für die ID des Styles
-    def get_style_id(self):
-        return self._style_id
+#    def get_style_id(self):
+#        return self._style_id
 
     # Setter-Methode für die ID des Styles
-    def set_style_id(self, style_id: int):
-        self._style_id = style_id
+#    def set_style_id(self, style_id: int):
+#        self._style_id = style_id
 
     # Getter-Methode für die Features des Styles
     def get_style_features(self):
@@ -44,7 +44,7 @@ class Style(BusinessObject):
 
 
     def __str__(self):
-        return "Style: {}, {}, {}, {}".format(self._style_id,
+        return "Style: {}, {}, {}, {}".format(self._id,
                                               self._style_features,
                                               self.style_constraints,
                                               self.clothing_type)
@@ -67,7 +67,7 @@ class Style(BusinessObject):
             dictionary = dict() # Leeres Dictionary falls None übergeben wird
         obj = Style()
         # Extrahiert Daten aus dem Dictionary und initialisiert die Attribute
-        obj.set_style_id(dictionary.get("style_id", 0))
+        obj.set_id(dictionary.get("style_id", 0))
         obj.set_style_features(dictionary.get("style_features", ""))
         obj.set_style_constraints(dictionary.get("style_constraints", []))
         obj.set_clothing_type(dictionary.get("clothing_type", []))
