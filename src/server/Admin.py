@@ -220,3 +220,21 @@ class Admin(object):
         with StyleMapper() as mapper:
             self._cleanup_reference(style)
             mapper.delete(style)
+
+### Kleidungstyp ###
+
+    def create_clothing_type(self, type_name, type_usage): # Erstellt einen neuen Kleidungstyp
+        clothing_type = ClothingType()
+        clothing_type.set_name(type_name)
+        clothing_type.set_usage(type_usage)
+
+        with ClothingTypeMapper() as mapper:
+            return mapper.insert(clothing_type)
+
+    def get_clothing_type_by_id(self, clothing_type_id): # Holt einen Kleidungstyp
+        with ClothingTypeMapper() as mapper:
+            return mapper.find_by_id(clothing_type_id)
+
+    def get_all_clothing_types(self): # Holt alle Kleidungstypen
+        with ClothingTypeMapper() as mapper:
+            return mapper.find_all()
