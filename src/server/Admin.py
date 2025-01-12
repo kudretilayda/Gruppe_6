@@ -121,3 +121,35 @@ class Admin(object):
         with WardrobeMapper() as mapper:
             self._cleanup_reference(wardrobe)
             mapper.delete(wardrobe)
+
+### Kleidungsstück ###
+
+    def create_clothing_item(self, wardrobe_id, clothing_type_id, item_name): # Hier wird ein neues Kleidungsstück mit allen nötigen Informationen erstellt
+        clothing_item = ClothingItem()
+        clothing_item.set_wardrobe_id(wardrobe_id)
+        clothing_item.set_clothing_type(clothing_type_id)
+        clothing_item.set_item_name(item_name)
+
+        with ClothingItemMapper() as mapper:
+            return mapper.insert(clothing_item) # Das Kleidungsstück wird in der Datenbank gespeichert
+
+    def get_all_clothing_items(self): # Holt eine Liste aller Kleidungsstücke
+        with ClothingItemMapper() as mapper:
+            return mapper.find_all()
+
+    def get_clothing_item_by_id(self, clothing_item_id): # Holt ein bestimmtes Kleidungsstück anhand seiner ID
+        with ClothingItemMapper() as mapper:
+            return mapper.find_by_key(clothing_item_id)
+
+    def get_clothing_items_by_wardrobe_id(self, wardrobe_id): # Holt alle Kleidungsstücke aus einem bestimmten Kleiderschrank
+        with ClothingItemMapper() as mapper:
+            return mapper.find_by_wardrobe_id(wardrobe_id)
+
+    def save_clothing_item(self, clothing_item): # Speichert alle Änderungen an einem Kleidungsstück
+        with ClothingItemMapper() as mapper:
+            mapper.update(clothing_item)
+
+    def delete_clothing_item(self, clothing_item): # löscht ein Kleidungsstück
+        with ClothingItemMapper() as mapper:
+            self._cleanup_reference(clothing_item)
+            mapper.delete(clothing_item)
