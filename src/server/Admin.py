@@ -89,3 +89,35 @@ class Admin(object):
         with UserMapper() as mapper:
             mapper.delete(user) # Löscht den Benutzer aus der Datenbank
 
+### Kleiderschrank ###
+
+    def create_wardrobe(self, user_id): # Erstellt einen neuen Kleiderschrank für den angegebenen Benutzer
+        wardrobe = Wardrobe()
+        wardrobe.set_wardrobe_owner(user_id)
+        with WardrobeMapper() as mapper:
+            return mapper.insert(wardrobe)
+
+    def add_item_to_wardrobe(self, item): # Fügt ein Kleidungsstück zum Kleiderschrank hinzu
+        wardrobe = Wardrobe()
+        wardrobe.set_items(item)
+
+    def get_wardrobe_by_id(self, wardrobe_id): # Sucht einen Kleiderschrank anhand seiner einzigartigen ID
+        with WardrobeMapper() as mapper:
+            return mapper.find_by_key(wardrobe_id)
+
+    def get_wardrobe_by_user_id(self, user_id): # Sucht den Kleiderschrank eines bestimmten Benutzers anhand seiner Benutzer-ID
+        with WardrobeMapper() as mapper:
+            return mapper.find_by_person_id(user_id)
+
+    def get_all_wardrobes(self): # Gibt eine Liste aller Kleiderschränke in der Datenbank zurück
+        with WardrobeMapper() as mapper:
+            return mapper.find_all()
+
+    def save_wardrobe(self, wardrobe): # Speichert die Änderungen eines Kleiderschranks in der Datenbank
+        with WardrobeMapper() as mapper:
+            mapper.update(wardrobe)
+
+    def delete_wardrobe(self, wardrobe): # Löscht einen Kleiderschrank aus der Datenbank
+        with WardrobeMapper() as mapper:
+            self._cleanup_reference(wardrobe)
+            mapper.delete(wardrobe)
